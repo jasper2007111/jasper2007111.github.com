@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji Blog]]></title>
   <link href="http://jasper2007111.github.io/atom.xml" rel="self"/>
   <link href="http://jasper2007111.github.io/"/>
-  <updated>2014-10-30T00:35:50+08:00</updated>
+  <updated>2014-11-15T19:09:53+08:00</updated>
   <id>http://jasper2007111.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -14,11 +14,21 @@
 
   
   <entry>
-    <title type="html"><![CDATA[My First Blog]]></title>
+    <title type="html"><![CDATA[使用Octopress来写博客]]></title>
     <link href="http://jasper2007111.github.io/blog/2014/10/30/my-first-blog/"/>
     <updated>2014-10-30T00:35:22+08:00</updated>
     <id>http://jasper2007111.github.io/blog/2014/10/30/my-first-blog</id>
-    <content type="html"><![CDATA[
+    <content type="html"><![CDATA[<p>之前一直使用wordpress了，虽然功能强大但我却也没有写出来什么东西。自从开始ios开发后，发现不少大牛的博客都是Octopress，于是有了想用这个的冲动。另方面是因为看到markdown这门标记语言的缘故，从网上找了了个简单的教程，随便看了下就可以写东西了，完全让你可以专注在写作这件事情上。</p>
+
+<p>部署Octopress并不难，如果你有个虚拟空间可以把生成好的文件上传到服务器就可以了。生成博客的过程在你的电脑本地，源文件放到github上了。之前有点纠结因为github上是公开的，但后来才翻转，既然写出来的博客不都是为让别人看到么？Octopress是公开的，你的文章页是要公开的。所以我选择把源文件放到github上，使用git来管理博客。基于版本的控制的博客看起来很有意思，虽然版本控制在工作中也常用到，总之这个很酷!</p>
+
+<p>关于如何搭建Octopress博客可以参照一下几位博主的文章：</p>
+
+<ul>
+<li><p>破船之家&ndash;><a href="http://beyondvincent.com/blog/2013/08/03/108-creating-a-github-blog-using-octopress/">利用Octopress搭建一个Github博客</a></p></li>
+<li><p>唐巧&ndash;><a href="http://blog.devtang.com/blog/2012/02/10/setup-blog-based-on-github/">象写程序一样写博客：搭建基于github的博客</a></p></li>
+</ul>
+
 ]]></content>
   </entry>
   
