@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="http://jasper2007111.github.io/atom.xml" rel="self"/>
   <link href="http://jasper2007111.github.io/"/>
-  <updated>2019-03-28T00:13:10+08:00</updated>
+  <updated>2019-03-28T00:26:50+08:00</updated>
   <id>http://jasper2007111.github.io/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -47,7 +47,7 @@
 
 <p>发布的时候遇到了点问题</p>
 
-<p><code>_deploy</code>这个是发布目录，每次如果从新拉去git的话，重新创建，把Master分支拉去到这个目录。</p>
+<p><code>_deploy</code>这个是发布目录，如果重新拉取git的话，手动创建并把Master分支拉取到这个目录。</p>
 
 <h3>自定义域名</h3>
 
