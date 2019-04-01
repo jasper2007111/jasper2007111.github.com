@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Jasper Ji]]></title>
-  <link href="http://jasper2007111.github.io/atom.xml" rel="self"/>
-  <link href="http://jasper2007111.github.io/"/>
-  <updated>2019-03-28T00:26:50+08:00</updated>
-  <id>http://jasper2007111.github.io/</id>
+  <link href="http://c2lang.com/atom.xml" rel="self"/>
+  <link href="http://c2lang.com/"/>
+  <updated>2019-04-01T12:26:43+08:00</updated>
+  <id>http://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[如何开始iOS开发]]></title>
-    <link href="http://jasper2007111.github.io/blog/2015/11/15/ru-he-kai-shi-ioskai-fa/"/>
+    <link href="http://c2lang.com/blog/2015/11/15/ru-he-kai-shi-ioskai-fa/"/>
     <updated>2015-11-15T17:52:30+08:00</updated>
-    <id>http://jasper2007111.github.io/blog/2015/11/15/ru-he-kai-shi-ioskai-fa</id>
+    <id>http://c2lang.com/blog/2015/11/15/ru-he-kai-shi-ioskai-fa</id>
     <content type="html"><![CDATA[<p>首先要是有一个界面开发的经历那最好了，类似桌面界面开发其实是相通的。游戏开发中的界面跟这个略微不同。大部分会用到框架提供的组件，熟练的使用常用的组件是很有必要的。应该尽可能的多去尝试不同组件的使用机会，这样才能扩大组件的使用见识。</p>
 
 <p>应该用面对对象的角度去研究文档，继承关系以及实现了什么样的协议，顺着这样的路走下去就会对框架有个整体的认识。不少人看着也开发了好一段时间，但就是不曾系统的研究过这些东西。遇到问题了，还是停留在百度这样境界。</p>
@@ -36,9 +36,9 @@
   
   <entry>
     <title type="html"><![CDATA[重新开始写博客]]></title>
-    <link href="http://jasper2007111.github.io/blog/2014/10/30/my-first-blog/"/>
+    <link href="http://c2lang.com/blog/2014/10/30/my-first-blog/"/>
     <updated>2014-10-30T00:35:22+08:00</updated>
-    <id>http://jasper2007111.github.io/blog/2014/10/30/my-first-blog</id>
+    <id>http://c2lang.com/blog/2014/10/30/my-first-blog</id>
     <content type="html"><![CDATA[<p>以前用过Wordpress搭建过博客，后来也不知道怎么就断了。重新开始写博客，是因为看到网上不少好的独立博客的文章受益不少，也算是另一种回馈吧。</p>
 
 <p>Octopress一年前就搭建过，现在又重新开始写。发现原来参考的搭建博客的博主已经换了引擎，不过我还是更喜欢Octopress吧，所以继续用吧，文章才是重点了。</p>

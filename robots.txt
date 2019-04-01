@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://jasper2007111.github.io/sitemap.xml 
+Sitemap: http://c2lang.com/sitemap.xml 
