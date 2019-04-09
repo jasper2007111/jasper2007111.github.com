@@ -14,8 +14,10 @@ Octopress一年前就搭建过，现在又重新开始写。发现原来参考�
 
 发布的时候遇到了点问题
 
->没有_deploy文件夹的问题。[参考文章](http://tianweili.github.io/blog/2015/01/11/create-octopress-blog-in-windows/)
->
->因为之前的发布的时候没有把源文件也更新到github上，所以发不上去。[参考文章](http://www.conxz.net/blog/2014/04/12/non-fast-forward-error-with-octopress/)
-后续发表了新的文章最好还是更新到服务器上了。
+`_deploy`这个是发布目录，如果重新拉取git的话，手动创建并把Master分支拉取到这个目录。
+
+### 自定义域名
+在`Source`目录下创建`CNAME`文件，填写自己的域名，当然也需要在域名管理设置DNS。生成文章时会自动把`CNAME`文件复制到`_deploy`目录最后同步到Master分支。
+
+
 
