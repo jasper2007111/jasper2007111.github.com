@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="http://c2lang.com/atom.xml" rel="self"/>
   <link href="http://c2lang.com/"/>
-  <updated>2019-10-03T15:57:28+08:00</updated>
+  <updated>2019-10-03T16:00:08+08:00</updated>
   <id>http://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -30,9 +30,9 @@
   
   <entry>
     <title type="html"><![CDATA[iOS开发一些总结]]></title>
-    <link href="http://c2lang.com/blog/2015/11/15/iOS-development-tips/"/>
+    <link href="http://c2lang.com/blog/2015/11/15/ios-development-tips/"/>
     <updated>2015-11-15T17:52:30+08:00</updated>
-    <id>http://c2lang.com/blog/2015/11/15/iOS-development-tips</id>
+    <id>http://c2lang.com/blog/2015/11/15/ios-development-tips</id>
     <content type="html"><![CDATA[<p>首先要是有一个界面开发的经历那最好了，类似桌面界面开发其实是相通的。游戏开发中的界面跟这个略微不同。大部分会用到框架提供的组件，熟练的使用常用的组件是很有必要的。应该尽可能的多去尝试不同组件的使用机会，这样才能扩大组件的使用见识。</p>
 
 <p>应该用面对对象的角度去研究文档，继承关系以及实现了什么样的协议，顺着这样的路走下去就会对框架有个整体的认识。不少人看着也开发了好一段时间，但就是不曾系统的研究过这些东西。遇到问题了，还是停留在百度这样境界。</p>
