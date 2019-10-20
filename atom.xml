@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="http://c2lang.com/atom.xml" rel="self"/>
   <link href="http://c2lang.com/"/>
-  <updated>2019-10-08T22:12:47+08:00</updated>
+  <updated>2019-10-20T17:51:37+08:00</updated>
   <id>http://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,33 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Macbook Pro 配件]]></title>
+    <link href="http://c2lang.com/blog/2019/10/20/macbook-pro-accessories/"/>
+    <updated>2019-10-20T16:48:54+08:00</updated>
+    <id>http://c2lang.com/blog/2019/10/20/macbook-pro-accessories</id>
+    <content type="html"><![CDATA[<p>使用Macbook Pro已经有6、7年了，总结下用到的一些不错的配件。</p>
+
+<h3>键盘</h3>
+
+<p>首推HHKB了，整体设计很复古，键位布局很紧凑，很轻非常适合携带。尤其是新版的本使用虚拟操作栏和蝶式键盘后，基本上写程序都是用的HHKB。键盘没有方向键，一般使用FN组合建。没有大小写按键，可以使用Shift+字母键来代替。价位确实比较高，也不是机械轴，质量当然没得说，几年过去依旧完好，最主要其实就是感觉跟苹果一样都是追求极致的那种，一句话很搭。</p>
+
+<p>另外菲尔可的78键的也不错，我买的是青轴，这个键盘听说是有加钢板，所以敲着声音更清脆。关于机械轴，很多刚开始玩机械需要注意的一定要买青轴，实际上青轴真的也没有传说中的多吵，而这个也是最能体现机械件轴的地方，所以推荐买青轴了。这个键盘比较重，不合适携带。</p>
+
+<h3>鼠标</h3>
+
+<p>原装的鼠标当然好，不过也是真贵。推荐一款淘宝上只需不到20元的ACTME的蓝牙充电鼠标。虽然廉价但鼠标移动很顺畅，从来没有卡顿过。比一些大牌的好，至少在mac系统下。</p>
+
+<h3>扩展坞</h3>
+
+<p>新版的Macbook Pro确实轻了不少，换来的是一堆的Type-C的接口。扩展坞这种东西也成必须要买的配件，目前用的是绿联的，除了有些发烫外，其他的转接功能都正常使用，不过用扩展坞给手机充电确实不快，应该用慢来形容。</p>
+
+<h3>键盘膜</h3>
+
+<p>之前的本和现在的都用的Moshi的这个牌子，主要是做工好，跟键盘的贴合度都没有问题。虽然有点小贵，上个本的依旧完好无缺，一个可以把本淘汰掉，依旧完好的膜，也算值得。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[还是选择Octopress]]></title>
