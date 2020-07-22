@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2020-07-22T15:09:51+08:00</updated>
+  <updated>2020-07-22T15:17:19+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,24 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress使用指南]]></title>
+    <link href="https://c2lang.com/blog/2020/07/22/octopress-users-guide/"/>
+    <updated>2020-07-22T15:14:59+08:00</updated>
+    <id>https://c2lang.com/blog/2020/07/22/octopress-users-guide</id>
+    <content type="html"><![CDATA[<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake <span class="s1">&#39;new_post[&quot;title&quot;]&#39;</span> <span class="c"># 创建文章</span>
+</span><span class='line'>rake generate <span class="c"># 生成文章</span>
+</span><span class='line'>rake preview <span class="c"># 本地预览博客</span>
+</span><span class='line'>rake deploy <span class="c"># 发布博客</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[MySQL 笔记]]></title>
