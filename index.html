@@ -230,6 +230,19 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<h3>创建用户</h3>
+
+<p>访问远程数据库时，创建相应的用户。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>create user <span class="s1">&#39;root&#39;</span>@<span class="s1">&#39;本机IP&#39;</span> identified by <span class="s1">&#39;数据库密码&#39;</span><span class="p">;</span>
+</span><span class='line'>grant all privileges on *.* to <span class="s1">&#39;root&#39;</span>@<span class="s1">&#39;本机IP&#39;</span> with grant option<span class="p">;</span>
+</span><span class='line'>flush privileges<span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
 
 </div>
   

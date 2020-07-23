@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2020-07-22T23:30:53+08:00</updated>
+  <updated>2020-07-23T09:43:40+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -106,6 +106,19 @@
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='sh'><span class='line'>mysqlbinlog --start-datetime<span class="o">=</span><span class="s2">&quot;2020-07-14 10:00:00&quot;</span> --stop-datetime<span class="o">=</span><span class="s2">&quot;2020-07-14 10:05:00&quot;</span> binlog.000001 --base64-output<span class="o">=</span>decode-rows -v
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>创建用户</h3>
+
+<p>访问远程数据库时，创建相应的用户。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>create user <span class="s1">&#39;root&#39;</span>@<span class="s1">&#39;本机IP&#39;</span> identified by <span class="s1">&#39;数据库密码&#39;</span><span class="p">;</span>
+</span><span class='line'>grant all privileges on *.* to <span class="s1">&#39;root&#39;</span>@<span class="s1">&#39;本机IP&#39;</span> with grant option<span class="p">;</span>
+</span><span class='line'>flush privileges<span class="p">;</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
