@@ -9,7 +9,22 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="断断续续的看了些Common Lisp的东西，主要是田春冰河翻译的那本《实用Common Lisp编程》，另外网上有人翻译了《ANSI Common Lisp》也有看，另一本《Common Lisp： A Gentle Introduction to Symbolic Computation》。 &hellip;">
+  <meta name="description" content="1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+brew install nginx ## 安装成功后
+Docroot is: /usr/local/var/www The default port has been set in /usr/local/etc/nginx/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +92,146 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2020/07/27/installing-nginx-on-mac/">Mac上安装Nginx</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2020-07-27T17:07:55+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>27</span><span class='date-suffix'>th</span>, <span class='date-year'>2020</span></span> <span class='time'>5:07 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>brew install nginx
+</span><span class='line'>
+</span><span class='line'><span class="c">## 安装成功后</span>
+</span><span class='line'>Docroot is: /usr/local/var/www
+</span><span class='line'>
+</span><span class='line'>The default port has been <span class="nb">set </span>in /usr/local/etc/nginx/nginx.conf to <span class="m">8080</span> so that
+</span><span class='line'>nginx can run without sudo.
+</span><span class='line'>
+</span><span class='line'>nginx will load all files in /usr/local/etc/nginx/servers/.
+</span><span class='line'>
+</span><span class='line'>To have launchd start nginx now and restart at login:
+</span><span class='line'>  brew services start nginx
+</span><span class='line'>Or, <span class="k">if</span> you don<span class="err">&#39;</span>t want/need a background service you can just run:
+</span><span class='line'>  nginx
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>根目录<code>/usr/local/var/www</code></p>
+
+<p>配置文件<code>/usr/local/etc/nginx/nginx.conf</code></p>
+
+<p>使用<code>brew services start nginx</code>后台启动</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2020/07/26/programming-language-closures/">编程语言们的闭包</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2020-07-26T23:29:56+08:00'><span class='date'><span class='date-month'>Jul</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2020</span></span> <span class='time'>11:29 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>闭包这个东西似乎成了现代语言必备的，因为自己接触的语言也多，所以特意做了下目前自己接触的这些语言的闭包。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">adder</span><span class="p">()</span> <span class="kd">func</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">sum</span> <span class="o">:=</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="k">return</span> <span class="kd">func</span><span class="p">(</span><span class="nx">x</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">sum</span> <span class="o">+=</span> <span class="nx">x</span>
+</span><span class='line'>      <span class="k">return</span> <span class="nx">sum</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">pos</span><span class="p">,</span> <span class="nx">neg</span> <span class="o">:=</span> <span class="nx">adder</span><span class="p">(),</span> <span class="nx">adder</span><span class="p">()</span>
+</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span>
+</span><span class='line'>          <span class="nx">pos</span><span class="p">(</span><span class="nx">i</span><span class="p">),</span>
+</span><span class='line'>          <span class="nx">neg</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="nx">i</span><span class="p">),</span>
+</span><span class='line'>      <span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>例子来源于<a href="https://tour.golang.org/moretypes/25">tour.golang.org</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -440,6 +595,14 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2020/07/27/installing-nginx-on-mac/">Mac上安装Nginx</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2020/07/26/programming-language-closures/">编程语言们的闭包</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2020/07/22/write-a-lottery-program-with-common-lisp/">用Common Lisp写一个双色球程序</a>
       </li>
     
@@ -449,14 +612,6 @@
     
       <li class="post">
         <a href="/blog/2020/07/22/mysql-notes/">MySQL 笔记</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2019/10/20/macbook-pro-accessories/">Macbook Pro 配件</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2019/10/03/still-using-octopress/">还是选择Octopress</a>
       </li>
     
   </ul>
