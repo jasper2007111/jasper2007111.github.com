@@ -9,7 +9,7 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="1
+  <meta name="description" content="安装 1
 2
 3
 4
@@ -111,7 +111,9 @@ Docroot is: /usr/local/var/www The default port has been set in /usr/local/etc/n
   </header>
 
 
-<div class="entry-content"><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class="entry-content"><h4>安装</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -141,6 +143,8 @@ Docroot is: /usr/local/var/www The default port has been set in /usr/local/etc/n
 </span><span class='line'>  nginx
 </span></code></pre></td></tr></table></div></figure>
 
+
+<h4>配置</h4>
 
 <p>默认根目录<code>/usr/local/var/www</code>，可以在配置文件<code>/usr/local/etc/nginx/nginx.conf</code>中修改。</p>
 
@@ -175,6 +179,21 @@ Docroot is: /usr/local/var/www The default port has been set in /usr/local/etc/n
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>图片服务器，需要配置images目录，在<strong><em>conf</em></strong>文件中增加如下，然后重启。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>location /images <span class="o">{</span>
+</span><span class='line'>  root /xxxx/xxxx<span class="p">;</span> <span class="c"># 图片存放的目录</span>
+</span><span class='line'>  autoindex on<span class="p">;</span> <span class="c"># 开启目录游览</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>管理</h4>
+
 <p>使用<code>brew</code>来管理服务</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
@@ -185,6 +204,10 @@ Docroot is: /usr/local/var/www The default port has been set in /usr/local/etc/n
 </span><span class='line'>brew services stop nginx <span class="c"># 停止Nginx服务</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<h4>诊断</h4>
+
+<p>Nginx诊断，有遇到过Nginx已经启动，但是无法访问，可以使用<code>nginx -t</code>来诊断具体的错误。</p>
 </div>
 
 
