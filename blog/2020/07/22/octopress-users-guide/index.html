@@ -16,7 +16,7 @@
 rake &#39;new_post[&quot;title&quot;]&#39; # 创建文章
 rake generate # 生成文章
 rake preview # 本地预览博客
-rake deploy # 发布博客 ">
+rake deploy # 发布博客 修改文章创建的日期格式，我比较喜欢类似2020-01-01 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -111,6 +111,15 @@ rake deploy # 发布博客 ">
 </span><span class='line'>rake generate <span class="c"># 生成文章</span>
 </span><span class='line'>rake preview <span class="c"># 本地预览博客</span>
 </span><span class='line'>rake deploy <span class="c"># 发布博客</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>修改文章创建的日期格式，我比较喜欢类似<code>2020-01-01 00:00:00</code>这样的格式，修改<code>_config.yml</code>。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">date_format</span><span class="p-Indicator">:</span> <span class="s">&quot;%Y-%m-%d&quot;</span>
+</span><span class='line'><span class="l-Scalar-Plain">time_format</span><span class="p-Indicator">:</span> <span class="s">&quot;%H:%M:%S&quot;</span> <span class="c1"># 这个新增的，默认配置文件没有的</span>
 </span></code></pre></td></tr></table></div></figure>
 
 </div>
