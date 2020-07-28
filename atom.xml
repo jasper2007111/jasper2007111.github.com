@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2020-07-27T23:49:34+08:00</updated>
+  <updated>2020-07-28T09:27:25+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -49,11 +49,49 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>根目录<code>/usr/local/var/www</code></p>
+<p>默认根目录<code>/usr/local/var/www</code>，可以在配置文件<code>/usr/local/etc/nginx/nginx.conf</code>中修改。</p>
 
-<p>配置文件<code>/usr/local/etc/nginx/nginx.conf</code></p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>...
+</span><span class='line'> server <span class="o">{</span>
+</span><span class='line'>        listen       8080<span class="p">;</span> <span class="c"># 端口可以自己修改</span>
+</span><span class='line'>        server_name  localhost<span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c">#charset koi8-r;</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="c">#access_log  logs/host.access.log  main;</span>
+</span><span class='line'>
+</span><span class='line'>        location / <span class="o">{</span>
+</span><span class='line'>            root   index <span class="c"># 自定义路径</span>
+</span><span class='line'>            index  index.html index.htm<span class="p">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
 
-<p>使用<code>brew services start nginx</code>后台启动</p>
+
+<p>使用<code>brew</code>来管理服务</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>brew services start nginx <span class="c"># 启动Nginx后台服务</span>
+</span><span class='line'>brew services restart nginx <span class="c"># 重启Nginx后台服务</span>
+</span><span class='line'>brew services stop nginx <span class="c"># 停止Nginx服务</span>
+</span></code></pre></td></tr></table></div></figure>
+
 ]]></content>
   </entry>
   
