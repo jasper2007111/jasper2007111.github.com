@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2020-07-28T11:51:04+08:00</updated>
+  <updated>2020-08-09T00:24:37+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[《创新者的窘境》读后感]]></title>
+    <link href="https://c2lang.com/blog/2020/08/08/the-innovators-dilemma/"/>
+    <updated>2020-08-08T23:35:46+08:00</updated>
+    <id>https://c2lang.com/blog/2020/08/08/the-innovators-dilemma</id>
+    <content type="html"><![CDATA[<p>这本书因为比较老，要不是因为跟乔布斯读过有关系，很少会引起大家的注意，另外书里的例子是90年代的东西，有些东西涉及硬盘之类的案例，更重要的是这本书面向的是企业管理者和在企业内部想内部创新的相关人，个人觉得对于很多人不会有共鸣感。因为在一家传统行业的公司从事信息化建设的相关工作，也才开始体会书中的东西。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mac上安装Nginx]]></title>
