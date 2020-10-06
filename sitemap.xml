@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://c2lang.com/blog/2020/10/06/travelogue-of-tiantong-temple/</loc>
+<lastmod>2020-10-06T13:48:16+08:00</lastmod>
+</url>
+<url>
 <loc>https://c2lang.com/blog/2020/09/30/centos-users-guide/</loc>
 <lastmod>2020-09-30T13:46:06+08:00</lastmod>
 </url>
@@ -53,8 +57,5 @@
 </url>
 <url>
 <loc>https://c2lang.com/blog/archives/</loc>
-</url>
-<url>
-<loc>https://c2lang.com/posts/2/</loc>
 </url>
 </urlset>
