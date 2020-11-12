@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2020-10-18T19:18:39+08:00</updated>
+  <updated>2020-11-12T14:54:00+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Phone 12 Pro试用感受]]></title>
+    <link href="https://c2lang.com/blog/2020/11/12/try-iphone-12-pro/"/>
+    <updated>2020-11-12T13:54:26+08:00</updated>
+    <id>https://c2lang.com/blog/2020/11/12/try-iphone-12-pro</id>
+    <content type="html"><![CDATA[<p>自己用的iPhone 6s已经好几年了，待电确实比较差。今年的iPhone 12系列</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[天童寺游记]]></title>
@@ -273,6 +282,13 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
 <p><a href="https://www.mf8.biz/rhel8-centos8-install-mysql-8-0/">RHEL8 CentOS8 下安装 MySQL 8.0</a></p>
 
 <p><a href="https://www.jianshu.com/p/b437566ccf98">mysql8.0 设置简单密码报错ERROR 1819 (HY000): Your password does not satisfy the current policy requirements</a></p>
+
+<h4>常用命令</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>lsof -i: 端口号 <span class="c"># 查看某个端口的进程</span>
+</span></code></pre></td></tr></table></div></figure>
+
 ]]></content>
   </entry>
   
