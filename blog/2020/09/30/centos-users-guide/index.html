@@ -300,6 +300,32 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
 </pre></td><td class='code'><pre><code class='sh'><span class='line'>lsof -i: 端口号 <span class="c"># 查看某个端口的进程</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<h4>HTTPS</h4>
+
+<p>目前使用Let&rsquo;s Encrypt SSL的证书，这个是免费的，唯一的缺点是只有三个月期限，到期后重新申请就可以。</p>
+
+<h5>certbot-auto</h5>
+
+<p>主要用来<code>certbot-auto</code>申请。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># 获取certbot-auto</span>
+</span><span class='line'>wget https://dl.eff.org/certbot-auto
+</span><span class='line'>chmod a+x certbot-auto
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>申请通配符域名的证书，这个涉及域名验证，需要在DNS解析增加<code>_acme-challenge</code>的<code>TXT</code>记录。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>./certbot-auto certonly  -d *.xxxx.com --manual --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>到期后的，需要删除原有证书<code>certbot delete</code>，重启Ngnix服务。不删除的话，会生成新的证书目录，这样的话还需要修改Ngnix的配置文件。</p>
 </div>
 
 
