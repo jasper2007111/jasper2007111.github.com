@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>iPhone 12 Pro试用感受 - Jasper Ji</title>
+  <title>在CentOS 8上Mysql 8.0的主从配置实践 - Jasper Ji</title>
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="iPhone 6s已经用5年了，待电确实比较差，外出的话离不开充电宝。iPhone 12出来后，我就下单iPhone 12 pro了。这次的iPhone 吸引我的是新外观以及对5G的支持，当然pro系列有激光雷达的功能。外观回归到iPhone 4时的设计，因为宽度比原来宽，所以拿着还是有点割手， &hellip;">
+  <meta name="description" content="主要试了下基于二进制日志文件的方法 主库设置 主要的坑，一般教程上写的是编辑/etc/my.cnf。安装的Mysql 8的配置略微有些问题，my.cnf文件导入的是另一配置!includedir /etc/my.cnf.d，所以以下配置我是写在了/etc/my.cnf.d/mysql-server &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="https://c2lang.com/blog/2020/11/12/try-iphone-12-pro">
+  <link rel="canonical" href="https://c2lang.com/blog/2021/01/05/how-to-configure-mysql-8-master-slave-replication-on-centos-8">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Jasper Ji" type="application/atom+xml">
@@ -80,7 +80,7 @@
   
   <header>
     
-      <h1 class="entry-title">iPhone 12 Pro试用感受</h1>
+      <h1 class="entry-title">在CentOS 8上Mysql 8.0的主从配置实践</h1>
     
     
       <p class="meta">
@@ -89,20 +89,61 @@
 
 
 
-<time class='entry-date' datetime='2020-11-12T13:54:26+08:00'><span class='date'>2020-11-12</span> <span class='time'>13:54:26</span></time>
+<time class='entry-date' datetime='2021-01-05T10:47:17+08:00'><span class='date'>2021-01-05</span> <span class='time'>10:47:17</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>iPhone 6s已经用5年了，待电确实比较差，外出的话离不开充电宝。iPhone 12出来后，我就下单iPhone 12 pro了。这次的iPhone 吸引我的是新外观以及对5G的支持，当然pro系列有激光雷达的功能。外观回归到iPhone 4时的设计，因为宽度比原来宽，所以拿着还是有点割手，套上外壳能好点。大小上来说，对于我这种小手还是觉得iPhone 6s的尺寸刚好，iPhone 12 pro的单手操作还是有担心机子摔在地上的风险。自从iPhone出了刘海屏后，我一直比较难以接受这样的设计，更钟情于iPhone 6s 这样的设计，其实在我看来苹果可以把手机的上下部分变短，比刘海这样的设计好。iPhone 12 pro的相机确实牛，这点是值得升级的，另外拍立得这个功能也非常不错。</p>
+<div class="entry-content"><p>主要试了下基于二进制日志文件的方法</p>
 
-<p>谈谈我最后为什么退货呢，作为一个曾经的iOS开发者，对这几年的iPhone已经失去了升级的想法，一方面新iPhone价位比以前贵，功能其实没有太大的突破，从生产力角度来看，我更愿意在macbook pro上投资，而不是iPhone。另外iPhone 6s本身不怎么卡，只是电池不行了，这个完全可以换一个就可以了。升级最大的动力是支持5G，但是目前运营商的5G有点贵，而且5G设施也还在陆续建设中，另外平时用的更多是Wi-Fi，移动网络下也很少看视频之类的，所以并没有高速网络的需求。目前iPhone 12是支持5G的初代产品，所以有提升的空间。最后一点，刘海设计依旧是心里吐槽的对象，如果他出一个iPhone 6s的设计，但支持5G的手机，我可能更愿意接受。</p>
+<h4>主库设置</h4>
 
-<h4>退货流程</h4>
+<p>主要的坑，一般教程上写的是编辑<code>/etc/my.cnf</code>。安装的Mysql 8的配置略微有些问题，<code>my.cnf</code>文件导入的是另一配置<code>!includedir /etc/my.cnf.d</code>，所以以下配置我是写在了<code>/etc/my.cnf.d/mysql-server.cnf</code>里面。</p>
 
-<p>这是头一次退货，在订单中确认退货，会显示取货。取货的时间都没有问题，来了一个邮政的人员把机子简单的验证后，然后就把机子拿走了，没有留下快递单号。因为是头一次，取货后的第二天我看来下订单状态，依旧显示取货中，过了两天我发现还是这个状态。心里有点嘀咕，不会被骗吧，一般的寄送快递，当天晚上基本上状态都改变了。后来我直接给苹果客服打电话确认了，说一切都正常，机子也确实被取走了，因为会寄送到工厂，工厂收到后还要验货后才会更新订单的状态。大概是一周后，订单状态终于变了，钱也退了。</p>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">###主从数据库配置核心部分</span>
+</span><span class='line'><span class="c"># 设置同步的binary log二进制日志文件名前缀，默认为binlog</span>
+</span><span class='line'>log-bin<span class="o">=</span>mysql-bin
+</span><span class='line'><span class="c"># 服务器唯一id，默认为1  主数据库和从数据库的server-id不能重复</span>
+</span><span class='line'>server-id<span class="o">=</span><span class="m">1</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">###可选配置</span>
+</span><span class='line'><span class="c"># 需要主从复制的数据库</span>
+</span><span class='line'>binlog-do-db<span class="o">=</span><span class="nb">test</span>
+</span><span class='line'><span class="c"># 复制过滤：也就是指定哪个数据库不用同步（mysql库一般不同步）</span>
+</span><span class='line'>binlog-ignore-db<span class="o">=</span>mysql
+</span><span class='line'><span class="c"># 为每个session分配的内存，在事务过程中用来存储二进制日志的缓存</span>
+</span><span class='line'><span class="nv">binlog_cache_size</span><span class="o">=</span>1M
+</span><span class='line'><span class="c"># 主从复制的格式（mixed,statement,row，默认格式是statement。建议是设置为row，主从复制时数据更加能够统一）</span>
+</span><span class='line'><span class="nv">binlog_format</span><span class="o">=</span>row
+</span><span class='line'><span class="c"># 设置二进制日志自动删除/过期的天数，避免占用磁盘空间。默认值为0，表示不自动删除。</span>
+</span><span class='line'><span class="nv">expire_logs_days</span><span class="o">=</span>7
+</span><span class='line'><span class="c"># 跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制中断。</span>
+</span><span class='line'><span class="c"># 如：1062错误是指一些主键重复，1032错误是因为主从数据库数据不一致</span>
+</span><span class='line'><span class="nv">slave_skip_errors</span><span class="o">=</span>1062
+</span></code></pre></td></tr></table></div></figure>
+
 </div>
 
 
@@ -118,7 +159,7 @@
 
 
 
-<time class='entry-date' datetime='2020-11-12T13:54:26+08:00'><span class='date'>2020-11-12</span> <span class='time'>13:54:26</span></time>
+<time class='entry-date' datetime='2021-01-05T10:47:17+08:00'><span class='date'>2021-01-05</span> <span class='time'>10:47:17</span></time>
       
 
 
@@ -133,10 +174,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2020/10/06/travelogue-of-tiantong-temple/" title="Previous Post: 天童寺游记">&laquo; 天童寺游记</a>
+        <a class="basic-alignment left" href="/blog/2020/11/12/try-iphone-12-pro/" title="Previous Post: iPhone 12 pro试用感受">&laquo; iPhone 12 pro试用感受</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2021/01/05/how-to-configure-mysql-8-master-slave-replication-on-centos-8/" title="Next Post: 在CentOS 8上Mysql 8.0的主从配置实践">在CentOS 8上Mysql 8.0的主从配置实践 &raquo;</a>
       
     </p>
   </footer>
@@ -206,8 +245,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'https://c2lang.com/blog/2020/11/12/try-iphone-12-pro/';
-        var disqus_url = 'https://c2lang.com/blog/2020/11/12/try-iphone-12-pro/';
+        var disqus_identifier = 'https://c2lang.com/blog/2021/01/05/how-to-configure-mysql-8-master-slave-replication-on-centos-8/';
+        var disqus_url = 'https://c2lang.com/blog/2021/01/05/how-to-configure-mysql-8-master-slave-replication-on-centos-8/';
         var disqus_script = 'embed.js';
       
     (function () {

@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2020-12-09T10:07:12+08:00</updated>
+  <updated>2021-02-04T22:19:09+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,62 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[在CentOS 8上Mysql 8.0的主从配置实践]]></title>
+    <link href="https://c2lang.com/blog/2021/01/05/how-to-configure-mysql-8-master-slave-replication-on-centos-8/"/>
+    <updated>2021-01-05T10:47:17+08:00</updated>
+    <id>https://c2lang.com/blog/2021/01/05/how-to-configure-mysql-8-master-slave-replication-on-centos-8</id>
+    <content type="html"><![CDATA[<p>主要试了下基于二进制日志文件的方法</p>
+
+<h4>主库设置</h4>
+
+<p>主要的坑，一般教程上写的是编辑<code>/etc/my.cnf</code>。安装的Mysql 8的配置略微有些问题，<code>my.cnf</code>文件导入的是另一配置<code>!includedir /etc/my.cnf.d</code>，所以以下配置我是写在了<code>/etc/my.cnf.d/mysql-server.cnf</code>里面。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">###主从数据库配置核心部分</span>
+</span><span class='line'><span class="c"># 设置同步的binary log二进制日志文件名前缀，默认为binlog</span>
+</span><span class='line'>log-bin<span class="o">=</span>mysql-bin
+</span><span class='line'><span class="c"># 服务器唯一id，默认为1  主数据库和从数据库的server-id不能重复</span>
+</span><span class='line'>server-id<span class="o">=</span><span class="m">1</span>
+</span><span class='line'>
+</span><span class='line'><span class="c">###可选配置</span>
+</span><span class='line'><span class="c"># 需要主从复制的数据库</span>
+</span><span class='line'>binlog-do-db<span class="o">=</span><span class="nb">test</span>
+</span><span class='line'><span class="c"># 复制过滤：也就是指定哪个数据库不用同步（mysql库一般不同步）</span>
+</span><span class='line'>binlog-ignore-db<span class="o">=</span>mysql
+</span><span class='line'><span class="c"># 为每个session分配的内存，在事务过程中用来存储二进制日志的缓存</span>
+</span><span class='line'><span class="nv">binlog_cache_size</span><span class="o">=</span>1M
+</span><span class='line'><span class="c"># 主从复制的格式（mixed,statement,row，默认格式是statement。建议是设置为row，主从复制时数据更加能够统一）</span>
+</span><span class='line'><span class="nv">binlog_format</span><span class="o">=</span>row
+</span><span class='line'><span class="c"># 设置二进制日志自动删除/过期的天数，避免占用磁盘空间。默认值为0，表示不自动删除。</span>
+</span><span class='line'><span class="nv">expire_logs_days</span><span class="o">=</span>7
+</span><span class='line'><span class="c"># 跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制中断。</span>
+</span><span class='line'><span class="c"># 如：1062错误是指一些主键重复，1032错误是因为主从数据库数据不一致</span>
+</span><span class='line'><span class="nv">slave_skip_errors</span><span class="o">=</span>1062
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[iPhone 12 Pro试用感受]]></title>
