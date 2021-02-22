@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2021-02-22T14:54:16+08:00</updated>
+  <updated>2021-02-22T15:11:24+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -42,21 +42,21 @@
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='nasm'><span class='line'><span class="k">org</span>   <span class="mh">07c00h</span>          <span class="c1">; 告诉编译器程序加载到7c00处</span>
-</span><span class='line'><span class="nf">mov</span>   <span class="nb">ax</span><span class="p">,</span> <span class="nb">cs</span>
-</span><span class='line'><span class="nf">mov</span>   <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
-</span><span class='line'><span class="nf">mov</span>   <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
-</span><span class='line'><span class="nf">call</span>  <span class="nb">Disp</span><span class="nv">Str</span>         <span class="c1">; 调用显示字符串例程</span>
-</span><span class='line'><span class="nf">jmp</span>   <span class="kc">$</span>           <span class="c1">; 无限循环</span>
+</pre></td><td class='code'><pre><code class='nasm'><span class='line'> <span class="k">org</span> <span class="mh">07c00h</span>           <span class="c1">; 告诉编译器程序加载到7c00处</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">cs</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
+</span><span class='line'>  <span class="nf">call</span> <span class="nb">Disp</span><span class="nv">Str</span>            <span class="c1">; 调用显示字符串例程</span>
+</span><span class='line'>  <span class="nf">jmp</span> <span class="kc">$</span>           <span class="c1">; 无限循环</span>
 </span><span class='line'><span class="nl">DispStr:</span>
-</span><span class='line'><span class="nf">mov</span>   <span class="nb">ax</span><span class="p">,</span> <span class="nv">BootMessage</span>
-</span><span class='line'><span class="nf">mov</span>   <span class="nb">bp</span><span class="p">,</span> <span class="nb">ax</span>           <span class="c1">; ES:BP = 串地址</span>
-</span><span class='line'><span class="nf">mov</span>   <span class="nb">cx</span><span class="p">,</span> <span class="mi">16</span>           <span class="c1">; CX = 串长度</span>
-</span><span class='line'><span class="nf">mov</span>   <span class="nb">ax</span><span class="p">,</span> <span class="mh">01301h</span>       <span class="c1">; AH = 13,  AL = 01h</span>
-</span><span class='line'><span class="nf">mov</span>   <span class="nb">bx</span><span class="p">,</span> <span class="mh">000ch</span>        <span class="c1">; 页号为0(BH = 0) 黑底红字(BL = 0Ch,高亮)</span>
-</span><span class='line'><span class="nf">mov</span>   <span class="nb">dl</span><span class="p">,</span> <span class="mi">0</span>
-</span><span class='line'><span class="nf">int</span>   <span class="mh">10h</span>         <span class="c1">; 10h 号中断</span>
-</span><span class='line'><span class="nf">ret</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nv">BootMessage</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">bp</span><span class="p">,</span> <span class="nb">ax</span>           <span class="c1">; ES:BP = 串地址</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">16</span>           <span class="c1">; CX = 串长度</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mh">01301h</span>       <span class="c1">; AH = 13,  AL = 01h</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">bx</span><span class="p">,</span> <span class="mh">000ch</span>        <span class="c1">; 页号为0(BH = 0) 黑底红字(BL = 0Ch,高亮)</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="nf">int</span> <span class="mh">10h</span>         <span class="c1">; 10h 号中断</span>
+</span><span class='line'>  <span class="nf">ret</span>
 </span><span class='line'><span class="nl">BootMessage:</span>      <span class="kd">db</span>  <span class="s">&quot;Hello, OS world!&quot;</span>
 </span><span class='line'><span class="kd">times</span>     <span class="mi">510</span><span class="o">-</span><span class="p">(</span><span class="kc">$</span><span class="o">-</span><span class="kc">$$</span><span class="p">)</span>  <span class="nv">db</span>  <span class="mi">0</span>   <span class="c1">; 填充剩下的空间，使生成的二进制代码恰好为512字节</span>
 </span><span class='line'><span class="kd">dw</span>    <span class="mh">0xaa55</span>              <span class="c1">; 结束标志</span>
