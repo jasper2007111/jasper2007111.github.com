@@ -124,44 +124,18 @@
 
 <h5>基本使用</h5>
 
-<p>启动</p>
-
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>systemctl start firewalld
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>systemctl start firewalld <span class="c"># 启动</span>
+</span><span class='line'>systemctl stop firewalld  <span class="c"># 关闭</span>
+</span><span class='line'>systemctl status firewalld <span class="c"># 查看状态</span>
+</span><span class='line'>systemctl disable firewalld <span class="c"># 开机禁用</span>
+</span><span class='line'>systemctl <span class="nb">enable </span>firewalld <span class="c"># 开机启用</span>
 </span></code></pre></td></tr></table></div></figure>
 
-
-<p>关闭</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'> systemctl stop firewalld
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>查看状态</p>
-
-<pre><code class="`sh "> systemctl status firewalld
-</code></pre>
-
-<p>开机禁用</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>systemctl disable firewalld
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
-
-<p>开机启用</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>systemctl <span class="nb">enable </span>firewalld
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p></p>
 
 <h5>配置firewalld-cmd</h5>
 
@@ -301,6 +275,17 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
 </span></code></pre></td></tr></table></div></figure>
 
 
+<h4>网络管理</h4>
+
+<p>主要记录虚拟机桥接模式无法连接外网的问题，主要是CentOS 8使用nmcli来管理网卡。</p>
+
+<ol>
+<li>编辑文件<code>vim /etc/sysconfig/network-scripts/ifcfg-ens33</code></li>
+<li>使用<code>nmcli d connect ens33</code>激活</li>
+<li>最后使用<code>nmcli c reload</code>重启网卡服务，稍等片刻，就可以Ping通网络了。</li>
+</ol>
+
+
 <h4>HTTPS</h4>
 
 <p>目前使用Let&rsquo;s Encrypt SSL的证书，这个是免费的，唯一的缺点是只有三个月期限，到期后重新申请就可以。</p>
@@ -325,7 +310,7 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>到期后的，需要删除原有证书<code>certbot delete</code>，重启Ngnix服务。不删除的话，会生成新的证书目录，这样的话还需要修改Ngnix的配置文件。</p>
+<p>到期后的，需要删除原有证书<code>certbot delete</code>，重启Ngnix服务<code>sudo systemctl restart nginx</code>。不删除的话，会生成新的证书目录，这样的话还需要修改Ngnix的配置文件。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='sh'><span class='line'>certbot certificates <span class="c"># 查看所有证书，主要是看证书是否快要过期</span>
