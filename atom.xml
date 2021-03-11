@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2021-03-08T09:23:03+08:00</updated>
+  <updated>2021-03-11T10:54:09+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,17 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[《保护方式下的80386及其编程》笔记]]></title>
+    <link href="https://c2lang.com/blog/2021/03/11/programming-the-80386-notes/"/>
+    <updated>2021-03-11T09:42:24+08:00</updated>
+    <id>https://c2lang.com/blog/2021/03/11/programming-the-80386-notes</id>
+    <content type="html"><![CDATA[<p>《保护方式下的80386及其编程》即《Programming the 80386》的中文翻译版，不过当年并没有标注翻译出处。这本书对于写一个基于x86操作系统非常有用，另外对于研究早期的Linux内核也很有参考，因为林纳斯当年也是参考《Programming the 80386》这本书的，包括386BSD的作者也是参考这本书了。</p>
+
+<p>这本书是了解80386的保护模式最好的书籍，关于8086的书籍和汇编语言资料不少，但是关于80386的保护模式书籍很少，很多后来的书籍的知识都是转来转去的，有些只是讲个大概，没有把细节说明清楚，往往是一知半解了。不同的是此书可以说是讲解非常细致，概念很清晰，主要是此书的作者是80386的总设计师，所以这本书如果讲不明白，那还有其他书籍吗。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[如何写一个操作系统]]></title>

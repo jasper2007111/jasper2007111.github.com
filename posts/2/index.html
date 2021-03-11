@@ -9,14 +9,7 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="1
-2
-3
-4
-rake &#39;new_post[&quot;title&quot;]&#39; # 创建文章
-rake generate # 生成文章
-rake preview # 本地预览博客
-rake deploy # 发布博客 修改文章创建的日期格式，我比较喜欢类似2020-01-01 &hellip;">
+  <meta name="description" content="断断续续的看了些Common Lisp的东西，主要是田春冰河翻译的那本《实用Common Lisp编程》，另外网上有人翻译了《ANSI Common Lisp》也有看，另一本《Common Lisp： A Gentle Introduction to Symbolic Computation》。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -84,6 +77,88 @@ rake deploy # 发布博客 修改文章创建的日期格式，我比较喜欢�
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2020/07/22/write-a-lottery-program-with-common-lisp/">用Common Lisp写一个双色球程序</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2020-07-22T23:12:10+08:00'><span class='date'>2020-07-22</span> <span class='time'>23:12:10</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>断断续续的看了些Common Lisp的东西，主要是田春冰河翻译的那本《实用Common Lisp编程》，另外网上有人翻译了《ANSI Common Lisp》也有看，另一本《Common Lisp： A Gentle Introduction to Symbolic Computation》。总得写点东西，于是就写了这个双色球的小程序。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='lisp'><span class='line'><span class="p">(</span><span class="nb">defconstant</span> <span class="nv">total-red-ball</span> <span class="mi">33</span><span class="p">)</span>
+</span><span class='line'><span class="p">(</span><span class="nb">defconstant</span> <span class="nv">total-blue-ball</span> <span class="mi">16</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">(</span><span class="nb">defun</span> <span class="nv">select-red-ball</span> <span class="p">(</span><span class="nv">red-balls</span> <span class="nv">double-balls</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">(</span><span class="k">let</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">(</span><span class="k">setq</span> <span class="nv">x</span> <span class="p">(</span><span class="nb">elt</span> <span class="nv">red-balls</span> <span class="p">(</span><span class="nb">random</span> <span class="p">(</span><span class="nb">length</span> <span class="nv">red-balls</span><span class="p">))))</span>
+</span><span class='line'>    <span class="p">(</span><span class="nb">vector-push</span> <span class="nv">x</span> <span class="nv">double-balls</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">(</span><span class="nb">delete</span> <span class="nv">x</span> <span class="nv">red-balls</span><span class="p">)))</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">(</span><span class="nb">defun</span> <span class="nv">create-double-balls</span><span class="p">()</span>
+</span><span class='line'>  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">red-balls</span> <span class="p">(</span><span class="nb">make-array</span> <span class="nv">total-red-ball</span> <span class="ss">:fill-pointer</span> <span class="mi">0</span><span class="p">))</span>
+</span><span class='line'>  <span class="p">(</span><span class="nv">blue-balls</span> <span class="p">(</span><span class="nb">make-array</span> <span class="nv">total-blue-ball</span> <span class="ss">:fill-pointer</span> <span class="mi">0</span><span class="p">))</span>
+</span><span class='line'>  <span class="p">(</span><span class="nv">double-balls</span> <span class="p">(</span><span class="nb">make-array</span> <span class="mi">7</span> <span class="ss">:fill-pointer</span> <span class="mi">0</span><span class="p">)))</span>
+</span><span class='line'>    <span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">i</span> <span class="nv">from</span> <span class="mi">1</span> <span class="nv">to</span> <span class="nv">total-red-ball</span> <span class="nb">do</span> <span class="p">(</span><span class="nb">vector-push</span> <span class="nv">i</span> <span class="nv">red-balls</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">i</span> <span class="nv">from</span> <span class="mi">1</span> <span class="nv">to</span> <span class="nv">total-blue-ball</span> <span class="nb">do</span> <span class="p">(</span><span class="nb">vector-push</span> <span class="nv">i</span> <span class="nv">blue-balls</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">(</span><span class="nb">dotimes</span> <span class="p">(</span><span class="nv">n</span> <span class="mi">6</span><span class="p">)</span>
+</span><span class='line'>      <span class="p">(</span><span class="nv">select-red-ball</span> <span class="nv">red-balls</span> <span class="nv">double-balls</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">(</span><span class="k">setq</span> <span class="nv">double-balls</span> <span class="p">(</span><span class="nb">sort</span> <span class="nv">double-balls</span> <span class="nf">#&#39;</span><span class="nb">&lt;</span><span class="p">))</span>
+</span><span class='line'>    <span class="p">(</span><span class="nb">vector-push</span> <span class="p">(</span><span class="nb">elt</span> <span class="nv">blue-balls</span> <span class="p">(</span><span class="nb">random</span> <span class="mi">16</span><span class="p">))</span> <span class="nv">double-balls</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">(</span><span class="nb">print</span> <span class="nv">double-balls</span><span class="p">)))</span>
+</span><span class='line'>
+</span><span class='line'><span class="p">(</span><span class="nb">defun</span> <span class="nv">gen</span><span class="p">(</span><span class="nv">n</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">(</span><span class="nb">dotimes</span> <span class="p">(</span><span class="nv">i</span> <span class="nv">n</span><span class="p">)</span>
+</span><span class='line'>    <span class="p">(</span><span class="nv">create-double-balls</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Lisp特殊的语法风格确实与C体系的语言有很大不同，不过如果有编程经验的话，还是比较容易上手，比如函数的传参，传个数组的话，实际上传指针了。定义局部变量的方式比如用<code>LET</code>。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -376,6 +451,10 @@ rake deploy # 发布博客 修改文章创建的日期格式，我比较喜欢�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/03/11/programming-the-80386-notes/">《保护方式下的80386及其编程》笔记</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/02/04/how-to-write-an-os/">如何写一个操作系统</a>
       </li>
     
@@ -389,10 +468,6 @@ rake deploy # 发布博客 修改文章创建的日期格式，我比较喜欢�
     
       <li class="post">
         <a href="/blog/2020/10/06/travelogue-of-tiantong-temple/">天童寺游记</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2020/09/30/centos-users-guide/">CentOS 使用指南</a>
       </li>
     
   </ul>

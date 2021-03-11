@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://c2lang.com/blog/2021/03/11/programming-the-80386-notes/</loc>
+<lastmod>2021-03-11T09:42:24+08:00</lastmod>
+</url>
+<url>
 <loc>https://c2lang.com/blog/2021/02/04/how-to-write-an-os/</loc>
 <lastmod>2021-02-04T22:21:27+08:00</lastmod>
 </url>
@@ -69,5 +73,8 @@
 </url>
 <url>
 <loc>https://c2lang.com/blog/archives/</loc>
+</url>
+<url>
+<loc>https://c2lang.com/posts/2/</loc>
 </url>
 </urlset>
