@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2021-03-22T15:40:39+08:00</updated>
+  <updated>2021-03-22T16:16:34+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -30,6 +30,36 @@
 </span><span class='line'>ld -m elf_i386 foo.o bar.o -o foobar <span class="c"># 链接目标文件，生成执行文件</span>
 </span></code></pre></td></tr></table></div></figure>
 
+
+<h3>GDB</h3>
+
+<p>一些常用的GDB调试的命令</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">set </span>disassembly-flavor intel <span class="c"># 默认AT&amp;T格式，可以设置为Intel格式</span>
+</span><span class='line'>disassemble _start <span class="c"># 反汇编，这一步主要是为了后续设置断点用</span>
+</span><span class='line'><span class="nb">break</span> * _start + <span class="m">10</span> <span class="c"># 设置断点，此处是_start开始的第10行代码处</span>
+</span><span class='line'>run <span class="c"># 执行程序，设置断点后会停在断点处</span>
+</span><span class='line'>step <span class="c"># 单步调试，可以简写为s</span>
+</span><span class='line'>info registers <span class="c"># 显示寄存器</span>
+</span><span class='line'>layout reg <span class="c"># 一般我会使用这个</span>
+</span><span class='line'>q <span class="c"># 退出程序</span>
+</span><span class='line'>x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>参考</h3>
+
+<p><a href="https://samsclass.info/127/proj/ASM110.htm">ASM 110: Gdb (30 pts)</a><br/>
+<a href="https://deepzz.com/post/gdb-debug.html">GDB命令基础，让你的程序bug无处躲藏</a></p>
 ]]></content>
   </entry>
   
@@ -46,6 +76,7 @@
 <li>《Orange’S 一个操作系统实现》，此书好就好在，在x86处理器上从零开始一步步的构建一个系统的实践。</li>
 <li>《汇编语言.第四版》，作者王爽，这个主要是讲实模式下的MASM汇编的，学习汇编的必备书籍。</li>
 <li>《汇编语言.基于Linux环境.第三版》，此书主要是结合体系讲Linux系统下NASM汇编的书籍，少有的NASM方面的书籍。</li>
+<li>《汇编语言程序设计》（Professional Assembly Language），此书主要讲GAS汇编，环境是基于Linux，Linux内核的汇编也是GAS。不过建议先读《汇编语言.第四版》，再读此书会好点。</li>
 </ol>
 
 ]]></content>
