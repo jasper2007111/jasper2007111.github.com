@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2021-03-11T10:54:09+08:00</updated>
+  <updated>2021-03-22T15:40:39+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[NASM 笔记]]></title>
+    <link href="https://c2lang.com/blog/2021/03/22/nasm-notes/"/>
+    <updated>2021-03-22T14:57:28+08:00</updated>
+    <id>https://c2lang.com/blog/2021/03/22/nasm-notes</id>
+    <content type="html"><![CDATA[<h3>编译</h3>
+
+<p>目前使用的是64位的Ubuntu环境，默认会编译成64位的，编译成32位的在参数上有些差异。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>nasm -f elf32 foo.asm -o foo.o <span class="c"># NASM编译成ELF32位目标文件</span>
+</span><span class='line'>gcc -m32 -g -c bar.c -o bar.o <span class="c"># GCC编译成32的目标文件</span>
+</span><span class='line'>ld -m elf_i386 foo.o bar.o -o foobar <span class="c"># 链接目标文件，生成执行文件</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[程序设计书单]]></title>
+    <link href="https://c2lang.com/blog/2021/03/18/programming-book-list/"/>
+    <updated>2021-03-18T17:20:07+08:00</updated>
+    <id>https://c2lang.com/blog/2021/03/18/programming-book-list</id>
+    <content type="html"><![CDATA[<p>这里列出的书籍都是自己在学习道路上读过的书籍，很多书都是比较老的书籍。</p>
+
+<ol>
+<li>《保护方式下的80386及其编程》，《Programming the 80386》的中文翻译版，主要是保护模式的相关细节。</li>
+<li>《8086初阶-体系结构、系统设计和程序设计入门》, 作者是8086的设计师，所以原理讲的很透彻。</li>
+<li>《Orange’S 一个操作系统实现》，此书好就好在，在x86处理器上从零开始一步步的构建一个系统的实践。</li>
+<li>《汇编语言.第四版》，作者王爽，这个主要是讲实模式下的MASM汇编的，学习汇编的必备书籍。</li>
+<li>《汇编语言.基于Linux环境.第三版》，此书主要是结合体系讲Linux系统下NASM汇编的书籍，少有的NASM方面的书籍。</li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[《保护方式下的80386及其编程》笔记]]></title>
@@ -29,7 +67,11 @@
     <link href="https://c2lang.com/blog/2021/02/04/how-to-write-an-os/"/>
     <updated>2021-02-04T22:21:27+08:00</updated>
     <id>https://c2lang.com/blog/2021/02/04/how-to-write-an-os</id>
-    <content type="html"><![CDATA[<p>大概7、8年前买过一本《Orange&rsquo;S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太难了，中间需要跨越的东西太多了。渐渐就放弃了，后来直接把这两本书给卖掉了。</p>
+    <content type="html"><![CDATA[<h3>缘起</h3>
+
+<p>做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。</p>
+
+<p>大概7、8年前买过一本《Orange&rsquo;S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太难了，中间需要跨越的东西太多了。渐渐就放弃了，后来直接把这两本书给卖掉了。</p>
 
 <p>今年突然间又想，我应该尝试写一个简单的操作系统，多年的工作以及自学，使得我对编程有了一个相对完整的认识，这个想法似乎不像当年那么不靠谱。但该如何下手呢？刚开始我只想能跑一个<code>Hello wrold</code>的例子也可以，网上找了下最多的居然是我当年卖掉的那本《Orange&rsquo;S 一个操作系统实现》书中的例子，可惜当年我也没怎么看懂，只是买了本书而已。</p>
 
