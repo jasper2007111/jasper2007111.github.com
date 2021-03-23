@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2021-03-22T16:16:34+08:00</updated>
+  <updated>2021-03-23T10:21:43+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,47 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[自学编程心得]]></title>
+    <link href="https://c2lang.com/blog/2021/03/23/self-learning-programming-tips/"/>
+    <updated>2021-03-23T09:08:09+08:00</updated>
+    <id>https://c2lang.com/blog/2021/03/23/self-learning-programming-tips</id>
+    <content type="html"><![CDATA[<h3>文科生可以学吗？</h3>
+
+<p>我就是从环境艺术设计转行做的编程，文科生最担心的一般是自己数学不够好，当年我也是这么想的，实际的情况是数学好当然加分在某些细分或者专业的领域，一般的编程的话我觉得高中甚至初中的数学就可以了。不过既然做了编程，建议还是要加强这方面的自我修养了。</p>
+
+<h3>英语不好可以学吗？</h3>
+
+<p>英文不好的同学一看到程序里面有英文，就被吓到了。实际的情况是编程中用到的英文只有少量单词而已，很多都是简单的词汇，这些都是关键字，用来支撑程序骨架的。英文不好主要会影响到我们在程序中的一些命名了，有些人会用拼音，但不推荐，自己不会也可以用用在线翻译之类。另外有些单位会要求使用英文注释或者写一些文档，其次英文好的话，当然可以直接看一些原版资料，而不需要等翻译版了。</p>
+
+<h3>要不要进培训机构学习？</h3>
+
+<p>怎么说呢，首先我没有参加相关的培训机构，学习编程主要是工作需要和自学的结果。也招过培训机构出来的人，基本上还是可以直接做一些东西的。经济允许的情况，培训是进入软件行业最快的方式吧，另外有些学过计算机的也会去参加培训，主要是学习一些社会上流行的技术了，便于找工作。</p>
+
+<h3>多实战接触不同的工种</h3>
+
+<p>我最早写过Flash脚本，后来又写过Android应用，再后来iOS，Unity游戏也写过，最新的Flutter到现在的Web程序。每种经历都让我学习了不同的编程语言，另外做的东西多了总有一些交集，再学习新的东西时就容易上手。</p>
+
+<h3>关键的几个语言</h3>
+
+<ol>
+<li>汇编语言，C以上的都是高级语言</li>
+<li>C，软硬件的过渡性语言</li>
+<li>Java，虚拟机语言、垃圾回收，编译型</li>
+<li>脚本语言，JS，Python，PHP之类的都可以</li>
+</ol>
+
+
+<h3>Lisp</h3>
+
+<p>智商不够基本不要看，还是乖乖的学习C体系的语言就好。</p>
+
+<h3>操作系统</h3>
+
+<p>既熟悉又陌生，如何写一个操作系统才能接近它。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[NASM 笔记]]></title>
@@ -60,25 +101,6 @@
 
 <p><a href="https://samsclass.info/127/proj/ASM110.htm">ASM 110: Gdb (30 pts)</a><br/>
 <a href="https://deepzz.com/post/gdb-debug.html">GDB命令基础，让你的程序bug无处躲藏</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[程序设计书单]]></title>
-    <link href="https://c2lang.com/blog/2021/03/18/programming-book-list/"/>
-    <updated>2021-03-18T17:20:07+08:00</updated>
-    <id>https://c2lang.com/blog/2021/03/18/programming-book-list</id>
-    <content type="html"><![CDATA[<p>这里列出的书籍都是自己在学习道路上读过的书籍，很多书都是比较老的书籍。</p>
-
-<ol>
-<li>《保护方式下的80386及其编程》，《Programming the 80386》的中文翻译版，主要是保护模式的相关细节。</li>
-<li>《8086初阶-体系结构、系统设计和程序设计入门》, 作者是8086的设计师，所以原理讲的很透彻。</li>
-<li>《Orange’S 一个操作系统实现》，此书好就好在，在x86处理器上从零开始一步步的构建一个系统的实践。</li>
-<li>《汇编语言.第四版》，作者王爽，这个主要是讲实模式下的MASM汇编的，学习汇编的必备书籍。</li>
-<li>《汇编语言.基于Linux环境.第三版》，此书主要是结合体系讲Linux系统下NASM汇编的书籍，少有的NASM方面的书籍。</li>
-<li>《汇编语言程序设计》（Professional Assembly Language），此书主要讲GAS汇编，环境是基于Linux，Linux内核的汇编也是GAS。不过建议先读《汇编语言.第四版》，再读此书会好点。</li>
-</ol>
-
 ]]></content>
   </entry>
   
