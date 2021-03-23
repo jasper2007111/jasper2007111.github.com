@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2021-03-23T10:21:43+08:00</updated>
+  <updated>2021-03-23T11:37:13+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -34,23 +34,9 @@
 
 <p>我最早写过Flash脚本，后来又写过Android应用，再后来iOS，Unity游戏也写过，最新的Flutter到现在的Web程序。每种经历都让我学习了不同的编程语言，另外做的东西多了总有一些交集，再学习新的东西时就容易上手。</p>
 
-<h3>关键的几个语言</h3>
+<h3>自底而上还是自顶而下？</h3>
 
-<ol>
-<li>汇编语言，C以上的都是高级语言</li>
-<li>C，软硬件的过渡性语言</li>
-<li>Java，虚拟机语言、垃圾回收，编译型</li>
-<li>脚本语言，JS，Python，PHP之类的都可以</li>
-</ol>
-
-
-<h3>Lisp</h3>
-
-<p>智商不够基本不要看，还是乖乖的学习C体系的语言就好。</p>
-
-<h3>操作系统</h3>
-
-<p>既熟悉又陌生，如何写一个操作系统才能接近它。</p>
+<p>很长一段时间我都是自顶而下的学习，不过在学习了汇编语言和如何写一个操作系统后，再从底层看顶层的时候很多东西很容易理解。自顶而下，意味要做减法，因为有太多的无关本质的东西，不然很难探究到底层的细节。自底而上，是加法，如果没有进取心，很难再上一层。</p>
 ]]></content>
   </entry>
   
