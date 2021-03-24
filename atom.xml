@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2021-03-23T12:00:31+08:00</updated>
+  <updated>2021-03-24T15:51:07+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,63 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[《Orange'S:一个操作系统的实现》笔记]]></title>
+    <link href="https://c2lang.com/blog/2021/03/24/notes-on-oranges-an-operating-system-implementation/"/>
+    <updated>2021-03-24T15:18:30+08:00</updated>
+    <id>https://c2lang.com/blog/2021/03/24/notes-on-oranges-an-operating-system-implementation</id>
+    <content type="html"><![CDATA[<h4>使用FreeDOS运行COM</h4>
+
+<p>FreeDOS运行COM文件记录，主要是拷贝软盘里面，然后执行。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo mount -o loop xxx.img /mnt/floppy <span class="c"># 挂载，挂在失败的话在mnt目录下创建floppy文件夹</span>
+</span><span class='line'>sudo cp xxx.com /mnt/floppy/ <span class="c"># 拷贝文件</span>
+</span><span class='line'>sudo umount /mnt/floppy <span class="c"># 卸载</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>网上书中的源码中的<code>freedos.img</code>并不包含<code>debug</code>这样的工具，不过<code>debug</code>并不能调试保护模式的代码。</p>
+
+<p>在<code>bochsrc</code>配置文件中添加</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>magic_break: <span class="nv">enabled</span> <span class="o">=</span> 1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最后在汇编代码需要断点的地方添加</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='nasm'><span class='line'><span class="nf">xchg</span> <span class="nb">bx</span><span class="p">,</span> <span class="nb">bx</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>在FreeDOS执行COM文件后，就会进入到bochs调试。</p>
+
+<h4>Bochs</h4>
+
+<h5>有用的调试系统的命令</h5>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sreg <span class="c"># 显示段寄存器的内容</span>
+</span><span class='line'>info gdt  <span class="c"># 显示GDTR寄存器的内容</span>
+</span><span class='line'>creg <span class="c"># 显示CR0寄存器的内容</span>
+</span><span class='line'>print-stack <span class="c"># 查看栈的内容</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>参考</h4>
+
+<p><a href="https://techlog.cn/article/list/10183462">如何调试操作系统</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[自学编程心得]]></title>
