@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2021-03-29T06:22:30+08:00</updated>
+  <updated>2021-03-29T15:16:25+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,125 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Go学习笔记]]></title>
+    <link href="https://c2lang.com/blog/2021/03/29/go-notes/"/>
+    <updated>2021-03-29T14:46:09+08:00</updated>
+    <id>https://c2lang.com/blog/2021/03/29/go-notes</id>
+    <content type="html"><![CDATA[<p>开始用Go应该是17年底的时候，那会做游戏，后台是用Go写的，虽然我主要负责Unity客户端方面的工作，不过也是经常帮忙给后端的Go小伙解决一些问题，自己也写一些Go的小东西。</p>
+
+<p>后来又做物流系统，重写系统时有考虑用Go，不过因为大部分的外部接口对接都是Java的，为了省事就使用了Java。不过如果是自己的项目的话，还是愿意用Go，毕竟Java还是有点重。</p>
+
+<h4>IDE</h4>
+
+<p>原来有用过GoLand，为了轻量点，先用VS Code，众所周知的原因安装插件老失败，最后设置Go的代理就可以了。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>go env -w <span class="nv">GOPROXY</span><span class="o">=</span>https://goproxy.cn,direct
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>C程序员的礼物</h4>
+
+<p>直接试着写个搜索二叉树，其实除了语法上跟C的一些类型定义次序上有点不习惯外，其他方面对于C程序员来说，还是熟悉的用法，比如指针的指针这样的概念，毕竟Go是原来C的那帮人搞的，兼顾C的同时也结合不少Python这样的现代语言的特性。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">type</span> <span class="nx">Node</span> <span class="kd">struct</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">data</span>      <span class="kt">int</span>
+</span><span class='line'>  <span class="nx">leftNode</span>  <span class="o">*</span><span class="nx">Node</span>
+</span><span class='line'>  <span class="nx">rightNode</span> <span class="o">*</span><span class="nx">Node</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">insert</span><span class="p">(</span><span class="nx">tree</span> <span class="o">**</span><span class="nx">Node</span><span class="p">,</span> <span class="nx">value</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">*</span><span class="nx">tree</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">tempNode</span> <span class="nx">Node</span>
+</span><span class='line'>      <span class="nx">tempNode</span><span class="p">.</span><span class="nx">data</span> <span class="p">=</span> <span class="nx">value</span>
+</span><span class='line'>      <span class="o">*</span><span class="nx">tree</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">tempNode</span>
+</span><span class='line'>      <span class="k">return</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">data</span> <span class="p">&gt;</span> <span class="nx">value</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">leftNode</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">data</span> <span class="p">&lt;</span> <span class="nx">value</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">rightNode</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">tree</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;data: %d\n&quot;</span><span class="p">,</span> <span class="nx">tree</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">.</span><span class="nx">leftNode</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">.</span><span class="nx">rightNode</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">tree</span> <span class="o">*</span><span class="nx">Node</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[《孙正义传》读后感]]></title>
@@ -1028,35 +1147,6 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
 <p>关系型数据库需要单独找本书看下，不是简单的会使用增删改查就可以了，比如怎么多表联查，怎么排序，SQL语句提供的功能远不只这些。</p>
 
 <p>Core Data应该用，建议学习下Rails这个后台开发的东西，你就会明白多数的框架都不会直接去操作SQL，而是通过包装来简化或者影藏其中的复杂性。问题远远的比想得复杂，原始的刀耕火种的方式会让你累个半死，所以最好用现成的解决方案了。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[重新开始写博客]]></title>
-    <link href="https://c2lang.com/blog/2014/10/30/my-first-blog/"/>
-    <updated>2014-10-30T00:35:22+08:00</updated>
-    <id>https://c2lang.com/blog/2014/10/30/my-first-blog</id>
-    <content type="html"><![CDATA[<p>以前用过Wordpress搭建过博客，后来也不知道怎么就断了。重新开始写博客，是因为看到网上不少好的独立博客的文章受益不少，也算是另一种回馈吧。</p>
-
-<p>Octopress一年前就搭建过，现在又重新开始写。发现原来参考的搭建博客的博主已经换了引擎，不过我还是更喜欢Octopress吧，所以继续用吧，文章才是重点了。</p>
-
-<p>之前已经搭建好了博客，github上已经有两个分支了，source和master。首先应该把source分支给克隆下来，博客的源文件了；master则是编译后的博客静态文件了。</p>
-
-<p>发布的时候遇到了点问题</p>
-
-<p><code>_deploy</code>这个是发布目录，如果重新拉取git的话，手动创建并把Master分支拉取到这个目录。</p>
-
-<h3>自定义域名</h3>
-
-<p>在<code>Source</code>目录下创建<code>CNAME</code>文件，填写自己的域名，当然也需要在域名管理设置DNS。生成文章时会自动把<code>CNAME</code>文件复制到<code>_deploy</code>目录最后同步到Master分支。</p>
-
-<h3>启用Https</h3>
-
-<p>启用自定义域名后，Enforce HTTPS单选框一直是灰色的。后来搜索了下是需要在域名管理那块设置CAA，类似这样。</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>CAA c2lang.com 0 issue "letsencrypt.org"</span></code></pre></td></tr></table></div></figure>
-
 ]]></content>
   </entry>
   

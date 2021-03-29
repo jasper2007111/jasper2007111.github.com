@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Go学习笔记 - Jasper Ji</title>
+  <meta name="author" content="Jasper Ji">
+
+  
+  <meta name="description" content="开始用Go应该是17年底的时候，那会做游戏，后台是用Go写的，虽然我主要负责Unity客户端方面的工作，不过也是经常帮忙给后端的Go小伙解决一些问题，自己也写一些Go的小东西。 后来又做物流系统，重写系统时有考虑用Go，不过因为大部分的外部接口对接都是Java的，为了省事就使用了Java。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://c2lang.com/blog/2021/03/29/go-notes">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jasper Ji" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-84644923-7']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jasper Ji</a></h1>
+  
+    <h2>开池不待月，池成月自来。</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:c2lang.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Go学习笔记</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2021-03-29T14:46:09+08:00'><span class='date'>2021-03-29</span> <span class='time'>14:46:09</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>开始用Go应该是17年底的时候，那会做游戏，后台是用Go写的，虽然我主要负责Unity客户端方面的工作，不过也是经常帮忙给后端的Go小伙解决一些问题，自己也写一些Go的小东西。</p>
+
+<p>后来又做物流系统，重写系统时有考虑用Go，不过因为大部分的外部接口对接都是Java的，为了省事就使用了Java。不过如果是自己的项目的话，还是愿意用Go，毕竟Java还是有点重。</p>
+
+<h4>IDE</h4>
+
+<p>原来有用过GoLand，为了轻量点，先用VS Code，众所周知的原因安装插件老失败，最后设置Go的代理就可以了。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>go env -w <span class="nv">GOPROXY</span><span class="o">=</span>https://goproxy.cn,direct
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>C程序员的礼物</h4>
+
+<p>直接试着写个搜索二叉树，其实除了语法上跟C的一些类型定义次序上有点不习惯外，其他方面对于C程序员来说，还是熟悉的用法，比如指针的指针这样的概念，毕竟Go是原来C的那帮人搞的，兼顾C的同时也结合不少Python这样的现代语言的特性。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">type</span> <span class="nx">Node</span> <span class="kd">struct</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">data</span>      <span class="kt">int</span>
+</span><span class='line'>  <span class="nx">leftNode</span>  <span class="o">*</span><span class="nx">Node</span>
+</span><span class='line'>  <span class="nx">rightNode</span> <span class="o">*</span><span class="nx">Node</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">insert</span><span class="p">(</span><span class="nx">tree</span> <span class="o">**</span><span class="nx">Node</span><span class="p">,</span> <span class="nx">value</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">*</span><span class="nx">tree</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">tempNode</span> <span class="nx">Node</span>
+</span><span class='line'>      <span class="nx">tempNode</span><span class="p">.</span><span class="nx">data</span> <span class="p">=</span> <span class="nx">value</span>
+</span><span class='line'>      <span class="o">*</span><span class="nx">tree</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">tempNode</span>
+</span><span class='line'>      <span class="k">return</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">data</span> <span class="p">&gt;</span> <span class="nx">value</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">leftNode</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">data</span> <span class="p">&lt;</span> <span class="nx">value</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">rightNode</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">tree</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;data: %d\n&quot;</span><span class="p">,</span> <span class="nx">tree</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">.</span><span class="nx">leftNode</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">.</span><span class="nx">rightNode</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">tree</span> <span class="o">*</span><span class="nx">Node</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jasper Ji</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2021-03-29T14:46:09+08:00'><span class='date'>2021-03-29</span> <span class='time'>14:46:09</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2021/03/28/thoughts-after-reading-the-biography-of-masayoshi-son/" title="Previous Post: 《孙正义传》读后感">&laquo; 《孙正义传》读后感</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>关于</h1>
+  <p>做过安卓和iOS，也写过Unity的游戏，现在是一名全栈程序员，主要专注Spring以及web前端相关的技术。</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2021/03/29/go-notes/">Go学习笔记</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/03/28/thoughts-after-reading-the-biography-of-masayoshi-son/">《孙正义传》读后感</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/03/24/notes-on-oranges-an-operating-system-implementation/">《Orange&#8217;S:一个操作系统的实现》笔记</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/03/22/nasm-notes/">NASM 笔记</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/03/11/programming-the-80386-notes/">《保护方式下的80386及其编程》笔记</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2021 - Jasper Ji -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'c2lang-com';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://c2lang.com/blog/2021/03/29/go-notes/';
+        var disqus_url = 'https://c2lang.com/blog/2021/03/29/go-notes/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

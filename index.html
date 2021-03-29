@@ -9,7 +9,7 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="对于孙正义和软银我还是蛮好奇的，首先我不太清楚这是个什么样的公司，“孙正义”三个字听着好像不像日本人。带着疑惑我迫不及待的购买了这本由彬本贵司撰写的《孙正义传》，大概用一天的时间很快的读完了，以下是一些总结。 孙正义是爷爷辈来到日本谋生的，到他这是第三代，日本姓是“安本”。作为归化的日本人， &hellip;">
+  <meta name="description" content="开始用Go应该是17年底的时候，那会做游戏，后台是用Go写的，虽然我主要负责Unity客户端方面的工作，不过也是经常帮忙给后端的Go小伙解决一些问题，自己也写一些Go的小东西。 后来又做物流系统，重写系统时有考虑用Go，不过因为大部分的外部接口对接都是Java的，为了省事就使用了Java。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,145 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/03/29/go-notes/">Go学习笔记</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2021-03-29T14:46:09+08:00'><span class='date'>2021-03-29</span> <span class='time'>14:46:09</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>开始用Go应该是17年底的时候，那会做游戏，后台是用Go写的，虽然我主要负责Unity客户端方面的工作，不过也是经常帮忙给后端的Go小伙解决一些问题，自己也写一些Go的小东西。</p>
+
+<p>后来又做物流系统，重写系统时有考虑用Go，不过因为大部分的外部接口对接都是Java的，为了省事就使用了Java。不过如果是自己的项目的话，还是愿意用Go，毕竟Java还是有点重。</p>
+
+<h4>IDE</h4>
+
+<p>原来有用过GoLand，为了轻量点，先用VS Code，众所周知的原因安装插件老失败，最后设置Go的代理就可以了。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>go env -w <span class="nv">GOPROXY</span><span class="o">=</span>https://goproxy.cn,direct
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>C程序员的礼物</h4>
+
+<p>直接试着写个搜索二叉树，其实除了语法上跟C的一些类型定义次序上有点不习惯外，其他方面对于C程序员来说，还是熟悉的用法，比如指针的指针这样的概念，毕竟Go是原来C的那帮人搞的，兼顾C的同时也结合不少Python这样的现代语言的特性。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">type</span> <span class="nx">Node</span> <span class="kd">struct</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">data</span>      <span class="kt">int</span>
+</span><span class='line'>  <span class="nx">leftNode</span>  <span class="o">*</span><span class="nx">Node</span>
+</span><span class='line'>  <span class="nx">rightNode</span> <span class="o">*</span><span class="nx">Node</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">insert</span><span class="p">(</span><span class="nx">tree</span> <span class="o">**</span><span class="nx">Node</span><span class="p">,</span> <span class="nx">value</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="o">*</span><span class="nx">tree</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+</span><span class='line'>      <span class="kd">var</span> <span class="nx">tempNode</span> <span class="nx">Node</span>
+</span><span class='line'>      <span class="nx">tempNode</span><span class="p">.</span><span class="nx">data</span> <span class="p">=</span> <span class="nx">value</span>
+</span><span class='line'>      <span class="o">*</span><span class="nx">tree</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">tempNode</span>
+</span><span class='line'>      <span class="k">return</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">data</span> <span class="p">&gt;</span> <span class="nx">value</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">leftNode</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">data</span> <span class="p">&lt;</span> <span class="nx">value</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">rightNode</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="nx">tree</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;data: %d\n&quot;</span><span class="p">,</span> <span class="nx">tree</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">.</span><span class="nx">leftNode</span><span class="p">)</span>
+</span><span class='line'>      <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">.</span><span class="nx">rightNode</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="kd">var</span> <span class="nx">tree</span> <span class="o">*</span><span class="nx">Node</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
+</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -816,53 +955,6 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2020/09/13/talk-about-fasting/">谈谈断食</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2020-09-13T23:04:13+08:00'><span class='date'>2020-09-13</span> <span class='time'>23:04:13</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong><em>提前声明下这只是一个比较个人的体验，并不代表普遍适用，仅供参考。</em></strong></p>
-
-<p>关于断食，也有称作辟谷的，大体都是跟节食或者不吃饭有关系。我本人亲自尝试过的断食属于21天不吃饭只喝清水的这种，前一次大概是七年前，这一次也是9月13日才结束的，写这篇一方面是刚刚结束断食，想把最真实的感受记录下来。另外这是第二次21天清水断食，也会做个对比。</p>
-
-<h4>体重</h4>
-
-<p>21天下来，体重从155斤下降到130斤，大概瘦了25斤，从减肥的角度来看效果还是不错的。第一周减的比较多，大概是15斤左右，这一周喝水很多。第二周和第三周总共减了10斤左右，个人觉得后面2周是真的减脂的阶段，水其实喝的也并没有那么多。第二周会有点难熬，但是第三周反而能好点。</p>
-
-<h4>活动</h4>
-
-<p>不吃饭体力肯定是个问题，但也不能躺在床上，我本人是上着班进行的断食，不过因为去单位基本上也是写写代码，正常的走动。来回坐2个小时的地铁，好在都是从终点坐的都有位置。但是如果你爬个楼梯这样的运动，最好还是不要做。这种感受跟我当年在珠峰大本营底下爬一个20、30米高的土堆，那种因为缺氧导致很累的感觉一样。综上断食期间要适量的活动，但是尽量避免大一点的体力活动，尤其到后期，保持体力还是比较重要。</p>
-
-<h4>毅力</h4>
-
-<p>一旦你下定决心的话，意味你要在21天放弃一些东西，包括各种应酬，我刚好成功的在工作中躲过了各种的应酬。因为是第二次，我心里大概有个数，虽然在外人看来一天不吃饭都无法忍受，何况21天呢？选择21天这个数字也是从前人的经验中得来的，比如弘一大师。断食似乎是宗教领袖都曾试过的方式，又比如甘地，他曾多次断食。不过作为现代人，经历了2次断食，个人觉得不要对断食抱有太多的幻想，其实不会有什么特殊的感受了，身体的变化是最大。第二次断食我一直坚持早上冥想，这是与上次不一样的。身体瘦下去后，确实有利于双盘，这是真的。</p>
-
-<h4>总结</h4>
-
-<p>21天断食并不神秘，身体瘦下去，总还是要回到一个正常的体重的。重要的是一种意志力的锻炼，从思想层面当你不在乎吃饭这件事时，或许对于人生有新的思考。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -882,6 +974,10 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/03/29/go-notes/">Go学习笔记</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/03/28/thoughts-after-reading-the-biography-of-masayoshi-son/">《孙正义传》读后感</a>
       </li>
     
@@ -895,10 +991,6 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
     
       <li class="post">
         <a href="/blog/2021/03/11/programming-the-80386-notes/">《保护方式下的80386及其编程》笔记</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/02/04/how-to-write-an-os/">如何写一个操作系统</a>
       </li>
     
   </ul>
