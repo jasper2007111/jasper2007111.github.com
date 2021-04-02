@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2021-03-29T15:16:25+08:00</updated>
+  <updated>2021-04-02T10:31:58+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,375 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[一次语言间的性能对比]]></title>
+    <link href="https://c2lang.com/blog/2021/04/02/performance-comparison-between-programming-languages/"/>
+    <updated>2021-04-02T05:53:47+08:00</updated>
+    <id>https://c2lang.com/blog/2021/04/02/performance-comparison-between-programming-languages</id>
+    <content type="html"><![CDATA[<p>最近突然间想对比下几个语言间的性能，日常使用的是Java，但平时也会用Python，JavaScript，C，Go之类的语言。Java写项目真的也没有什么问题，成熟的生态圈，遇到问题很容易解决。不过写点小东西的时候，还是觉得Python比较好用，不过就是速度慢了点，很早之前写过一个游戏的移植，脚本语言重构真的是个大问题。Go在上家公司的时候也使用过，不过也都是小的测试了，并没有拿来写过完整点的项目。不过语言的简洁性和C的这种传承，还是很有好感，不过在当时重写公司系统时，最后还是用了Java，主要是大部分的对接都有Java的实现。C一直是我研究的语言，虽然实际写东西不多，但是却看了很多相关的书籍，另外最近研究操作系统和学习汇编语言后，对C的认识又有了新的认识，C的厉害地方就是简洁的设计，性能强大，他的诞生就是为写Unix，缺点是实用性不强，另外内存管理，实际上成熟的项目在内存管理上都有自己的框架，所以对于C/C++之类的语言光学习了语言其实并不能做什么，离应用的距离还很远。</p>
+
+<p>回到正题，我实际上想把Go作为业务研究的语言了，虽然脑海中一直印象他的性能不错，但具体表现怎样能，好像我也并不清楚。最后选择对比的语言是Java、Go、C、Rust四个语言，程序都是运行100000000循环，循环内执行冒泡排序。</p>
+
+<h4>Java 代码</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="c1">// 记录开始时间</span>
+</span><span class='line'>      <span class="kt">long</span> <span class="n">start</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">100000000</span><span class="o">;</span>
+</span><span class='line'>      <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="kt">int</span> <span class="n">arr</span><span class="o">[]</span> <span class="o">=</span> <span class="o">{</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">6</span><span class="o">,</span> <span class="mi">7</span><span class="o">,</span> <span class="mi">8</span><span class="o">,</span> <span class="mi">9</span><span class="o">};</span>
+</span><span class='line'>          <span class="n">bubbleSort</span><span class="o">(</span><span class="n">arr</span><span class="o">);</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>      <span class="c1">// 打印耗时时间</span>
+</span><span class='line'>      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">()</span> <span class="o">-</span> <span class="n">start</span><span class="o">);</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="c1">// 排序</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">bubbleSort</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>      <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>
+</span><span class='line'>      <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>          <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">-</span> <span class="n">i</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>              <span class="k">if</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="o">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">])</span> <span class="o">{</span>
+</span><span class='line'>                  <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">];</span>
+</span><span class='line'>                  <span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">];</span>
+</span><span class='line'>                  <span class="n">arr</span><span class="o">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">temp</span><span class="o">;</span>
+</span><span class='line'>              <span class="o">}</span>
+</span><span class='line'>          <span class="o">}</span>
+</span><span class='line'>      <span class="o">}</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行时间</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>3052757121
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Go 代码</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
+</span><span class='line'>
+</span><span class='line'><span class="kn">import</span> <span class="p">(</span>
+</span><span class='line'>  <span class="s">&quot;fmt&quot;</span>
+</span><span class='line'>  <span class="s">&quot;time&quot;</span>
+</span><span class='line'><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">start</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">().</span><span class="nx">UnixNano</span><span class="p">()</span>
+</span><span class='line'>  <span class="kd">const</span> <span class="nx">NUM</span> <span class="kt">int</span> <span class="p">=</span> <span class="mi">100000000</span>
+</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">NUM</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
+</span><span class='line'>      <span class="nx">arr</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">}</span>
+</span><span class='line'>      <span class="nx">bubbleSort</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>  <span class="c1">// 打印消耗时间</span>
+</span><span class='line'>  <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">().</span><span class="nx">UnixNano</span><span class="p">()</span> <span class="o">-</span> <span class="nx">start</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// 排序</span>
+</span><span class='line'><span class="kd">func</span> <span class="nx">bubbleSort</span><span class="p">(</span><span class="nx">arr</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
+</span><span class='line'>      <span class="k">for</span> <span class="nx">k</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">k</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="nx">j</span><span class="p">;</span> <span class="nx">k</span><span class="o">++</span> <span class="p">{</span>
+</span><span class='line'>          <span class="k">if</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="p">&lt;</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">{</span>
+</span><span class='line'>              <span class="nx">arr</span><span class="p">[</span><span class="nx">k</span><span class="p">],</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">=</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">k</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span>
+</span><span class='line'>          <span class="p">}</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行时间</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="m">3804215000</span> <span class="c"># 纳秒</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>C 代码</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#include &lt;stdlib.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;stdio.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;time.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="cp">#include &lt;sys/time.h&gt;</span>
+</span><span class='line'><span class="cp">#include &lt;unistd.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">void</span> <span class="nf">bubbleSort</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">-</span><span class="mi">1</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>                <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+</span><span class='line'>                <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+</span><span class='line'>                <span class="n">array</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">timeval</span> <span class="n">t_val</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">gettimeofday</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t_val</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;start, now, sec=%ld m_sec=%d </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">t_val</span><span class="p">.</span><span class="n">tv_sec</span><span class="p">,</span> <span class="n">t_val</span><span class="p">.</span><span class="n">tv_usec</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100000000</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">array</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">};</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+</span><span class='line'>        <span class="n">bubbleSort</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">timeval</span> <span class="n">t_val_end</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">gettimeofday</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t_val_end</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">struct</span> <span class="n">timeval</span> <span class="n">t_result</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">timersub</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t_val_end</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">t_val</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">t_result</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kt">double</span> <span class="n">consume</span> <span class="o">=</span> <span class="n">t_result</span><span class="p">.</span><span class="n">tv_sec</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">t_result</span><span class="p">.</span><span class="n">tv_usec</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">;</span>
+</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;end.elapsed time= %fs </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">consume</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行时间</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>start, now, <span class="nv">sec</span><span class="o">=</span><span class="m">1617327646</span> <span class="nv">m_sec</span><span class="o">=</span><span class="m">57219</span>
+</span><span class='line'>end.elapsed <span class="nb">time</span><span class="o">=</span> 1.746955s
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Rust代码</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+</pre></td><td class='code'><pre><code class='rust'><span class='line'><span class="kn">use</span> <span class="n">std</span><span class="o">::</span><span class="n">time</span><span class="o">::</span><span class="n">Instant</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">pub</span> <span class="k">fn</span> <span class="n">bubble_sort</span><span class="o">&lt;</span><span class="n">T</span><span class="o">:</span> <span class="nb">Ord</span><span class="o">&gt;</span><span class="p">(</span><span class="n">arr</span><span class="o">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mf">0.</span><span class="p">.</span><span class="n">arr</span><span class="p">.</span><span class="n">len</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mf">0.</span><span class="p">.</span><span class="n">arr</span><span class="p">.</span><span class="n">len</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span> <span class="p">{</span>
+</span><span class='line'>            <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="p">{</span>
+</span><span class='line'>                <span class="n">arr</span><span class="p">.</span><span class="n">swap</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class='line'>            <span class="p">}</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">fn</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">let</span> <span class="n">start</span> <span class="o">=</span> <span class="n">Instant</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">for</span> <span class="n">_i</span> <span class="k">in</span> <span class="mf">0.</span><span class="p">.</span><span class="mi">100000000</span> <span class="p">{</span>
+</span><span class='line'>        <span class="kd">let</span> <span class="k">mut</span> <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">];</span>
+</span><span class='line'>        <span class="n">bubble_sort</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="n">numbers</span><span class="p">);</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;time cost: {:?} ms&quot;</span><span class="p">,</span> <span class="n">start</span><span class="p">.</span><span class="n">elapsed</span><span class="p">().</span><span class="n">as_millis</span><span class="p">());</span> <span class="c1">// ms</span>
+</span><span class='line'>    <span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;time cost: {:?} us&quot;</span><span class="p">,</span> <span class="n">start</span><span class="p">.</span><span class="n">elapsed</span><span class="p">().</span><span class="n">as_micros</span><span class="p">());</span> <span class="c1">// us</span>
+</span><span class='line'>    <span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;time cost: {:?} ns&quot;</span><span class="p">,</span> <span class="n">start</span><span class="p">.</span><span class="n">elapsed</span><span class="p">().</span><span class="n">as_nanos</span><span class="p">());</span> <span class="c1">// us</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行时间</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">time </span>cost: <span class="m">1763</span> ms
+</span><span class='line'><span class="nb">time </span>cost: <span class="m">1763298</span> us
+</span><span class='line'><span class="nb">time </span>cost: <span class="m">1763300912</span> ns
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>Swift 代码</h4>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">import</span> <span class="n">Foundation</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">func</span> <span class="n">bubbleSort</span><span class="o">&lt;</span><span class="nl">T</span><span class="p">:</span> <span class="n">Comparable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">with</span> <span class="nl">array</span><span class="p">:</span> <span class="k">inout</span> <span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mf">1.</span><span class="p">.</span><span class="o">&lt;</span><span class="n">array</span><span class="p">.</span><span class="n">count</span> <span class="p">{</span>
+</span><span class='line'>        <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mf">0.</span><span class="p">.</span><span class="o">&lt;</span><span class="n">array</span><span class="p">.</span><span class="n">count</span><span class="o">-</span><span class="n">i</span> <span class="k">where</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">{</span>
+</span><span class='line'>            <span class="n">array</span><span class="p">.</span><span class="n">swapAt</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+</span><span class='line'>        <span class="p">}</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">array</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="k">let</span> <span class="n">start</span> <span class="o">=</span> <span class="n">DispatchTime</span><span class="p">.</span><span class="n">now</span><span class="p">()</span>
+</span><span class='line'><span class="k">for</span> <span class="n">_</span> <span class="k">in</span> <span class="mf">0.</span><span class="p">.</span><span class="o">&lt;</span><span class="mi">10000000</span> <span class="p">{</span>
+</span><span class='line'>    <span class="k">var</span> <span class="n">intArray</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+</span><span class='line'>    <span class="n">bubbleSort</span><span class="p">(</span><span class="nl">with</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">intArray</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span><span class='line'><span class="k">let</span> <span class="n">end</span> <span class="o">=</span> <span class="n">DispatchTime</span><span class="p">.</span><span class="n">now</span><span class="p">()</span>
+</span><span class='line'><span class="k">let</span> <span class="n">nanoTime</span> <span class="o">=</span> <span class="n">end</span><span class="p">.</span><span class="n">uptimeNanoseconds</span> <span class="o">-</span> <span class="n">start</span><span class="p">.</span><span class="n">uptimeNanoseconds</span>
+</span><span class='line'><span class="k">let</span> <span class="n">timeInterval</span> <span class="o">=</span> <span class="n">Double</span><span class="p">(</span><span class="n">nanoTime</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1</span><span class="n">_000_000_000</span>
+</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="s">&quot;Time: \(timeInterval) seconds&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>运行时间</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>Time: 2.391004642 seconds
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>总结</h4>
+
+<p>最早我对比的是Java和C，因为C是在Debug模式下跑的，反而比Java的慢，这个让我无法接受，不应该啊，后来让朋友跑了下，说应该用Release模式，这才反应过来，Release + O3优化后速度一下子就上来了，明显比Java快。Rust和C基本上都有Debug和Release的区分，现在看来Rust和C是一个级别，Java和Go是另一个档次上的同一级别。现在的Java运行默认是解释和编译的混合模式，所以速度上自然也不错，和Java对标的Go数据上来看略微差点，不过考虑到Java的运行时开销，Go其实还是很有诱惑的，后续有可能赶超Java。</p>
+
+<p>企业开发的话用Java依旧最好的选择，个人创业项目的话用Go其实不错。对于Rust和C，不好选择C语法上比较简洁，很多语言特性跟底层更靠近，需要一定底层知识，写操作系统的话，C依旧是首选。Rust呢？个人觉得语法上比较复杂，混杂的语言特性过于多了，既想兼容底层有想高级别的抽象上靠近现代语言，不过这样的情况下依然保持高性能，还是很令人惊讶的。这个不好选，但Rust更充满诱惑，但复杂的语法让人畏惧。</p>
+
+<p>Go语言虽然有C的传承，不过在类型定义上使用后缀的形式跟C语言正好相反，有时还是比较抵触的，另外因为GC的缘故，性能毕竟还是处于应用语言的级别。Rust太复杂，Swift没有用GC是引用计数，速度上比Rust差些，语法上其实跟Rust也差不多，不过作为一个曾经的iOS开发者，虽然Swift在一段时间大家都非常看好，不过最近几年过去了，其实Swift更多还是Oc的一种替代品，并没有突破苹果的范围，服务端也没有掀起什么风浪，Swift终究是Oc的替代品，也正因为此，他也跟苹果生态深度的绑定，成了某种无法脱颖而出的枷锁。</p>
+
+<p>我心中语言其实就是C语言的改良版，内存管理上希望在语言层面上解决，比如用引用计数。语法上不要太加很多的特性，有Go的那样就可以了，但不是Go。不过目前来看是没有的，要不就是自己写一个，也不是没有可能。但实在要是也没有的Go和Rust总还是不错的选择。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Go学习笔记]]></title>
@@ -1126,27 +1495,6 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
 <p>修改Octopress对于我来说也不是什么问题，本身我现在也在做Web开发，所以看看一些文档也能修改。Octopress中因为使用谷歌提供的服务缘故，在国内访问很慢，基本上把jQuery的引用改成国内可以访问的就好，另外屏蔽掉插件中关于推特的项，插件里面还有Google +这样的东西，也都一并屏蔽。Google +都已经被关掉了，这就是长时间不更新的问题，确实会有一些已经老旧的东西。不过这些都是小问题，核心的东西是生成静态的html的网页，所以对于一个懂Web开发的人来说，自己动手改改都不是问题。</p>
 
 <p>Octopress默认的风格比起Hexo的要好看，属于耐看型，我也懒得去折腾主题插件，最主要的能展示文章就好，另外也适配了手机屏幕。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[iOS开发一些总结]]></title>
-    <link href="https://c2lang.com/blog/2015/11/15/ios-development-tips/"/>
-    <updated>2015-11-15T17:52:30+08:00</updated>
-    <id>https://c2lang.com/blog/2015/11/15/ios-development-tips</id>
-    <content type="html"><![CDATA[<p>首先要是有一个界面开发的经历那最好了，类似桌面界面开发其实是相通的。游戏开发中的界面跟这个略微不同。大部分会用到框架提供的组件，熟练的使用常用的组件是很有必要的。应该尽可能的多去尝试不同组件的使用机会，这样才能扩大组件的使用见识。</p>
-
-<p>应该用面对对象的角度去研究文档，继承关系以及实现了什么样的协议，顺着这样的路走下去就会对框架有个整体的认识。不少人看着也开发了好一段时间，但就是不曾系统的研究过这些东西。遇到问题了，还是停留在百度这样境界。</p>
-
-<p>框架和语言的问题，一开始开发的时候基本上不会对这个进行分类。实际上语言是需要单独学习的，研究的越深刻才能越自由。</p>
-
-<p>设计模式，如果不是项目开发到一定规模很难会有所领悟，而且你是项目负责的，一般新手建议从研究系统框架中使用到的设计模式入手，这样更实际点。</p>
-
-<p>HTTP协议需要单独研究，有本书《HTTP权威指南》非常详尽。Charles这样的抓包工具可以作为辅助研究这个的工具。除此还可以研究下AFNetworking源代码以及原生的请求类。</p>
-
-<p>关系型数据库需要单独找本书看下，不是简单的会使用增删改查就可以了，比如怎么多表联查，怎么排序，SQL语句提供的功能远不只这些。</p>
-
-<p>Core Data应该用，建议学习下Rails这个后台开发的东西，你就会明白多数的框架都不会直接去操作SQL，而是通过包装来简化或者影藏其中的复杂性。问题远远的比想得复杂，原始的刀耕火种的方式会让你累个半死，所以最好用现成的解决方案了。</p>
 ]]></content>
   </entry>
   
