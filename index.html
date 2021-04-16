@@ -146,7 +146,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><strong><em>Dockerfile</em></strong>，这个是Build Docker的配置文件，<code>EXPOSE 5000</code>这个是指定容器内部的端口的，在Mac使用Docker客户端启动镜像时会有出现在设置里面。在Linux上构建镜像时出现下载python依赖https的错误，需要去掉验证，<code>RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt</code>，下面这个是在Mac上可以运行的配置。</p>
+<p><strong><em>Dockerfile</em></strong>，这个是Build Docker的配置文件，<code>EXPOSE 5000</code>这个是指定容器内部的端口的，在Mac使用Docker客户端启动镜像时会有出现在设置里面。在Linux上构建镜像时出现下载python依赖https的错误<code>SSL: CERTIFICATE_VERIFY_FAILED</code>，需要去掉验证，<code>RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt</code>，下面这个是在Mac上可以运行的配置。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
