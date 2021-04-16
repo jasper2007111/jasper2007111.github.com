@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>iOS开发一些总结 - Jasper Ji</title>
+  <title>Eclipse笔记 - Jasper Ji</title>
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="首先要是有一个界面开发的经历那最好了，类似桌面界面开发其实是相通的。游戏开发中的界面跟这个略微不同。大部分会用到框架提供的组件，熟练的使用常用的组件是很有必要的。应该尽可能的多去尝试不同组件的使用机会，这样才能扩大组件的使用见识。 应该用面对对象的角度去研究文档，继承关系以及实现了什么样的协议， &hellip;">
+  <meta name="description" content="Eclipse现在用的比较多，做下记录。之前经常下载Eclipse原版然后再安装Spring插件，现在的话正在使用Spring ToolSuite4，这个其实也是基于Eclipse的，只不过集成了很多工具，目前主要是Spring相关的开发，所以这个也是够用了。 自动补全 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="https://c2lang.com/blog/2015/11/15/ios-development-tips">
+  <link rel="canonical" href="https://c2lang.com/blog/2021/04/14/eclipse-notes">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Jasper Ji" type="application/atom+xml">
@@ -80,7 +80,7 @@
   
   <header>
     
-      <h1 class="entry-title">iOS开发一些总结</h1>
+      <h1 class="entry-title">Eclipse笔记</h1>
     
     
       <p class="meta">
@@ -89,26 +89,24 @@
 
 
 
-<time class='entry-date' datetime='2015-11-15T17:52:30+08:00'><span class='date'>2015-11-15</span> <span class='time'>17:52:30</span></time>
+<time class='entry-date' datetime='2021-04-14T06:43:52+08:00'><span class='date'>2021-04-14</span> <span class='time'>06:43:52</span></time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>首先要是有一个界面开发的经历那最好了，类似桌面界面开发其实是相通的。游戏开发中的界面跟这个略微不同。大部分会用到框架提供的组件，熟练的使用常用的组件是很有必要的。应该尽可能的多去尝试不同组件的使用机会，这样才能扩大组件的使用见识。</p>
+<div class="entry-content"><p>Eclipse现在用的比较多，做下记录。之前经常下载Eclipse原版然后再安装Spring插件，现在的话正在使用<code>Spring ToolSuite4</code>，这个其实也是基于Eclipse的，只不过集成了很多工具，目前主要是Spring相关的开发，所以这个也是够用了。</p>
 
-<p>应该用面对对象的角度去研究文档，继承关系以及实现了什么样的协议，顺着这样的路走下去就会对框架有个整体的认识。不少人看着也开发了好一段时间，但就是不曾系统的研究过这些东西。遇到问题了，还是停留在百度这样境界。</p>
+<h4>自动补全</h4>
 
-<p>框架和语言的问题，一开始开发的时候基本上不会对这个进行分类。实际上语言是需要单独学习的，研究的越深刻才能越自由。</p>
+<p>默认出现点号时才会出现自动补全的提示，不过可以设置，这里以Mac环境为例。</p>
 
-<p>设计模式，如果不是项目开发到一定规模很难会有所领悟，而且你是项目负责的，一般新手建议从研究系统框架中使用到的设计模式入手，这样更实际点。</p>
+<p>选择菜单<code>Perferences-&gt;Java-&gt;Content Assist-&gt;Auto activation triggers for Java</code>，默认为<strong><em>.</em></strong>，使用<code>.abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWSYZ_</code>替换，点击Ok。</p>
 
-<p>HTTP协议需要单独研究，有本书《HTTP权威指南》非常详尽。Charles这样的抓包工具可以作为辅助研究这个的工具。除此还可以研究下AFNetworking源代码以及原生的请求类。</p>
+<h4>常用插件</h4>
 
-<p>关系型数据库需要单独找本书看下，不是简单的会使用增删改查就可以了，比如怎么多表联查，怎么排序，SQL语句提供的功能远不只这些。</p>
-
-<p>Core Data应该用，建议学习下Rails这个后台开发的东西，你就会明白多数的框架都不会直接去操作SQL，而是通过包装来简化或者影藏其中的复杂性。问题远远的比想得复杂，原始的刀耕火种的方式会让你累个半死，所以最好用现成的解决方案了。</p>
+<p><strong><em>EasyShell</em></strong>，这个工具主要是可以快速在当前目录打开Shell以及打开当前的文件夹。</p>
 </div>
 
 
@@ -124,7 +122,7 @@
 
 
 
-<time class='entry-date' datetime='2015-11-15T17:52:30+08:00'><span class='date'>2015-11-15</span> <span class='time'>17:52:30</span></time>
+<time class='entry-date' datetime='2021-04-14T06:43:52+08:00'><span class='date'>2021-04-14</span> <span class='time'>06:43:52</span></time>
       
 
 
@@ -139,10 +137,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/10/30/my-first-blog/" title="Previous Post: 重新开始写博客">&laquo; 重新开始写博客</a>
+        <a class="basic-alignment left" href="/blog/2021/04/02/performance-comparison-between-programming-languages/" title="Previous Post: 一次语言间的性能对比">&laquo; 一次语言间的性能对比</a>
       
       
-        <a class="basic-alignment right" href="/blog/2019/10/03/still-using-octopress/" title="Next Post: 还是选择Octopress">还是选择Octopress &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2021/04/16/brew-practices/" title="Next Post: Brew实践">Brew实践 &raquo;</a>
       
     </p>
   </footer>
@@ -212,8 +210,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'https://c2lang.com/blog/2015/11/15/ios-development-tips/';
-        var disqus_url = 'https://c2lang.com/blog/2015/11/15/ios-development-tips/';
+        var disqus_identifier = 'https://c2lang.com/blog/2021/04/14/eclipse-notes/';
+        var disqus_url = 'https://c2lang.com/blog/2021/04/14/eclipse-notes/';
         var disqus_script = 'embed.js';
       
     (function () {

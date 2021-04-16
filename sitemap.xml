@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>https://c2lang.com/blog/2021/04/16/brew-practices/</loc>
+<lastmod>2021-04-16T09:20:13+08:00</lastmod>
+</url>
+<url>
+<loc>https://c2lang.com/blog/2021/04/14/eclipse-notes/</loc>
+<lastmod>2021-04-14T06:43:52+08:00</lastmod>
+</url>
+<url>
 <loc>https://c2lang.com/blog/2021/04/02/performance-comparison-between-programming-languages/</loc>
 <lastmod>2021-04-02T05:53:47+08:00</lastmod>
 </url>
@@ -93,5 +101,11 @@
 </url>
 <url>
 <loc>https://c2lang.com/blog/archives/</loc>
+</url>
+<url>
+<loc>https://c2lang.com/posts/2/</loc>
+</url>
+<url>
+<loc>https://c2lang.com/posts/3/</loc>
 </url>
 </urlset>
