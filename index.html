@@ -9,9 +9,7 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="Mac上安装软件基本上都在使用Brew，记录下使用坑。 慢 执行brew update时很慢的问题，主要是是Github访问慢的缘故，设置从镜像拉取，基本上可以解决这个问题。用了中科大的源，亲测速度感刚的。 替换brew.git 1
-2
-cd &quot;$(brew --repo)&quot; &hellip;">
+  <meta name="description" content="去年年底的时候，当时有简单的研究下Docker，不过只是下载了一些类似MongoDB的镜像运行了下，感觉Docker非常适合安装这些软件。最近开始看Kubernetes，Docker的研究难免，那么如何把现有项目打包成一个Docker镜像以及运行，去年好像有简单的试下，不过有点遗忘， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +77,142 @@ cd &quot;$(brew --repo)&quot; &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/04/16/learn-docker/">学习Docker使用（一）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2021-04-16T21:01:29+08:00'><span class='date'>2021-04-16</span> <span class='time'>21:01:29</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>去年年底的时候，当时有简单的研究下Docker，不过只是下载了一些类似MongoDB的镜像运行了下，感觉Docker非常适合安装这些软件。最近开始看Kubernetes，Docker的研究难免，那么如何把现有项目打包成一个Docker镜像以及运行，去年好像有简单的试下，不过有点遗忘，再次运行发现一些问题。</p>
+
+<h4>准备</h4>
+
+<p>这里运行Flask的一个简单例子，只为演示。创建一个文件flask_test的文件夹，</p>
+
+<p>目录文件</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>app.py
+</span><span class='line'>requirements.txt
+</span><span class='line'>Dockerfile
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong><em>app.py</em></strong>，默认host是127.0.0.1，这里有个问题就是打包成镜像，无法访问端口。在mac和linux都一样，具体可以参考这篇文章<a href="https://pythonspeed.com/articles/docker-connection-refused/">《Connection refused? Docker networking and how it impacts your image》</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+</span><span class='line'><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@app.route</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s">&#39;Hello, World!&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong><em>requirements.txt</em></strong>，这个主要是放置python依赖库，目前只有flask一项。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">flask</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong><em>Dockerfile</em></strong>，这个是Build Docker的配置文件，<code>EXPOSE 5000</code>这个是指定容器内部的端口的，在Mac使用Docker客户端启动镜像时会有出现在设置里面。在Linux上构建镜像时出现下载python依赖https的错误，需要去掉验证，<code>RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt</code>，下面这个是在Mac上可以运行的配置。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>FROM python:3.9
+</span><span class='line'>WORKDIR /code
+</span><span class='line'>EXPOSE 5000
+</span><span class='line'>
+</span><span class='line'>COPY requirements.txt ./
+</span><span class='line'>RUN pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+</span><span class='line'>
+</span><span class='line'>COPY . .
+</span><span class='line'>
+</span><span class='line'>CMD <span class="o">[</span><span class="s2">&quot;python&quot;</span>, <span class="s2">&quot;app.py&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>构建</h4>
+
+<p>构建Docker镜像，在当前目录运行该命令，记得不要忽略这个<code>.</code>，另外镜像的名字不能出现大写，我一直开始写成<code>testFlask</code>，结果构建失败。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo docker build -t <span class="s1">&#39;testflask&#39;</span> .
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>运行</h4>
+
+<p>下面这个是以后台形式运行容器，<code>8000</code>是外部的访问端口，<code>5000</code>是容器内的端口。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -p 8000:5000 -d testflask
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>常用命令</h4>
+
+<p>Mac上我会用Docker Desktop，不过Linux上还是命令行是王道。主要记几个常用的命令。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker ps <span class="c"># 列出运行的容器</span>
+</span><span class='line'>docker images <span class="c"># 列出当前的所有镜像</span>
+</span><span class='line'>docker rm 容器ID <span class="c"># 删除指定的容器</span>
+</span><span class='line'>docker rmi 镜像ID <span class="c"># 删除指定的镜像</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>后记</h4>
+
+<p>目前打包出的镜像居然有900多M，只有一个python和flask的依赖，觉得可能还是研究的不够。通过这个例子，发现还是得找本Docker的书籍系统的研究下，问题解决了，但是缺乏理论依据。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1013,82 +1147,6 @@ cd &quot;$(brew --repo)&quot; &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2021/01/05/how-to-configure-mysql-8-master-slave-replication-on-centos-8/">在CentOS 8上Mysql 8.0的主从配置实践</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2021-01-05T10:47:17+08:00'><span class='date'>2021-01-05</span> <span class='time'>10:47:17</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>主要试了下基于二进制日志文件的方法</p>
-
-<h4>主库设置</h4>
-
-<p>主要的坑，一般教程上写的是编辑<code>/etc/my.cnf</code>。安装的Mysql 8的配置略微有些问题，<code>my.cnf</code>文件导入的是另一配置<code>!includedir /etc/my.cnf.d</code>，所以以下配置我是写在了<code>/etc/my.cnf.d/mysql-server.cnf</code>里面。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">###主从数据库配置核心部分</span>
-</span><span class='line'><span class="c"># 设置同步的binary log二进制日志文件名前缀，默认为binlog</span>
-</span><span class='line'>log-bin<span class="o">=</span>mysql-bin
-</span><span class='line'><span class="c"># 服务器唯一id，默认为1  主数据库和从数据库的server-id不能重复</span>
-</span><span class='line'>server-id<span class="o">=</span><span class="m">1</span>
-</span><span class='line'>
-</span><span class='line'><span class="c">###可选配置</span>
-</span><span class='line'><span class="c"># 需要主从复制的数据库</span>
-</span><span class='line'>binlog-do-db<span class="o">=</span><span class="nb">test</span>
-</span><span class='line'><span class="c"># 复制过滤：也就是指定哪个数据库不用同步（mysql库一般不同步）</span>
-</span><span class='line'>binlog-ignore-db<span class="o">=</span>mysql
-</span><span class='line'><span class="c"># 为每个session分配的内存，在事务过程中用来存储二进制日志的缓存</span>
-</span><span class='line'><span class="nv">binlog_cache_size</span><span class="o">=</span>1M
-</span><span class='line'><span class="c"># 主从复制的格式（mixed,statement,row，默认格式是statement。建议是设置为row，主从复制时数据更加能够统一）</span>
-</span><span class='line'><span class="nv">binlog_format</span><span class="o">=</span>row
-</span><span class='line'><span class="c"># 设置二进制日志自动删除/过期的天数，避免占用磁盘空间。默认值为0，表示不自动删除。</span>
-</span><span class='line'><span class="nv">expire_logs_days</span><span class="o">=</span>7
-</span><span class='line'><span class="c"># 跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制中断。</span>
-</span><span class='line'><span class="c"># 如：1062错误是指一些主键重复，1032错误是因为主从数据库数据不一致</span>
-</span><span class='line'><span class="nv">slave_skip_errors</span><span class="o">=</span>1062
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1108,6 +1166,10 @@ cd &quot;$(brew --repo)&quot; &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/04/16/learn-docker/">学习Docker使用（一）</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/16/brew-practices/">Brew实践</a>
       </li>
     
@@ -1121,10 +1183,6 @@ cd &quot;$(brew --repo)&quot; &hellip;">
     
       <li class="post">
         <a href="/blog/2021/03/29/go-notes/">Go学习笔记</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/03/28/thoughts-after-reading-the-biography-of-masayoshi-son/">《孙正义传》读后感</a>
       </li>
     
   </ul>

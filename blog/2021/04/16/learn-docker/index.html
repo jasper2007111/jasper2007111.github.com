@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>学习Docker使用（一） - Jasper Ji</title>
+  <meta name="author" content="Jasper Ji">
+
+  
+  <meta name="description" content="去年年底的时候，当时有简单的研究下Docker，不过只是下载了一些类似MongoDB的镜像运行了下，感觉Docker非常适合安装这些软件。最近开始看Kubernetes，Docker的研究难免，那么如何把现有项目打包成一个Docker镜像以及运行，去年好像有简单的试下，不过有点遗忘， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://c2lang.com/blog/2021/04/16/learn-docker">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jasper Ji" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-84644923-7']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jasper Ji</a></h1>
+  
+    <h2>开池不待月，池成月自来。</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:c2lang.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">学习Docker使用（一）</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2021-04-16T21:01:29+08:00'><span class='date'>2021-04-16</span> <span class='time'>21:01:29</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>去年年底的时候，当时有简单的研究下Docker，不过只是下载了一些类似MongoDB的镜像运行了下，感觉Docker非常适合安装这些软件。最近开始看Kubernetes，Docker的研究难免，那么如何把现有项目打包成一个Docker镜像以及运行，去年好像有简单的试下，不过有点遗忘，再次运行发现一些问题。</p>
+
+<h4>准备</h4>
+
+<p>这里运行Flask的一个简单例子，只为演示。创建一个文件flask_test的文件夹，</p>
+
+<p>目录文件</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>app.py
+</span><span class='line'>requirements.txt
+</span><span class='line'>Dockerfile
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong><em>app.py</em></strong>，默认host是127.0.0.1，这里有个问题就是打包成镜像，无法访问端口。在mac和linux都一样，具体可以参考这篇文章<a href="https://pythonspeed.com/articles/docker-connection-refused/">《Connection refused? Docker networking and how it impacts your image》</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+</span><span class='line'><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@app.route</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+</span><span class='line'>    <span class="k">return</span> <span class="s">&#39;Hello, World!&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+</span><span class='line'>    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong><em>requirements.txt</em></strong>，这个主要是放置python依赖库，目前只有flask一项。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">flask</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><strong><em>Dockerfile</em></strong>，这个是Build Docker的配置文件，<code>EXPOSE 5000</code>这个是指定容器内部的端口的，在Mac使用Docker客户端启动镜像时会有出现在设置里面。在Linux上构建镜像时出现下载python依赖https的错误，需要去掉验证，<code>RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt</code>，下面这个是在Mac上可以运行的配置。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>FROM python:3.9
+</span><span class='line'>WORKDIR /code
+</span><span class='line'>EXPOSE 5000
+</span><span class='line'>
+</span><span class='line'>COPY requirements.txt ./
+</span><span class='line'>RUN pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+</span><span class='line'>
+</span><span class='line'>COPY . .
+</span><span class='line'>
+</span><span class='line'>CMD <span class="o">[</span><span class="s2">&quot;python&quot;</span>, <span class="s2">&quot;app.py&quot;</span><span class="o">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>构建</h4>
+
+<p>构建Docker镜像，在当前目录运行该命令，记得不要忽略这个<code>.</code>，另外镜像的名字不能出现大写，我一直开始写成<code>testFlask</code>，结果构建失败。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo docker build -t <span class="s1">&#39;testflask&#39;</span> .
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>运行</h4>
+
+<p>下面这个是以后台形式运行容器，<code>8000</code>是外部的访问端口，<code>5000</code>是容器内的端口。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -p 8000:5000 -d testflask
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>常用命令</h4>
+
+<p>Mac上我会用Docker Desktop，不过Linux上还是命令行是王道。主要记几个常用的命令。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker ps <span class="c"># 列出运行的容器</span>
+</span><span class='line'>docker images <span class="c"># 列出当前的所有镜像</span>
+</span><span class='line'>docker rm 容器ID <span class="c"># 删除指定的容器</span>
+</span><span class='line'>docker rmi 镜像ID <span class="c"># 删除指定的镜像</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>后记</h4>
+
+<p>目前打包出的镜像居然有900多M，只有一个python和flask的依赖，觉得可能还是研究的不够。通过这个例子，发现还是得找本Docker的书籍系统的研究下，问题解决了，但是缺乏理论依据。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jasper Ji</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2021-04-16T21:01:29+08:00'><span class='date'>2021-04-16</span> <span class='time'>21:01:29</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2021/04/16/brew-practices/" title="Previous Post: Brew实践">&laquo; Brew实践</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>关于</h1>
+  <p>做过安卓和iOS，也写过Unity的游戏，现在是一名全栈程序员，主要专注Spring以及web前端相关的技术。</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2021/04/16/learn-docker/">学习Docker使用（一）</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/04/16/brew-practices/">Brew实践</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/04/14/eclipse-notes/">Eclipse笔记</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/04/02/performance-comparison-between-programming-languages/">一次语言间的性能对比</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/03/29/go-notes/">Go学习笔记</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2021 - Jasper Ji -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'c2lang-com';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://c2lang.com/blog/2021/04/16/learn-docker/';
+        var disqus_url = 'https://c2lang.com/blog/2021/04/16/learn-docker/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
