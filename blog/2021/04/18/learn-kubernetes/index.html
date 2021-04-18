@@ -1,0 +1,344 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>学习kubernetes（k8s） - Jasper Ji</title>
+  <meta name="author" content="Jasper Ji">
+
+  
+  <meta name="description" content="学习Docker后，发现还是得学习下k8s，目前使用Spring Cloud，引入k8s后原来现有的架构确实会有些变化，比如k8s的服务与Spring Eureka实际上有些功能相似的地方。最早我打算使用微服务的时候也是看中可以使用其他语言，但实际上使用了Eureka后，发现用其他语言还是有困难的 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://c2lang.com/blog/2021/04/18/learn-kubernetes">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jasper Ji" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-84644923-7']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jasper Ji</a></h1>
+  
+    <h2>开池不待月，池成月自来。</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:c2lang.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">学习kubernetes（k8s）</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2021-04-18T11:19:34+08:00'><span class='date'>2021-04-18</span> <span class='time'>11:19:34</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>学习Docker后，发现还是得学习下k8s，目前使用Spring Cloud，引入k8s后原来现有的架构确实会有些变化，比如k8s的服务与Spring Eureka实际上有些功能相似的地方。最早我打算使用微服务的时候也是看中可以使用其他语言，但实际上使用了Eureka后，发现用其他语言还是有困难的，Java依旧是服务的首选。引入k8s后这似乎成为了一些可能，不过目前还没有使用来着。</p>
+
+<h4>书籍</h4>
+
+<p>关于k8s的书籍目前只买了《Kubernetes实战》，之前也是选了几本，但这本当时一看就觉得干货很多，不过在解决细节问题时还是依赖网路了，不过这次可能错了，关于k8s的资料网上的还是太少，解决细节的问题最后还是依靠这本书。这本书在理论和细节方面结合的很好。</p>
+
+<h4>使用本地镜像</h4>
+
+<p>我用的<code>minikube</code>，本地构建的doker镜像，我并没有推送到docker的镜像服务器，打出的docker镜像，其实还是蛮大的，Python和Flask，只是个简单的Hello World的例子，有800多M。再将这个推送到docker镜像服务器太慢了，实际我根本就没有成功，但拉取镜像速度还不错。</p>
+
+<p>一开始我使用<code>kubectrl run</code>创建Pods。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>kubectrl run testflask --image<span class="o">=</span>testflask --port<span class="o">=</span><span class="m">5000</span> --generator<span class="o">=</span>run/v1
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>上面这种方式还是有局限，网上说要把<code>imagePullPolicy</code>设置成<code>IfNotPresent</code>或者<code>Never</code>。但是怎么设置？网上的博文根本不说，最后还是从《Kubernetes实战》这书找到答案，使用配置文件来创建，创建一个<code>flasktest.yaml</code>的配置文件。这里需要注意的是配置文件中一定要使用空格缩进而不是Tab，貌似我用的vs code和textmate都是使用Tab缩进。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">apiVersion</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">v1</span>
+</span><span class='line'><span class="l-Scalar-Plain">kind</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Pod</span>
+</span><span class='line'><span class="l-Scalar-Plain">metadata</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest</span>
+</span><span class='line'><span class="l-Scalar-Plain">spec</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">containers</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">testflask</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest-container</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">imagePullPolicy</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">IfNotPresent</span> <span class="c1"># 拉取的策略</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">containerPort</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">5000</span> <span class="c1"># 容器的端口</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">protocol</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">TCP</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>通过配置文件来创建pods</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>kubectl create -f flasktest.yaml <span class="c"># 通过配置文件创建pods</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>但最后发现还是有问题，这个镜像始终还是无法拉下来，网上搜索半天也没有找到个解决方案，最后打算直接使用docker的公共镜像<code>docker/getting-started</code>，估计是网络的问题，始终没有拉取下来。再看《Kubernetes实战》发现作者早就发现这个问题了，我本机安装了dcoker，而minikube也有docker，而我本地的镜像是在本机的docker下的，并没在minikube的docker中。可以使用命令复制过去：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker save testflask <span class="p">|</span> <span class="o">(</span><span class="nb">eval</span> <span class="k">$(</span>minikube docker-env<span class="k">)</span> <span class="o">&amp;&amp;</span> docker load<span class="o">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>最后顺利启动了，不过怎么访问服务呢？</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>kubectl expose rc flasktest --type<span class="o">=</span>LoadBalancer --name flasktest-http
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>不过这里也个问题，提示<code>replicationcontrollers "flasktest" not found</code>。其实命令<code>kubectrl run testflask --image=testflask --port=5000 --generator=run/v1</code>中，<code>--generator=run/v1</code>是创建<code>replicationcontroller</code>的，但我使用的是配置文件创建，问题不大，修改下配置文件。如下：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">apiVersion</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">v1</span>
+</span><span class='line'><span class="l-Scalar-Plain">kind</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ReplicationController</span>
+</span><span class='line'><span class="l-Scalar-Plain">metadata</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest</span>
+</span><span class='line'><span class="l-Scalar-Plain">spec</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">replicas</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">3</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">selector</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">app</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">template</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">metadata</span><span class="p-Indicator">:</span>
+</span><span class='line'>      <span class="l-Scalar-Plain">labels</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">app</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">spec</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="l-Scalar-Plain">containers</span><span class="p-Indicator">:</span>
+</span><span class='line'>        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">testflask</span>
+</span><span class='line'>          <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest-container</span>
+</span><span class='line'>          <span class="l-Scalar-Plain">imagePullPolicy</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">IfNotPresent</span>
+</span><span class='line'>          <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
+</span><span class='line'>          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">containerPort</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">5000</span>
+</span><span class='line'>            <span class="l-Scalar-Plain">protocol</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">TCP</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>重新创建，再启动服务，服务时启动了，不过还是有问题，使用<code>minikube</code>没有外部的ip的访问，需要使用如下命令。不过这个端口是随机的，跟原来用docker的那个不太一样。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>minikube service flasktest-http
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>总结</h4>
+
+<p>网络的问题使本来简单的入门变得复杂，另外k8s的资料目前确实不是很多，一些细节网上的很少有人总结出来。不过感觉方案虽好，但是镜像大，以及可能要自己部署私有的镜像，再到其他的，其实投入还是蛮多的。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jasper Ji</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2021-04-18T11:19:34+08:00'><span class='date'>2021-04-18</span> <span class='time'>11:19:34</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2021/04/16/learn-docker/" title="Previous Post: 学习Docker使用">&laquo; 学习Docker使用</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>关于</h1>
+  <p>做过安卓和iOS，也写过Unity的游戏，现在是一名全栈程序员，主要专注Spring以及web前端相关的技术。</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2021/04/18/learn-kubernetes/">学习kubernetes（k8s）</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/04/16/learn-docker/">学习Docker使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/04/16/brew-practices/">Brew实践</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/04/14/eclipse-notes/">Eclipse笔记</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/04/02/performance-comparison-between-programming-languages/">一次语言间的性能对比</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2021 - Jasper Ji -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'c2lang-com';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://c2lang.com/blog/2021/04/18/learn-kubernetes/';
+        var disqus_url = 'https://c2lang.com/blog/2021/04/18/learn-kubernetes/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

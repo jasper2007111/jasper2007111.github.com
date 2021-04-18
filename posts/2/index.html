@@ -9,7 +9,7 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="主要试了下基于二进制日志文件的方法 主库设置 主要的坑，一般教程上写的是编辑/etc/my.cnf。安装的Mysql 8的配置略微有些问题，my.cnf文件导入的是另一配置!includedir /etc/my.cnf.d，所以以下配置我是写在了/etc/my.cnf.d/mysql-server &hellip;">
+  <meta name="description" content="缘起 做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。 大概7、8年前买过一本《Orange&rsquo;S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,92 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/02/04/how-to-write-an-os/">如何写一个操作系统</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2021-02-04T22:21:27+08:00'><span class='date'>2021-02-04</span> <span class='time'>22:21:27</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>缘起</h3>
+
+<p>做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。</p>
+
+<p>大概7、8年前买过一本《Orange&rsquo;S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太难了，中间需要跨越的东西太多了。渐渐就放弃了，后来直接把这两本书给卖掉了。</p>
+
+<p>今年突然间又想，我应该尝试写一个简单的操作系统，多年的工作以及自学，使得我对编程有了一个相对完整的认识，这个想法似乎不像当年那么不靠谱。但该如何下手呢？刚开始我只想能跑一个<code>Hello wrold</code>的例子也可以，网上找了下最多的居然是我当年卖掉的那本《Orange&rsquo;S 一个操作系统实现》书中的例子，可惜当年我也没怎么看懂，只是买了本书而已。</p>
+
+<p>以下是这个例子的代码：</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='nasm'><span class='line'> <span class="k">org</span> <span class="mh">07c00h</span>           <span class="c1">; 告诉编译器程序加载到7c00处</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">cs</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
+</span><span class='line'>  <span class="nf">call</span> <span class="nb">Disp</span><span class="nv">Str</span>            <span class="c1">; 调用显示字符串例程</span>
+</span><span class='line'>  <span class="nf">jmp</span> <span class="kc">$</span>           <span class="c1">; 无限循环</span>
+</span><span class='line'><span class="nl">DispStr:</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nv">BootMessage</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">bp</span><span class="p">,</span> <span class="nb">ax</span>           <span class="c1">; ES:BP = 串地址</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">16</span>           <span class="c1">; CX = 串长度</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mh">01301h</span>       <span class="c1">; AH = 13,  AL = 01h</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">bx</span><span class="p">,</span> <span class="mh">000ch</span>        <span class="c1">; 页号为0(BH = 0) 黑底红字(BL = 0Ch,高亮)</span>
+</span><span class='line'>  <span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="nf">int</span> <span class="mh">10h</span>         <span class="c1">; 10h 号中断</span>
+</span><span class='line'>  <span class="nf">ret</span>
+</span><span class='line'><span class="nl">BootMessage:</span>      <span class="kd">db</span>  <span class="s">&quot;Hello, OS world!&quot;</span>
+</span><span class='line'><span class="kd">times</span>     <span class="mi">510</span><span class="o">-</span><span class="p">(</span><span class="kc">$</span><span class="o">-</span><span class="kc">$$</span><span class="p">)</span>  <span class="nv">db</span>  <span class="mi">0</span>   <span class="c1">; 填充剩下的空间，使生成的二进制代码恰好为512字节</span>
+</span><span class='line'><span class="kd">dw</span>    <span class="mh">0xaa55</span>              <span class="c1">; 结束标志</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>这就是一个直接运行到硬件上的一段程序，而不是我们平时在操作系统写应用代码那样。对于一个实践者而言，我很想把这段程序跑起来，这很关键，只要能跑起来，我们就可以试图修改下，再跑起来，这样认识上才能有提高。其实跑这个例子也是费了点功夫，首先在虚拟机上安装了一个Ubuntu的Linux系统，书中用到的汇编是跟MASM很相似的NASM，首先NASM的教程不多，不过还好可以参考MASM汇编的书籍。另外就是软盘的制作相关的东西，最后是安装Bochs虚拟机，这个虚拟机跟平时用的有些特别，不过还是了解如何操作，最后成功的把这个例子跑了起来。</p>
+
+<p>似乎可以继续一路朝前了，可惜看了头三章后，我发现了些问题。首先我对NASM汇编的东西几乎是一片空白，书的前几章几乎离不开汇编语言了，而看的非常吃力。另一个是我对PC的体系缺乏细节的了解，虽然之前也有了解但实操的过程中遇到的问题更具体。</p>
+
+<p>NASM的书籍不多，《汇编语言.基于Linux环境.第三版》是一本从体系的角度来讲解NASM的书籍，一方面学习了NASM，也让重新思考从8086到80386的一些变化，好几个点很有启发。王爽老师的《汇编语言》，也是一本非常不错的参考书，汇编语言在形式上与高级语言还是有着巨大差异，一开始我把心思放在那些寄存器之类上了，而忽略了一个编程语言应该是能够写点东西出来这事上。《汇编语言》这书很好的带我进入如何写点东西的正轨上。</p>
+
+<p>8086方面的书籍，8086总设计师莫尔斯写的《8086初阶-体系结构、系统设计和程序设计入门》。王爽老师《汇编语言》也主要是讲8086的汇编的。80386的书籍不多，80386的设计师写的《Programing the 80386》一书，非常不错。中文版是93年出版的《保护方式下80386及其编程》一书，虽然没有备注是翻译，但我跟英文版对照后，确认就是翻译自《Programing the 80386》，主要是学习保护模式。</p>
+
+<p>这里需要注意的是实模式与保护模式的差别，很多时候一开始如果研究的是8086的，往往需要转换下思维，最好的书籍依旧是《保护方式下80386及其编程》一书，于渊的《Orange&rsquo;S 一个操作系统实现》细节上还是有点模糊。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -952,53 +1038,6 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2020/07/22/octopress-users-guide/">Octopress使用指南</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2020-07-22T15:14:59+08:00'><span class='date'>2020-07-22</span> <span class='time'>15:14:59</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>rake <span class="s1">&#39;new_post[&quot;title&quot;]&#39;</span> <span class="c"># 创建文章</span>
-</span><span class='line'>rake generate <span class="c"># 生成文章</span>
-</span><span class='line'>rake preview <span class="c"># 本地预览博客</span>
-</span><span class='line'>rake deploy <span class="c"># 发布博客</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>修改文章创建的日期格式，我比较喜欢类似<code>2020-01-01 00:00:00</code>这样的格式，修改<code>_config.yml</code>。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">date_format</span><span class="p-Indicator">:</span> <span class="s">&quot;%Y-%m-%d&quot;</span>
-</span><span class='line'><span class="l-Scalar-Plain">time_format</span><span class="p-Indicator">:</span> <span class="s">&quot;%H:%M:%S&quot;</span> <span class="c1"># 这个新增的，默认配置文件没有的</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -1020,6 +1059,10 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/04/18/learn-kubernetes/">学习kubernetes（k8s）</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/16/learn-docker/">学习Docker使用</a>
       </li>
     
@@ -1033,10 +1076,6 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
     
       <li class="post">
         <a href="/blog/2021/04/02/performance-comparison-between-programming-languages/">一次语言间的性能对比</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/03/29/go-notes/">Go学习笔记</a>
       </li>
     
   </ul>
