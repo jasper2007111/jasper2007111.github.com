@@ -4,7 +4,7 @@
   <title><![CDATA[Jasper Ji]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2021-04-19T10:52:44+08:00</updated>
+  <updated>2021-04-19T16:18:38+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,34 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[学习Docker使用二]]></title>
+    <link href="https://c2lang.com/blog/2021/04/19/learn-docker-2/"/>
+    <updated>2021-04-19T06:01:29+08:00</updated>
+    <id>https://c2lang.com/blog/2021/04/19/learn-docker-2</id>
+    <content type="html"><![CDATA[<p>打包现有Java工程的Jar到Docker镜像，也是遇到了问题。</p>
+
+<h4>不熟悉Dockerfile</h4>
+
+<h6>COPY 源 目标</h6>
+
+<p>一开始把源和目标的顺序给弄反了，但是还在镜像中有那个文件，结果执行<code>java -jar xxx.jar</code>老提示<code>Error: Unable to access jarfile xxx.jar</code>。最后登录到容器内部发现jar的文件大小不对，最后才反应过来把顺序弄反了。</p>
+
+<h4>登入容器内部</h4>
+
+<p>一开始为了诊断Java运行Jar文件不成功的问题，我就想看看容器内的文件是否已经在。最后用如下命令，登入容器，这个还是比较有用，不过应该去掉镜像的<code>CMD</code>命令。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -t -i xxx_container /bin/bash
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h4>镜像大小</h4>
+
+<p>一开始用的<code>FROM openjdk:8</code>，打出的镜像有800多M，后来使用<code>FROM openjdk:8-jdk-alpine</code>，大小150多M，我的Jar包实际只有不到50M的样子，所以还是比较大了。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[学习Kubernetes]]></title>
@@ -71,14 +99,14 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>但最后发现还是有问题，这个镜像始终还是无法拉下来，网上搜索半天也没有找到个解决方案，最后打算直接使用docker的公共镜像<code>docker/getting-started</code>，估计是网络的问题，始终没有拉取下来。再看《Kubernetes实战》发现作者早就发现这个问题了，我本机安装了dcoker，而minikube也有docker，而我本地的镜像是在本机的docker下的，并没在minikube的docker中。可以使用命令复制过去：</p>
+<p>最后发现还是有问题，这个镜像始终还是无法拉下来，网上搜索半天也没有找到个解决方案，最后打算直接使用<code>docker</code>的公共镜像<code>docker/getting-started</code>，估计是网络的问题，始终没有拉取下来。我一直把<code>minikube</code>的当成本地的了，<code>docker</code>也是共用一个，实际上犯了个严重的认知错误，<code>minikube</code>在VirtualBox创建了一个<code>minikube</code>虚拟机在运行，<code>docker</code>肯定与我本地的不是一个，《Kubernetes实战》书中提供了一种把本地的docker复制到<code>minikube</code>虚拟机中<code>docker</code>镜像库的方法。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='sh'><span class='line'>docker save testflask <span class="p">|</span> <span class="o">(</span><span class="nb">eval</span> <span class="k">$(</span>minikube docker-env<span class="k">)</span> <span class="o">&amp;&amp;</span> docker load<span class="o">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>最后顺利启动了，不过怎么访问服务呢？</p>
+<p>可以使用<code>minikube ssh</code>登录到<code>minikube</code>虚拟机中，查看<code>docker</code>镜像是否已经复制过去了。最后顺利启动了，不过怎么访问服务呢？</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='sh'><span class='line'>kubectl expose rc flasktest --type<span class="o">=</span>LoadBalancer --name flasktest-http
@@ -256,6 +284,10 @@
 <h4>后记</h4>
 
 <p>目前打包出的镜像居然有900多M，只有一个python和flask的依赖，觉得可能还是研究的不够。通过这个例子，发现还是得找本Docker的书籍系统的研究下，问题解决了，但是缺乏理论依据。</p>
+
+<h4>更新</h4>
+
+<p>因为初次接触docker，后来发现可以使用基础版本，修改Dockerfile文件<code>FROM python:3.9-alpine</code>，最后打包后50M。</p>
 ]]></content>
   </entry>
   
@@ -1641,68 +1673,6 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
 </span><span class='line'><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[用Common Lisp写一个双色球程序]]></title>
-    <link href="https://c2lang.com/blog/2020/07/22/write-a-lottery-program-with-common-lisp/"/>
-    <updated>2020-07-22T23:12:10+08:00</updated>
-    <id>https://c2lang.com/blog/2020/07/22/write-a-lottery-program-with-common-lisp</id>
-    <content type="html"><![CDATA[<p>断断续续的看了些Common Lisp的东西，主要是田春冰河翻译的那本《实用Common Lisp编程》，另外网上有人翻译了《ANSI Common Lisp》也有看，另一本《Common Lisp： A Gentle Introduction to Symbolic Computation》。总得写点东西，于是就写了这个双色球的小程序。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='lisp'><span class='line'><span class="p">(</span><span class="nb">defconstant</span> <span class="nv">total-red-ball</span> <span class="mi">33</span><span class="p">)</span>
-</span><span class='line'><span class="p">(</span><span class="nb">defconstant</span> <span class="nv">total-blue-ball</span> <span class="mi">16</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">(</span><span class="nb">defun</span> <span class="nv">select-red-ball</span> <span class="p">(</span><span class="nv">red-balls</span> <span class="nv">double-balls</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">let</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">(</span><span class="k">setq</span> <span class="nv">x</span> <span class="p">(</span><span class="nb">elt</span> <span class="nv">red-balls</span> <span class="p">(</span><span class="nb">random</span> <span class="p">(</span><span class="nb">length</span> <span class="nv">red-balls</span><span class="p">))))</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">vector-push</span> <span class="nv">x</span> <span class="nv">double-balls</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">delete</span> <span class="nv">x</span> <span class="nv">red-balls</span><span class="p">)))</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">(</span><span class="nb">defun</span> <span class="nv">create-double-balls</span><span class="p">()</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">red-balls</span> <span class="p">(</span><span class="nb">make-array</span> <span class="nv">total-red-ball</span> <span class="ss">:fill-pointer</span> <span class="mi">0</span><span class="p">))</span>
-</span><span class='line'>  <span class="p">(</span><span class="nv">blue-balls</span> <span class="p">(</span><span class="nb">make-array</span> <span class="nv">total-blue-ball</span> <span class="ss">:fill-pointer</span> <span class="mi">0</span><span class="p">))</span>
-</span><span class='line'>  <span class="p">(</span><span class="nv">double-balls</span> <span class="p">(</span><span class="nb">make-array</span> <span class="mi">7</span> <span class="ss">:fill-pointer</span> <span class="mi">0</span><span class="p">)))</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">i</span> <span class="nv">from</span> <span class="mi">1</span> <span class="nv">to</span> <span class="nv">total-red-ball</span> <span class="nb">do</span> <span class="p">(</span><span class="nb">vector-push</span> <span class="nv">i</span> <span class="nv">red-balls</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">i</span> <span class="nv">from</span> <span class="mi">1</span> <span class="nv">to</span> <span class="nv">total-blue-ball</span> <span class="nb">do</span> <span class="p">(</span><span class="nb">vector-push</span> <span class="nv">i</span> <span class="nv">blue-balls</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">dotimes</span> <span class="p">(</span><span class="nv">n</span> <span class="mi">6</span><span class="p">)</span>
-</span><span class='line'>      <span class="p">(</span><span class="nv">select-red-ball</span> <span class="nv">red-balls</span> <span class="nv">double-balls</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">(</span><span class="k">setq</span> <span class="nv">double-balls</span> <span class="p">(</span><span class="nb">sort</span> <span class="nv">double-balls</span> <span class="nf">#&#39;</span><span class="nb">&lt;</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">vector-push</span> <span class="p">(</span><span class="nb">elt</span> <span class="nv">blue-balls</span> <span class="p">(</span><span class="nb">random</span> <span class="mi">16</span><span class="p">))</span> <span class="nv">double-balls</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">print</span> <span class="nv">double-balls</span><span class="p">)))</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">(</span><span class="nb">defun</span> <span class="nv">gen</span><span class="p">(</span><span class="nv">n</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">dotimes</span> <span class="p">(</span><span class="nv">i</span> <span class="nv">n</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">(</span><span class="nv">create-double-balls</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Lisp特殊的语法风格确实与C体系的语言有很大不同，不过如果有编程经验的话，还是比较容易上手，比如函数的传参，传个数组的话，实际上传指针了。定义局部变量的方式比如用<code>LET</code>。</p>
 ]]></content>
   </entry>
   

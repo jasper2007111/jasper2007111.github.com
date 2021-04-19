@@ -149,14 +149,14 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>但最后发现还是有问题，这个镜像始终还是无法拉下来，网上搜索半天也没有找到个解决方案，最后打算直接使用docker的公共镜像<code>docker/getting-started</code>，估计是网络的问题，始终没有拉取下来。再看《Kubernetes实战》发现作者早就发现这个问题了，我本机安装了dcoker，而minikube也有docker，而我本地的镜像是在本机的docker下的，并没在minikube的docker中。可以使用命令复制过去：</p>
+<p>最后发现还是有问题，这个镜像始终还是无法拉下来，网上搜索半天也没有找到个解决方案，最后打算直接使用<code>docker</code>的公共镜像<code>docker/getting-started</code>，估计是网络的问题，始终没有拉取下来。我一直把<code>minikube</code>的当成本地的了，<code>docker</code>也是共用一个，实际上犯了个严重的认知错误，<code>minikube</code>在VirtualBox创建了一个<code>minikube</code>虚拟机在运行，<code>docker</code>肯定与我本地的不是一个，《Kubernetes实战》书中提供了一种把本地的docker复制到<code>minikube</code>虚拟机中<code>docker</code>镜像库的方法。</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='sh'><span class='line'>docker save testflask <span class="p">|</span> <span class="o">(</span><span class="nb">eval</span> <span class="k">$(</span>minikube docker-env<span class="k">)</span> <span class="o">&amp;&amp;</span> docker load<span class="o">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>最后顺利启动了，不过怎么访问服务呢？</p>
+<p>可以使用<code>minikube ssh</code>登录到<code>minikube</code>虚拟机中，查看<code>docker</code>镜像是否已经复制过去了。最后顺利启动了，不过怎么访问服务呢？</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class='sh'><span class='line'>kubectl expose rc flasktest --type<span class="o">=</span>LoadBalancer --name flasktest-http
@@ -251,6 +251,8 @@
         <a class="basic-alignment left" href="/blog/2021/04/16/learn-docker/" title="Previous Post: 学习Docker使用">&laquo; 学习Docker使用</a>
       
       
+        <a class="basic-alignment right" href="/blog/2021/04/19/learn-docker-2/" title="Next Post: 学习Docker使用二">学习Docker使用二 &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -274,6 +276,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/18/learn-kubernetes/">学习Kubernetes</a>
       </li>
     
@@ -287,10 +293,6 @@
     
       <li class="post">
         <a href="/blog/2021/04/14/eclipse-notes/">Eclipse笔记</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/04/02/performance-comparison-between-programming-languages/">一次语言间的性能对比</a>
       </li>
     
   </ul>

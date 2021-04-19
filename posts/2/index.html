@@ -9,7 +9,7 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="缘起 做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。 大概7、8年前买过一本《Orange&rsquo;S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了， &hellip;">
+  <meta name="description" content="《保护方式下的80386及其编程》即《Programming the 80386》的中文翻译版，不过当年并没有标注翻译出处。这本书对于写一个基于x86操作系统非常有用，另外对于研究早期的Linux内核也很有参考，因为林纳斯当年也是参考《Programming the 80386》这本书的， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -77,6 +77,37 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/03/11/programming-the-80386-notes/">《保护方式下的80386及其编程》笔记</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2021-03-11T09:42:24+08:00'><span class='date'>2021-03-11</span> <span class='time'>09:42:24</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>《保护方式下的80386及其编程》即《Programming the 80386》的中文翻译版，不过当年并没有标注翻译出处。这本书对于写一个基于x86操作系统非常有用，另外对于研究早期的Linux内核也很有参考，因为林纳斯当年也是参考《Programming the 80386》这本书的，包括386BSD的作者也是参考这本书了。</p>
+
+<p>这本书是了解80386的保护模式最好的书籍，关于8086的书籍和汇编语言资料不少，但是关于80386的保护模式书籍很少，很多后来的书籍的知识都是转来转去的，有些只是讲个大概，没有把细节说明清楚，往往是一知半解了。不同的是此书可以说是讲解非常细致，概念很清晰，主要是此书的作者是80386的总设计师，所以这本书如果讲不明白，那还有其他书籍吗。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -956,88 +987,6 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2020/07/22/write-a-lottery-program-with-common-lisp/">用Common Lisp写一个双色球程序</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2020-07-22T23:12:10+08:00'><span class='date'>2020-07-22</span> <span class='time'>23:12:10</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>断断续续的看了些Common Lisp的东西，主要是田春冰河翻译的那本《实用Common Lisp编程》，另外网上有人翻译了《ANSI Common Lisp》也有看，另一本《Common Lisp： A Gentle Introduction to Symbolic Computation》。总得写点东西，于是就写了这个双色球的小程序。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='lisp'><span class='line'><span class="p">(</span><span class="nb">defconstant</span> <span class="nv">total-red-ball</span> <span class="mi">33</span><span class="p">)</span>
-</span><span class='line'><span class="p">(</span><span class="nb">defconstant</span> <span class="nv">total-blue-ball</span> <span class="mi">16</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">(</span><span class="nb">defun</span> <span class="nv">select-red-ball</span> <span class="p">(</span><span class="nv">red-balls</span> <span class="nv">double-balls</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">let</span> <span class="p">(</span><span class="nv">x</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">(</span><span class="k">setq</span> <span class="nv">x</span> <span class="p">(</span><span class="nb">elt</span> <span class="nv">red-balls</span> <span class="p">(</span><span class="nb">random</span> <span class="p">(</span><span class="nb">length</span> <span class="nv">red-balls</span><span class="p">))))</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">vector-push</span> <span class="nv">x</span> <span class="nv">double-balls</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">delete</span> <span class="nv">x</span> <span class="nv">red-balls</span><span class="p">)))</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">(</span><span class="nb">defun</span> <span class="nv">create-double-balls</span><span class="p">()</span>
-</span><span class='line'>  <span class="p">(</span><span class="k">let</span> <span class="p">((</span><span class="nv">red-balls</span> <span class="p">(</span><span class="nb">make-array</span> <span class="nv">total-red-ball</span> <span class="ss">:fill-pointer</span> <span class="mi">0</span><span class="p">))</span>
-</span><span class='line'>  <span class="p">(</span><span class="nv">blue-balls</span> <span class="p">(</span><span class="nb">make-array</span> <span class="nv">total-blue-ball</span> <span class="ss">:fill-pointer</span> <span class="mi">0</span><span class="p">))</span>
-</span><span class='line'>  <span class="p">(</span><span class="nv">double-balls</span> <span class="p">(</span><span class="nb">make-array</span> <span class="mi">7</span> <span class="ss">:fill-pointer</span> <span class="mi">0</span><span class="p">)))</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">i</span> <span class="nv">from</span> <span class="mi">1</span> <span class="nv">to</span> <span class="nv">total-red-ball</span> <span class="nb">do</span> <span class="p">(</span><span class="nb">vector-push</span> <span class="nv">i</span> <span class="nv">red-balls</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">loop</span> <span class="nv">for</span> <span class="nv">i</span> <span class="nv">from</span> <span class="mi">1</span> <span class="nv">to</span> <span class="nv">total-blue-ball</span> <span class="nb">do</span> <span class="p">(</span><span class="nb">vector-push</span> <span class="nv">i</span> <span class="nv">blue-balls</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">dotimes</span> <span class="p">(</span><span class="nv">n</span> <span class="mi">6</span><span class="p">)</span>
-</span><span class='line'>      <span class="p">(</span><span class="nv">select-red-ball</span> <span class="nv">red-balls</span> <span class="nv">double-balls</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">(</span><span class="k">setq</span> <span class="nv">double-balls</span> <span class="p">(</span><span class="nb">sort</span> <span class="nv">double-balls</span> <span class="nf">#&#39;</span><span class="nb">&lt;</span><span class="p">))</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">vector-push</span> <span class="p">(</span><span class="nb">elt</span> <span class="nv">blue-balls</span> <span class="p">(</span><span class="nb">random</span> <span class="mi">16</span><span class="p">))</span> <span class="nv">double-balls</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">(</span><span class="nb">print</span> <span class="nv">double-balls</span><span class="p">)))</span>
-</span><span class='line'>
-</span><span class='line'><span class="p">(</span><span class="nb">defun</span> <span class="nv">gen</span><span class="p">(</span><span class="nv">n</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">(</span><span class="nb">dotimes</span> <span class="p">(</span><span class="nv">i</span> <span class="nv">n</span><span class="p">)</span>
-</span><span class='line'>    <span class="p">(</span><span class="nv">create-double-balls</span><span class="p">)))</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Lisp特殊的语法风格确实与C体系的语言有很大不同，不过如果有编程经验的话，还是比较容易上手，比如函数的传参，传个数组的话，实际上传指针了。定义局部变量的方式比如用<code>LET</code>。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -1059,6 +1008,10 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/18/learn-kubernetes/">学习Kubernetes</a>
       </li>
     
@@ -1072,10 +1025,6 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
     
       <li class="post">
         <a href="/blog/2021/04/14/eclipse-notes/">Eclipse笔记</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/04/02/performance-comparison-between-programming-languages/">一次语言间的性能对比</a>
       </li>
     
   </ul>
