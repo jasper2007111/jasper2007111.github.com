@@ -9,7 +9,7 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="实在Mac环境下跑的例子。 安装ELK相关软件 ELK主要指Elasticsearch、Logstash、Kibana，使用elastic.co提供的安装指南，使用Brew安装。 切换Tab 1
+  <meta name="description" content="是在Mac环境下跑的例子。 安装ELK相关软件 ELK主要指Elasticsearch、Logstash、Kibana，使用elastic.co提供的安装指南，使用Brew安装。 切换Tab 1
 brew tap elastic/tap 安装软件 1
 2
 3
@@ -54,7 +54,7 @@ brew install &hellip;">
   <header role="banner"><hgroup>
   <h1><a href="/">Jasper Ji</a></h1>
   
-    <h2>开池不待月，池成月自来。</h2>
+    <h2>The palest ink is better than the best memory</h2>
   
 </hgroup>
 
@@ -103,7 +103,7 @@ brew install &hellip;">
   </header>
 
 
-  <div class="entry-content"><p>实在Mac环境下跑的例子。</p>
+  <div class="entry-content"><p>是在Mac环境下跑的例子。</p>
 
 <h4>安装ELK相关软件</h4>
 
@@ -263,7 +263,7 @@ brew install &hellip;">
 </span><span class='line'>output<span class="o">{</span>
 </span><span class='line'>  elasticsearch <span class="o">{</span>
 </span><span class='line'>     <span class="nv">hosts</span> <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">&quot;http://localhost:9200&quot;</span><span class="o">]</span> <span class="c"># Elasticsearch 地址</span>
-</span><span class='line'>     <span class="nv">index</span> <span class="o">=</span>&gt; <span class="s2">&quot;.springcms-%{+YYYY.MM.dd}&quot;</span> <span class="c"># 这里我用.springcms，可以替换为自己的。</span>
+</span><span class='line'>     <span class="nv">index</span> <span class="o">=</span>&gt; <span class="s2">&quot;spring_cms-%{+YYYY.MM.dd}&quot;</span> <span class="c"># 这里我用spring_cms，可以替换为自己的。需要注意ES关于索引的命名规范</span>
 </span><span class='line'>  <span class="o">}</span>
 </span><span class='line'><span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
