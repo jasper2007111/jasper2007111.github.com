@@ -9,11 +9,9 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="是在Mac环境下跑的例子。 安装ELK相关软件 ELK主要指Elasticsearch、Logstash、Kibana，使用elastic.co提供的安装指南，使用Brew安装。 切换Tab 1
-brew tap elastic/tap 安装软件 1
-2
-3
-brew install &hellip;">
+  <meta name="description" content="主要是想把Elasticsearch整合到当前的系统中，用来搜索文章。 环境 Elasticsearch 7.12.0
+Logstash 7.12.0
+Mysql 8.0 数据同步 把Elasticsearch整合到现有系统意味需要把当前要搜索的数据添加到Elasticsearch里面， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +79,302 @@ brew install &hellip;">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/04/26/springboot-elasticsearch/">Spring Boot使用Elasticsearch</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2021-04-26T05:23:43+08:00'><span class='date'>2021-04-26</span> <span class='time'>05:23:43</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>主要是想把Elasticsearch整合到当前的系统中，用来搜索文章。</p>
+
+<h4>环境</h4>
+
+<p><em>Elasticsearch 7.12.0</em><br/>
+<em>Logstash 7.12.0</em><br/>
+<em>Mysql 8.0</em></p>
+
+<h4>数据同步</h4>
+
+<p>把Elasticsearch整合到现有系统意味需要把当前要搜索的数据添加到Elasticsearch里面，这就有个数据同步问题。因为是测试工程使用的是Logstash的全量数据同步。Logstash的新版本已经包含了Jdbc的插件，所以不需要安装。</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>input {
+</span><span class='line'>  jdbc {
+</span><span class='line'>      # myslq驱动，可以官网下载，我用的是Maven依赖已经下载的Jar文件
+</span><span class='line'>      jdbc_driver_library =&gt; ""
+</span><span class='line'>      # Mysql驱动类全类名，注意mysql8.x以上需要加cj
+</span><span class='line'>      jdbc_driver_class =&gt; "com.mysql.cj.jdbc.Driver"
+</span><span class='line'>      # mysql连接url
+</span><span class='line'>      jdbc_connection_string =&gt; ""
+</span><span class='line'>      # mysql 用户名
+</span><span class='line'>      jdbc_user =&gt; ""
+</span><span class='line'>      # mysql 密码
+</span><span class='line'>      jdbc_password =&gt; ""
+</span><span class='line'>      # 设置定时任务，多久执行一次查询，默认一分钟，需要无延迟可使用schedule =&gt; "* * * * * *"
+</span><span class='line'>      schedule =&gt; "* * * * *"
+</span><span class='line'>      # 清空上次的sql_last_value记录
+</span><span class='line'>      clean_run =&gt; true
+</span><span class='line'>      # 要执行的sql（同步）语句，替换成你自己的sql
+</span><span class='line'>      statement =&gt; "SELECT * FROM t_article"
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>output {
+</span><span class='line'>   elasticsearch {
+</span><span class='line'>      # es主机和端口
+</span><span class='line'>      hosts =&gt; ["127.0.0.1:9200"]
+</span><span class='line'>      # 同步数据在ES的索引名称，替换为你自己的。
+</span><span class='line'>      index =&gt; "my-cms"
+</span><span class='line'>      # es文档的id，表示使用mysql表的id
+</span><span class='line'>      document_id =&gt; "%{id}"
+</span><span class='line'>  }
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>生产环境的数据同步可以参考<a href="https://help.aliyun.com/document_detail/146038.html?spm=a2c4g.11186623.6.784.8fe41c61aTodOu">阿里云Elasticsearch</a></p>
+
+<p>参考: <br/>
+<a href="https://www.elastic.co/guide/en/logstash/current/plugins-inputs-jdbc.html">Jdbc input plugin</a></p>
+
+<h4>Spring Boot配置</h4>
+
+<p>添加Maven依赖</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-data-elasticsearch<span class="nt">&lt;/artifactId&gt;</span>
+</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>添加Elasticsearch客户端配置类</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Configuration</span>
+</span><span class='line'><span class="nd">@EnableElasticsearchRepositories</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="s">&quot;io.pratik.elasticsearch.repositories&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span> <span class="s">&quot;io.pratik.elasticsearch&quot;</span> <span class="o">})</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElasticsearchClientConfig</span> <span class="kd">extends</span> <span class="n">AbstractElasticsearchConfiguration</span> <span class="o">{</span>
+</span><span class='line'>  <span class="nd">@Override</span>
+</span><span class='line'>  <span class="nd">@Bean</span>
+</span><span class='line'>  <span class="kd">public</span> <span class="n">RestHighLevelClient</span> <span class="nf">elasticsearchClient</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>      <span class="c1">// 配置连接信息</span>
+</span><span class='line'>      <span class="kd">final</span> <span class="n">ClientConfiguration</span> <span class="n">clientConfiguration</span> <span class="o">=</span> <span class="n">ClientConfiguration</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">connectedTo</span><span class="o">(</span><span class="s">&quot;localhost:9200&quot;</span><span class="o">)</span>
+</span><span class='line'>              <span class="o">.</span><span class="na">build</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'>      <span class="k">return</span> <span class="n">RestClients</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">clientConfiguration</span><span class="o">).</span><span class="na">rest</span><span class="o">();</span>
+</span><span class='line'>  <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="cm">/**</span>
+</span><span class='line'><span class="cm">     * 这个很重要，不添加的话无法使用@Filed注解</span>
+</span><span class='line'><span class="cm">     */</span>
+</span><span class='line'>    <span class="nd">@Bean</span>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">EntityMapper</span> <span class="nf">entityMapper</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">ElasticsearchEntityMapper</span> <span class="n">entityMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">ElasticsearchEntityMapper</span><span class="o">(</span>
+</span><span class='line'>                <span class="n">elasticsearchMappingContext</span><span class="o">(),</span> <span class="k">new</span> <span class="nf">DefaultConversionService</span><span class="o">()</span>
+</span><span class='line'>        <span class="o">);</span>
+</span><span class='line'>        <span class="n">entityMapper</span><span class="o">.</span><span class="na">setConversions</span><span class="o">(</span><span class="n">elasticsearchCustomConversions</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">entityMapper</span><span class="o">;</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>测试文章类，必须要加<code>type='_doc'</code>，不然无法使用。另外遇到的问题是我数据库的日期用的是<code>Date</code>话，一直提示解析错误，最后使用<code>LocalDateTime</code>后就好了。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Data</span>
+</span><span class='line'><span class="nd">@Document</span><span class="o">(</span><span class="n">indexName</span> <span class="o">=</span> <span class="s">&quot;my-cms&quot;</span><span class="o">,</span> <span class="n">type</span> <span class="o">=</span> <span class="s">&quot;_doc&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EsArticle</span> <span class="o">{</span>
+</span><span class='line'>  <span class="nd">@Id</span> <span class="c1">// org.springframework.data.annotation.Id</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="n">Integer</span> <span class="n">id</span><span class="o">;</span> <span class="c1">// 文章ID</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nd">@Field</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">FieldType</span><span class="o">.</span><span class="na">Text</span><span class="o">,</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="s">&quot;ik_max_word&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="n">String</span> <span class="n">title</span><span class="o">;</span> <span class="c1">// 文章标题</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nd">@Field</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;content&quot;</span><span class="o">,</span> <span class="n">type</span> <span class="o">=</span> <span class="n">FieldType</span><span class="o">.</span><span class="na">Text</span><span class="o">,</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="s">&quot;ik_max_word&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="n">String</span> <span class="n">articleContent</span><span class="o">;</span> <span class="c1">// 文章正文内容</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nd">@JsonFormat</span><span class="o">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="s">&quot;yyyy-MM-dd HH:mm:ss&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="nd">@Field</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;create_time&quot;</span><span class="o">)</span>
+</span><span class='line'>  <span class="kd">private</span> <span class="n">LocalDateTime</span> <span class="n">createTime</span><span class="o">;</span> <span class="c1">// 文章创建时间</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>创建<code>Repository</code>类。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ElasticArticleRepository</span> <span class="kd">extends</span> <span class="n">ElasticsearchRepository</span><span class="o">&lt;</span><span class="n">EsArticle</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="o">{</span>
+</span><span class='line'>  
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>生成<code>Controller</code>，使用<em>Postman</em>测试接口是否正常工作。</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@RestController</span>
+</span><span class='line'><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&quot;/article&quot;</span><span class="o">)</span>
+</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SearchController</span> <span class="o">{</span>
+</span><span class='line'>  <span class="nd">@Autowired</span>
+</span><span class='line'>    <span class="kd">private</span> <span class="n">ElasticArticleRepository</span> <span class="n">elasticRepository</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@PostMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;/search&quot;</span><span class="o">)</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">EsArticle</span><span class="o">&gt;</span> <span class="nf">handleSearchRequest</span><span class="o">(</span>
+</span><span class='line'>            <span class="nd">@RequestParam</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">requestParam</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">BoolQueryBuilder</span> <span class="n">queryBuilder</span> <span class="o">=</span> <span class="n">QueryBuilders</span><span class="o">.</span><span class="na">boolQuery</span><span class="o">();</span>
+</span><span class='line'>        <span class="c1">// 构造ES查询条件</span>
+</span><span class='line'>        <span class="n">String</span> <span class="n">keyword</span> <span class="o">=</span> <span class="o">(</span><span class="n">String</span><span class="o">)</span> <span class="n">requestParam</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;keyword&quot;</span><span class="o">);</span>
+</span><span class='line'>        <span class="n">queryBuilder</span><span class="o">.</span><span class="na">should</span><span class="o">(</span><span class="n">QueryBuilders</span><span class="o">.</span><span class="na">matchPhraseQuery</span><span class="o">(</span><span class="s">&quot;title&quot;</span><span class="o">,</span> <span class="n">keyword</span><span class="o">))</span>
+</span><span class='line'>                <span class="o">.</span><span class="na">should</span><span class="o">(</span><span class="n">QueryBuilders</span><span class="o">.</span><span class="na">matchPhraseQuery</span><span class="o">(</span><span class="s">&quot;content&quot;</span><span class="o">,</span> <span class="n">keyword</span><span class="o">));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">StopWatch</span> <span class="n">watch</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">StopWatch</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">watch</span><span class="o">.</span><span class="na">start</span><span class="o">();</span> <span class="c1">// 开始计时</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">Page</span><span class="o">&lt;</span><span class="n">EsArticle</span><span class="o">&gt;</span> <span class="n">articles</span> <span class="o">=</span> <span class="o">(</span><span class="n">Page</span><span class="o">&lt;</span><span class="n">EsArticle</span><span class="o">&gt;)</span>
+</span><span class='line'>                <span class="n">elasticRepository</span><span class="o">.</span><span class="na">search</span><span class="o">(</span><span class="n">queryBuilder</span><span class="o">);</span>  <span class="c1">// 检索数据</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">watch</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>  <span class="c1">// 结束计时</span>
+</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;数据检索耗时：%s ms&quot;</span><span class="o">,</span>
+</span><span class='line'>                <span class="n">watch</span><span class="o">.</span><span class="na">getTotalTimeMillis</span><span class="o">()));</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="k">return</span> <span class="n">articles</span><span class="o">.</span><span class="na">getContent</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1365,83 +1659,6 @@ brew install &hellip;">
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2021/03/24/notes-on-oranges-an-operating-system-implementation/">《Orange&#8217;S:一个操作系统的实现》笔记</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2021-03-24T15:18:30+08:00'><span class='date'>2021-03-24</span> <span class='time'>15:18:30</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4>使用FreeDOS运行COM</h4>
-
-<p>FreeDOS运行COM文件记录，主要是拷贝软盘里面，然后执行。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo mount -o loop xxx.img /mnt/floppy <span class="c"># 挂载，挂在失败的话在mnt目录下创建floppy文件夹</span>
-</span><span class='line'>sudo cp xxx.com /mnt/floppy/ <span class="c"># 拷贝文件</span>
-</span><span class='line'>sudo umount /mnt/floppy <span class="c"># 卸载</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>网上书中的源码中的<code>freedos.img</code>并不包含<code>debug</code>这样的工具，不过<code>debug</code>并不能调试保护模式的代码。</p>
-
-<p>在<code>bochsrc</code>配置文件中添加</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>magic_break: <span class="nv">enabled</span> <span class="o">=</span> 1
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>最后在汇编代码需要断点的地方添加</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='nasm'><span class='line'><span class="nf">xchg</span> <span class="nb">bx</span><span class="p">,</span> <span class="nb">bx</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>在FreeDOS执行COM文件后，就会进入到bochs调试。</p>
-
-<h4>Bochs</h4>
-
-<h5>有用的调试系统的命令</h5>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sreg <span class="c"># 显示段寄存器的内容</span>
-</span><span class='line'>info gdt  <span class="c"># 显示GDTR寄存器的内容</span>
-</span><span class='line'>creg <span class="c"># 显示CR0寄存器的内容</span>
-</span><span class='line'>print-stack <span class="c"># 查看栈的内容</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>参考</h4>
-
-<p><a href="https://techlog.cn/article/list/10183462">如何调试操作系统</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1461,6 +1678,10 @@ brew install &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/04/26/springboot-elasticsearch/">Spring Boot使用Elasticsearch</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/23/springboot-elk/">Spring Boot使用ELK</a>
       </li>
     
@@ -1474,10 +1695,6 @@ brew install &hellip;">
     
       <li class="post">
         <a href="/blog/2021/04/16/learn-docker/">学习Docker使用</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/04/16/brew-practices/">Brew实践</a>
       </li>
     
   </ul>
