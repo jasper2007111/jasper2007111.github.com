@@ -21,6 +21,7 @@
   <link rel="canonical" href="https://c2lang.com/blog/2021/03/29/go-notes">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/github.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="无用之用" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
@@ -84,12 +85,14 @@
     
     
       <p class="meta">
-        
+		
+			
 
 
 
 
-<time class='entry-date' datetime='2021-03-29T14:46:09+08:00'><span class='date'>2021-03-29</span> <span class='time'>14:46:09</span></time>
+2021-03-29 14:46
+		
         
       </p>
     
@@ -100,121 +103,70 @@
 
 <p>后来又做物流系统，重写系统时有考虑用Go，不过因为大部分的外部接口对接都是Java的，为了省事就使用了Java。不过如果是自己的项目的话，还是愿意用Go，毕竟Java还是有点重。</p>
 
-<h4>IDE</h4>
-
+<h4 id="ide">IDE</h4>
 <p>原来有用过GoLand，为了轻量点，先用VS Code，众所周知的原因安装插件老失败，最后设置Go的代理就可以了。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>go env -w <span class="nv">GOPROXY</span><span class="o">=</span>https://goproxy.cn,direct
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>go <span class="nb">env</span> <span class="nt">-w</span> <span class="nv">GOPROXY</span><span class="o">=</span>https://goproxy.cn,direct
+</code></pre></div></div>
 
-
-<h4>C程序员的礼物</h4>
+<h4 id="c程序员的礼物">C程序员的礼物</h4>
 
 <p>直接试着写个搜索二叉树，其实除了语法上跟C的一些类型定义次序上有点不习惯外，其他方面对于C程序员来说，还是熟悉的用法，比如指针的指针这样的概念，毕竟Go是原来C的那帮人搞的，兼顾C的同时也结合不少Python这样的现代语言的特性。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">type</span> <span class="nx">Node</span> <span class="kd">struct</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">data</span>      <span class="kt">int</span>
-</span><span class='line'>  <span class="nx">leftNode</span>  <span class="o">*</span><span class="nx">Node</span>
-</span><span class='line'>  <span class="nx">rightNode</span> <span class="o">*</span><span class="nx">Node</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">func</span> <span class="nx">insert</span><span class="p">(</span><span class="nx">tree</span> <span class="o">**</span><span class="nx">Node</span><span class="p">,</span> <span class="nx">value</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">*</span><span class="nx">tree</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">tempNode</span> <span class="nx">Node</span>
-</span><span class='line'>      <span class="nx">tempNode</span><span class="p">.</span><span class="nx">data</span> <span class="p">=</span> <span class="nx">value</span>
-</span><span class='line'>      <span class="o">*</span><span class="nx">tree</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">tempNode</span>
-</span><span class='line'>      <span class="k">return</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">data</span> <span class="p">&gt;</span> <span class="nx">value</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">leftNode</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">data</span> <span class="p">&lt;</span> <span class="nx">value</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">rightNode</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">func</span> <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">tree</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;data: %d\n&quot;</span><span class="p">,</span> <span class="nx">tree</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span>
-</span><span class='line'>      <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">.</span><span class="nx">leftNode</span><span class="p">)</span>
-</span><span class='line'>      <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">.</span><span class="nx">rightNode</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">tree</span> <span class="o">*</span><span class="nx">Node</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">)</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="k">package</span> <span class="n">main</span>
 
+<span class="k">import</span> <span class="s">"fmt"</span>
+
+<span class="k">type</span> <span class="n">Node</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">data</span>      <span class="kt">int</span>
+	<span class="n">leftNode</span>  <span class="o">*</span><span class="n">Node</span>
+	<span class="n">rightNode</span> <span class="o">*</span><span class="n">Node</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">insert</span><span class="p">(</span><span class="n">tree</span> <span class="o">**</span><span class="n">Node</span><span class="p">,</span> <span class="n">value</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="o">*</span><span class="n">tree</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">var</span> <span class="n">tempNode</span> <span class="n">Node</span>
+		<span class="n">tempNode</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">value</span>
+		<span class="o">*</span><span class="n">tree</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">tempNode</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">tree</span><span class="p">)</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;</span> <span class="n">value</span> <span class="p">{</span>
+		<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="n">tree</span><span class="p">)</span><span class="o">.</span><span class="n">leftNode</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">tree</span><span class="p">)</span><span class="o">.</span><span class="n">data</span> <span class="o">&lt;</span> <span class="n">value</span> <span class="p">{</span>
+		<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="n">tree</span><span class="p">)</span><span class="o">.</span><span class="n">rightNode</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">perOrder</span><span class="p">(</span><span class="n">tree</span> <span class="o">*</span><span class="n">Node</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">tree</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"data: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tree</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+		<span class="n">perOrder</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">leftNode</span><span class="p">)</span>
+		<span class="n">perOrder</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">rightNode</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">var</span> <span class="n">tree</span> <span class="o">*</span><span class="n">Node</span>
+
+	<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tree</span><span class="p">,</span> <span class="m">9</span><span class="p">)</span>
+	<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tree</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span>
+	<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tree</span><span class="p">,</span> <span class="m">15</span><span class="p">)</span>
+	<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tree</span><span class="p">,</span> <span class="m">6</span><span class="p">)</span>
+	<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tree</span><span class="p">,</span> <span class="m">12</span><span class="p">)</span>
+	<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tree</span><span class="p">,</span> <span class="m">17</span><span class="p">)</span>
+	<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tree</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+
+	<span class="n">perOrder</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
 </div>
 
 
   <footer>
     <p class="meta">
       
-  
-
 <span class="byline author vcard">Posted by <span class="fn">Jasper Ji</span></span>
 
       
@@ -222,7 +174,7 @@
 
 
 
-<time class='entry-date' datetime='2021-03-29T14:46:09+08:00'><span class='date'>2021-03-29</span> <span class='time'>14:46:09</span></time>
+
       
 
 
@@ -265,6 +217,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/26/talk-about-meditatio/">谈谈冥想</a>
       </li>
     
@@ -280,17 +236,12 @@
         <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2021/04/18/learn-kubernetes/">学习Kubernetes</a>
-      </li>
-    
   </ul>
 </section>
 <section>
     <h1>Categories</h1>
     <ul id="categories">
-      <li class='category'><a href='/blog/categories/du-shu/'>读书 (2)</a></li>
-
+      
     </ul>
 </section>
 

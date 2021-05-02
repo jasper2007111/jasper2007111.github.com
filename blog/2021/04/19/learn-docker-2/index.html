@@ -21,6 +21,7 @@
   <link rel="canonical" href="https://c2lang.com/blog/2021/04/19/learn-docker-2">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/github.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="无用之用" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
@@ -84,12 +85,14 @@
     
     
       <p class="meta">
-        
+		
+			
 
 
 
 
-<time class='entry-date' datetime='2021-04-19T06:01:29+08:00'><span class='date'>2021-04-19</span> <span class='time'>06:01:29</span></time>
+2021-04-19 06:01
+		
         
       </p>
     
@@ -98,32 +101,26 @@
 
 <div class="entry-content"><p>打包现有Java工程的Jar到Docker镜像，也是遇到了问题。</p>
 
-<h4>不熟悉Dockerfile</h4>
+<h4 id="不熟悉dockerfile">不熟悉Dockerfile</h4>
 
-<h6>COPY 源 目标</h6>
+<h6 id="copy-源-目标">COPY 源 目标</h6>
 
-<p>一开始把源和目标的顺序给弄反了，但是还在镜像中有那个文件，结果执行<code>java -jar xxx.jar</code>老提示<code>Error: Unable to access jarfile xxx.jar</code>。最后登录到容器内部发现jar的文件大小不对，最后才反应过来把顺序弄反了。</p>
+<p>一开始把源和目标的顺序给弄反了，但是还在镜像中有那个文件，结果执行<code class="language-plaintext highlighter-rouge">java -jar xxx.jar</code>老提示<code class="language-plaintext highlighter-rouge">Error: Unable to access jarfile xxx.jar</code>。最后登录到容器内部发现jar的文件大小不对，最后才反应过来把顺序弄反了。</p>
 
-<h4>登入容器内部</h4>
+<h4 id="登入容器内部">登入容器内部</h4>
+<p>一开始为了诊断Java运行Jar文件不成功的问题，我就想看看容器内的文件是否已经在。最后用如下命令，登入容器，这个还是比较有用，不过应该去掉镜像的<code class="language-plaintext highlighter-rouge">CMD</code>命令。</p>
 
-<p>一开始为了诊断Java运行Jar文件不成功的问题，我就想看看容器内的文件是否已经在。最后用如下命令，登入容器，这个还是比较有用，不过应该去掉镜像的<code>CMD</code>命令。</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>docker run <span class="nt">-t</span> <span class="nt">-i</span> xxx_container /bin/bash
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -t -i xxx_container /bin/bash
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>镜像大小</h4>
-
-<p>一开始用的<code>FROM openjdk:8</code>，打出的镜像有800多M，后来使用<code>FROM openjdk:8-jdk-alpine</code>，大小150多M，我的Jar包实际只有不到50M的样子，所以还是比较大了。</p>
+<h4 id="镜像大小">镜像大小</h4>
+<p>一开始用的<code class="language-plaintext highlighter-rouge">FROM openjdk:8</code>，打出的镜像有800多M，后来使用<code class="language-plaintext highlighter-rouge">FROM openjdk:8-jdk-alpine</code>，大小150多M，我的Jar包实际只有不到50M的样子，所以还是比较大了。</p>
 </div>
 
 
   <footer>
     <p class="meta">
       
-  
-
 <span class="byline author vcard">Posted by <span class="fn">Jasper Ji</span></span>
 
       
@@ -131,7 +128,7 @@
 
 
 
-<time class='entry-date' datetime='2021-04-19T06:01:29+08:00'><span class='date'>2021-04-19</span> <span class='time'>06:01:29</span></time>
+
       
 
 
@@ -174,6 +171,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/26/talk-about-meditatio/">谈谈冥想</a>
       </li>
     
@@ -189,17 +190,12 @@
         <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2021/04/18/learn-kubernetes/">学习Kubernetes</a>
-      </li>
-    
   </ul>
 </section>
 <section>
     <h1>Categories</h1>
     <ul id="categories">
-      <li class='category'><a href='/blog/categories/du-shu/'>读书 (2)</a></li>
-
+      
     </ul>
 </section>
 

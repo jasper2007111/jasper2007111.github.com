@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>《保护方式下的80386及其编程》笔记 - 无用之用</title>
+  <title>Octopress升级 - 无用之用</title>
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="《保护方式下的80386及其编程》即《Programming the 80386》的中文翻译版，不过当年并没有标注翻译出处。这本书对于写一个基于x86操作系统非常有用，另外对于研究早期的Linux内核也很有参考，因为林纳斯当年也是参考《Programming the 80386》这本书的， &hellip;">
+  <meta name="description" content="升级其他软件的时候居然把Ruby版本升级到了3.0，而Octopress依赖的Jekyll的版本是2.0，对Ruby版本有限制，新版本用不了。本来想换个静态博客的框架来着，想着自己好歹也是全栈工程师，自己升级下吧。 Octopress其实是基于Jekyll的定制静态博客框架， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="https://c2lang.com/blog/2021/03/11/programming-the-80386-notes">
+  <link rel="canonical" href="https://c2lang.com/blog/2021/05/02/octopress-upgrade">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/github.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -81,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">《保护方式下的80386及其编程》笔记</h1>
+      <h1 class="entry-title">Octopress升级</h1>
     
     
       <p class="meta">
@@ -91,7 +91,7 @@
 
 
 
-2021-03-11 09:42
+2021-05-02 00:15
 		
         
       </p>
@@ -99,9 +99,24 @@
   </header>
 
 
-<div class="entry-content"><p>《保护方式下的80386及其编程》即《Programming the 80386》的中文翻译版，不过当年并没有标注翻译出处。这本书对于写一个基于x86操作系统非常有用，另外对于研究早期的Linux内核也很有参考，因为林纳斯当年也是参考《Programming the 80386》这本书的，包括386BSD的作者也是参考这本书了。</p>
+<div class="entry-content"><p>升级其他软件的时候居然把Ruby版本升级到了3.0，而Octopress依赖的Jekyll的版本是2.0，对Ruby版本有限制，新版本用不了。本来想换个静态博客的框架来着，想着自己好歹也是全栈工程师，自己升级下吧。</p>
 
-<p>这本书是了解80386的保护模式最好的书籍，关于8086的书籍和汇编语言资料不少，但是关于80386的保护模式书籍很少，很多后来的书籍的知识都是转来转去的，有些只是讲个大概，没有把细节说明清楚，往往是一知半解了。不同的是此书可以说是讲解非常细致，概念很清晰，主要是此书的作者是80386的总设计师，所以这本书如果讲不明白，那还有其他书籍吗。</p>
+<p>Octopress其实是基于Jekyll的定制静态博客框架，生成静态内容主要依赖于Jekyll了。看了下Jekyll已经到4.0了，干脆直接升级到4.0了。不过发现一些问题，4.0后放弃了对RDiscount、Pygments的支持，默认的Markdown解析用的是Kramdown。Octopress分别使用了RDiscount、Pygments，所以这块只能弃用了，改用Kramdown。</p>
+
+<p>升级后发现代码高亮有点问题，4.0因为弃用了Pygments，所以只能使用默认的Rouge。Octopress自己实现了一个代码高亮的样式，但是有兼容问题，最后直接弃用。使用Rouge生成Github的样式，最后修改了下，最终变成现在的样子，总之还是不太喜欢之前的暗背景的样式。</p>
+
+<p>生成文章方面，因为Jekyll的一些变更，遇到三个问题，首先是文章列表是生序排序的，修改了下也好了。其次发现首页没有文章，主要是没有安装jekyll-paginate的缘故。最后就是生成的文章没有时间，Octopress自定义了一个时间格式的钩子，但是没有起作用，最后直接使用原生的方式解决了。</p>
+
+<p>博客预览使用<code class="language-plaintext highlighter-rouge">rake preview</code>会报错，最后直接在Public目录下起了个Python的Web服务器，这个并不影响使用。</p>
+
+<h4 id="总结">总结</h4>
+<p>现在还在用Octopress人确实不多了，多半都是不更新的僵尸博客了。其实这些静态博客解决方案原理大同小异的，之前有人吐槽Octopress生成博客文章慢，实际上主要是Jekyll慢了，不过现在都4.0了，目前我觉得速度还是能接受的。</p>
+
+<p>既然Octopress作者都不维护了，想着后续问题修复的差不多了，把修改的版本放出了，也算是尽一份力吧。</p>
+
+<p>参考:<br />
+<a href="https://jekyllrb.com/news/2019/08/20/jekyll-4-0-0-released/">Jekyll 4.0.0 Released</a></p>
+
 </div>
 
 
@@ -130,10 +145,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2021/02/04/how-to-write-an-os/" title="Previous Post: 如何写一个操作系统">&laquo; 如何写一个操作系统</a>
+        <a class="basic-alignment left" href="/blog/2021/04/26/talk-about-meditatio/" title="Previous Post: 谈谈冥想">&laquo; 谈谈冥想</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2021/03/22/nasm-notes/" title="Next Post: NASM 笔记">NASM 笔记 &raquo;</a>
       
     </p>
   </footer>
@@ -208,8 +221,8 @@
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'https://c2lang.com/blog/2021/03/11/programming-the-80386-notes/';
-        var disqus_url = 'https://c2lang.com/blog/2021/03/11/programming-the-80386-notes/';
+        var disqus_identifier = 'https://c2lang.com/blog/2021/05/02/octopress-upgrade/';
+        var disqus_url = 'https://c2lang.com/blog/2021/05/02/octopress-upgrade/';
         var disqus_script = 'embed.js';
       
     (function () {

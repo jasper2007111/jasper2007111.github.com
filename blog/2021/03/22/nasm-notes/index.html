@@ -9,11 +9,10 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="编译 目前使用的是64位的Ubuntu环境，默认会编译成64位的，编译成32位的在参数上有些差异。 1
-2
-3
-nasm -f elf32 foo.asm -o foo.o # NASM编译成ELF32位目标文件
-gcc -m32 -g -c bar.c -o bar.o # &hellip;">
+  <meta name="description" content="编译
+目前使用的是64位的Ubuntu环境，默认会编译成64位的，编译成32位的在参数上有些差异。 nasm -f elf32 foo.asm -o foo.o # NASM编译成ELF32位目标文件
+gcc -m32 -g -c bar.c -o bar.o # GCC编译成32的目标文件
+ld &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -25,6 +24,7 @@ gcc -m32 -g -c bar.c -o bar.o # &hellip;">
   <link rel="canonical" href="https://c2lang.com/blog/2021/03/22/nasm-notes">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/github.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="无用之用" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
@@ -88,59 +88,44 @@ gcc -m32 -g -c bar.c -o bar.o # &hellip;">
     
     
       <p class="meta">
-        
+		
+			
 
 
 
 
-<time class='entry-date' datetime='2021-03-22T14:57:28+08:00'><span class='date'>2021-03-22</span> <span class='time'>14:57:28</span></time>
+2021-03-22 14:57
+		
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h3>编译</h3>
-
+<div class="entry-content"><h3 id="编译">编译</h3>
 <p>目前使用的是64位的Ubuntu环境，默认会编译成64位的，编译成32位的在参数上有些差异。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>nasm -f elf32 foo.asm -o foo.o <span class="c"># NASM编译成ELF32位目标文件</span>
-</span><span class='line'>gcc -m32 -g -c bar.c -o bar.o <span class="c"># GCC编译成32的目标文件</span>
-</span><span class='line'>ld -m elf_i386 foo.o bar.o -o foobar <span class="c"># 链接目标文件，生成执行文件</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>nasm <span class="nt">-f</span> elf32 foo.asm <span class="nt">-o</span> foo.o <span class="c"># NASM编译成ELF32位目标文件</span>
+gcc <span class="nt">-m32</span> <span class="nt">-g</span> <span class="nt">-c</span> bar.c <span class="nt">-o</span> bar.o <span class="c"># GCC编译成32的目标文件</span>
+ld <span class="nt">-m</span> elf_i386 foo.o bar.o <span class="nt">-o</span> foobar <span class="c"># 链接目标文件，生成执行文件</span>
+</code></pre></div></div>
 
-
-<h3>GDB</h3>
-
+<h3 id="gdb">GDB</h3>
 <p>一些常用的GDB调试的命令</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">set </span>disassembly-flavor intel <span class="c"># 默认AT&amp;T格式，可以设置为Intel格式</span>
-</span><span class='line'>disassemble _start <span class="c"># 反汇编，这一步主要是为了后续设置断点用</span>
-</span><span class='line'><span class="nb">break</span> * _start + <span class="m">10</span> <span class="c"># 设置断点，此处是_start开始的第10行代码处</span>
-</span><span class='line'>run <span class="c"># 执行程序，设置断点后会停在断点处</span>
-</span><span class='line'>step <span class="c"># 单步调试，可以简写为s</span>
-</span><span class='line'>info registers <span class="c"># 显示寄存器</span>
-</span><span class='line'>layout reg <span class="c"># 一般我会使用这个</span>
-</span><span class='line'>q <span class="c"># 退出程序</span>
-</span><span class='line'>x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">set </span>disassembly-flavor intel <span class="c"># 默认AT&amp;T格式，可以设置为Intel格式</span>
+disassemble _start <span class="c"># 反汇编，这一步主要是为了后续设置断点用</span>
+<span class="nb">break</span> <span class="k">*</span> _start + 10 <span class="c"># 设置断点，此处是_start开始的第10行代码处</span>
+run <span class="c"># 执行程序，设置断点后会停在断点处</span>
+step <span class="c"># 单步调试，可以简写为s</span>
+info registers <span class="c"># 显示寄存器</span>
+layout reg <span class="c"># 一般我会使用这个</span>
+q <span class="c"># 退出程序</span>
+x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
+</code></pre></div></div>
 
-
-<h3>参考</h3>
-
-<p><a href="https://samsclass.info/127/proj/ASM110.htm">ASM 110: Gdb (30 pts)</a><br/>
+<h3 id="参考">参考</h3>
+<p><a href="https://samsclass.info/127/proj/ASM110.htm">ASM 110: Gdb (30 pts)</a><br />
 <a href="https://deepzz.com/post/gdb-debug.html">GDB命令基础，让你的程序bug无处躲藏</a></p>
 </div>
 
@@ -148,8 +133,6 @@ gcc -m32 -g -c bar.c -o bar.o # &hellip;">
   <footer>
     <p class="meta">
       
-  
-
 <span class="byline author vcard">Posted by <span class="fn">Jasper Ji</span></span>
 
       
@@ -157,7 +140,7 @@ gcc -m32 -g -c bar.c -o bar.o # &hellip;">
 
 
 
-<time class='entry-date' datetime='2021-03-22T14:57:28+08:00'><span class='date'>2021-03-22</span> <span class='time'>14:57:28</span></time>
+
       
 
 
@@ -175,7 +158,7 @@ gcc -m32 -g -c bar.c -o bar.o # &hellip;">
         <a class="basic-alignment left" href="/blog/2021/03/11/programming-the-80386-notes/" title="Previous Post: 《保护方式下的80386及其编程》笔记">&laquo; 《保护方式下的80386及其编程》笔记</a>
       
       
-        <a class="basic-alignment right" href="/blog/2021/03/24/notes-on-oranges-an-operating-system-implementation/" title="Next Post: 《Orange'S:一个操作系统的实现》笔记">《Orange&#8217;S:一个操作系统的实现》笔记 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2021/03/24/notes-on-oranges-an-operating-system-implementation/" title="Next Post: 《Orange'S:一个操作系统的实现》笔记">《Orange'S:一个操作系统的实现》笔记 &raquo;</a>
       
     </p>
   </footer>
@@ -200,6 +183,10 @@ gcc -m32 -g -c bar.c -o bar.o # &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/26/talk-about-meditatio/">谈谈冥想</a>
       </li>
     
@@ -215,17 +202,12 @@ gcc -m32 -g -c bar.c -o bar.o # &hellip;">
         <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2021/04/18/learn-kubernetes/">学习Kubernetes</a>
-      </li>
-    
   </ul>
 </section>
 <section>
     <h1>Categories</h1>
     <ul id="categories">
-      <li class='category'><a href='/blog/categories/du-shu/'>读书 (2)</a></li>
-
+      
     </ul>
 </section>
 

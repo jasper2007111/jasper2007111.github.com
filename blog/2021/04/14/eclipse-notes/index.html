@@ -9,7 +9,8 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="为什么是Eclispe 最早接触Eclispe主要是用来开发Android应用，早期Android开发没有Android Studio，只能通过安装插件来开发。后来开发iOS后，Eclispe就用的少了，偶尔用来跑些简单的例子。后来做Java web，Eclispe又开始用了起来。 &hellip;">
+  <meta name="description" content="为什么是Eclispe
+最早接触Eclispe主要是用来开发Android应用，早期Android开发没有Android Studio，只能通过安装插件来开发。后来开发iOS后，Eclispe就用的少了，偶尔用来跑些简单的例子。后来做Java web，Eclispe又开始用了起来。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,6 +22,7 @@
   <link rel="canonical" href="https://c2lang.com/blog/2021/04/14/eclipse-notes">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/github.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="无用之用" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
@@ -84,61 +86,52 @@
     
     
       <p class="meta">
-        
+		
+			
 
 
 
 
-<time class='entry-date' datetime='2021-04-14T06:43:52+08:00'><span class='date'>2021-04-14</span> <span class='time'>06:43:52</span></time>
+2021-04-14 06:43
+		
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h4>为什么是Eclispe</h4>
-
+<div class="entry-content"><h4 id="为什么是eclispe">为什么是Eclispe</h4>
 <p>最早接触Eclispe主要是用来开发Android应用，早期Android开发没有Android Studio，只能通过安装插件来开发。后来开发iOS后，Eclispe就用的少了，偶尔用来跑些简单的例子。后来做Java web，Eclispe又开始用了起来。</p>
 
 <p>虽然很多人推荐IntelliJ IDEA，下载的试用了下，某些功能确实比Eclispe强大，但是Eclispe+Spring Tools，对目前的开发来说确实已经够用了，另外还是有点用不习惯，也没有Spring tools 这样的插件，所以干嘛花钱买个自己用不惯的东西呢？</p>
 
-<h4>自动补全</h4>
-
+<h4 id="自动补全">自动补全</h4>
 <p>默认出现点号时才会出现自动补全的提示，不过可以设置，这里以Mac环境为例。</p>
 
-<p>选择菜单<code>Perferences-&gt;Java-&gt;Content Assist-&gt;Auto activation triggers for Java</code>，默认为<strong><em>.</em></strong>，使用<code>.abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWSYZ_</code>替换，点击Ok。</p>
+<p>选择菜单<code class="language-plaintext highlighter-rouge">Perferences-&gt;Java-&gt;Content Assist-&gt;Auto activation triggers for Java</code>，默认为<strong><em>.</em></strong>，使用<code class="language-plaintext highlighter-rouge">.abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWSYZ_</code>替换，点击Ok。</p>
 
-<h4>常用插件</h4>
-
+<h4 id="常用插件">常用插件</h4>
 <p><strong>EasyShell</strong>，这个工具主要是可以快速在当前目录打开Shell以及打开当前的文件夹。</p>
 
-<h4>Maven 配置文件报错</h4>
+<h4 id="maven-配置文件报错">Maven 配置文件报错</h4>
 
 <p>Maven使用本地Jar包后pom.xml显示错误，实际上本地Jar包是可以加载的，但总是提示错误。</p>
+<blockquote>
+  <p>dependencies.dependency.systemPath’ for com.test:test:jar must specify an absolute path but is ${pom.basedir}/libs/test.jar</p>
+</blockquote>
 
-<blockquote><p>dependencies.dependency.systemPath&#8217; for com.test:test:jar must specify an absolute path but is ${pom.basedir}/libs/test.jar</p></blockquote>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>com.test<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>test<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;version&gt;</span>1.0<span class="nt">&lt;/version&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;scope&gt;</span>system<span class="nt">&lt;/scope&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;systemPath&gt;</span>${pom.basedir}/libs/test.jar<span class="nt">&lt;/systemPath&gt;</span>
-</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nt">&lt;dependency&gt;</span>
+	<span class="nt">&lt;groupId&gt;</span>com.test<span class="nt">&lt;/groupId&gt;</span>
+	<span class="nt">&lt;artifactId&gt;</span>test<span class="nt">&lt;/artifactId&gt;</span>
+	<span class="nt">&lt;version&gt;</span>1.0<span class="nt">&lt;/version&gt;</span>
+	<span class="nt">&lt;scope&gt;</span>system<span class="nt">&lt;/scope&gt;</span>
+	<span class="nt">&lt;systemPath&gt;</span>${pom.basedir}/libs/test.jar<span class="nt">&lt;/systemPath&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
 
 <p>这个问题虽然不影响使用，但是老显示红叉，总感觉像去掉的。我原来使用Eclispe版本是2020-03 (4.15.0)，没有这个问题。但是使用最新的Eclipse版本2021-03 (4.19.0)有这个问题，包括Spring ToolSuite 4也有这个问题，我把4.15.0到4.19.0版本下载几个对比后，终于发现4.16.0开始都有问题，最后发现4.16.0版本Preferences多了一个XMl（Wide Web Developer）项，把子项Validation &amp; Resolution，Enable validation 禁用就没有了。</p>
 
-<h4>升级与不升级</h4>
-
+<h4 id="升级与不升级">升级与不升级</h4>
 <p>如果现有环境稳定，那就最好不要升级。Eclispe好处是可以支持多个语言的开发，可以装一堆插件支持，但感觉只把它当作Java IDE就可以了，现在VS Code完全可以做其他语言的IDE。</p>
 
 <p>之前的Eclispe很稳定，但一次插件的安装后，弹出需要更高版本的Eclispe，然后就无法启动了。一气之下，直接删除Eclispe，重新安装那些插件，结果发现2020-03 (4.15.0)下载的Spring Tools插件不能使用，发现Spring Tools 4已经出了，但是我当前这个版本无法使用。最后下载了Spring Tools官方出品的Eclispe整合版本Spring ToolSuite 4，就结果就出现了上面提到的Maven配置报错的问题，虽然问题解决了，但是还是提示插件安装也是要谨慎，可能升级不对就的折腾半天了。</p>
@@ -148,8 +141,6 @@
   <footer>
     <p class="meta">
       
-  
-
 <span class="byline author vcard">Posted by <span class="fn">Jasper Ji</span></span>
 
       
@@ -157,7 +148,7 @@
 
 
 
-<time class='entry-date' datetime='2021-04-14T06:43:52+08:00'><span class='date'>2021-04-14</span> <span class='time'>06:43:52</span></time>
+
       
 
 
@@ -200,6 +191,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/26/talk-about-meditatio/">谈谈冥想</a>
       </li>
     
@@ -215,17 +210,12 @@
         <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2021/04/18/learn-kubernetes/">学习Kubernetes</a>
-      </li>
-    
   </ul>
 </section>
 <section>
     <h1>Categories</h1>
     <ul id="categories">
-      <li class='category'><a href='/blog/categories/du-shu/'>读书 (2)</a></li>
-
+      
     </ul>
 </section>
 

@@ -9,9 +9,9 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="Mac上安装软件基本上都在使用Brew，记录下使用坑。 慢 执行brew update时很慢的问题，主要是是Github访问慢的缘故，设置从镜像拉取，基本上可以解决这个问题。用了中科大的源，亲测速度感刚的。 替换brew.git 1
-2
-cd &quot;$(brew --repo)&quot; &hellip;">
+  <meta name="description" content="Mac上安装软件基本上都在使用Brew，记录下使用坑。 慢
+执行brew update时很慢的问题，主要是是Github访问慢的缘故，设置从镜像拉取，基本上可以解决这个问题。用了中科大的源，亲测速度感刚的。 替换brew.git cd "$(brew --repo)"
+git remote set &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -23,6 +23,7 @@ cd &quot;$(brew --repo)&quot; &hellip;">
   <link rel="canonical" href="https://c2lang.com/blog/2021/04/16/brew-practices">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/github.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="无用之用" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
@@ -86,12 +87,14 @@ cd &quot;$(brew --repo)&quot; &hellip;">
     
     
       <p class="meta">
-        
+		
+			
 
 
 
 
-<time class='entry-date' datetime='2021-04-16T09:20:13+08:00'><span class='date'>2021-04-16</span> <span class='time'>09:20:13</span></time>
+2021-04-16 09:20
+		
         
       </p>
     
@@ -100,40 +103,29 @@ cd &quot;$(brew --repo)&quot; &hellip;">
 
 <div class="entry-content"><p>Mac上安装软件基本上都在使用Brew，记录下使用坑。</p>
 
-<h4>慢</h4>
+<h4 id="慢">慢</h4>
+<p>执行<code class="language-plaintext highlighter-rouge">brew update</code>时很慢的问题，主要是是Github访问慢的缘故，设置从镜像拉取，基本上可以解决这个问题。用了中科大的源，亲测速度感刚的。</p>
 
-<p>执行<code>brew update</code>时很慢的问题，主要是是Github访问慢的缘故，设置从镜像拉取，基本上可以解决这个问题。用了中科大的源，亲测速度感刚的。</p>
+<h5 id="替换brewgit">替换<code class="language-plaintext highlighter-rouge">brew.git</code></h5>
 
-<h5>替换<code>brew.git</code></h5>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">cd</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--repo</span><span class="si">)</span><span class="s2">"</span>
+git remote set-url origin https://mirrors.ustc.edu.cn/brew.git
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> <span class="s2">&quot;$(brew --repo)&quot;</span>
-</span><span class='line'>git remote <span class="nb">set</span>-url origin https://mirrors.ustc.edu.cn/brew.git
-</span></code></pre></td></tr></table></div></figure>
+<h5 id="替换homebrew-coregit">替换<code class="language-plaintext highlighter-rouge">homebrew-core.git</code></h5>
 
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">cd</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--repo</span><span class="si">)</span><span class="s2">"</span>/Library/Taps/homebrew/homebrew-core
+git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
+</code></pre></div></div>
 
-<h5>替换<code>homebrew-core.git</code></h5>
+<h5 id="替换homebrew-caskgit">替换<code class="language-plaintext highlighter-rouge">homebrew-cask.git</code></h5>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> <span class="s2">&quot;$(brew --repo)&quot;</span>/Library/Taps/homebrew/homebrew-core
-</span><span class='line'>git remote <span class="nb">set</span>-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">cd</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--repo</span><span class="si">)</span><span class="s2">"</span>/Library/Taps/homebrew/homebrew-cask
+git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
+</code></pre></div></div>
 
-
-<h5>替换<code>homebrew-cask.git</code></h5>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> <span class="s2">&quot;$(brew --repo)&quot;</span>/Library/Taps/homebrew/homebrew-cask
-</span><span class='line'>git remote <span class="nb">set</span>-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>参考</h4>
-
-<p><a href="https://zhuanlan.zhihu.com/p/351199589">brew update 更新时 shallow clone</a><br/>
+<h4 id="参考">参考</h4>
+<p><a href="https://zhuanlan.zhihu.com/p/351199589">brew update 更新时 shallow clone</a><br />
 <a href="https://www.jianshu.com/p/62f1b963baa6">mac使用brew update无反应,更新慢解决办法</a></p>
 </div>
 
@@ -141,8 +133,6 @@ cd &quot;$(brew --repo)&quot; &hellip;">
   <footer>
     <p class="meta">
       
-  
-
 <span class="byline author vcard">Posted by <span class="fn">Jasper Ji</span></span>
 
       
@@ -150,7 +140,7 @@ cd &quot;$(brew --repo)&quot; &hellip;">
 
 
 
-<time class='entry-date' datetime='2021-04-16T09:20:13+08:00'><span class='date'>2021-04-16</span> <span class='time'>09:20:13</span></time>
+
       
 
 
@@ -193,6 +183,10 @@ cd &quot;$(brew --repo)&quot; &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/26/talk-about-meditatio/">谈谈冥想</a>
       </li>
     
@@ -208,17 +202,12 @@ cd &quot;$(brew --repo)&quot; &hellip;">
         <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2021/04/18/learn-kubernetes/">学习Kubernetes</a>
-      </li>
-    
   </ul>
 </section>
 <section>
     <h1>Categories</h1>
     <ul id="categories">
-      <li class='category'><a href='/blog/categories/du-shu/'>读书 (2)</a></li>
-
+      
     </ul>
 </section>
 

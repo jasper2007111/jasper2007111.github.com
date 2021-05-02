@@ -9,7 +9,7 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="对于孙正义和软银我还是蛮好奇的，首先我不太清楚这是个什么样的公司，“孙正义”三个字听着好像不像日本人。带着疑惑我迫不及待的购买了这本由彬本贵司撰写的《孙正义传》，大概用一天的时间很快的读完了，以下是一些总结。 孙正义是爷爷辈来到日本谋生的，到他这是第三代，日本姓是“安本”。作为归化的日本人， &hellip;">
+  <meta name="description" content="开始用Go应该是17年底的时候，那会做游戏，后台是用Go写的，虽然我主要负责Unity客户端方面的工作，不过也是经常帮忙给后端的Go小伙解决一些问题，自己也写一些Go的小东西。 后来又做物流系统，重写系统时有考虑用Go，不过因为大部分的外部接口对接都是Java的，为了省事就使用了Java。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,6 +21,7 @@
   <link rel="canonical" href="https://c2lang.com/posts/2">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/github.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="无用之用" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
@@ -83,16 +84,110 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2021/03/29/go-notes/">Go学习笔记</a></h1>
+    
+    
+      <p class="meta">
+		
+        	
+
+
+
+
+2021-03-29 14:46
+		
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>开始用Go应该是17年底的时候，那会做游戏，后台是用Go写的，虽然我主要负责Unity客户端方面的工作，不过也是经常帮忙给后端的Go小伙解决一些问题，自己也写一些Go的小东西。</p>
+
+<p>后来又做物流系统，重写系统时有考虑用Go，不过因为大部分的外部接口对接都是Java的，为了省事就使用了Java。不过如果是自己的项目的话，还是愿意用Go，毕竟Java还是有点重。</p>
+
+<h4 id="ide">IDE</h4>
+<p>原来有用过GoLand，为了轻量点，先用VS Code，众所周知的原因安装插件老失败，最后设置Go的代理就可以了。</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>go <span class="nb">env</span> <span class="nt">-w</span> <span class="nv">GOPROXY</span><span class="o">=</span>https://goproxy.cn,direct
+</code></pre></div></div>
+
+<h4 id="c程序员的礼物">C程序员的礼物</h4>
+
+<p>直接试着写个搜索二叉树，其实除了语法上跟C的一些类型定义次序上有点不习惯外，其他方面对于C程序员来说，还是熟悉的用法，比如指针的指针这样的概念，毕竟Go是原来C的那帮人搞的，兼顾C的同时也结合不少Python这样的现代语言的特性。</p>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="s">"fmt"</span>
+
+<span class="k">type</span> <span class="n">Node</span> <span class="k">struct</span> <span class="p">{</span>
+	<span class="n">data</span>      <span class="kt">int</span>
+	<span class="n">leftNode</span>  <span class="o">*</span><span class="n">Node</span>
+	<span class="n">rightNode</span> <span class="o">*</span><span class="n">Node</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">insert</span><span class="p">(</span><span class="n">tree</span> <span class="o">**</span><span class="n">Node</span><span class="p">,</span> <span class="n">value</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="o">*</span><span class="n">tree</span> <span class="o">==</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="k">var</span> <span class="n">tempNode</span> <span class="n">Node</span>
+		<span class="n">tempNode</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">value</span>
+		<span class="o">*</span><span class="n">tree</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">tempNode</span>
+		<span class="k">return</span>
+	<span class="p">}</span>
+
+	<span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">tree</span><span class="p">)</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;</span> <span class="n">value</span> <span class="p">{</span>
+		<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="n">tree</span><span class="p">)</span><span class="o">.</span><span class="n">leftNode</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+	<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="n">tree</span><span class="p">)</span><span class="o">.</span><span class="n">data</span> <span class="o">&lt;</span> <span class="n">value</span> <span class="p">{</span>
+		<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="n">tree</span><span class="p">)</span><span class="o">.</span><span class="n">rightNode</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">perOrder</span><span class="p">(</span><span class="n">tree</span> <span class="o">*</span><span class="n">Node</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span> <span class="n">tree</span> <span class="o">!=</span> <span class="no">nil</span> <span class="p">{</span>
+		<span class="n">fmt</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"data: %d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">tree</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+		<span class="n">perOrder</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">leftNode</span><span class="p">)</span>
+		<span class="n">perOrder</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">rightNode</span><span class="p">)</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="k">var</span> <span class="n">tree</span> <span class="o">*</span><span class="n">Node</span>
+
+	<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tree</span><span class="p">,</span> <span class="m">9</span><span class="p">)</span>
+	<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tree</span><span class="p">,</span> <span class="m">4</span><span class="p">)</span>
+	<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tree</span><span class="p">,</span> <span class="m">15</span><span class="p">)</span>
+	<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tree</span><span class="p">,</span> <span class="m">6</span><span class="p">)</span>
+	<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tree</span><span class="p">,</span> <span class="m">12</span><span class="p">)</span>
+	<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tree</span><span class="p">,</span> <span class="m">17</span><span class="p">)</span>
+	<span class="n">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tree</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+
+	<span class="n">perOrder</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2021/03/28/thoughts-after-reading-the-biography-of-masayoshi-son/">《孙正义传》读后感</a></h1>
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-03-28T22:55:30+08:00'><span class='date'>2021-03-28</span> <span class='time'>22:55:30</span></time>
+2021-03-28 22:55
+		
         
       </p>
     
@@ -120,70 +215,55 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2021/03/24/notes-on-oranges-an-operating-system-implementation/">《Orange&#8217;S:一个操作系统的实现》笔记</a></h1>
+      <h1 class="entry-title"><a href="/blog/2021/03/24/notes-on-oranges-an-operating-system-implementation/">《Orange'S:一个操作系统的实现》笔记</a></h1>
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-03-24T15:18:30+08:00'><span class='date'>2021-03-24</span> <span class='time'>15:18:30</span></time>
+2021-03-24 15:18
+		
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h4>使用FreeDOS运行COM</h4>
-
+  <div class="entry-content"><h4 id="使用freedos运行com">使用FreeDOS运行COM</h4>
 <p>FreeDOS运行COM文件记录，主要是拷贝软盘里面，然后执行。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo mount -o loop xxx.img /mnt/floppy <span class="c"># 挂载，挂在失败的话在mnt目录下创建floppy文件夹</span>
-</span><span class='line'>sudo cp xxx.com /mnt/floppy/ <span class="c"># 拷贝文件</span>
-</span><span class='line'>sudo umount /mnt/floppy <span class="c"># 卸载</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">sudo </span>mount <span class="nt">-o</span> loop xxx.img /mnt/floppy <span class="c"># 挂载，挂在失败的话在mnt目录下创建floppy文件夹</span>
+<span class="nb">sudo cp </span>xxx.com /mnt/floppy/ <span class="c"># 拷贝文件</span>
+<span class="nb">sudo </span>umount /mnt/floppy <span class="c"># 卸载</span>
+</code></pre></div></div>
 
+<p>网上书中的源码中的<code class="language-plaintext highlighter-rouge">freedos.img</code>并不包含<code class="language-plaintext highlighter-rouge">debug</code>这样的工具，不过<code class="language-plaintext highlighter-rouge">debug</code>并不能调试保护模式的代码。</p>
 
-<p>网上书中的源码中的<code>freedos.img</code>并不包含<code>debug</code>这样的工具，不过<code>debug</code>并不能调试保护模式的代码。</p>
+<p>在<code class="language-plaintext highlighter-rouge">bochsrc</code>配置文件中添加</p>
 
-<p>在<code>bochsrc</code>配置文件中添加</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>magic_break: <span class="nv">enabled</span> <span class="o">=</span> 1
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>magic_break: enabled = 1
+</code></pre></div></div>
 
 <p>最后在汇编代码需要断点的地方添加</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='nasm'><span class='line'><span class="nf">xchg</span> <span class="nb">bx</span><span class="p">,</span> <span class="nb">bx</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nf">xchg</span> <span class="nb">bx</span><span class="p">,</span> <span class="nb">bx</span>
+</code></pre></div></div>
 
 <p>在FreeDOS执行COM文件后，就会进入到bochs调试。</p>
 
-<h4>Bochs</h4>
+<h4 id="bochs">Bochs</h4>
+<h5 id="有用的调试系统的命令">有用的调试系统的命令</h5>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>sreg <span class="c"># 显示段寄存器的内容</span>
+info gdt  <span class="c"># 显示GDTR寄存器的内容</span>
+creg <span class="c"># 显示CR0寄存器的内容</span>
+print-stack <span class="c"># 查看栈的内容</span>
+</code></pre></div></div>
 
-<h5>有用的调试系统的命令</h5>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sreg <span class="c"># 显示段寄存器的内容</span>
-</span><span class='line'>info gdt  <span class="c"># 显示GDTR寄存器的内容</span>
-</span><span class='line'>creg <span class="c"># 显示CR0寄存器的内容</span>
-</span><span class='line'>print-stack <span class="c"># 查看栈的内容</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>参考</h4>
-
+<h4 id="参考">参考</h4>
 <p><a href="https://techlog.cn/article/list/10183462">如何调试操作系统</a></p>
 </div>
   
@@ -201,59 +281,44 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-03-22T14:57:28+08:00'><span class='date'>2021-03-22</span> <span class='time'>14:57:28</span></time>
+2021-03-22 14:57
+		
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h3>编译</h3>
-
+  <div class="entry-content"><h3 id="编译">编译</h3>
 <p>目前使用的是64位的Ubuntu环境，默认会编译成64位的，编译成32位的在参数上有些差异。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>nasm -f elf32 foo.asm -o foo.o <span class="c"># NASM编译成ELF32位目标文件</span>
-</span><span class='line'>gcc -m32 -g -c bar.c -o bar.o <span class="c"># GCC编译成32的目标文件</span>
-</span><span class='line'>ld -m elf_i386 foo.o bar.o -o foobar <span class="c"># 链接目标文件，生成执行文件</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>nasm <span class="nt">-f</span> elf32 foo.asm <span class="nt">-o</span> foo.o <span class="c"># NASM编译成ELF32位目标文件</span>
+gcc <span class="nt">-m32</span> <span class="nt">-g</span> <span class="nt">-c</span> bar.c <span class="nt">-o</span> bar.o <span class="c"># GCC编译成32的目标文件</span>
+ld <span class="nt">-m</span> elf_i386 foo.o bar.o <span class="nt">-o</span> foobar <span class="c"># 链接目标文件，生成执行文件</span>
+</code></pre></div></div>
 
-
-<h3>GDB</h3>
-
+<h3 id="gdb">GDB</h3>
 <p>一些常用的GDB调试的命令</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">set </span>disassembly-flavor intel <span class="c"># 默认AT&amp;T格式，可以设置为Intel格式</span>
-</span><span class='line'>disassemble _start <span class="c"># 反汇编，这一步主要是为了后续设置断点用</span>
-</span><span class='line'><span class="nb">break</span> * _start + <span class="m">10</span> <span class="c"># 设置断点，此处是_start开始的第10行代码处</span>
-</span><span class='line'>run <span class="c"># 执行程序，设置断点后会停在断点处</span>
-</span><span class='line'>step <span class="c"># 单步调试，可以简写为s</span>
-</span><span class='line'>info registers <span class="c"># 显示寄存器</span>
-</span><span class='line'>layout reg <span class="c"># 一般我会使用这个</span>
-</span><span class='line'>q <span class="c"># 退出程序</span>
-</span><span class='line'>x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">set </span>disassembly-flavor intel <span class="c"># 默认AT&amp;T格式，可以设置为Intel格式</span>
+disassemble _start <span class="c"># 反汇编，这一步主要是为了后续设置断点用</span>
+<span class="nb">break</span> <span class="k">*</span> _start + 10 <span class="c"># 设置断点，此处是_start开始的第10行代码处</span>
+run <span class="c"># 执行程序，设置断点后会停在断点处</span>
+step <span class="c"># 单步调试，可以简写为s</span>
+info registers <span class="c"># 显示寄存器</span>
+layout reg <span class="c"># 一般我会使用这个</span>
+q <span class="c"># 退出程序</span>
+x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
+</code></pre></div></div>
 
-
-<h3>参考</h3>
-
-<p><a href="https://samsclass.info/127/proj/ASM110.htm">ASM 110: Gdb (30 pts)</a><br/>
+<h3 id="参考">参考</h3>
+<p><a href="https://samsclass.info/127/proj/ASM110.htm">ASM 110: Gdb (30 pts)</a><br />
 <a href="https://deepzz.com/post/gdb-debug.html">GDB命令基础，让你的程序bug无处躲藏</a></p>
 </div>
   
@@ -271,12 +336,14 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-03-11T09:42:24+08:00'><span class='date'>2021-03-11</span> <span class='time'>09:42:24</span></time>
+2021-03-11 09:42
+		
         
       </p>
     
@@ -302,66 +369,50 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-02-04T22:21:27+08:00'><span class='date'>2021-02-04</span> <span class='time'>22:21:27</span></time>
+2021-02-04 22:21
+		
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h3>缘起</h3>
-
+  <div class="entry-content"><h3 id="缘起">缘起</h3>
 <p>做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。</p>
 
-<p>大概7、8年前买过一本《Orange&rsquo;S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太难了，中间需要跨越的东西太多了。渐渐就放弃了，后来直接把这两本书给卖掉了。</p>
+<p>大概7、8年前买过一本《Orange’S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太难了，中间需要跨越的东西太多了。渐渐就放弃了，后来直接把这两本书给卖掉了。</p>
 
-<p>今年突然间又想，我应该尝试写一个简单的操作系统，多年的工作以及自学，使得我对编程有了一个相对完整的认识，这个想法似乎不像当年那么不靠谱。但该如何下手呢？刚开始我只想能跑一个<code>Hello wrold</code>的例子也可以，网上找了下最多的居然是我当年卖掉的那本《Orange&rsquo;S 一个操作系统实现》书中的例子，可惜当年我也没怎么看懂，只是买了本书而已。</p>
+<p>今年突然间又想，我应该尝试写一个简单的操作系统，多年的工作以及自学，使得我对编程有了一个相对完整的认识，这个想法似乎不像当年那么不靠谱。但该如何下手呢？刚开始我只想能跑一个<code class="language-plaintext highlighter-rouge">Hello wrold</code>的例子也可以，网上找了下最多的居然是我当年卖掉的那本《Orange’S 一个操作系统实现》书中的例子，可惜当年我也没怎么看懂，只是买了本书而已。</p>
 
 <p>以下是这个例子的代码：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='nasm'><span class='line'> <span class="k">org</span> <span class="mh">07c00h</span>           <span class="c1">; 告诉编译器程序加载到7c00处</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">cs</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
-</span><span class='line'>  <span class="nf">call</span> <span class="nb">Disp</span><span class="nv">Str</span>            <span class="c1">; 调用显示字符串例程</span>
-</span><span class='line'>  <span class="nf">jmp</span> <span class="kc">$</span>           <span class="c1">; 无限循环</span>
-</span><span class='line'><span class="nl">DispStr:</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nv">BootMessage</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">bp</span><span class="p">,</span> <span class="nb">ax</span>           <span class="c1">; ES:BP = 串地址</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">16</span>           <span class="c1">; CX = 串长度</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mh">01301h</span>       <span class="c1">; AH = 13,  AL = 01h</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">bx</span><span class="p">,</span> <span class="mh">000ch</span>        <span class="c1">; 页号为0(BH = 0) 黑底红字(BL = 0Ch,高亮)</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="nf">int</span> <span class="mh">10h</span>         <span class="c1">; 10h 号中断</span>
-</span><span class='line'>  <span class="nf">ret</span>
-</span><span class='line'><span class="nl">BootMessage:</span>      <span class="kd">db</span>  <span class="s">&quot;Hello, OS world!&quot;</span>
-</span><span class='line'><span class="kd">times</span>     <span class="mi">510</span><span class="o">-</span><span class="p">(</span><span class="kc">$</span><span class="o">-</span><span class="kc">$$</span><span class="p">)</span>  <span class="nv">db</span>  <span class="mi">0</span>   <span class="c1">; 填充剩下的空间，使生成的二进制代码恰好为512字节</span>
-</span><span class='line'><span class="kd">dw</span>    <span class="mh">0xaa55</span>              <span class="c1">; 结束标志</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>
+	<span class="nf">org</span> <span class="mh">07c00h</span>			<span class="c1">; 告诉编译器程序加载到7c00处</span>
+	<span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">cs</span>
+	<span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
+	<span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
+	<span class="nf">call</span> <span class="nb">Disp</span><span class="nv">Str</span>			<span class="c1">; 调用显示字符串例程</span>
+	<span class="nf">jmp</span> <span class="kc">$</span>			<span class="c1">; 无限循环</span>
+<span class="nl">DispStr:</span>
+	<span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nv">BootMessage</span>
+	<span class="nf">mov</span> <span class="nb">bp</span><span class="p">,</span> <span class="nb">ax</span>			<span class="c1">; ES:BP = 串地址</span>
+	<span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">16</span>			<span class="c1">; CX = 串长度</span>
+	<span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mh">01301h</span>		<span class="c1">; AH = 13,  AL = 01h</span>
+	<span class="nf">mov</span> <span class="nb">bx</span><span class="p">,</span> <span class="mh">000ch</span>		<span class="c1">; 页号为0(BH = 0) 黑底红字(BL = 0Ch,高亮)</span>
+	<span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="mi">0</span>
+	<span class="nf">int</span> <span class="mh">10h</span>			<span class="c1">; 10h 号中断</span>
+	<span class="nf">ret</span>
+<span class="nl">BootMessage:</span>		<span class="kd">db</span>	<span class="s">"Hello, OS world!"</span>
+<span class="kd">times</span> 	<span class="mi">510</span><span class="o">-</span><span class="p">(</span><span class="kc">$</span><span class="o">-</span><span class="kc">$$</span><span class="p">)</span>	<span class="nv">db</span>	<span class="mi">0</span>	<span class="c1">; 填充剩下的空间，使生成的二进制代码恰好为512字节</span>
+<span class="kd">dw</span> 	<span class="mh">0xaa55</span>				<span class="c1">; 结束标志</span>
 
+</code></pre></div></div>
 
 <p>这就是一个直接运行到硬件上的一段程序，而不是我们平时在操作系统写应用代码那样。对于一个实践者而言，我很想把这段程序跑起来，这很关键，只要能跑起来，我们就可以试图修改下，再跑起来，这样认识上才能有提高。其实跑这个例子也是费了点功夫，首先在虚拟机上安装了一个Ubuntu的Linux系统，书中用到的汇编是跟MASM很相似的NASM，首先NASM的教程不多，不过还好可以参考MASM汇编的书籍。另外就是软盘的制作相关的东西，最后是安装Bochs虚拟机，这个虚拟机跟平时用的有些特别，不过还是了解如何操作，最后成功的把这个例子跑了起来。</p>
 
@@ -371,7 +422,8 @@
 
 <p>8086方面的书籍，8086总设计师莫尔斯写的《8086初阶-体系结构、系统设计和程序设计入门》。王爽老师《汇编语言》也主要是讲8086的汇编的。80386的书籍不多，80386的设计师写的《Programing the 80386》一书，非常不错。中文版是93年出版的《保护方式下80386及其编程》一书，虽然没有备注是翻译，但我跟英文版对照后，确认就是翻译自《Programing the 80386》，主要是学习保护模式。</p>
 
-<p>这里需要注意的是实模式与保护模式的差别，很多时候一开始如果研究的是8086的，往往需要转换下思维，最好的书籍依旧是《保护方式下80386及其编程》一书，于渊的《Orange&rsquo;S 一个操作系统实现》细节上还是有点模糊。</p>
+<p>这里需要注意的是实模式与保护模式的差别，很多时候一开始如果研究的是8086的，往往需要转换下思维，最好的书籍依旧是《保护方式下80386及其编程》一书，于渊的《Orange’S 一个操作系统实现》细节上还是有点模糊。</p>
+
 </div>
   
   
@@ -388,12 +440,14 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-01-05T10:47:17+08:00'><span class='date'>2021-01-05</span> <span class='time'>10:47:17</span></time>
+2021-01-05 10:47
+		
         
       </p>
     
@@ -402,52 +456,31 @@
 
   <div class="entry-content"><p>主要试了下基于二进制日志文件的方法</p>
 
-<h4>主库设置</h4>
+<h4 id="主库设置">主库设置</h4>
 
-<p>主要的坑，一般教程上写的是编辑<code>/etc/my.cnf</code>。安装的Mysql 8的配置略微有些问题，<code>my.cnf</code>文件导入的是另一配置<code>!includedir /etc/my.cnf.d</code>，所以以下配置我是写在了<code>/etc/my.cnf.d/mysql-server.cnf</code>里面。</p>
+<p>主要的坑，一般教程上写的是编辑<code class="language-plaintext highlighter-rouge">/etc/my.cnf</code>。安装的Mysql 8的配置略微有些问题，<code class="language-plaintext highlighter-rouge">my.cnf</code>文件导入的是另一配置<code class="language-plaintext highlighter-rouge">!includedir /etc/my.cnf.d</code>，所以以下配置我是写在了<code class="language-plaintext highlighter-rouge">/etc/my.cnf.d/mysql-server.cnf</code>里面。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">###主从数据库配置核心部分</span>
-</span><span class='line'><span class="c"># 设置同步的binary log二进制日志文件名前缀，默认为binlog</span>
-</span><span class='line'>log-bin<span class="o">=</span>mysql-bin
-</span><span class='line'><span class="c"># 服务器唯一id，默认为1  主数据库和从数据库的server-id不能重复</span>
-</span><span class='line'>server-id<span class="o">=</span><span class="m">1</span>
-</span><span class='line'>
-</span><span class='line'><span class="c">###可选配置</span>
-</span><span class='line'><span class="c"># 需要主从复制的数据库</span>
-</span><span class='line'>binlog-do-db<span class="o">=</span><span class="nb">test</span>
-</span><span class='line'><span class="c"># 复制过滤：也就是指定哪个数据库不用同步（mysql库一般不同步）</span>
-</span><span class='line'>binlog-ignore-db<span class="o">=</span>mysql
-</span><span class='line'><span class="c"># 为每个session分配的内存，在事务过程中用来存储二进制日志的缓存</span>
-</span><span class='line'><span class="nv">binlog_cache_size</span><span class="o">=</span>1M
-</span><span class='line'><span class="c"># 主从复制的格式（mixed,statement,row，默认格式是statement。建议是设置为row，主从复制时数据更加能够统一）</span>
-</span><span class='line'><span class="nv">binlog_format</span><span class="o">=</span>row
-</span><span class='line'><span class="c"># 设置二进制日志自动删除/过期的天数，避免占用磁盘空间。默认值为0，表示不自动删除。</span>
-</span><span class='line'><span class="nv">expire_logs_days</span><span class="o">=</span>7
-</span><span class='line'><span class="c"># 跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制中断。</span>
-</span><span class='line'><span class="c"># 如：1062错误是指一些主键重复，1032错误是因为主从数据库数据不一致</span>
-</span><span class='line'><span class="nv">slave_skip_errors</span><span class="o">=</span>1062
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="c">###主从数据库配置核心部分</span>
+<span class="c"># 设置同步的binary log二进制日志文件名前缀，默认为binlog</span>
+log-bin<span class="o">=</span>mysql-bin
+<span class="c"># 服务器唯一id，默认为1  主数据库和从数据库的server-id不能重复</span>
+server-id<span class="o">=</span>1          
 
+<span class="c">###可选配置</span>
+<span class="c"># 需要主从复制的数据库</span>
+binlog-do-db<span class="o">=</span><span class="nb">test</span>
+<span class="c"># 复制过滤：也就是指定哪个数据库不用同步（mysql库一般不同步）</span>
+binlog-ignore-db<span class="o">=</span>mysql
+<span class="c"># 为每个session分配的内存，在事务过程中用来存储二进制日志的缓存</span>
+<span class="nv">binlog_cache_size</span><span class="o">=</span>1M
+<span class="c"># 主从复制的格式（mixed,statement,row，默认格式是statement。建议是设置为row，主从复制时数据更加能够统一）</span>
+<span class="nv">binlog_format</span><span class="o">=</span>row
+<span class="c"># 设置二进制日志自动删除/过期的天数，避免占用磁盘空间。默认值为0，表示不自动删除。</span>
+<span class="nv">expire_logs_days</span><span class="o">=</span>7
+<span class="c"># 跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制中断。</span>
+<span class="c"># 如：1062错误是指一些主键重复，1032错误是因为主从数据库数据不一致</span>
+<span class="nv">slave_skip_errors</span><span class="o">=</span>1062
+</code></pre></div></div>
 </div>
   
   
@@ -464,12 +497,14 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2020-11-12T13:54:26+08:00'><span class='date'>2020-11-12</span> <span class='time'>13:54:26</span></time>
+2020-11-12 13:54
+		
         
       </p>
     
@@ -480,8 +515,7 @@
 
 <p>谈谈我最后为什么退货呢，作为一个曾经的iOS开发者，对这几年的iPhone已经失去了升级的想法，一方面新iPhone价位比以前贵，功能其实没有太大的突破，从生产力角度来看，我更愿意在macbook pro上投资，而不是iPhone。另外iPhone 6s本身不怎么卡，只是电池不行了，这个完全可以换一个就可以了。升级最大的动力是支持5G，但是目前运营商的5G有点贵，而且5G设施也还在陆续建设中，另外平时用的更多是Wi-Fi，移动网络下也很少看视频之类的，所以并没有高速网络的需求。目前iPhone 12是支持5G的初代产品，所以有提升的空间。最后一点，刘海设计依旧是心里吐槽的对象，如果他出一个iPhone 6s的设计，但支持5G的手机，我可能更愿意接受。</p>
 
-<h4>退货流程</h4>
-
+<h4 id="退货流程">退货流程</h4>
 <p>这是头一次退货，在订单中确认退货，会显示取货。取货的时间都没有问题，来了一个邮政的人员把机子简单的验证后，然后就把机子拿走了，没有留下快递单号。因为是头一次，取货后的第二天我看来下订单状态，依旧显示取货中，过了两天我发现还是这个状态。心里有点嘀咕，不会被骗吧，一般的寄送快递，当天晚上基本上状态都改变了。后来我直接给苹果客服打电话确认了，说一切都正常，机子也确实被取走了，因为会寄送到工厂，工厂收到后还要验货后才会更新订单的状态。大概是一周后，订单状态终于变了，钱也退了。</p>
 </div>
   
@@ -499,19 +533,21 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2020-10-06T13:48:16+08:00'><span class='date'>2020-10-06</span> <span class='time'>13:48:16</span></time>
+2020-10-06 13:48
+		
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h3>缘起</h3>
+  <div class="entry-content"><h3 id="缘起">缘起</h3>
 
 <p>今年十一长假因为跟中秋重叠，放八天假，趁着时间长决定去一趟宁波的天童寺去看一下。天童寺位于浙江省宁波市鄞州区太白山麓，为什么要去这座寺庙呢？说到这里要追述到《乔布斯传》这本书，大都数人因为这本书也会知道另一本书《禅者的初心》，作者是铃木俊隆，当然再深挖一点，就会知道一位与乔布斯关系密切的禅师乙川弘文。铃木俊隆与乙川弘文都是日本曹洞宗的僧侣。说到日本曹洞宗，不得不提他的开山祖师道元禅师，时间大概可以追述到南宋时期，道元禅师跨海来寻觅佛法，最后在天童寺遇到了如净禅师，得到如净禅师的认可后，回到日本后创建了日本曹洞宗。</p>
 
@@ -521,19 +557,19 @@
 
 <p>另一条线是围绕着道元禅师来走的，主要是天童寺、阿育王寺。二者在天童寺相会，另外我也带着道元禅师《正法眼藏》中文翻译版一书，在我看来一个人能留下来的无非是他的思想，而带着他的著作犹如带着这位禅师，在700多年后重走这条路。道元禅师在归国后第二年如净禅师圆寂，从此师徒再无相见的可能，所以带着道元的《正法眼藏》专程去杭州净慈禅寺拜祭如净禅师的塔墓，也算另一种相见吧。</p>
 
-<h3>行程</h3>
+<h3 id="行程">行程</h3>
 
-<h4>天童寺</h4>
+<h4 id="天童寺">天童寺</h4>
 
 <p>确定好行程后，十一一大早就坐高铁去了宁波，大概在下午的五点半左右到了宁波。宁波确实跟西安这样的北方城市不一样，矮山、多水洼地。第二天一大早，乘坐地铁一号线直接到达宝幢站，下站后再乘坐育王站的162公交，终点站是公交天童站。不知道是跟疫情有关系还是其他，总之没有门票。穿过一段松柏的路，逐渐看到了天童寺，放生池，旁边山头的塔，再往里面走，隔着一个池子，东南佛国的照壁映入眼帘。照壁后面就是天王殿，穿过天王殿就是佛殿，寺院最上面有罗汉堂。基本的寺院结构跟大多数的寺庙差不多，但建筑上有着天童寺独有的特点。寺里的师父都非常友好，尤其跟寺图书馆的一位师父相谈甚欢，得知寺图书馆没有道元的《正法眼藏》这本书时，当即在原来购买书的那个商家那里下了10本的订单给禅寺，算尽点薄力。禅寺非常好的一点是提供15块一份的素餐，像我这种每次去寺庙不知道如何解决午餐的问题的人来说提供一种方便。天童寺历代都是出高僧的地方，近代有八指头陀、圆瑛法师（中国佛教协会第一任会长），有幸请到一本《八指头陀诗文集》，也算此行的一种意收获。寺里有不少处都有立牌，主要是关于道元禅师的，其中有个殿专门立有《日本道元禅师得法灵迹碑》，可见天童寺与日本曹洞宗的渊源，更被日本曹洞宗尊为祖庭。寺里的师父对于道元禅师也不陌生，都还充满敬意。当天刚好赶上面向在家人的禅七活动即将要开始，因为来的匆忙，不然真想去参加下。天童寺可能是国内仅有的几处仍在传承曹洞宗禅法的寺院，所以对于我们这些修行上更倾向于曹洞宗的人来说，弥足珍贵。</p>
 
-<h4>阿育王寺</h4>
+<h4 id="阿育王寺">阿育王寺</h4>
 
 <p>阿育王寺有两座，一座叫阿育王寺，在公路旁边，另一座叫阿育王古寺，在山上。来之前只知道阿育王寺，不知道还有古寺一说。查了下大概阿育王寺有东塔院、西塔院，东塔院即阿育王古寺，也是最初建寺的地方，当年开山祖师惠达（俗名刘萨诃）在这里发现了佛舍利，因此而建寺。唐先天二年时，修建了西塔寺，即现在的阿育王寺，东塔寺的香火逐渐衰落，后来被毁逐渐废弃，现在的阿育王古寺是在原来的遗址上盖了一座崭新的寺庙。古寺因为在山上，知道的人不多，去的人也不多。在大略逛完阿育王寺后，我就打车前往了古寺那边看了下，那边虽然有公交但是发车间隔太长，只好打车了。顺便说下曹操专车，这个在西安也有，与传统的出租相比价格透明，因为我当时有问过一个出租车司机，结果报价明显比我后来坐曹操专车贵不少。古寺山后有阿育王寺开山祖师的塔墓，另外发现佛舍利的地方正在盖舍利大殿，寺里现在好像传承的是天台宗。</p>
 
 <p>阿育王寺总体更加的古朴一点，也可能是一直没有断过的缘故。古寺虽然历史悠久，但因为是新建的，那份与古代的链接需要脑补。阿育王寺也是当年鉴真大师东渡日本失败时入住过的寺庙，里面也供奉着鉴真大师的像。</p>
 
-<h4>雪窦山、雪窦寺、弥勒道场</h4>
+<h4 id="雪窦山雪窦寺弥勒道场">雪窦山、雪窦寺、弥勒道场</h4>
 
 <p>单说雪窦山，其实也算是一座风景秀丽的名山，再加上雪窦寺以及弥勒道场，使之更加有名。不过这里似乎商业味有点过浓，另外说到雪窦山就不得不说老蒋，因为山下就是老蒋故居，我买的是联票210，包括蒋氏故居和雪窦山风景区。</p>
 
@@ -541,7 +577,7 @@
 
 <p>提到雪窦山，总会想到雪窦禅师，当然我此行的目的是因为当年如净禅师学道于雪窦智鉴禅师。不过我们并没有找到相关的东西，浓郁的弥勒道场道场味，几乎将禅宗寺院的本来面目都冲淡，虽然也号称曹洞宗的祖庭之一，但实无其名。甚至连太虚大师，这位当年极力倡导雪窦山为佛教五大名山，弥勒道场的发起人的塔院都隐匿在一个不起眼的山坳里。除此以外就是跟张学良幽静有关的景点，雪窦山更多像是老蒋的私人景区一般。山依旧是那个山，只是一切变了。</p>
 
-<h4>净慈禅寺</h4>
+<h4 id="净慈禅寺">净慈禅寺</h4>
 
 <p>本以为去天童寺也就顺便把如净禅师的塔给拜一下，不过网上一查发现如净禅师圆寂后并没有葬在天童寺，而是葬在了他曾经主持过的杭州西湖边的净慈禅寺。于是行程的最后一站有了杭州这一站，不过也许都是因缘，实际上如果葬在天童寺的话，我去的这会也看不了，因为那边现在正在建设维修中，并不对外开放。</p>
 
@@ -551,16 +587,19 @@
 
 <p>寺庙也是正在重建中，我也尽了点微薄之力。不过寺里的师父看似并不友好，倒是居士们很友好。深处西湖景区，能这样已经不错了，后来发现禅寺也有开展面对普通人的禅修，愿他们能珍惜这个道场。</p>
 
-<h3>归途</h3>
+<h3 id="归途">归途</h3>
 
 <p>原来还打算去灵隐寺去看下，不过发现时间不够，沿着西湖略转了下。就朝火车站走了，骑着共享单车走了一段，离火车站不远的地方逐渐下起了下雨，而我也要开始返程了。</p>
 
 <p>这次行程总体上非常的圆满，作为去年就想前往的地方，今年终于得以成行。打坐七年时间，曹洞宗似乎离自己有点远，只是在书里，在日本，而这次行程，终于让这一切变的真实起来。其实他并遥远，如果想去总能去的。行程结束了，我也把道元禅师的《正法眼藏》的书籍认真的看了一部分，此时这书才似乎能够看的进去，一切有点特别但又没有什么特别，唯一能想到的就是苏轼的那首《庐山烟雨浙江潮》</p>
 
-<blockquote><p>庐山烟雨浙江潮，<br/>
-未至千般恨不消。<br/>
-到得还来别无事，<br/>
-庐山烟雨浙江潮。</p></blockquote>
+<blockquote>
+  <p>庐山烟雨浙江潮，<br />
+未至千般恨不消。<br />
+到得还来别无事，<br />
+庐山烟雨浙江潮。</p>
+</blockquote>
+
 </div>
   
   
@@ -577,285 +616,174 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2020-09-30T13:46:06+08:00'><span class='date'>2020-09-30</span> <span class='time'>13:46:06</span></time>
+2020-09-30 13:46
+		
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>服务器一直使用的是CentOS，所以特做一下使用备注。基于的版本是<code>CentOS 8.0</code></p>
+  <div class="entry-content"><p>服务器一直使用的是CentOS，所以特做一下使用备注。基于的版本是<code class="language-plaintext highlighter-rouge">CentOS 8.0</code></p>
 
-<h4>VirtualBox安装</h4>
+<h4 id="virtualbox安装">VirtualBox安装</h4>
+<p>使用VirtualBox安装会存在兼容问题，6.1的版本无法运行<code class="language-plaintext highlighter-rouge">CentOS-8.1.1911</code>，主要这个版本移除VBoxVGA的支持，所以只能使用6.0版本。</p>
 
-<p>使用VirtualBox安装会存在兼容问题，6.1的版本无法运行<code>CentOS-8.1.1911</code>，主要这个版本移除VBoxVGA的支持，所以只能使用6.0版本。</p>
+<h5 id="查看-centos-版本">查看 CentOS 版本</h5>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">cat</span> /etc/centos-release
+CentOS Linux release 8.1.1911 <span class="o">(</span>Core<span class="o">)</span> 
+</code></pre></div></div>
 
-<h5>查看 CentOS 版本</h5>
+<h4 id="查看网络配置">查看网络配置</h4>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>ip addr
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>cat /etc/centos-release
-</span><span class='line'>CentOS Linux release 8.1.1911 <span class="o">(</span>Core<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>查看网络配置</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>ip addr
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>防火墙</h4>
-
+<h4 id="防火墙">防火墙</h4>
 <p>CentOS 8 使用firewall管理防火墙</p>
 
-<h5>基本使用</h5>
+<h5 id="基本使用">基本使用</h5>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>systemctl start firewalld <span class="c"># 启动</span>
-</span><span class='line'>systemctl stop firewalld  <span class="c"># 关闭</span>
-</span><span class='line'>systemctl status firewalld <span class="c"># 查看状态</span>
-</span><span class='line'>systemctl disable firewalld <span class="c"># 开机禁用</span>
-</span><span class='line'>systemctl <span class="nb">enable </span>firewalld <span class="c"># 开机启用</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>systemctl start firewalld <span class="c"># 启动</span>
+systemctl stop firewalld  <span class="c"># 关闭</span>
+systemctl status firewalld <span class="c"># 查看状态</span>
+systemctl disable firewalld <span class="c"># 开机禁用</span>
+systemctl <span class="nb">enable </span>firewalld <span class="c"># 开机启用</span>
+</code></pre></div></div>
 
-
-<h5>配置firewalld-cmd</h5>
-
+<h5 id="配置firewalld-cmd">配置firewalld-cmd</h5>
 <p>查看版本</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>firewall-cmd --version
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>firewall-cmd <span class="nt">--version</span>
+</code></pre></div></div>
 
 <p>查看运行状态</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>firewall-cmd --state
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>firewall-cmd <span class="nt">--state</span>
+</code></pre></div></div>
 
 <p>添加端口</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>firewall-cmd --zone<span class="o">=</span>public --add-port<span class="o">=</span>80/tcp --permanent
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>firewall-cmd <span class="nt">--zone</span><span class="o">=</span>public <span class="nt">--add-port</span><span class="o">=</span>80/tcp <span class="nt">--permanent</span>
+</code></pre></div></div>
 
 <p>重新载入设置（添加端口后一定要重载设置）</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>firewall-cmd --reload
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>firewall-cmd <span class="nt">--reload</span>
+</code></pre></div></div>
 
 <p>查看所有端口</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>firewall-cmd --list-ports
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>firewall-cmd <span class="nt">--list-ports</span>
+</code></pre></div></div>
 
 <p>删除某一端口</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>firewall-cmd --zone<span class="o">=</span> public --remove-port<span class="o">=</span>80/tcp --permanent
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>firewall-cmd <span class="nt">--zone</span><span class="o">=</span> public <span class="nt">--remove-port</span><span class="o">=</span>80/tcp <span class="nt">--permanent</span>
+</code></pre></div></div>
 
-
-<h4>安装Mysql 8.0</h4>
-
+<h4 id="安装mysql-80">安装Mysql 8.0</h4>
 <p>试了几种安装方式只有如下的可以安装</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>yum install @mysql:8.0 -y
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>yum <span class="nb">install</span> @mysql:8.0 <span class="nt">-y</span>
+</code></pre></div></div>
 
 <p>启动服务以及开机启动</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>systemctl start mysqld
-</span><span class='line'>systemctl <span class="nb">enable </span>mysqld
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>systemctl start mysqld
+systemctl <span class="nb">enable </span>mysqld
+</code></pre></div></div>
 
 <p>密码设置</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>mysql_secure_installation
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>mysql_secure_installation
+</code></pre></div></div>
 
 <p>远程访问，8.0跟旧版不太一样。</p>
 
 <p>创建用户</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>create user <span class="s1">&#39;root&#39;</span>@<span class="s1">&#39;172.16.10.203&#39;</span> identified by  <span class="s1">&#39;password&#39;</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>create user <span class="s1">'root'</span>@<span class="s1">'172.16.10.203'</span> identified by  <span class="s1">'password'</span>
+</code></pre></div></div>
 
 <p>赋予权限，with grant option这个选项表示该用户可以将自己拥有的权限授权给别人</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>grant all privileges on *.* to <span class="s1">&#39;root&#39;</span>@<span class="s1">&#39;172.16.10.203&#39;</span> with grant option
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>grant all privileges on <span class="k">*</span>.<span class="k">*</span> to <span class="s1">'root'</span>@<span class="s1">'172.16.10.203'</span> with grant option
+</code></pre></div></div>
 
 <p>改密码&amp;授权超用户，flush privileges 命令本质上的作用是将当前user和privilige表中的用户信息/权限设置从mysql库(MySQL数据库的内置库)中提取到内存里</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>flush privileges<span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>flush privileges<span class="p">;</span>
+</code></pre></div></div>
 
-
-<p>创建账户::create user ‘用户名’@‘访问主机’ identified by ‘密码’;<br/>
-赋予权限:grant 权限列表 on 数据库 to ‘用户名’@‘访问主机’ ;<br/>
+<p>创建账户::create user ‘用户名’@‘访问主机’ identified by ‘密码’;<br />
+赋予权限:grant 权限列表 on 数据库 to ‘用户名’@‘访问主机’ ;<br />
 with grant option这个选项表示该用户可以将自己拥有的权限授权给别人</p>
 
-<h5>坑</h5>
-
+<h5 id="坑">坑</h5>
 <p>提示密码设置简单错误</p>
 
 <p>1 查看当前安全变量值</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>mysql&gt; SHOW VARIABLES LIKE <span class="s1">&#39;validate_password%&#39;</span><span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>mysql&gt; SHOW VARIABLES LIKE <span class="s1">'validate_password%'</span><span class="p">;</span>
+</code></pre></div></div>
 
 <p>2 修改变量</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>mysql&gt; <span class="nb">set </span>global validate_password.policy<span class="o">=</span>0<span class="p">;</span>
-</span><span class='line'>mysql&gt; <span class="nb">set </span>global validate_password.length<span class="o">=</span>4<span class="p">;</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>mysql&gt; <span class="nb">set </span>global validate_password.policy<span class="o">=</span>0<span class="p">;</span>
+mysql&gt; <span class="nb">set </span>global validate_password.length<span class="o">=</span>4<span class="p">;</span>
+</code></pre></div></div>
 
 <p>3 然后退出后再执行</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>mysql_secure_installation
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>mysql_secure_installation
+</code></pre></div></div>
 
-
-<h4>参考</h4>
-
-<p><a href="http://www.jeepxie.net/article/590454.html">mysql版本:&lsquo;for the right syntax to use near &#8216;identified by &#8216;password&rsquo; with grant option&#8217;</a></p>
+<h4 id="参考">参考</h4>
+<p><a href="http://www.jeepxie.net/article/590454.html">mysql版本:’for the right syntax to use near ‘identified by ‘password’ with grant option’</a></p>
 
 <p><a href="https://www.mf8.biz/rhel8-centos8-install-mysql-8-0/">RHEL8 CentOS8 下安装 MySQL 8.0</a></p>
 
 <p><a href="https://www.jianshu.com/p/b437566ccf98">mysql8.0 设置简单密码报错ERROR 1819 (HY000): Your password does not satisfy the current policy requirements</a></p>
 
-<h4>常用命令</h4>
+<h4 id="常用命令">常用命令</h4>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>lsof -i: 端口号 <span class="c"># 查看某个端口的进程</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>lsof <span class="nt">-i</span>: 端口号 <span class="c"># 查看某个端口的进程</span>
+</code></pre></div></div>
 
-
-<h4>网络管理</h4>
-
+<h4 id="网络管理">网络管理</h4>
 <p>主要记录虚拟机桥接模式无法连接外网的问题，主要是CentOS 8使用nmcli来管理网卡。</p>
 
 <ol>
-<li>编辑文件<code>vim /etc/sysconfig/network-scripts/ifcfg-ens33</code></li>
-<li>使用<code>nmcli d connect ens33</code>激活</li>
-<li>最后使用<code>nmcli c reload</code>重启网卡服务，稍等片刻，就可以Ping通网络了。</li>
+  <li>编辑文件<code class="language-plaintext highlighter-rouge">vim /etc/sysconfig/network-scripts/ifcfg-ens33</code></li>
+  <li>使用<code class="language-plaintext highlighter-rouge">nmcli d connect ens33</code>激活</li>
+  <li>最后使用<code class="language-plaintext highlighter-rouge">nmcli c reload</code>重启网卡服务，稍等片刻，就可以Ping通网络了。</li>
 </ol>
 
+<h4 id="https">HTTPS</h4>
+<p>目前使用Let’s Encrypt SSL的证书，这个是免费的，唯一的缺点是只有三个月期限，到期后重新申请就可以。</p>
+<h5 id="certbot-auto">certbot-auto</h5>
+<p>主要用来<code class="language-plaintext highlighter-rouge">certbot-auto</code>申请。</p>
 
-<h4>HTTPS</h4>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="c"># 获取certbot-auto</span>
+wget https://dl.eff.org/certbot-auto
+<span class="nb">chmod </span>a+x certbot-auto
+</code></pre></div></div>
 
-<p>目前使用Let&rsquo;s Encrypt SSL的证书，这个是免费的，唯一的缺点是只有三个月期限，到期后重新申请就可以。</p>
+<p>申请通配符域名的证书，这个涉及域名验证，需要在DNS解析增加<code class="language-plaintext highlighter-rouge">_acme-challenge</code>的<code class="language-plaintext highlighter-rouge">TXT</code>记录。</p>
 
-<h5>certbot-auto</h5>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>./certbot-auto certonly  <span class="nt">-d</span> <span class="k">*</span>.xxxx.com <span class="nt">--manual</span> <span class="nt">--preferred-challenges</span> dns <span class="nt">--server</span> https://acme-v02.api.letsencrypt.org/directory
+</code></pre></div></div>
 
-<p>主要用来<code>certbot-auto</code>申请。</p>
+<p>到期后的，需要删除原有证书<code class="language-plaintext highlighter-rouge">certbot delete</code>，重启Ngnix服务<code class="language-plaintext highlighter-rouge">sudo systemctl restart nginx</code>。不删除的话，会生成新的证书目录，这样的话还需要修改Ngnix的配置文件。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c"># 获取certbot-auto</span>
-</span><span class='line'>wget https://dl.eff.org/certbot-auto
-</span><span class='line'>chmod a+x certbot-auto
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>申请通配符域名的证书，这个涉及域名验证，需要在DNS解析增加<code>_acme-challenge</code>的<code>TXT</code>记录。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>./certbot-auto certonly  -d *.xxxx.com --manual --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>到期后的，需要删除原有证书<code>certbot delete</code>，重启Ngnix服务<code>sudo systemctl restart nginx</code>。不删除的话，会生成新的证书目录，这样的话还需要修改Ngnix的配置文件。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>certbot certificates <span class="c"># 查看所有证书，主要是看证书是否快要过期</span>
-</span></code></pre></td></tr></table></div></figure>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2020/09/13/talk-about-fasting/">谈谈断食</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2020-09-13T23:04:13+08:00'><span class='date'>2020-09-13</span> <span class='time'>23:04:13</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><strong><em>提前声明下这只是一个比较个人的体验，并不代表普遍适用，仅供参考。</em></strong></p>
-
-<p>关于断食，也有称作辟谷的，大体都是跟节食或者不吃饭有关系。我本人亲自尝试过的断食属于21天不吃饭只喝清水的这种，前一次大概是七年前，这一次也是9月13日才结束的，写这篇一方面是刚刚结束断食，想把最真实的感受记录下来。另外这是第二次21天清水断食，也会做个对比。</p>
-
-<h4>体重</h4>
-
-<p>21天下来，体重从155斤下降到130斤，大概瘦了25斤，从减肥的角度来看效果还是不错的。第一周减的比较多，大概是15斤左右，这一周喝水很多。第二周和第三周总共减了10斤左右，个人觉得后面2周是真的减脂的阶段，水其实喝的也并没有那么多。第二周会有点难熬，但是第三周反而能好点。</p>
-
-<h4>活动</h4>
-
-<p>不吃饭体力肯定是个问题，但也不能躺在床上，我本人是上着班进行的断食，不过因为去单位基本上也是写写代码，正常的走动。来回坐2个小时的地铁，好在都是从终点坐的都有位置。但是如果你爬个楼梯这样的运动，最好还是不要做。这种感受跟我当年在珠峰大本营底下爬一个20、30米高的土堆，那种因为缺氧导致很累的感觉一样。综上断食期间要适量的活动，但是尽量避免大一点的体力活动，尤其到后期，保持体力还是比较重要。</p>
-
-<h4>毅力</h4>
-
-<p>一旦你下定决心的话，意味你要在21天放弃一些东西，包括各种应酬，我刚好成功的在工作中躲过了各种的应酬。因为是第二次，我心里大概有个数，虽然在外人看来一天不吃饭都无法忍受，何况21天呢？选择21天这个数字也是从前人的经验中得来的，比如弘一大师。断食似乎是宗教领袖都曾试过的方式，又比如甘地，他曾多次断食。不过作为现代人，经历了2次断食，个人觉得不要对断食抱有太多的幻想，其实不会有什么特殊的感受了，身体的变化是最大。第二次断食我一直坚持早上冥想，这是与上次不一样的。身体瘦下去后，确实有利于双盘，这是真的。</p>
-
-<h4>总结</h4>
-
-<p>21天断食并不神秘，身体瘦下去，总还是要回到一个正常的体重的。重要的是一种意志力的锻炼，从思想层面当你不在乎吃饭这件事时，或许对于人生有新的思考。</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>certbot certificates <span class="c"># 查看所有证书，主要是看证书是否快要过期</span>
+</code></pre></div></div>
 </div>
   
   
@@ -869,7 +797,7 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
     
     <a href="/blog/archives">Blog Archives</a>
     
-    <a class="next" href="/index.html">Newer &rarr;</a>
+    <a class="next" href="/">Newer &rarr;</a>
     
   </div>
 </div>
@@ -882,6 +810,10 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
 <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2021/04/26/talk-about-meditatio/">谈谈冥想</a>
@@ -899,17 +831,12 @@ with grant option这个选项表示该用户可以将自己拥有的权限授权
         <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2021/04/18/learn-kubernetes/">学习Kubernetes</a>
-      </li>
-    
   </ul>
 </section>
 <section>
     <h1>Categories</h1>
     <ul id="categories">
-      <li class='category'><a href='/blog/categories/du-shu/'>读书 (2)</a></li>
-
+      
     </ul>
 </section>
 

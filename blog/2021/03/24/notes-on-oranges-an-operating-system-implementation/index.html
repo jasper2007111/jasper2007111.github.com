@@ -5,15 +5,13 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>《Orange&#8217;S:一个操作系统的实现》笔记 - 无用之用</title>
+  <title>《Orange'S:一个操作系统的实现》笔记 - 无用之用</title>
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="使用FreeDOS运行COM FreeDOS运行COM文件记录，主要是拷贝软盘里面，然后执行。 1
-2
-3
-sudo mount -o loop xxx.img /mnt/floppy # 挂载，挂在失败的话在mnt目录下创建floppy文件夹
-sudo cp xxx.com /mnt/ &hellip;">
+  <meta name="description" content="使用FreeDOS运行COM
+FreeDOS运行COM文件记录，主要是拷贝软盘里面，然后执行。 sudo mount -o loop xxx.img /mnt/floppy # 挂载，挂在失败的话在mnt目录下创建floppy文件夹
+sudo cp xxx.com /mnt/floppy/ # &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -25,6 +23,7 @@ sudo cp xxx.com /mnt/ &hellip;">
   <link rel="canonical" href="https://c2lang.com/blog/2021/03/24/notes-on-oranges-an-operating-system-implementation">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/github.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="无用之用" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
@@ -84,70 +83,55 @@ sudo cp xxx.com /mnt/ &hellip;">
   
   <header>
     
-      <h1 class="entry-title">《Orange&#8217;S:一个操作系统的实现》笔记</h1>
+      <h1 class="entry-title">《Orange'S:一个操作系统的实现》笔记</h1>
     
     
       <p class="meta">
-        
+		
+			
 
 
 
 
-<time class='entry-date' datetime='2021-03-24T15:18:30+08:00'><span class='date'>2021-03-24</span> <span class='time'>15:18:30</span></time>
+2021-03-24 15:18
+		
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h4>使用FreeDOS运行COM</h4>
-
+<div class="entry-content"><h4 id="使用freedos运行com">使用FreeDOS运行COM</h4>
 <p>FreeDOS运行COM文件记录，主要是拷贝软盘里面，然后执行。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo mount -o loop xxx.img /mnt/floppy <span class="c"># 挂载，挂在失败的话在mnt目录下创建floppy文件夹</span>
-</span><span class='line'>sudo cp xxx.com /mnt/floppy/ <span class="c"># 拷贝文件</span>
-</span><span class='line'>sudo umount /mnt/floppy <span class="c"># 卸载</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">sudo </span>mount <span class="nt">-o</span> loop xxx.img /mnt/floppy <span class="c"># 挂载，挂在失败的话在mnt目录下创建floppy文件夹</span>
+<span class="nb">sudo cp </span>xxx.com /mnt/floppy/ <span class="c"># 拷贝文件</span>
+<span class="nb">sudo </span>umount /mnt/floppy <span class="c"># 卸载</span>
+</code></pre></div></div>
 
+<p>网上书中的源码中的<code class="language-plaintext highlighter-rouge">freedos.img</code>并不包含<code class="language-plaintext highlighter-rouge">debug</code>这样的工具，不过<code class="language-plaintext highlighter-rouge">debug</code>并不能调试保护模式的代码。</p>
 
-<p>网上书中的源码中的<code>freedos.img</code>并不包含<code>debug</code>这样的工具，不过<code>debug</code>并不能调试保护模式的代码。</p>
+<p>在<code class="language-plaintext highlighter-rouge">bochsrc</code>配置文件中添加</p>
 
-<p>在<code>bochsrc</code>配置文件中添加</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>magic_break: <span class="nv">enabled</span> <span class="o">=</span> 1
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>magic_break: enabled = 1
+</code></pre></div></div>
 
 <p>最后在汇编代码需要断点的地方添加</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='nasm'><span class='line'><span class="nf">xchg</span> <span class="nb">bx</span><span class="p">,</span> <span class="nb">bx</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nf">xchg</span> <span class="nb">bx</span><span class="p">,</span> <span class="nb">bx</span>
+</code></pre></div></div>
 
 <p>在FreeDOS执行COM文件后，就会进入到bochs调试。</p>
 
-<h4>Bochs</h4>
+<h4 id="bochs">Bochs</h4>
+<h5 id="有用的调试系统的命令">有用的调试系统的命令</h5>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>sreg <span class="c"># 显示段寄存器的内容</span>
+info gdt  <span class="c"># 显示GDTR寄存器的内容</span>
+creg <span class="c"># 显示CR0寄存器的内容</span>
+print-stack <span class="c"># 查看栈的内容</span>
+</code></pre></div></div>
 
-<h5>有用的调试系统的命令</h5>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sreg <span class="c"># 显示段寄存器的内容</span>
-</span><span class='line'>info gdt  <span class="c"># 显示GDTR寄存器的内容</span>
-</span><span class='line'>creg <span class="c"># 显示CR0寄存器的内容</span>
-</span><span class='line'>print-stack <span class="c"># 查看栈的内容</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>参考</h4>
-
+<h4 id="参考">参考</h4>
 <p><a href="https://techlog.cn/article/list/10183462">如何调试操作系统</a></p>
 </div>
 
@@ -155,8 +139,6 @@ sudo cp xxx.com /mnt/ &hellip;">
   <footer>
     <p class="meta">
       
-  
-
 <span class="byline author vcard">Posted by <span class="fn">Jasper Ji</span></span>
 
       
@@ -164,7 +146,7 @@ sudo cp xxx.com /mnt/ &hellip;">
 
 
 
-<time class='entry-date' datetime='2021-03-24T15:18:30+08:00'><span class='date'>2021-03-24</span> <span class='time'>15:18:30</span></time>
+
       
 
 
@@ -207,6 +189,10 @@ sudo cp xxx.com /mnt/ &hellip;">
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/26/talk-about-meditatio/">谈谈冥想</a>
       </li>
     
@@ -222,17 +208,12 @@ sudo cp xxx.com /mnt/ &hellip;">
         <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2021/04/18/learn-kubernetes/">学习Kubernetes</a>
-      </li>
-    
   </ul>
 </section>
 <section>
     <h1>Categories</h1>
     <ul id="categories">
-      <li class='category'><a href='/blog/categories/du-shu/'>读书 (2)</a></li>
-
+      
     </ul>
 </section>
 

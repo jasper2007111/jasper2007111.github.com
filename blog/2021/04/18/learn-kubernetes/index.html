@@ -21,6 +21,7 @@
   <link rel="canonical" href="https://c2lang.com/blog/2021/04/18/learn-kubernetes">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/github.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="无用之用" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
@@ -84,12 +85,14 @@
     
     
       <p class="meta">
-        
+		
+			
 
 
 
 
-<time class='entry-date' datetime='2021-04-18T11:19:34+08:00'><span class='date'>2021-04-18</span> <span class='time'>11:19:34</span></time>
+2021-04-18 11:19
+		
         
       </p>
     
@@ -98,134 +101,87 @@
 
 <div class="entry-content"><p>学习Docker后，发现还是得学习下k8s，目前使用Spring Cloud，引入k8s后原来现有的架构确实会有些变化，比如k8s的服务与Spring Eureka实际上有些功能相似的地方。最早我打算使用微服务的时候也是看中可以使用其他语言，但实际上使用了Eureka后，发现用其他语言还是有困难的，Java依旧是服务的首选。引入k8s后这似乎成为了一些可能，不过目前还没有使用来着。</p>
 
-<h4>书籍</h4>
-
+<h4 id="书籍">书籍</h4>
 <p>关于k8s的书籍目前只买了《Kubernetes实战》，之前也是选了几本，但这本当时一看就觉得干货很多，不过在解决细节问题时还是依赖网路了，不过这次可能错了，关于k8s的资料网上的还是太少，解决细节的问题最后还是依靠这本书。这本书在理论和细节方面结合的很好。</p>
 
-<h4>使用本地镜像</h4>
+<h4 id="使用本地镜像">使用本地镜像</h4>
+<p>我用的<code class="language-plaintext highlighter-rouge">minikube</code>，本地构建的doker镜像，我并没有推送到docker的镜像服务器，打出的docker镜像，其实还是蛮大的，Python和Flask，只是个简单的Hello World的例子，有800多M。再将这个推送到docker镜像服务器太慢了，实际我根本就没有成功，但拉取镜像速度还不错。</p>
 
-<p>我用的<code>minikube</code>，本地构建的doker镜像，我并没有推送到docker的镜像服务器，打出的docker镜像，其实还是蛮大的，Python和Flask，只是个简单的Hello World的例子，有800多M。再将这个推送到docker镜像服务器太慢了，实际我根本就没有成功，但拉取镜像速度还不错。</p>
+<p>一开始我使用<code class="language-plaintext highlighter-rouge">kubectrl run</code>创建Pods。</p>
 
-<p>一开始我使用<code>kubectrl run</code>创建Pods。</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>kubectrl run testflask <span class="nt">--image</span><span class="o">=</span>testflask <span class="nt">--port</span><span class="o">=</span>5000 <span class="nt">--generator</span><span class="o">=</span>run/v1
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>kubectrl run testflask --image<span class="o">=</span>testflask --port<span class="o">=</span><span class="m">5000</span> --generator<span class="o">=</span>run/v1
-</span></code></pre></td></tr></table></div></figure>
+<p>上面这种方式还是有局限，网上说要把<code class="language-plaintext highlighter-rouge">imagePullPolicy</code>设置成<code class="language-plaintext highlighter-rouge">IfNotPresent</code>或者<code class="language-plaintext highlighter-rouge">Never</code>。但是怎么设置？网上的博文根本不说，最后还是从《Kubernetes实战》这书找到答案，使用配置文件来创建，创建一个<code class="language-plaintext highlighter-rouge">flasktest.yaml</code>的配置文件。这里需要注意的是配置文件中一定要使用空格缩进而不是Tab，貌似我用的vs code和textmate都是使用Tab缩进。</p>
 
-
-<p>上面这种方式还是有局限，网上说要把<code>imagePullPolicy</code>设置成<code>IfNotPresent</code>或者<code>Never</code>。但是怎么设置？网上的博文根本不说，最后还是从《Kubernetes实战》这书找到答案，使用配置文件来创建，创建一个<code>flasktest.yaml</code>的配置文件。这里需要注意的是配置文件中一定要使用空格缩进而不是Tab，貌似我用的vs code和textmate都是使用Tab缩进。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">apiVersion</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">v1</span>
-</span><span class='line'><span class="l-Scalar-Plain">kind</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Pod</span>
-</span><span class='line'><span class="l-Scalar-Plain">metadata</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest</span>
-</span><span class='line'><span class="l-Scalar-Plain">spec</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">containers</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">testflask</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest-container</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">imagePullPolicy</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">IfNotPresent</span> <span class="c1"># 拉取的策略</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">containerPort</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">5000</span> <span class="c1"># 容器的端口</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">protocol</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">TCP</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">flasktest</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">testflask</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">flasktest-container</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span> <span class="c1"># 拉取的策略</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">5000</span> <span class="c1"># 容器的端口</span>
+      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+</code></pre></div></div>
 
 <p>通过配置文件来创建pods</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>kubectl create -f flasktest.yaml <span class="c"># 通过配置文件创建pods</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>kubectl create <span class="nt">-f</span> flasktest.yaml <span class="c"># 通过配置文件创建pods</span>
+</code></pre></div></div>
 
+<p>最后发现还是有问题，这个镜像始终还是无法拉下来，网上搜索半天也没有找到个解决方案，最后打算直接使用<code class="language-plaintext highlighter-rouge">docker</code>的公共镜像<code class="language-plaintext highlighter-rouge">docker/getting-started</code>，估计是网络的问题，始终没有拉取下来。我一直把<code class="language-plaintext highlighter-rouge">minikube</code>的当成本地的了，<code class="language-plaintext highlighter-rouge">docker</code>也是共用一个，实际上犯了个严重的认知错误，<code class="language-plaintext highlighter-rouge">minikube</code>在VirtualBox创建了一个<code class="language-plaintext highlighter-rouge">minikube</code>虚拟机在运行，<code class="language-plaintext highlighter-rouge">docker</code>肯定与我本地的不是一个，《Kubernetes实战》书中提供了一种把本地的docker复制到<code class="language-plaintext highlighter-rouge">minikube</code>虚拟机中<code class="language-plaintext highlighter-rouge">docker</code>镜像库的方法。</p>
 
-<p>最后发现还是有问题，这个镜像始终还是无法拉下来，网上搜索半天也没有找到个解决方案，最后打算直接使用<code>docker</code>的公共镜像<code>docker/getting-started</code>，估计是网络的问题，始终没有拉取下来。我一直把<code>minikube</code>的当成本地的了，<code>docker</code>也是共用一个，实际上犯了个严重的认知错误，<code>minikube</code>在VirtualBox创建了一个<code>minikube</code>虚拟机在运行，<code>docker</code>肯定与我本地的不是一个，《Kubernetes实战》书中提供了一种把本地的docker复制到<code>minikube</code>虚拟机中<code>docker</code>镜像库的方法。</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>docker save testflask | <span class="o">(</span><span class="nb">eval</span> <span class="si">$(</span>minikube docker-env<span class="si">)</span> <span class="o">&amp;&amp;</span> docker load<span class="o">)</span>
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker save testflask <span class="p">|</span> <span class="o">(</span><span class="nb">eval</span> <span class="k">$(</span>minikube docker-env<span class="k">)</span> <span class="o">&amp;&amp;</span> docker load<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
+<p>可以使用<code class="language-plaintext highlighter-rouge">minikube ssh</code>登录到<code class="language-plaintext highlighter-rouge">minikube</code>虚拟机中，查看<code class="language-plaintext highlighter-rouge">docker</code>镜像是否已经复制过去了。最后顺利启动了，不过怎么访问服务呢？</p>
 
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>kubectl expose rc flasktest <span class="nt">--type</span><span class="o">=</span>LoadBalancer <span class="nt">--name</span> flasktest-http
+</code></pre></div></div>
 
-<p>可以使用<code>minikube ssh</code>登录到<code>minikube</code>虚拟机中，查看<code>docker</code>镜像是否已经复制过去了。最后顺利启动了，不过怎么访问服务呢？</p>
+<p>不过这里也个问题，提示<code class="language-plaintext highlighter-rouge">replicationcontrollers "flasktest" not found</code>。其实命令<code class="language-plaintext highlighter-rouge">kubectrl run testflask --image=testflask --port=5000 --generator=run/v1</code>中，<code class="language-plaintext highlighter-rouge">--generator=run/v1</code>是创建<code class="language-plaintext highlighter-rouge">replicationcontroller</code>的，但我使用的是配置文件创建，问题不大，修改下配置文件。如下：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>kubectl expose rc flasktest --type<span class="o">=</span>LoadBalancer --name flasktest-http
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ReplicationController</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">flasktest</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">3</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">flasktest</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">flasktest</span>
+    <span class="na">spec</span><span class="pi">:</span>
+        <span class="na">containers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">testflask</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">flasktest-container</span>
+          <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span>
+          <span class="na">ports</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">5000</span>
+            <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+</code></pre></div></div>
 
+<p>重新创建，再启动服务，服务时启动了，不过还是有问题，使用<code class="language-plaintext highlighter-rouge">minikube</code>没有外部的ip的访问，需要使用如下命令。不过这个端口是随机的，跟原来用docker的那个不太一样。</p>
 
-<p>不过这里也个问题，提示<code>replicationcontrollers "flasktest" not found</code>。其实命令<code>kubectrl run testflask --image=testflask --port=5000 --generator=run/v1</code>中，<code>--generator=run/v1</code>是创建<code>replicationcontroller</code>的，但我使用的是配置文件创建，问题不大，修改下配置文件。如下：</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>minikube service flasktest-http
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">apiVersion</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">v1</span>
-</span><span class='line'><span class="l-Scalar-Plain">kind</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ReplicationController</span>
-</span><span class='line'><span class="l-Scalar-Plain">metadata</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest</span>
-</span><span class='line'><span class="l-Scalar-Plain">spec</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">replicas</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">3</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">selector</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">app</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">template</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">metadata</span><span class="p-Indicator">:</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">labels</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">app</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">spec</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">containers</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">testflask</span>
-</span><span class='line'>          <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest-container</span>
-</span><span class='line'>          <span class="l-Scalar-Plain">imagePullPolicy</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">IfNotPresent</span>
-</span><span class='line'>          <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
-</span><span class='line'>          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">containerPort</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">5000</span>
-</span><span class='line'>            <span class="l-Scalar-Plain">protocol</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">TCP</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>重新创建，再启动服务，服务时启动了，不过还是有问题，使用<code>minikube</code>没有外部的ip的访问，需要使用如下命令。不过这个端口是随机的，跟原来用docker的那个不太一样。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>minikube service flasktest-http
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>总结</h4>
+<h4 id="总结">总结</h4>
 
 <p>网络的问题使本来简单的入门变得复杂，另外k8s的资料目前确实不是很多，一些细节网上的很少有人总结出来。不过感觉方案虽好，但是镜像大，以及可能要自己部署私有的镜像，再到其他的，其实投入还是蛮多的。</p>
+
 </div>
 
 
   <footer>
     <p class="meta">
       
-  
-
 <span class="byline author vcard">Posted by <span class="fn">Jasper Ji</span></span>
 
       
@@ -233,7 +189,7 @@
 
 
 
-<time class='entry-date' datetime='2021-04-18T11:19:34+08:00'><span class='date'>2021-04-18</span> <span class='time'>11:19:34</span></time>
+
       
 
 
@@ -276,6 +232,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/26/talk-about-meditatio/">谈谈冥想</a>
       </li>
     
@@ -291,17 +251,12 @@
         <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2021/04/18/learn-kubernetes/">学习Kubernetes</a>
-      </li>
-    
   </ul>
 </section>
 <section>
     <h1>Categories</h1>
     <ul id="categories">
-      <li class='category'><a href='/blog/categories/du-shu/'>读书 (2)</a></li>
-
+      
     </ul>
 </section>
 

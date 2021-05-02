@@ -9,7 +9,7 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="冥想已经有六七年了，略有点经验与大家分享下，一家之言，只供参考。 时间 冥想多长时间比较好？我目前是30分钟，之前一段时间都是1个小时，改成30分钟是因为后来找的工作太远，个人建议不低于30分钟为好。 什么时间冥想比较好？我是早上冥想了，下午很少冥想。首先早上精神比较好，不容易发困， &hellip;">
+  <meta name="description" content="升级其他软件的时候居然把Ruby版本升级到了3.0，而Octopress依赖的Jekyll的版本是2.0，对Ruby版本有限制，新版本用不了。本来想换个静态博客的框架来着，想着自己好歹也是全栈工程师，自己升级下吧。 Octopress其实是基于Jekyll的定制静态博客框架， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,6 +21,7 @@
   <link rel="canonical" href="https://c2lang.com">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/github.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="无用之用" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
@@ -83,16 +84,66 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a></h1>
+    
+    
+      <p class="meta">
+		
+        	
+
+
+
+
+2021-05-02 00:15
+		
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>升级其他软件的时候居然把Ruby版本升级到了3.0，而Octopress依赖的Jekyll的版本是2.0，对Ruby版本有限制，新版本用不了。本来想换个静态博客的框架来着，想着自己好歹也是全栈工程师，自己升级下吧。</p>
+
+<p>Octopress其实是基于Jekyll的定制静态博客框架，生成静态内容主要依赖于Jekyll了。看了下Jekyll已经到4.0了，干脆直接升级到4.0了。不过发现一些问题，4.0后放弃了对RDiscount、Pygments的支持，默认的Markdown解析用的是Kramdown。Octopress分别使用了RDiscount、Pygments，所以这块只能弃用了，改用Kramdown。</p>
+
+<p>升级后发现代码高亮有点问题，4.0因为弃用了Pygments，所以只能使用默认的Rouge。Octopress自己实现了一个代码高亮的样式，但是有兼容问题，最后直接弃用。使用Rouge生成Github的样式，最后修改了下，最终变成现在的样子，总之还是不太喜欢之前的暗背景的样式。</p>
+
+<p>生成文章方面，因为Jekyll的一些变更，遇到三个问题，首先是文章列表是生序排序的，修改了下也好了。其次发现首页没有文章，主要是没有安装jekyll-paginate的缘故。最后就是生成的文章没有时间，Octopress自定义了一个时间格式的钩子，但是没有起作用，最后直接使用原生的方式解决了。</p>
+
+<p>博客预览使用<code class="language-plaintext highlighter-rouge">rake preview</code>会报错，最后直接在Public目录下起了个Python的Web服务器，这个并不影响使用。</p>
+
+<h4 id="总结">总结</h4>
+<p>现在还在用Octopress人确实不多了，多半都是不更新的僵尸博客了。其实这些静态博客解决方案原理大同小异的，之前有人吐槽Octopress生成博客文章慢，实际上主要是Jekyll慢了，不过现在都4.0了，目前我觉得速度还是能接受的。</p>
+
+<p>既然Octopress作者都不维护了，想着后续问题修复的差不多了，把修改的版本放出了，也算是尽一份力吧。</p>
+
+<p>参考:<br />
+<a href="https://jekyllrb.com/news/2019/08/20/jekyll-4-0-0-released/">Jekyll 4.0.0 Released</a></p>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2021/04/26/talk-about-meditatio/">谈谈冥想</a></h1>
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-04-26T23:06:57+08:00'><span class='date'>2021-04-26</span> <span class='time'>23:06:57</span></time>
+2021-04-26 23:06
+		
         
       </p>
     
@@ -101,37 +152,32 @@
 
   <div class="entry-content"><p>冥想已经有六七年了，略有点经验与大家分享下，一家之言，只供参考。</p>
 
-<h4>时间</h4>
-
+<h4 id="时间">时间</h4>
 <p>冥想多长时间比较好？我目前是30分钟，之前一段时间都是1个小时，改成30分钟是因为后来找的工作太远，个人建议不低于30分钟为好。</p>
 
 <p>什么时间冥想比较好？我是早上冥想了，下午很少冥想。首先早上精神比较好，不容易发困，下午冥想的时候往往劳累一天状态不是很好。早上冥想是因为时间比较好安排，只要你起的早，时间都是可以挪出来的。</p>
 
-<h4>姿势</h4>
-
+<h4 id="姿势">姿势</h4>
 <p>首推双盘，其次单盘，最不好散盘。能单盘不要散盘，能双盘不要单盘。单盘基本上大家都可以，双盘如果身体不够瘦或者腿实在太硬，还是有点难度的。不过双盘只是时间问题了，我单盘五年一直双盘不上，基本上我都觉得已经放弃对双盘的想法，不过五年后的某天我居然可以双盘了，所以现在觉得双盘这个只是时间的问题，可能每个人不太一样，不过就是不要太主观的设置一个时间点，顺其自然就好，功夫到了自然盘的上。</p>
 
-<p>双盘和单盘冥想有什么差别，没有双盘的时候我觉得二者估计有差别，后来自己能双盘后并没有发现什么明显的不同，不同的就是双盘盘不对，疼痛让你最后无法坚持到最后。</p>
+<p>双盘和单盘冥想有什么差别，进入状态后其实差别不大，不过双盘确实比较稳，另外双盘时呼吸是到腹部的，但是像我在单盘的时候，呼吸实际比较浅，没有到腹部，关注点在鼻端。双盘时，这种呼吸需要一段时间的适应。</p>
 
 <p>调身，总的来说身体瘦一点，下午少吃点，对于盘腿还是有帮助的。我断食21天时，双盘完全不是问题，所以还是不要自己太胖。</p>
 
-<h4>观呼吸</h4>
-
+<h4 id="观呼吸">观呼吸</h4>
 <p>干坐着，心可能会更乱，一般人都会觉得坐不了多久，自己就想不坐了。我早期接触的时候，也是不得其法，一开始就那样坐着，时间比较短。后来去了禅寺的禅堂坐了几次香（打坐），下午香时间最长一个半小时，当时还是散盘，到最后腿巨痛，虽然坚持了下来，后来问一个坐的比较好的小姑娘，原来她在用数呼吸，我也学着使用这个方式。数呼吸，一呼一吸算一下，从1到10，重复，实际上比较难，你会发现你的心会莫名的飞出个念头，打乱数呼吸的节奏。不过你只要持续的数，专注了，我当时觉得时间一下子变短了，腿也不痛了，所以数呼吸对于摄心还是很有效果了。结果一数就是到现在了，关于数呼吸详细的内容可以参阅南传佛教的典籍《清静道论》。</p>
 
-<h4>心态</h4>
-
+<h4 id="心态">心态</h4>
 <p>不管什么原因让你开始冥想，但不要对冥想有一个心理期许，放长远一点，用余生去练习，每个阶段你能收获什么取决于你走的有多远，而多远不是你主观可以预判的。虎头蛇尾的冥想我也见过几个，其实冥想对我而言更多获得了一种内心的平静，而我觉得这就够了。但很多人，不是这样想的，期许太多，最终没有能坚持下来。</p>
 
 <p>坚持冥想，全身心的投入到工作，让冥想成为一种习惯，不要太热衷，也不要太懈怠。</p>
 
-<h4>书籍</h4>
-
+<h4 id="书籍">书籍</h4>
 <p>最好的依旧是坚持练习，少看书，偶尔看一点就可以了，多了反而是障碍。只推荐《禅者的初心》这一本吧。</p>
 
-<h4>如何开始？</h4>
-
+<h4 id="如何开始">如何开始？</h4>
 <p>去禅寺的禅堂学习冥想是我走过的路，正规的禅寺有一套很完备的机制，让你短时间内可以上路。不过很多人在禅寺的时候可以冥想，但出了禅寺就不行了，总是找各种理由。禅寺只是开始的地方，冥想之路才刚开始。</p>
+
 </div>
   
   
@@ -148,12 +194,14 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-04-26T05:23:43+08:00'><span class='date'>2021-04-26</span> <span class='time'>05:23:43</span></time>
+2021-04-26 05:23
+		
         
       </p>
     
@@ -162,272 +210,154 @@
 
   <div class="entry-content"><p>主要是想把Elasticsearch整合到当前的系统中，用来搜索文章。</p>
 
-<h4>环境</h4>
+<h4 id="环境">环境</h4>
 
-<p><em>Elasticsearch 7.12.0</em><br/>
-<em>Logstash 7.12.0</em><br/>
+<p><em>Elasticsearch 7.12.0</em><br />
+<em>Logstash 7.12.0</em><br />
 <em>Mysql 8.0</em></p>
 
-<h4>数据同步</h4>
-
+<h4 id="数据同步">数据同步</h4>
 <p>把Elasticsearch整合到现有系统意味需要把当前要搜索的数据添加到Elasticsearch里面，这就有个数据同步问题。因为是测试工程使用的是Logstash的全量数据同步。Logstash的新版本已经包含了Jdbc的插件，所以不需要安装。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>input {
-</span><span class='line'>  jdbc {
-</span><span class='line'>      # myslq驱动，可以官网下载，我用的是Maven依赖已经下载的Jar文件
-</span><span class='line'>      jdbc_driver_library =&gt; ""
-</span><span class='line'>      # Mysql驱动类全类名，注意mysql8.x以上需要加cj
-</span><span class='line'>      jdbc_driver_class =&gt; "com.mysql.cj.jdbc.Driver"
-</span><span class='line'>      # mysql连接url
-</span><span class='line'>      jdbc_connection_string =&gt; ""
-</span><span class='line'>      # mysql 用户名
-</span><span class='line'>      jdbc_user =&gt; ""
-</span><span class='line'>      # mysql 密码
-</span><span class='line'>      jdbc_password =&gt; ""
-</span><span class='line'>      # 设置定时任务，多久执行一次查询，默认一分钟，需要无延迟可使用schedule =&gt; "* * * * * *"
-</span><span class='line'>      schedule =&gt; "* * * * *"
-</span><span class='line'>      # 清空上次的sql_last_value记录
-</span><span class='line'>      clean_run =&gt; true
-</span><span class='line'>      # 要执行的sql（同步）语句，替换成你自己的sql
-</span><span class='line'>      statement =&gt; "SELECT * FROM t_article"
-</span><span class='line'>  }
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>output {
-</span><span class='line'>   elasticsearch {
-</span><span class='line'>      # es主机和端口
-</span><span class='line'>      hosts =&gt; ["127.0.0.1:9200"]
-</span><span class='line'>      # 同步数据在ES的索引名称，替换为你自己的。
-</span><span class='line'>      index =&gt; "my-cms"
-</span><span class='line'>      # es文档的id，表示使用mysql表的id
-</span><span class='line'>      document_id =&gt; "%{id}"
-</span><span class='line'>  }
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>input {
+  jdbc {
+      # myslq驱动，可以官网下载，我用的是Maven依赖已经下载的Jar文件
+      jdbc_driver_library =&gt; ""
+      # Mysql驱动类全类名，注意mysql8.x以上需要加cj
+      jdbc_driver_class =&gt; "com.mysql.cj.jdbc.Driver"
+      # mysql连接url
+      jdbc_connection_string =&gt; ""
+      # mysql 用户名
+      jdbc_user =&gt; ""
+      # mysql 密码
+      jdbc_password =&gt; ""
+      # 设置定时任务，多久执行一次查询，默认一分钟，需要无延迟可使用schedule =&gt; "* * * * * *"
+      schedule =&gt; "* * * * *"
+      # 清空上次的sql_last_value记录
+      clean_run =&gt; true
+      # 要执行的sql（同步）语句，替换成你自己的sql
+      statement =&gt; "SELECT * FROM t_article"
+  }
+}
 
+output {
+   elasticsearch {
+      # es主机和端口
+      hosts =&gt; ["127.0.0.1:9200"]
+      # 同步数据在ES的索引名称，替换为你自己的。
+      index =&gt; "my-cms"
+      # es文档的id，表示使用mysql表的id
+      document_id =&gt; "%{id}"
+  }
+}
+
+</code></pre></div></div>
 
 <p>生产环境的数据同步可以参考<a href="https://help.aliyun.com/document_detail/146038.html?spm=a2c4g.11186623.6.784.8fe41c61aTodOu">阿里云Elasticsearch</a></p>
 
-<p>参考: <br/>
+<p>参考: <br />
 <a href="https://www.elastic.co/guide/en/logstash/current/plugins-inputs-jdbc.html">Jdbc input plugin</a></p>
 
-<h4>Spring Boot配置</h4>
-
+<h4 id="spring-boot配置">Spring Boot配置</h4>
 <p>添加Maven依赖</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-data-elasticsearch<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nt">&lt;dependency&gt;</span>
+	<span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+	<span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-data-elasticsearch<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
 
 <p>添加Elasticsearch客户端配置类</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Configuration</span>
-</span><span class='line'><span class="nd">@EnableElasticsearchRepositories</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="s">&quot;io.pratik.elasticsearch.repositories&quot;</span><span class="o">)</span>
-</span><span class='line'><span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span> <span class="s">&quot;io.pratik.elasticsearch&quot;</span> <span class="o">})</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElasticsearchClientConfig</span> <span class="kd">extends</span> <span class="n">AbstractElasticsearchConfiguration</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nd">@Override</span>
-</span><span class='line'>  <span class="nd">@Bean</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="n">RestHighLevelClient</span> <span class="nf">elasticsearchClient</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>      <span class="c1">// 配置连接信息</span>
-</span><span class='line'>      <span class="kd">final</span> <span class="n">ClientConfiguration</span> <span class="n">clientConfiguration</span> <span class="o">=</span> <span class="n">ClientConfiguration</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">connectedTo</span><span class="o">(</span><span class="s">&quot;localhost:9200&quot;</span><span class="o">)</span>
-</span><span class='line'>              <span class="o">.</span><span class="na">build</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">return</span> <span class="n">RestClients</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">clientConfiguration</span><span class="o">).</span><span class="na">rest</span><span class="o">();</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/**</span>
-</span><span class='line'><span class="cm">     * 这个很重要，不添加的话无法使用@Filed注解</span>
-</span><span class='line'><span class="cm">     */</span>
-</span><span class='line'>    <span class="nd">@Bean</span>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">EntityMapper</span> <span class="nf">entityMapper</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">ElasticsearchEntityMapper</span> <span class="n">entityMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">ElasticsearchEntityMapper</span><span class="o">(</span>
-</span><span class='line'>                <span class="n">elasticsearchMappingContext</span><span class="o">(),</span> <span class="k">new</span> <span class="nf">DefaultConversionService</span><span class="o">()</span>
-</span><span class='line'>        <span class="o">);</span>
-</span><span class='line'>        <span class="n">entityMapper</span><span class="o">.</span><span class="na">setConversions</span><span class="o">(</span><span class="n">elasticsearchCustomConversions</span><span class="o">());</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="n">entityMapper</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableElasticsearchRepositories</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="s">"io.pratik.elasticsearch.repositories"</span><span class="o">)</span>
+<span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span> <span class="s">"io.pratik.elasticsearch"</span> <span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElasticsearchClientConfig</span> <span class="kd">extends</span> <span class="nc">AbstractElasticsearchConfiguration</span> <span class="o">{</span>
+	<span class="nd">@Override</span>
+	<span class="nd">@Bean</span>
+	<span class="kd">public</span> <span class="nc">RestHighLevelClient</span> <span class="nf">elasticsearchClient</span><span class="o">()</span> <span class="o">{</span>
+		<span class="c1">// 配置连接信息</span>
+		<span class="kd">final</span> <span class="nc">ClientConfiguration</span> <span class="n">clientConfiguration</span> <span class="o">=</span> <span class="nc">ClientConfiguration</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">connectedTo</span><span class="o">(</span><span class="s">"localhost:9200"</span><span class="o">)</span>
+				<span class="o">.</span><span class="na">build</span><span class="o">();</span>
 
+		<span class="k">return</span> <span class="nc">RestClients</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">clientConfiguration</span><span class="o">).</span><span class="na">rest</span><span class="o">();</span>
+	<span class="o">}</span>
+    
+    <span class="cm">/**
+     * 这个很重要，不添加的话无法使用@Filed注解
+     */</span>
+    <span class="nd">@Bean</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">EntityMapper</span> <span class="nf">entityMapper</span><span class="o">()</span> <span class="o">{</span>
 
-<p>测试文章类，必须要加<code>type='_doc'</code>，不然无法使用。另外遇到的问题是我数据库的日期用的是<code>Date</code>话，一直提示解析错误，最后使用<code>LocalDateTime</code>后就好了。</p>
+        <span class="nc">ElasticsearchEntityMapper</span> <span class="n">entityMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ElasticsearchEntityMapper</span><span class="o">(</span>
+                <span class="n">elasticsearchMappingContext</span><span class="o">(),</span> <span class="k">new</span> <span class="nc">DefaultConversionService</span><span class="o">()</span>
+        <span class="o">);</span>
+        <span class="n">entityMapper</span><span class="o">.</span><span class="na">setConversions</span><span class="o">(</span><span class="n">elasticsearchCustomConversions</span><span class="o">());</span>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Data</span>
-</span><span class='line'><span class="nd">@Document</span><span class="o">(</span><span class="n">indexName</span> <span class="o">=</span> <span class="s">&quot;my-cms&quot;</span><span class="o">,</span> <span class="n">type</span> <span class="o">=</span> <span class="s">&quot;_doc&quot;</span><span class="o">)</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EsArticle</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nd">@Id</span> <span class="c1">// org.springframework.data.annotation.Id</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">Integer</span> <span class="n">id</span><span class="o">;</span> <span class="c1">// 文章ID</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nd">@Field</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">FieldType</span><span class="o">.</span><span class="na">Text</span><span class="o">,</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="s">&quot;ik_max_word&quot;</span><span class="o">)</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">String</span> <span class="n">title</span><span class="o">;</span> <span class="c1">// 文章标题</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nd">@Field</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;content&quot;</span><span class="o">,</span> <span class="n">type</span> <span class="o">=</span> <span class="n">FieldType</span><span class="o">.</span><span class="na">Text</span><span class="o">,</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="s">&quot;ik_max_word&quot;</span><span class="o">)</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">String</span> <span class="n">articleContent</span><span class="o">;</span> <span class="c1">// 文章正文内容</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nd">@JsonFormat</span><span class="o">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="s">&quot;yyyy-MM-dd HH:mm:ss&quot;</span><span class="o">)</span>
-</span><span class='line'>  <span class="nd">@Field</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;create_time&quot;</span><span class="o">)</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">LocalDateTime</span> <span class="n">createTime</span><span class="o">;</span> <span class="c1">// 文章创建时间</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+        <span class="k">return</span> <span class="n">entityMapper</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
 
+<p>测试文章类，必须要加<code class="language-plaintext highlighter-rouge">type='_doc'</code>，不然无法使用。另外遇到的问题是我数据库的日期用的是<code class="language-plaintext highlighter-rouge">Date</code>话，一直提示解析错误，最后使用<code class="language-plaintext highlighter-rouge">LocalDateTime</code>后就好了。</p>
 
-<p>创建<code>Repository</code>类。</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nd">@Data</span>
+<span class="nd">@Document</span><span class="o">(</span><span class="n">indexName</span> <span class="o">=</span> <span class="s">"my-cms"</span><span class="o">,</span> <span class="n">type</span> <span class="o">=</span> <span class="s">"_doc"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">EsArticle</span> <span class="o">{</span>
+	<span class="nd">@Id</span> <span class="c1">// org.springframework.data.annotation.Id</span>
+	<span class="kd">private</span> <span class="nc">Integer</span> <span class="n">id</span><span class="o">;</span> <span class="c1">// 文章ID</span>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ElasticArticleRepository</span> <span class="kd">extends</span> <span class="n">ElasticsearchRepository</span><span class="o">&lt;</span><span class="n">EsArticle</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="o">{</span>
-</span><span class='line'>  
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+	<span class="nd">@Field</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="nc">FieldType</span><span class="o">.</span><span class="na">Text</span><span class="o">,</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="s">"ik_max_word"</span><span class="o">)</span>
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">title</span><span class="o">;</span> <span class="c1">// 文章标题</span>
 
+	<span class="nd">@Field</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"content"</span><span class="o">,</span> <span class="n">type</span> <span class="o">=</span> <span class="nc">FieldType</span><span class="o">.</span><span class="na">Text</span><span class="o">,</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="s">"ik_max_word"</span><span class="o">)</span>
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">articleContent</span><span class="o">;</span> <span class="c1">// 文章正文内容</span>
 
-<p>生成<code>Controller</code>，使用<em>Postman</em>测试接口是否正常工作。</p>
+	<span class="nd">@JsonFormat</span><span class="o">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="s">"yyyy-MM-dd HH:mm:ss"</span><span class="o">)</span>
+	<span class="nd">@Field</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"create_time"</span><span class="o">)</span>
+	<span class="kd">private</span> <span class="nc">LocalDateTime</span> <span class="n">createTime</span><span class="o">;</span> <span class="c1">// 文章创建时间</span>
+<span class="o">}</span>
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@RestController</span>
-</span><span class='line'><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&quot;/article&quot;</span><span class="o">)</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SearchController</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nd">@Autowired</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">ElasticArticleRepository</span> <span class="n">elasticRepository</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@PostMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;/search&quot;</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">EsArticle</span><span class="o">&gt;</span> <span class="nf">handleSearchRequest</span><span class="o">(</span>
-</span><span class='line'>            <span class="nd">@RequestParam</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">requestParam</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">BoolQueryBuilder</span> <span class="n">queryBuilder</span> <span class="o">=</span> <span class="n">QueryBuilders</span><span class="o">.</span><span class="na">boolQuery</span><span class="o">();</span>
-</span><span class='line'>        <span class="c1">// 构造ES查询条件</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">keyword</span> <span class="o">=</span> <span class="o">(</span><span class="n">String</span><span class="o">)</span> <span class="n">requestParam</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;keyword&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">queryBuilder</span><span class="o">.</span><span class="na">should</span><span class="o">(</span><span class="n">QueryBuilders</span><span class="o">.</span><span class="na">matchPhraseQuery</span><span class="o">(</span><span class="s">&quot;title&quot;</span><span class="o">,</span> <span class="n">keyword</span><span class="o">))</span>
-</span><span class='line'>                <span class="o">.</span><span class="na">should</span><span class="o">(</span><span class="n">QueryBuilders</span><span class="o">.</span><span class="na">matchPhraseQuery</span><span class="o">(</span><span class="s">&quot;content&quot;</span><span class="o">,</span> <span class="n">keyword</span><span class="o">));</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">StopWatch</span> <span class="n">watch</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">StopWatch</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">watch</span><span class="o">.</span><span class="na">start</span><span class="o">();</span> <span class="c1">// 开始计时</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">Page</span><span class="o">&lt;</span><span class="n">EsArticle</span><span class="o">&gt;</span> <span class="n">articles</span> <span class="o">=</span> <span class="o">(</span><span class="n">Page</span><span class="o">&lt;</span><span class="n">EsArticle</span><span class="o">&gt;)</span>
-</span><span class='line'>                <span class="n">elasticRepository</span><span class="o">.</span><span class="na">search</span><span class="o">(</span><span class="n">queryBuilder</span><span class="o">);</span>  <span class="c1">// 检索数据</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">watch</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>  <span class="c1">// 结束计时</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;数据检索耗时：%s ms&quot;</span><span class="o">,</span>
-</span><span class='line'>                <span class="n">watch</span><span class="o">.</span><span class="na">getTotalTimeMillis</span><span class="o">()));</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="n">articles</span><span class="o">.</span><span class="na">getContent</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<p>创建<code class="language-plaintext highlighter-rouge">Repository</code>类。</p>
 
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ElasticArticleRepository</span> <span class="kd">extends</span> <span class="nc">ElasticsearchRepository</span><span class="o">&lt;</span><span class="nc">EsArticle</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="o">{</span>
+	
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>生成<code class="language-plaintext highlighter-rouge">Controller</code>，使用<em>Postman</em>测试接口是否正常工作。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/article"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SearchController</span> <span class="o">{</span> 
+	<span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">ElasticArticleRepository</span> <span class="n">elasticRepository</span><span class="o">;</span>
+
+    <span class="nd">@PostMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/search"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">EsArticle</span><span class="o">&gt;</span> <span class="nf">handleSearchRequest</span><span class="o">(</span>
+            <span class="nd">@RequestParam</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">requestParam</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">BoolQueryBuilder</span> <span class="n">queryBuilder</span> <span class="o">=</span> <span class="nc">QueryBuilders</span><span class="o">.</span><span class="na">boolQuery</span><span class="o">();</span>
+        <span class="c1">// 构造ES查询条件</span>
+        <span class="nc">String</span> <span class="n">keyword</span> <span class="o">=</span> <span class="o">(</span><span class="nc">String</span><span class="o">)</span> <span class="n">requestParam</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"keyword"</span><span class="o">);</span>
+        <span class="n">queryBuilder</span><span class="o">.</span><span class="na">should</span><span class="o">(</span><span class="nc">QueryBuilders</span><span class="o">.</span><span class="na">matchPhraseQuery</span><span class="o">(</span><span class="s">"title"</span><span class="o">,</span> <span class="n">keyword</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">should</span><span class="o">(</span><span class="nc">QueryBuilders</span><span class="o">.</span><span class="na">matchPhraseQuery</span><span class="o">(</span><span class="s">"content"</span><span class="o">,</span> <span class="n">keyword</span><span class="o">));</span>
+ 
+        <span class="nc">StopWatch</span> <span class="n">watch</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StopWatch</span><span class="o">();</span>
+        <span class="n">watch</span><span class="o">.</span><span class="na">start</span><span class="o">();</span> <span class="c1">// 开始计时</span>
+ 
+        <span class="nc">Page</span><span class="o">&lt;</span><span class="nc">EsArticle</span><span class="o">&gt;</span> <span class="n">articles</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Page</span><span class="o">&lt;</span><span class="nc">EsArticle</span><span class="o">&gt;)</span>
+                <span class="n">elasticRepository</span><span class="o">.</span><span class="na">search</span><span class="o">(</span><span class="n">queryBuilder</span><span class="o">);</span>  <span class="c1">// 检索数据</span>
+ 
+        <span class="n">watch</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>  <span class="c1">// 结束计时</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"数据检索耗时：%s ms"</span><span class="o">,</span>
+                <span class="n">watch</span><span class="o">.</span><span class="na">getTotalTimeMillis</span><span class="o">()));</span>
+ 
+        <span class="k">return</span> <span class="n">articles</span><span class="o">.</span><span class="na">getContent</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
 </div>
   
   
@@ -444,12 +374,14 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-04-23T08:31:23+08:00'><span class='date'>2021-04-23</span> <span class='time'>08:31:23</span></time>
+2021-04-23 08:31
+		
         
       </p>
     
@@ -458,216 +390,129 @@
 
   <div class="entry-content"><p>是在Mac环境下跑的例子。</p>
 
-<h4>安装ELK相关软件</h4>
-
-<p>ELK主要指Elasticsearch、Logstash、Kibana，使用<code>elastic.co</code>提供的安装指南，使用Brew安装。</p>
+<h4 id="安装elk相关软件">安装ELK相关软件</h4>
+<p>ELK主要指Elasticsearch、Logstash、Kibana，使用<code class="language-plaintext highlighter-rouge">elastic.co</code>提供的安装指南，使用Brew安装。</p>
 
 <p>切换Tab</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>brew tap elastic/tap
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>brew tap elastic/tap
+</code></pre></div></div>
 
 <p>安装软件</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>brew install elastic/tap/elasticsearch-full  <span class="c"># 安装Elasticsearch</span>
-</span><span class='line'>brew install elastic/tap/logstash-full <span class="c"># Logstash</span>
-</span><span class='line'>brew install elastic/tap/kibana-full <span class="c"># Kibana</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>brew <span class="nb">install </span>elastic/tap/elasticsearch-full  <span class="c"># 安装Elasticsearch</span>
+brew <span class="nb">install </span>elastic/tap/logstash-full <span class="c"># Logstash</span>
+brew <span class="nb">install </span>elastic/tap/kibana-full <span class="c"># Kibana</span>
+</code></pre></div></div>
 
 <p>可以在前台或者后台启动软件</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>brew services start elastic/tap/elasticsearch-full <span class="c"># 后台启动</span>
-</span><span class='line'>elasticsearch <span class="c"># 前台启动</span>
-</span><span class='line'>
-</span><span class='line'>brew services start elastic/tap/logstash-full
-</span><span class='line'>logstash
-</span><span class='line'>
-</span><span class='line'>brew services start elastic/tap/kibana-full
-</span><span class='line'>kibana
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>brew services start elastic/tap/elasticsearch-full <span class="c"># 后台启动</span>
+elasticsearch <span class="c"># 前台启动</span>
 
+brew services start elastic/tap/logstash-full
+logstash
 
-<h4>Spring Boot配置</h4>
+brew services start elastic/tap/kibana-full
+kibana
+</code></pre></div></div>
 
+<h4 id="spring-boot配置">Spring Boot配置</h4>
 <p>Maven添加Logstash依赖</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>net.logstash.logback<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>logstash-logback-encoder<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;version&gt;</span>5.3<span class="nt">&lt;/version&gt;</span>
-</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nt">&lt;dependency&gt;</span>
+	<span class="nt">&lt;groupId&gt;</span>net.logstash.logback<span class="nt">&lt;/groupId&gt;</span>
+	<span class="nt">&lt;artifactId&gt;</span>logstash-logback-encoder<span class="nt">&lt;/artifactId&gt;</span>
+	<span class="nt">&lt;version&gt;</span>5.3<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
 
+<p>在Resources目录下添加<code class="language-plaintext highlighter-rouge">logback-spring.xml</code>配置文件</p>
 
-<p>在Resources目录下添加<code>logback-spring.xml</code>配置文件</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">"UTF-8"</span>?&gt;
+&lt;configuration&gt;
+    &lt;include <span class="nv">resource</span><span class="o">=</span><span class="s2">"org/springframework/boot/logging/logback/base.xml"</span> /&gt;
+    &lt;appender <span class="nv">name</span><span class="o">=</span><span class="s2">"LOGSTASH"</span> <span class="nv">class</span><span class="o">=</span><span class="s2">"net.logstash.logback.appender.LogstashTcpSocketAppender"</span><span class="o">&gt;</span>
+    	&lt;<span class="o">!</span><span class="nt">--</span> 配置输出地址 <span class="nt">--</span><span class="o">&gt;</span>
+        &lt;destination&gt;127.0.0.1:4560&lt;/destination&gt;
+        &lt;<span class="o">!</span><span class="nt">--</span> 日志输出编码 <span class="nt">--</span><span class="o">&gt;</span>
+        &lt;encoder <span class="nv">charset</span><span class="o">=</span><span class="s2">"UTF-8"</span>
+                <span class="nv">class</span><span class="o">=</span><span class="s2">"net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder"</span><span class="o">&gt;</span>
+            &lt;providers&gt;
+                &lt;timestamp&gt;
+                    &lt;timeZone&gt;UTC&lt;/timeZone&gt;
+                &lt;/timestamp&gt;
+                &lt;pattern&gt;
+                    &lt;pattern&gt;
+                        <span class="o">{</span>
+                        <span class="s2">"logLevel"</span>: <span class="s2">"%level"</span>,
+                        <span class="s2">"serviceName"</span>: <span class="s2">"</span><span class="k">${</span><span class="nv">springAppName</span><span class="k">:-}</span><span class="s2">"</span>,
+                        <span class="s2">"pid"</span>: <span class="s2">"</span><span class="k">${</span><span class="nv">PID</span><span class="k">:-}</span><span class="s2">"</span>,
+                        <span class="s2">"thread"</span>: <span class="s2">"%thread"</span>,
+                        <span class="s2">"class"</span>: <span class="s2">"%logger{40}"</span>,
+                        <span class="s2">"rest"</span>: <span class="s2">"%message"</span>
+                        <span class="o">}</span>
+                    &lt;/pattern&gt;
+                &lt;/pattern&gt;
+            &lt;/providers&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+    &lt;root <span class="nv">level</span><span class="o">=</span><span class="s2">"INFO"</span><span class="o">&gt;</span>
+        &lt;appender-ref <span class="nv">ref</span><span class="o">=</span><span class="s2">"LOGSTASH"</span> /&gt;
+        &lt;appender-ref <span class="nv">ref</span><span class="o">=</span><span class="s2">"CONSOLE"</span> /&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;
+</code></pre></div></div>
+<p>配置Logstash，创建一个<code class="language-plaintext highlighter-rouge">logstash-sample.conf</code>文件</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">&quot;1.0&quot;</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span>?&gt;
-</span><span class='line'>&lt;configuration&gt;
-</span><span class='line'>    &lt;include <span class="nv">resource</span><span class="o">=</span><span class="s2">&quot;org/springframework/boot/logging/logback/base.xml&quot;</span> /&gt;
-</span><span class='line'>    &lt;appender <span class="nv">name</span><span class="o">=</span><span class="s2">&quot;LOGSTASH&quot;</span> <span class="nv">class</span><span class="o">=</span><span class="s2">&quot;net.logstash.logback.appender.LogstashTcpSocketAppender&quot;</span>&gt;
-</span><span class='line'>      &lt;!-- 配置输出地址 --&gt;
-</span><span class='line'>        &lt;destination&gt;127.0.0.1:4560&lt;/destination&gt;
-</span><span class='line'>        &lt;!-- 日志输出编码 --&gt;
-</span><span class='line'>        &lt;encoder <span class="nv">charset</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span>
-</span><span class='line'>                <span class="nv">class</span><span class="o">=</span><span class="s2">&quot;net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder&quot;</span>&gt;
-</span><span class='line'>            &lt;providers&gt;
-</span><span class='line'>                &lt;timestamp&gt;
-</span><span class='line'>                    &lt;timeZone&gt;UTC&lt;/timeZone&gt;
-</span><span class='line'>                &lt;/timestamp&gt;
-</span><span class='line'>                &lt;pattern&gt;
-</span><span class='line'>                    &lt;pattern&gt;
-</span><span class='line'>                        <span class="o">{</span>
-</span><span class='line'>                        <span class="s2">&quot;logLevel&quot;</span>: <span class="s2">&quot;%level&quot;</span>,
-</span><span class='line'>                        <span class="s2">&quot;serviceName&quot;</span>: <span class="s2">&quot;${springAppName:-}&quot;</span>,
-</span><span class='line'>                        <span class="s2">&quot;pid&quot;</span>: <span class="s2">&quot;${PID:-}&quot;</span>,
-</span><span class='line'>                        <span class="s2">&quot;thread&quot;</span>: <span class="s2">&quot;%thread&quot;</span>,
-</span><span class='line'>                        <span class="s2">&quot;class&quot;</span>: <span class="s2">&quot;%logger{40}&quot;</span>,
-</span><span class='line'>                        <span class="s2">&quot;rest&quot;</span>: <span class="s2">&quot;%message&quot;</span>
-</span><span class='line'>                        <span class="o">}</span>
-</span><span class='line'>                    &lt;/pattern&gt;
-</span><span class='line'>                &lt;/pattern&gt;
-</span><span class='line'>            &lt;/providers&gt;
-</span><span class='line'>        &lt;/encoder&gt;
-</span><span class='line'>    &lt;/appender&gt;
-</span><span class='line'>    &lt;root <span class="nv">level</span><span class="o">=</span><span class="s2">&quot;INFO&quot;</span>&gt;
-</span><span class='line'>        &lt;appender-ref <span class="nv">ref</span><span class="o">=</span><span class="s2">&quot;LOGSTASH&quot;</span> /&gt;
-</span><span class='line'>        &lt;appender-ref <span class="nv">ref</span><span class="o">=</span><span class="s2">&quot;CONSOLE&quot;</span> /&gt;
-</span><span class='line'>    &lt;/root&gt;
-</span><span class='line'>&lt;/configuration&gt;
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>配置Logstash，创建一个<code>logstash-sample.conf</code>文件</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>input <span class="o">{</span>
-</span><span class='line'>  tcp <span class="o">{</span>
-</span><span class='line'>    <span class="nv">mode</span> <span class="o">=</span>&gt; <span class="s2">&quot;server&quot;</span>
-</span><span class='line'>    <span class="nv">host</span> <span class="o">=</span>&gt; <span class="s2">&quot;0.0.0.0&quot;</span>
-</span><span class='line'>    <span class="nv">port</span> <span class="o">=</span>&gt; 4560
-</span><span class='line'>    <span class="nv">codec</span> <span class="o">=</span>&gt; json
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span><span class='line'>output<span class="o">{</span>
-</span><span class='line'>  elasticsearch <span class="o">{</span>
-</span><span class='line'>     <span class="nv">hosts</span> <span class="o">=</span>&gt; <span class="o">[</span><span class="s2">&quot;http://localhost:9200&quot;</span><span class="o">]</span> <span class="c"># Elasticsearch 地址</span>
-</span><span class='line'>     <span class="nv">index</span> <span class="o">=</span>&gt; <span class="s2">&quot;spring_cms-%{+YYYY.MM.dd}&quot;</span> <span class="c"># 这里我用spring_cms，可以替换为自己的。需要注意ES关于索引的命名规范</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>input {
+  tcp {
+    mode =&gt; "server"
+    host =&gt; "0.0.0.0"
+    port =&gt; 4560
+    codec =&gt; json
+  }
+}
+output{
+  elasticsearch {
+     hosts =&gt; ["http://localhost:9200"] # Elasticsearch 地址
+     index =&gt; "spring_cms-%{+YYYY.MM.dd}" # 这里我用spring_cms，可以替换为自己的。需要注意ES关于索引的命名规范
+  }
+}
+</code></pre></div></div>
 
 <p>使用配置文件重启Logstash服务</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>logstash  -f logstash-sample.conf
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>logstash  <span class="nt">-f</span> logstash-sample.conf
+</code></pre></div></div>
 
 <p>最后在项目中输出一段测试日志</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&quot;Hello，ELK&quot;</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Hello，ELK"</span><span class="o">);</span>
+</code></pre></div></div>
 
 <p>最后在Kibana创建索引就应该能看到日志了。</p>
 
-<h4>额外工具</h4>
+<h4 id="额外工具">额外工具</h4>
 
 <p>一开始发现Kibana中没有数据，猜测Elasticsearch没有收到数据，最后用到了<a href="https://github.com/mobz/elasticsearch-head">ElasticSearch head</a>这个可以查看Elasticsearch存储的工具，具体安装可以参考Github的说明。</p>
 
 <p>运行这个工具遇到问题，发现ElasticSearch连接不上，原来是跨域访问的问题，使用brew安装ElasticSearch后会有如下目录</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nl">Data:</span>    <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">elasticsearch</span><span class="o">/</span><span class="n">elasticsearch_xxxx</span><span class="o">/</span> <span class="err">#</span> <span class="n">xxxx此处是你自己的电脑名</span>
-</span><span class='line'><span class="nl">Logs:</span>    <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">log</span><span class="o">/</span><span class="n">elasticsearch</span><span class="o">/</span><span class="n">elasticsearch_xxxx</span><span class="o">.</span><span class="na">log</span> <span class="err">#</span> <span class="n">xxxx此处是你自己的电脑名</span>
-</span><span class='line'><span class="nl">Plugins:</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">var</span><span class="o">/</span><span class="n">elasticsearch</span><span class="o">/</span><span class="n">plugins</span><span class="o">/</span>
-</span><span class='line'><span class="nl">Config:</span>  <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">elasticsearch</span><span class="o">/</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>Data:    /usr/local/var/lib/elasticsearch/elasticsearch_xxxx/ # xxxx此处是你自己的电脑名
+Logs:    /usr/local/var/log/elasticsearch/elasticsearch_xxxx.log # xxxx此处是你自己的电脑名
+Plugins: /usr/local/var/elasticsearch/plugins/
+Config:  /usr/local/etc/elasticsearch/
+</code></pre></div></div>
 
+<p>编辑配置文件<code class="language-plaintext highlighter-rouge">nano /usr/local/etc/elasticsearch/elasticsearch.yml</code>，添加如下配置。</p>
 
-<p>编辑配置文件<code>nano /usr/local/etc/elasticsearch/elasticsearch.yml</code>，添加如下配置。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">http</span><span class="o">.</span><span class="na">cors</span><span class="o">.</span><span class="na">enabled</span><span class="o">:</span> <span class="kc">true</span>
-</span><span class='line'><span class="n">http</span><span class="o">.</span><span class="na">cors</span><span class="o">.</span><span class="na">allow</span><span class="o">-</span><span class="nl">origin:</span> <span class="s">&quot;*&quot;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>http.cors.enabled: true
+http.cors.allow-origin: "*"
+</code></pre></div></div>
 <p>最后就可以正常访问了。</p>
 
-<h4>总结</h4>
-
+<h4 id="总结">总结</h4>
 <p>使用ELK访问日志确实很方便，实际开发中可能会使用云服务商提供ELK服务。</p>
 </div>
   
@@ -685,12 +530,14 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-04-19T06:01:29+08:00'><span class='date'>2021-04-19</span> <span class='time'>06:01:29</span></time>
+2021-04-19 06:01
+		
         
       </p>
     
@@ -699,24 +546,20 @@
 
   <div class="entry-content"><p>打包现有Java工程的Jar到Docker镜像，也是遇到了问题。</p>
 
-<h4>不熟悉Dockerfile</h4>
+<h4 id="不熟悉dockerfile">不熟悉Dockerfile</h4>
 
-<h6>COPY 源 目标</h6>
+<h6 id="copy-源-目标">COPY 源 目标</h6>
 
-<p>一开始把源和目标的顺序给弄反了，但是还在镜像中有那个文件，结果执行<code>java -jar xxx.jar</code>老提示<code>Error: Unable to access jarfile xxx.jar</code>。最后登录到容器内部发现jar的文件大小不对，最后才反应过来把顺序弄反了。</p>
+<p>一开始把源和目标的顺序给弄反了，但是还在镜像中有那个文件，结果执行<code class="language-plaintext highlighter-rouge">java -jar xxx.jar</code>老提示<code class="language-plaintext highlighter-rouge">Error: Unable to access jarfile xxx.jar</code>。最后登录到容器内部发现jar的文件大小不对，最后才反应过来把顺序弄反了。</p>
 
-<h4>登入容器内部</h4>
+<h4 id="登入容器内部">登入容器内部</h4>
+<p>一开始为了诊断Java运行Jar文件不成功的问题，我就想看看容器内的文件是否已经在。最后用如下命令，登入容器，这个还是比较有用，不过应该去掉镜像的<code class="language-plaintext highlighter-rouge">CMD</code>命令。</p>
 
-<p>一开始为了诊断Java运行Jar文件不成功的问题，我就想看看容器内的文件是否已经在。最后用如下命令，登入容器，这个还是比较有用，不过应该去掉镜像的<code>CMD</code>命令。</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>docker run <span class="nt">-t</span> <span class="nt">-i</span> xxx_container /bin/bash
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -t -i xxx_container /bin/bash
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>镜像大小</h4>
-
-<p>一开始用的<code>FROM openjdk:8</code>，打出的镜像有800多M，后来使用<code>FROM openjdk:8-jdk-alpine</code>，大小150多M，我的Jar包实际只有不到50M的样子，所以还是比较大了。</p>
+<h4 id="镜像大小">镜像大小</h4>
+<p>一开始用的<code class="language-plaintext highlighter-rouge">FROM openjdk:8</code>，打出的镜像有800多M，后来使用<code class="language-plaintext highlighter-rouge">FROM openjdk:8-jdk-alpine</code>，大小150多M，我的Jar包实际只有不到50M的样子，所以还是比较大了。</p>
 </div>
   
   
@@ -733,12 +576,14 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-04-18T11:19:34+08:00'><span class='date'>2021-04-18</span> <span class='time'>11:19:34</span></time>
+2021-04-18 11:19
+		
         
       </p>
     
@@ -747,126 +592,81 @@
 
   <div class="entry-content"><p>学习Docker后，发现还是得学习下k8s，目前使用Spring Cloud，引入k8s后原来现有的架构确实会有些变化，比如k8s的服务与Spring Eureka实际上有些功能相似的地方。最早我打算使用微服务的时候也是看中可以使用其他语言，但实际上使用了Eureka后，发现用其他语言还是有困难的，Java依旧是服务的首选。引入k8s后这似乎成为了一些可能，不过目前还没有使用来着。</p>
 
-<h4>书籍</h4>
-
+<h4 id="书籍">书籍</h4>
 <p>关于k8s的书籍目前只买了《Kubernetes实战》，之前也是选了几本，但这本当时一看就觉得干货很多，不过在解决细节问题时还是依赖网路了，不过这次可能错了，关于k8s的资料网上的还是太少，解决细节的问题最后还是依靠这本书。这本书在理论和细节方面结合的很好。</p>
 
-<h4>使用本地镜像</h4>
+<h4 id="使用本地镜像">使用本地镜像</h4>
+<p>我用的<code class="language-plaintext highlighter-rouge">minikube</code>，本地构建的doker镜像，我并没有推送到docker的镜像服务器，打出的docker镜像，其实还是蛮大的，Python和Flask，只是个简单的Hello World的例子，有800多M。再将这个推送到docker镜像服务器太慢了，实际我根本就没有成功，但拉取镜像速度还不错。</p>
 
-<p>我用的<code>minikube</code>，本地构建的doker镜像，我并没有推送到docker的镜像服务器，打出的docker镜像，其实还是蛮大的，Python和Flask，只是个简单的Hello World的例子，有800多M。再将这个推送到docker镜像服务器太慢了，实际我根本就没有成功，但拉取镜像速度还不错。</p>
+<p>一开始我使用<code class="language-plaintext highlighter-rouge">kubectrl run</code>创建Pods。</p>
 
-<p>一开始我使用<code>kubectrl run</code>创建Pods。</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>kubectrl run testflask <span class="nt">--image</span><span class="o">=</span>testflask <span class="nt">--port</span><span class="o">=</span>5000 <span class="nt">--generator</span><span class="o">=</span>run/v1
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>kubectrl run testflask --image<span class="o">=</span>testflask --port<span class="o">=</span><span class="m">5000</span> --generator<span class="o">=</span>run/v1
-</span></code></pre></td></tr></table></div></figure>
+<p>上面这种方式还是有局限，网上说要把<code class="language-plaintext highlighter-rouge">imagePullPolicy</code>设置成<code class="language-plaintext highlighter-rouge">IfNotPresent</code>或者<code class="language-plaintext highlighter-rouge">Never</code>。但是怎么设置？网上的博文根本不说，最后还是从《Kubernetes实战》这书找到答案，使用配置文件来创建，创建一个<code class="language-plaintext highlighter-rouge">flasktest.yaml</code>的配置文件。这里需要注意的是配置文件中一定要使用空格缩进而不是Tab，貌似我用的vs code和textmate都是使用Tab缩进。</p>
 
-
-<p>上面这种方式还是有局限，网上说要把<code>imagePullPolicy</code>设置成<code>IfNotPresent</code>或者<code>Never</code>。但是怎么设置？网上的博文根本不说，最后还是从《Kubernetes实战》这书找到答案，使用配置文件来创建，创建一个<code>flasktest.yaml</code>的配置文件。这里需要注意的是配置文件中一定要使用空格缩进而不是Tab，貌似我用的vs code和textmate都是使用Tab缩进。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">apiVersion</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">v1</span>
-</span><span class='line'><span class="l-Scalar-Plain">kind</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Pod</span>
-</span><span class='line'><span class="l-Scalar-Plain">metadata</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest</span>
-</span><span class='line'><span class="l-Scalar-Plain">spec</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">containers</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">testflask</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest-container</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">imagePullPolicy</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">IfNotPresent</span> <span class="c1"># 拉取的策略</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">containerPort</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">5000</span> <span class="c1"># 容器的端口</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">protocol</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">TCP</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">flasktest</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">testflask</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">flasktest-container</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span> <span class="c1"># 拉取的策略</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">5000</span> <span class="c1"># 容器的端口</span>
+      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+</code></pre></div></div>
 
 <p>通过配置文件来创建pods</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>kubectl create -f flasktest.yaml <span class="c"># 通过配置文件创建pods</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>kubectl create <span class="nt">-f</span> flasktest.yaml <span class="c"># 通过配置文件创建pods</span>
+</code></pre></div></div>
 
+<p>最后发现还是有问题，这个镜像始终还是无法拉下来，网上搜索半天也没有找到个解决方案，最后打算直接使用<code class="language-plaintext highlighter-rouge">docker</code>的公共镜像<code class="language-plaintext highlighter-rouge">docker/getting-started</code>，估计是网络的问题，始终没有拉取下来。我一直把<code class="language-plaintext highlighter-rouge">minikube</code>的当成本地的了，<code class="language-plaintext highlighter-rouge">docker</code>也是共用一个，实际上犯了个严重的认知错误，<code class="language-plaintext highlighter-rouge">minikube</code>在VirtualBox创建了一个<code class="language-plaintext highlighter-rouge">minikube</code>虚拟机在运行，<code class="language-plaintext highlighter-rouge">docker</code>肯定与我本地的不是一个，《Kubernetes实战》书中提供了一种把本地的docker复制到<code class="language-plaintext highlighter-rouge">minikube</code>虚拟机中<code class="language-plaintext highlighter-rouge">docker</code>镜像库的方法。</p>
 
-<p>最后发现还是有问题，这个镜像始终还是无法拉下来，网上搜索半天也没有找到个解决方案，最后打算直接使用<code>docker</code>的公共镜像<code>docker/getting-started</code>，估计是网络的问题，始终没有拉取下来。我一直把<code>minikube</code>的当成本地的了，<code>docker</code>也是共用一个，实际上犯了个严重的认知错误，<code>minikube</code>在VirtualBox创建了一个<code>minikube</code>虚拟机在运行，<code>docker</code>肯定与我本地的不是一个，《Kubernetes实战》书中提供了一种把本地的docker复制到<code>minikube</code>虚拟机中<code>docker</code>镜像库的方法。</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>docker save testflask | <span class="o">(</span><span class="nb">eval</span> <span class="si">$(</span>minikube docker-env<span class="si">)</span> <span class="o">&amp;&amp;</span> docker load<span class="o">)</span>
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker save testflask <span class="p">|</span> <span class="o">(</span><span class="nb">eval</span> <span class="k">$(</span>minikube docker-env<span class="k">)</span> <span class="o">&amp;&amp;</span> docker load<span class="o">)</span>
-</span></code></pre></td></tr></table></div></figure>
+<p>可以使用<code class="language-plaintext highlighter-rouge">minikube ssh</code>登录到<code class="language-plaintext highlighter-rouge">minikube</code>虚拟机中，查看<code class="language-plaintext highlighter-rouge">docker</code>镜像是否已经复制过去了。最后顺利启动了，不过怎么访问服务呢？</p>
 
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>kubectl expose rc flasktest <span class="nt">--type</span><span class="o">=</span>LoadBalancer <span class="nt">--name</span> flasktest-http
+</code></pre></div></div>
 
-<p>可以使用<code>minikube ssh</code>登录到<code>minikube</code>虚拟机中，查看<code>docker</code>镜像是否已经复制过去了。最后顺利启动了，不过怎么访问服务呢？</p>
+<p>不过这里也个问题，提示<code class="language-plaintext highlighter-rouge">replicationcontrollers "flasktest" not found</code>。其实命令<code class="language-plaintext highlighter-rouge">kubectrl run testflask --image=testflask --port=5000 --generator=run/v1</code>中，<code class="language-plaintext highlighter-rouge">--generator=run/v1</code>是创建<code class="language-plaintext highlighter-rouge">replicationcontroller</code>的，但我使用的是配置文件创建，问题不大，修改下配置文件。如下：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>kubectl expose rc flasktest --type<span class="o">=</span>LoadBalancer --name flasktest-http
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ReplicationController</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">flasktest</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">3</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">flasktest</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">flasktest</span>
+    <span class="na">spec</span><span class="pi">:</span>
+        <span class="na">containers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">testflask</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">flasktest-container</span>
+          <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span>
+          <span class="na">ports</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">5000</span>
+            <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+</code></pre></div></div>
 
+<p>重新创建，再启动服务，服务时启动了，不过还是有问题，使用<code class="language-plaintext highlighter-rouge">minikube</code>没有外部的ip的访问，需要使用如下命令。不过这个端口是随机的，跟原来用docker的那个不太一样。</p>
 
-<p>不过这里也个问题，提示<code>replicationcontrollers "flasktest" not found</code>。其实命令<code>kubectrl run testflask --image=testflask --port=5000 --generator=run/v1</code>中，<code>--generator=run/v1</code>是创建<code>replicationcontroller</code>的，但我使用的是配置文件创建，问题不大，修改下配置文件。如下：</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>minikube service flasktest-http
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">apiVersion</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">v1</span>
-</span><span class='line'><span class="l-Scalar-Plain">kind</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ReplicationController</span>
-</span><span class='line'><span class="l-Scalar-Plain">metadata</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest</span>
-</span><span class='line'><span class="l-Scalar-Plain">spec</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">replicas</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">3</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">selector</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">app</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">template</span><span class="p-Indicator">:</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">metadata</span><span class="p-Indicator">:</span>
-</span><span class='line'>      <span class="l-Scalar-Plain">labels</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">app</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest</span>
-</span><span class='line'>    <span class="l-Scalar-Plain">spec</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="l-Scalar-Plain">containers</span><span class="p-Indicator">:</span>
-</span><span class='line'>        <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">image</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">testflask</span>
-</span><span class='line'>          <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">flasktest-container</span>
-</span><span class='line'>          <span class="l-Scalar-Plain">imagePullPolicy</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">IfNotPresent</span>
-</span><span class='line'>          <span class="l-Scalar-Plain">ports</span><span class="p-Indicator">:</span>
-</span><span class='line'>          <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">containerPort</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">5000</span>
-</span><span class='line'>            <span class="l-Scalar-Plain">protocol</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">TCP</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>重新创建，再启动服务，服务时启动了，不过还是有问题，使用<code>minikube</code>没有外部的ip的访问，需要使用如下命令。不过这个端口是随机的，跟原来用docker的那个不太一样。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>minikube service flasktest-http
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>总结</h4>
+<h4 id="总结">总结</h4>
 
 <p>网络的问题使本来简单的入门变得复杂，另外k8s的资料目前确实不是很多，一些细节网上的很少有人总结出来。不过感觉方案虽好，但是镜像大，以及可能要自己部署私有的镜像，再到其他的，其实投入还是蛮多的。</p>
+
 </div>
   
   
@@ -883,12 +683,14 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-04-16T21:01:29+08:00'><span class='date'>2021-04-16</span> <span class='time'>21:01:29</span></time>
+2021-04-16 21:01
+		
         
       </p>
     
@@ -897,116 +699,78 @@
 
   <div class="entry-content"><p>去年年底的时候，当时有简单的研究下Docker，不过只是下载了一些类似MongoDB的镜像运行了下，感觉Docker非常适合安装这些软件。最近开始看Kubernetes，Docker的研究难免，那么如何把现有项目打包成一个Docker镜像以及运行，去年好像有简单的试下，不过有点遗忘，再次运行发现一些问题。</p>
 
-<h4>准备</h4>
+<h4 id="准备">准备</h4>
 
 <p>这里运行Flask的一个简单例子，只为演示。创建一个文件flask_test的文件夹，</p>
 
 <p>目录文件</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>app.py
-</span><span class='line'>requirements.txt
-</span><span class='line'>Dockerfile
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>app.py
+requirements.txt
+Dockerfile
+</code></pre></div></div>
 
 <p><strong><em>app.py</em></strong>，默认host是127.0.0.1，这里有个问题就是打包成镜像，无法访问端口。在mac和linux都一样，具体可以参考这篇文章<a href="https://pythonspeed.com/articles/docker-connection-refused/">《Connection refused? Docker networking and how it impacts your image》</a></p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
-</span><span class='line'><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="nd">@app.route</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
-</span><span class='line'>    <span class="k">return</span> <span class="s">&#39;Hello, World!&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-</span><span class='line'>    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">'Hello, World!'</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">app</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">"0.0.0.0"</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p><strong><em>requirements.txt</em></strong>，这个主要是放置python依赖库，目前只有flask一项。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="n">flask</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>flask
+</code></pre></div></div>
 
+<p><strong><em>Dockerfile</em></strong>，这个是Build Docker的配置文件，<code class="language-plaintext highlighter-rouge">EXPOSE 5000</code>这个是指定容器内部的端口的，在Mac使用Docker客户端启动镜像时会有出现在设置里面。在Linux上构建镜像时出现下载python依赖https的错误<code class="language-plaintext highlighter-rouge">SSL: CERTIFICATE_VERIFY_FAILED</code>，需要去掉验证，<code class="language-plaintext highlighter-rouge">RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt</code>，下面这个是在Mac上可以运行的配置。</p>
 
-<p><strong><em>Dockerfile</em></strong>，这个是Build Docker的配置文件，<code>EXPOSE 5000</code>这个是指定容器内部的端口的，在Mac使用Docker客户端启动镜像时会有出现在设置里面。在Linux上构建镜像时出现下载python依赖https的错误<code>SSL: CERTIFICATE_VERIFY_FAILED</code>，需要去掉验证，<code>RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt</code>，下面这个是在Mac上可以运行的配置。</p>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>FROM python:3.9
+WORKDIR /code
+EXPOSE 5000
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>FROM python:3.9
-</span><span class='line'>WORKDIR /code
-</span><span class='line'>EXPOSE 5000
-</span><span class='line'>
-</span><span class='line'>COPY requirements.txt ./
-</span><span class='line'>RUN pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
-</span><span class='line'>
-</span><span class='line'>COPY . .
-</span><span class='line'>
-</span><span class='line'>CMD <span class="o">[</span><span class="s2">&quot;python&quot;</span>, <span class="s2">&quot;app.py&quot;</span><span class="o">]</span>
-</span></code></pre></td></tr></table></div></figure>
+COPY requirements.txt ./
+RUN pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt <span class="nt">-i</span> https://pypi.tuna.tsinghua.edu.cn/simple
 
+COPY <span class="nb">.</span> <span class="nb">.</span>
 
-<h4>构建</h4>
+CMD <span class="o">[</span><span class="s2">"python"</span>, <span class="s2">"app.py"</span><span class="o">]</span>
 
-<p>构建Docker镜像，在当前目录运行该命令，记得不要忽略这个<code>.</code>，另外镜像的名字不能出现大写，我一直开始写成<code>testFlask</code>，结果构建失败。</p>
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>sudo docker build -t <span class="s1">&#39;testflask&#39;</span> .
-</span></code></pre></td></tr></table></div></figure>
+<h4 id="构建">构建</h4>
 
+<p>构建Docker镜像，在当前目录运行该命令，记得不要忽略这个<code class="language-plaintext highlighter-rouge">.</code>，另外镜像的名字不能出现大写，我一直开始写成<code class="language-plaintext highlighter-rouge">testFlask</code>，结果构建失败。</p>
 
-<h4>运行</h4>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">sudo </span>docker build <span class="nt">-t</span> <span class="s1">'testflask'</span> <span class="nb">.</span>
+</code></pre></div></div>
 
-<p>下面这个是以后台形式运行容器，<code>8000</code>是外部的访问端口，<code>5000</code>是容器内的端口。</p>
+<p>####运行
+下面这个是以后台形式运行容器，<code class="language-plaintext highlighter-rouge">8000</code>是外部的访问端口，<code class="language-plaintext highlighter-rouge">5000</code>是容器内的端口。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker run -p 8000:5000 -d testflask
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>docker run <span class="nt">-p</span> 8000:5000 <span class="nt">-d</span> testflask
+</code></pre></div></div>
 
-
-<h4>常用命令</h4>
-
+<h4 id="常用命令">常用命令</h4>
 <p>Mac上我会用Docker Desktop，不过Linux上还是命令行是王道。主要记几个常用的命令。</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>docker ps <span class="c"># 列出运行的容器</span>
-</span><span class='line'>docker images <span class="c"># 列出当前的所有镜像</span>
-</span><span class='line'>docker rm 容器ID <span class="c"># 删除指定的容器</span>
-</span><span class='line'>docker rmi 镜像ID <span class="c"># 删除指定的镜像</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>docker ps <span class="c"># 列出运行的容器</span>
+docker images <span class="c"># 列出当前的所有镜像</span>
+docker <span class="nb">rm </span>容器ID <span class="c"># 删除指定的容器</span>
+docker rmi 镜像ID <span class="c"># 删除指定的镜像</span>
+</code></pre></div></div>
 
-
-<h4>后记</h4>
-
+<h4 id="后记">后记</h4>
 <p>目前打包出的镜像居然有900多M，只有一个python和flask的依赖，觉得可能还是研究的不够。通过这个例子，发现还是得找本Docker的书籍系统的研究下，问题解决了，但是缺乏理论依据。</p>
 
-<h4>更新</h4>
+<h4 id="更新">更新</h4>
+<p>因为初次接触docker，后来发现可以使用基础版本，修改Dockerfile文件<code class="language-plaintext highlighter-rouge">FROM python:3.9-alpine</code>，最后打包后50M。</p>
 
-<p>因为初次接触docker，后来发现可以使用基础版本，修改Dockerfile文件<code>FROM python:3.9-alpine</code>，最后打包后50M。</p>
 </div>
   
   
@@ -1023,12 +787,14 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-04-16T09:20:13+08:00'><span class='date'>2021-04-16</span> <span class='time'>09:20:13</span></time>
+2021-04-16 09:20
+		
         
       </p>
     
@@ -1037,40 +803,29 @@
 
   <div class="entry-content"><p>Mac上安装软件基本上都在使用Brew，记录下使用坑。</p>
 
-<h4>慢</h4>
+<h4 id="慢">慢</h4>
+<p>执行<code class="language-plaintext highlighter-rouge">brew update</code>时很慢的问题，主要是是Github访问慢的缘故，设置从镜像拉取，基本上可以解决这个问题。用了中科大的源，亲测速度感刚的。</p>
 
-<p>执行<code>brew update</code>时很慢的问题，主要是是Github访问慢的缘故，设置从镜像拉取，基本上可以解决这个问题。用了中科大的源，亲测速度感刚的。</p>
+<h5 id="替换brewgit">替换<code class="language-plaintext highlighter-rouge">brew.git</code></h5>
 
-<h5>替换<code>brew.git</code></h5>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">cd</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--repo</span><span class="si">)</span><span class="s2">"</span>
+git remote set-url origin https://mirrors.ustc.edu.cn/brew.git
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> <span class="s2">&quot;$(brew --repo)&quot;</span>
-</span><span class='line'>git remote <span class="nb">set</span>-url origin https://mirrors.ustc.edu.cn/brew.git
-</span></code></pre></td></tr></table></div></figure>
+<h5 id="替换homebrew-coregit">替换<code class="language-plaintext highlighter-rouge">homebrew-core.git</code></h5>
 
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">cd</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--repo</span><span class="si">)</span><span class="s2">"</span>/Library/Taps/homebrew/homebrew-core
+git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
+</code></pre></div></div>
 
-<h5>替换<code>homebrew-core.git</code></h5>
+<h5 id="替换homebrew-caskgit">替换<code class="language-plaintext highlighter-rouge">homebrew-cask.git</code></h5>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> <span class="s2">&quot;$(brew --repo)&quot;</span>/Library/Taps/homebrew/homebrew-core
-</span><span class='line'>git remote <span class="nb">set</span>-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">cd</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--repo</span><span class="si">)</span><span class="s2">"</span>/Library/Taps/homebrew/homebrew-cask
+git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
+</code></pre></div></div>
 
-
-<h5>替换<code>homebrew-cask.git</code></h5>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">cd</span> <span class="s2">&quot;$(brew --repo)&quot;</span>/Library/Taps/homebrew/homebrew-cask
-</span><span class='line'>git remote <span class="nb">set</span>-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>参考</h4>
-
-<p><a href="https://zhuanlan.zhihu.com/p/351199589">brew update 更新时 shallow clone</a><br/>
+<h4 id="参考">参考</h4>
+<p><a href="https://zhuanlan.zhihu.com/p/351199589">brew update 更新时 shallow clone</a><br />
 <a href="https://www.jianshu.com/p/62f1b963baa6">mac使用brew update无反应,更新慢解决办法</a></p>
 </div>
   
@@ -1088,61 +843,52 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-04-14T06:43:52+08:00'><span class='date'>2021-04-14</span> <span class='time'>06:43:52</span></time>
+2021-04-14 06:43
+		
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><h4>为什么是Eclispe</h4>
-
+  <div class="entry-content"><h4 id="为什么是eclispe">为什么是Eclispe</h4>
 <p>最早接触Eclispe主要是用来开发Android应用，早期Android开发没有Android Studio，只能通过安装插件来开发。后来开发iOS后，Eclispe就用的少了，偶尔用来跑些简单的例子。后来做Java web，Eclispe又开始用了起来。</p>
 
 <p>虽然很多人推荐IntelliJ IDEA，下载的试用了下，某些功能确实比Eclispe强大，但是Eclispe+Spring Tools，对目前的开发来说确实已经够用了，另外还是有点用不习惯，也没有Spring tools 这样的插件，所以干嘛花钱买个自己用不惯的东西呢？</p>
 
-<h4>自动补全</h4>
-
+<h4 id="自动补全">自动补全</h4>
 <p>默认出现点号时才会出现自动补全的提示，不过可以设置，这里以Mac环境为例。</p>
 
-<p>选择菜单<code>Perferences-&gt;Java-&gt;Content Assist-&gt;Auto activation triggers for Java</code>，默认为<strong><em>.</em></strong>，使用<code>.abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWSYZ_</code>替换，点击Ok。</p>
+<p>选择菜单<code class="language-plaintext highlighter-rouge">Perferences-&gt;Java-&gt;Content Assist-&gt;Auto activation triggers for Java</code>，默认为<strong><em>.</em></strong>，使用<code class="language-plaintext highlighter-rouge">.abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWSYZ_</code>替换，点击Ok。</p>
 
-<h4>常用插件</h4>
-
+<h4 id="常用插件">常用插件</h4>
 <p><strong>EasyShell</strong>，这个工具主要是可以快速在当前目录打开Shell以及打开当前的文件夹。</p>
 
-<h4>Maven 配置文件报错</h4>
+<h4 id="maven-配置文件报错">Maven 配置文件报错</h4>
 
 <p>Maven使用本地Jar包后pom.xml显示错误，实际上本地Jar包是可以加载的，但总是提示错误。</p>
+<blockquote>
+  <p>dependencies.dependency.systemPath’ for com.test:test:jar must specify an absolute path but is ${pom.basedir}/libs/test.jar</p>
+</blockquote>
 
-<blockquote><p>dependencies.dependency.systemPath&#8217; for com.test:test:jar must specify an absolute path but is ${pom.basedir}/libs/test.jar</p></blockquote>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>com.test<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>test<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;version&gt;</span>1.0<span class="nt">&lt;/version&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;scope&gt;</span>system<span class="nt">&lt;/scope&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;systemPath&gt;</span>${pom.basedir}/libs/test.jar<span class="nt">&lt;/systemPath&gt;</span>
-</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nt">&lt;dependency&gt;</span>
+	<span class="nt">&lt;groupId&gt;</span>com.test<span class="nt">&lt;/groupId&gt;</span>
+	<span class="nt">&lt;artifactId&gt;</span>test<span class="nt">&lt;/artifactId&gt;</span>
+	<span class="nt">&lt;version&gt;</span>1.0<span class="nt">&lt;/version&gt;</span>
+	<span class="nt">&lt;scope&gt;</span>system<span class="nt">&lt;/scope&gt;</span>
+	<span class="nt">&lt;systemPath&gt;</span>${pom.basedir}/libs/test.jar<span class="nt">&lt;/systemPath&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
 
 <p>这个问题虽然不影响使用，但是老显示红叉，总感觉像去掉的。我原来使用Eclispe版本是2020-03 (4.15.0)，没有这个问题。但是使用最新的Eclipse版本2021-03 (4.19.0)有这个问题，包括Spring ToolSuite 4也有这个问题，我把4.15.0到4.19.0版本下载几个对比后，终于发现4.16.0开始都有问题，最后发现4.16.0版本Preferences多了一个XMl（Wide Web Developer）项，把子项Validation &amp; Resolution，Enable validation 禁用就没有了。</p>
 
-<h4>升级与不升级</h4>
-
+<h4 id="升级与不升级">升级与不升级</h4>
 <p>如果现有环境稳定，那就最好不要升级。Eclispe好处是可以支持多个语言的开发，可以装一堆插件支持，但感觉只把它当作Java IDE就可以了，现在VS Code完全可以做其他语言的IDE。</p>
 
 <p>之前的Eclispe很稳定，但一次插件的安装后，弹出需要更高版本的Eclispe，然后就无法启动了。一气之下，直接删除Eclispe，重新安装那些插件，结果发现2020-03 (4.15.0)下载的Spring Tools插件不能使用，发现Spring Tools 4已经出了，但是我当前这个版本无法使用。最后下载了Spring Tools官方出品的Eclispe整合版本Spring ToolSuite 4，就结果就出现了上面提到的Maven配置报错的问题，虽然问题解决了，但是还是提示插件安装也是要谨慎，可能升级不对就的折腾半天了。</p>
@@ -1162,12 +908,14 @@
     
     
       <p class="meta">
-        
+		
+        	
 
 
 
 
-<time class='entry-date' datetime='2021-04-02T05:53:47+08:00'><span class='date'>2021-04-02</span> <span class='time'>05:53:47</span></time>
+2021-04-02 05:53
+		
         
       </p>
     
@@ -1178,356 +926,195 @@
 
 <p>回到正题，我实际上想把Go作为业务研究的语言了，虽然脑海中一直印象他的性能不错，但具体表现怎样能，好像我也并不清楚。最后选择对比的语言是Java、Go、C、Rust四个语言，程序都是运行100000000循环，循环内执行冒泡排序。</p>
 
-<h4>Java 代码</h4>
+<h4 id="java-代码">Java 代码</h4>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>      <span class="c1">// 记录开始时间</span>
-</span><span class='line'>      <span class="kt">long</span> <span class="n">start</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
-</span><span class='line'>      <span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">100000000</span><span class="o">;</span>
-</span><span class='line'>      <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-</span><span class='line'>          <span class="kt">int</span> <span class="n">arr</span><span class="o">[]</span> <span class="o">=</span> <span class="o">{</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">6</span><span class="o">,</span> <span class="mi">7</span><span class="o">,</span> <span class="mi">8</span><span class="o">,</span> <span class="mi">9</span><span class="o">};</span>
-</span><span class='line'>          <span class="n">bubbleSort</span><span class="o">(</span><span class="n">arr</span><span class="o">);</span>
-</span><span class='line'>      <span class="o">}</span>
-</span><span class='line'>      <span class="c1">// 打印耗时时间</span>
-</span><span class='line'>      <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">()</span> <span class="o">-</span> <span class="n">start</span><span class="o">);</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="c1">// 排序</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">bubbleSort</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>      <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>
-</span><span class='line'>      <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-</span><span class='line'>          <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">-</span> <span class="n">i</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
-</span><span class='line'>              <span class="k">if</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="o">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">])</span> <span class="o">{</span>
-</span><span class='line'>                  <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">];</span>
-</span><span class='line'>                  <span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">];</span>
-</span><span class='line'>                  <span class="n">arr</span><span class="o">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">temp</span><span class="o">;</span>
-</span><span class='line'>              <span class="o">}</span>
-</span><span class='line'>          <span class="o">}</span>
-</span><span class='line'>      <span class="o">}</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">// 记录开始时间</span>
+		<span class="kt">long</span> <span class="n">start</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
+		<span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">100000000</span><span class="o">;</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="kt">int</span> <span class="n">arr</span><span class="o">[]</span> <span class="o">=</span> <span class="o">{</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">6</span><span class="o">,</span> <span class="mi">7</span><span class="o">,</span> <span class="mi">8</span><span class="o">,</span> <span class="mi">9</span><span class="o">};</span>
+			<span class="n">bubbleSort</span><span class="o">(</span><span class="n">arr</span><span class="o">);</span>
+		<span class="o">}</span>
+		<span class="c1">// 打印耗时时间</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">()</span> <span class="o">-</span> <span class="n">start</span><span class="o">);</span>
+	<span class="o">}</span>
 
+	<span class="c1">// 排序</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">bubbleSort</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">)</span> <span class="o">{</span>
+		<span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>
+		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+			<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">-</span> <span class="n">i</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
+				<span class="k">if</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="o">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">])</span> <span class="o">{</span>
+					<span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">];</span>
+					<span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">];</span>
+					<span class="n">arr</span><span class="o">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">temp</span><span class="o">;</span>
+				<span class="o">}</span>
+			<span class="o">}</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
 
 <p>运行时间</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>3052757121
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>3052757121
+</code></pre></div></div>
 
+<h4 id="go-代码">Go 代码</h4>
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="k">package</span> <span class="n">main</span>
 
-<h4>Go 代码</h4>
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"fmt"</span>
+	<span class="s">"time"</span>
+<span class="p">)</span>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="p">(</span>
-</span><span class='line'>  <span class="s">&quot;fmt&quot;</span>
-</span><span class='line'>  <span class="s">&quot;time&quot;</span>
-</span><span class='line'><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">start</span> <span class="o">:=</span> <span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">().</span><span class="nx">UnixNano</span><span class="p">()</span>
-</span><span class='line'>  <span class="kd">const</span> <span class="nx">NUM</span> <span class="kt">int</span> <span class="p">=</span> <span class="mi">100000000</span>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">i</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="p">&lt;</span> <span class="nx">NUM</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">arr</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">}</span>
-</span><span class='line'>      <span class="nx">bubbleSort</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>  <span class="c1">// 打印消耗时间</span>
-</span><span class='line'>  <span class="nx">fmt</span><span class="p">.</span><span class="nx">Println</span><span class="p">(</span><span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">().</span><span class="nx">UnixNano</span><span class="p">()</span> <span class="o">-</span> <span class="nx">start</span><span class="p">)</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">// 排序</span>
-</span><span class='line'><span class="kd">func</span> <span class="nx">bubbleSort</span><span class="p">(</span><span class="nx">arr</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">for</span> <span class="nx">j</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">j</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="nx">j</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>      <span class="k">for</span> <span class="nx">k</span> <span class="o">:=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">k</span> <span class="p">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="nx">j</span><span class="p">;</span> <span class="nx">k</span><span class="o">++</span> <span class="p">{</span>
-</span><span class='line'>          <span class="k">if</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="p">&lt;</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">{</span>
-</span><span class='line'>              <span class="nx">arr</span><span class="p">[</span><span class="nx">k</span><span class="p">],</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">=</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">k</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="nx">arr</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span>
-</span><span class='line'>          <span class="p">}</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">start</span> <span class="o">:=</span> <span class="n">time</span><span class="o">.</span><span class="n">Now</span><span class="p">()</span><span class="o">.</span><span class="n">UnixNano</span><span class="p">()</span>
+	<span class="k">const</span> <span class="n">NUM</span> <span class="kt">int</span> <span class="o">=</span> <span class="m">100000000</span>
+	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUM</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
+		<span class="n">arr</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> <span class="m">9</span><span class="p">}</span>
+		<span class="n">bubbleSort</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+	<span class="p">}</span>
+	<span class="c">// 打印消耗时间</span>
+	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">Now</span><span class="p">()</span><span class="o">.</span><span class="n">UnixNano</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+<span class="p">}</span>
 
+<span class="c">// 排序</span>
+<span class="k">func</span> <span class="n">bubbleSort</span><span class="p">(</span><span class="n">arr</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">for</span> <span class="n">j</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">-</span><span class="m">1</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span> <span class="p">{</span>
+		<span class="k">for</span> <span class="n">k</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">-</span><span class="m">1</span><span class="o">-</span><span class="n">j</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span> <span class="p">{</span>
+			<span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="m">1</span><span class="p">]</span> <span class="p">{</span>
+				<span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="m">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="m">1</span><span class="p">],</span> <span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>运行时间</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="m">3804215000</span> <span class="c"># 纳秒</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>3804215000 <span class="c"># 纳秒</span>
+</code></pre></div></div>
 
+<h4 id="c-代码">C 代码</h4>
 
-<h4>C 代码</h4>
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="cp">#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;time.h&gt;
+</span>
+<span class="cp">#include &lt;sys/time.h&gt;
+#include &lt;unistd.h&gt;
+</span>
+<span class="kt">void</span> <span class="nf">bubbleSort</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">-</span><span class="mi">1</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
+                <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+                <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+                <span class="n">array</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-</pre></td><td class='code'><pre><code class='c'><span class='line'><span class="cp">#include &lt;stdlib.h&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;stdio.h&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;time.h&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="cp">#include &lt;sys/time.h&gt;</span>
-</span><span class='line'><span class="cp">#include &lt;unistd.h&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">void</span> <span class="nf">bubbleSort</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">length</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">-</span><span class="mi">1</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">if</span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
-</span><span class='line'>                <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
-</span><span class='line'>                <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
-</span><span class='line'>                <span class="n">array</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">struct</span> <span class="n">timeval</span> <span class="n">t_val</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">gettimeofday</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t_val</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
-</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;start, now, sec=%ld m_sec=%d </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">t_val</span><span class="p">.</span><span class="n">tv_sec</span><span class="p">,</span> <span class="n">t_val</span><span class="p">.</span><span class="n">tv_usec</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100000000</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>        <span class="kt">int</span> <span class="n">array</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">};</span>
-</span><span class='line'>        <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
-</span><span class='line'>        <span class="n">bubbleSort</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">struct</span> <span class="n">timeval</span> <span class="n">t_val_end</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">gettimeofday</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t_val_end</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">struct</span> <span class="n">timeval</span> <span class="n">t_result</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">timersub</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t_val_end</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">t_val</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">t_result</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kt">double</span> <span class="n">consume</span> <span class="o">=</span> <span class="n">t_result</span><span class="p">.</span><span class="n">tv_sec</span> <span class="o">+</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">*</span> <span class="n">t_result</span><span class="p">.</span><span class="n">tv_usec</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">;</span>
-</span><span class='line'>    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;end.elapsed time= %fs </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">consume</span><span class="p">);</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="n">timeval</span> <span class="n">t_val</span><span class="p">;</span>
+    <span class="n">gettimeofday</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t_val</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"start, now, sec=%ld m_sec=%d </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">t_val</span><span class="p">.</span><span class="n">tv_sec</span><span class="p">,</span> <span class="n">t_val</span><span class="p">.</span><span class="n">tv_usec</span><span class="p">);</span>
 
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100000000</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">array</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">};</span>
+        <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+        <span class="n">bubbleSort</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="k">struct</span> <span class="n">timeval</span> <span class="n">t_val_end</span><span class="p">;</span>
+    <span class="n">gettimeofday</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t_val_end</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+    <span class="k">struct</span> <span class="n">timeval</span> <span class="n">t_result</span><span class="p">;</span>
+    <span class="n">timersub</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t_val_end</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">t_val</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">t_result</span><span class="p">);</span>
+
+    <span class="kt">double</span> <span class="n">consume</span> <span class="o">=</span> <span class="n">t_result</span><span class="p">.</span><span class="n">tv_sec</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span> <span class="o">*</span> <span class="n">t_result</span><span class="p">.</span><span class="n">tv_usec</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"end.elapsed time= %fs </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">consume</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>运行时间</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>start, now, <span class="nv">sec</span><span class="o">=</span><span class="m">1617327646</span> <span class="nv">m_sec</span><span class="o">=</span><span class="m">57219</span>
-</span><span class='line'>end.elapsed <span class="nb">time</span><span class="o">=</span> 1.746955s
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>start, now, <span class="nv">sec</span><span class="o">=</span>1617327646 <span class="nv">m_sec</span><span class="o">=</span>57219 
+end.elapsed <span class="nb">time</span><span class="o">=</span> 1.746955s 
+</code></pre></div></div>
 
+<h4 id="rust代码">Rust代码</h4>
 
-<h4>Rust代码</h4>
+<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">time</span><span class="p">::</span><span class="n">Instant</span><span class="p">;</span>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-</pre></td><td class='code'><pre><code class='rust'><span class='line'><span class="kn">use</span> <span class="n">std</span><span class="o">::</span><span class="n">time</span><span class="o">::</span><span class="n">Instant</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">pub</span> <span class="k">fn</span> <span class="n">bubble_sort</span><span class="o">&lt;</span><span class="n">T</span><span class="o">:</span> <span class="nb">Ord</span><span class="o">&gt;</span><span class="p">(</span><span class="n">arr</span><span class="o">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mf">0.</span><span class="p">.</span><span class="n">arr</span><span class="p">.</span><span class="n">len</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mf">0.</span><span class="p">.</span><span class="n">arr</span><span class="p">.</span><span class="n">len</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span> <span class="p">{</span>
-</span><span class='line'>            <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="p">{</span>
-</span><span class='line'>                <span class="n">arr</span><span class="p">.</span><span class="n">swap</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
-</span><span class='line'>            <span class="p">}</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">fn</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kd">let</span> <span class="n">start</span> <span class="o">=</span> <span class="n">Instant</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">for</span> <span class="n">_i</span> <span class="k">in</span> <span class="mf">0.</span><span class="p">.</span><span class="mi">100000000</span> <span class="p">{</span>
-</span><span class='line'>        <span class="kd">let</span> <span class="k">mut</span> <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">];</span>
-</span><span class='line'>        <span class="n">bubble_sort</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="n">numbers</span><span class="p">);</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;time cost: {:?} ms&quot;</span><span class="p">,</span> <span class="n">start</span><span class="p">.</span><span class="n">elapsed</span><span class="p">().</span><span class="n">as_millis</span><span class="p">());</span> <span class="c1">// ms</span>
-</span><span class='line'>    <span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;time cost: {:?} us&quot;</span><span class="p">,</span> <span class="n">start</span><span class="p">.</span><span class="n">elapsed</span><span class="p">().</span><span class="n">as_micros</span><span class="p">());</span> <span class="c1">// us</span>
-</span><span class='line'>    <span class="nb">println</span><span class="o">!</span><span class="p">(</span><span class="s">&quot;time cost: {:?} ns&quot;</span><span class="p">,</span> <span class="n">start</span><span class="p">.</span><span class="n">elapsed</span><span class="p">().</span><span class="n">as_nanos</span><span class="p">());</span> <span class="c1">// us</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<span class="k">pub</span> <span class="k">fn</span> <span class="n">bubble_sort</span><span class="o">&lt;</span><span class="n">T</span><span class="p">:</span> <span class="nb">Ord</span><span class="o">&gt;</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="mi">0</span><span class="o">..</span><span class="n">arr</span><span class="nf">.len</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="n">in</span> <span class="mi">0</span><span class="o">..</span><span class="n">arr</span><span class="nf">.len</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="p">{</span>
+                <span class="n">arr</span><span class="nf">.swap</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 
+<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">let</span> <span class="n">start</span> <span class="o">=</span> <span class="nn">Instant</span><span class="p">::</span><span class="nf">now</span><span class="p">();</span>
+
+    <span class="k">for</span> <span class="mi">_</span><span class="n">i</span> <span class="n">in</span> <span class="mi">0</span><span class="o">..</span><span class="mi">100000000</span> <span class="p">{</span>
+        <span class="k">let</span> <span class="k">mut</span> <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">];</span>
+        <span class="nf">bubble_sort</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="n">numbers</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"time cost: {:?} ms"</span><span class="p">,</span> <span class="n">start</span><span class="nf">.elapsed</span><span class="p">()</span><span class="nf">.as_millis</span><span class="p">());</span> <span class="c">// ms</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"time cost: {:?} us"</span><span class="p">,</span> <span class="n">start</span><span class="nf">.elapsed</span><span class="p">()</span><span class="nf">.as_micros</span><span class="p">());</span> <span class="c">// us</span>
+    <span class="nd">println!</span><span class="p">(</span><span class="s">"time cost: {:?} ns"</span><span class="p">,</span> <span class="n">start</span><span class="nf">.elapsed</span><span class="p">()</span><span class="nf">.as_nanos</span><span class="p">());</span> <span class="c">// us</span>
+<span class="p">}</span>
+</code></pre></div></div>
 
 <p>运行时间</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="nb">time </span>cost: <span class="m">1763</span> ms
-</span><span class='line'><span class="nb">time </span>cost: <span class="m">1763298</span> us
-</span><span class='line'><span class="nb">time </span>cost: <span class="m">1763300912</span> ns
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">time </span>cost: 1763 ms
+<span class="nb">time </span>cost: 1763298 us
+<span class="nb">time </span>cost: 1763300912 ns
+</code></pre></div></div>
+
+<h4 id="swift-代码">Swift 代码</h4>
+
+<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="kd">import</span> <span class="kt">Foundation</span>
+
+<span class="kd">func</span> <span class="n">bubbleSort</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">Comparable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">with</span> <span class="nv">array</span><span class="p">:</span> <span class="k">inout</span> <span class="p">[</span><span class="kt">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">T</span><span class="p">]</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">..&lt;</span><span class="n">array</span><span class="o">.</span><span class="n">count</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..&lt;</span><span class="n">array</span><span class="o">.</span><span class="n">count</span><span class="o">-</span><span class="n">i</span> <span class="k">where</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">{</span>
+            <span class="n">array</span><span class="o">.</span><span class="nf">swapAt</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">array</span>
+<span class="p">}</span>
 
 
-<h4>Swift 代码</h4>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class='swift'><span class='line'><span class="k">import</span> <span class="n">Foundation</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">func</span> <span class="n">bubbleSort</span><span class="o">&lt;</span><span class="nl">T</span><span class="p">:</span> <span class="n">Comparable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">with</span> <span class="nl">array</span><span class="p">:</span> <span class="k">inout</span> <span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="n">T</span><span class="p">]</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mf">1.</span><span class="p">.</span><span class="o">&lt;</span><span class="n">array</span><span class="p">.</span><span class="n">count</span> <span class="p">{</span>
-</span><span class='line'>        <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mf">0.</span><span class="p">.</span><span class="o">&lt;</span><span class="n">array</span><span class="p">.</span><span class="n">count</span><span class="o">-</span><span class="n">i</span> <span class="k">where</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">{</span>
-</span><span class='line'>            <span class="n">array</span><span class="p">.</span><span class="n">swapAt</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-</span><span class='line'>        <span class="p">}</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>    <span class="k">return</span> <span class="n">array</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'><span class="k">let</span> <span class="n">start</span> <span class="o">=</span> <span class="n">DispatchTime</span><span class="p">.</span><span class="n">now</span><span class="p">()</span>
-</span><span class='line'><span class="k">for</span> <span class="n">_</span> <span class="k">in</span> <span class="mf">0.</span><span class="p">.</span><span class="o">&lt;</span><span class="mi">10000000</span> <span class="p">{</span>
-</span><span class='line'>    <span class="k">var</span> <span class="n">intArray</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
-</span><span class='line'>    <span class="n">bubbleSort</span><span class="p">(</span><span class="nl">with</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">intArray</span><span class="p">)</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'><span class="k">let</span> <span class="n">end</span> <span class="o">=</span> <span class="n">DispatchTime</span><span class="p">.</span><span class="n">now</span><span class="p">()</span>
-</span><span class='line'><span class="k">let</span> <span class="n">nanoTime</span> <span class="o">=</span> <span class="n">end</span><span class="p">.</span><span class="n">uptimeNanoseconds</span> <span class="o">-</span> <span class="n">start</span><span class="p">.</span><span class="n">uptimeNanoseconds</span>
-</span><span class='line'><span class="k">let</span> <span class="n">timeInterval</span> <span class="o">=</span> <span class="n">Double</span><span class="p">(</span><span class="n">nanoTime</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1</span><span class="n">_000_000_000</span>
-</span><span class='line'><span class="n">print</span><span class="p">(</span><span class="s">&quot;Time: \(timeInterval) seconds&quot;</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<span class="k">let</span> <span class="nv">start</span> <span class="o">=</span> <span class="kt">DispatchTime</span><span class="o">.</span><span class="nf">now</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">_</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..&lt;</span><span class="mi">10000000</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">intArray</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+    <span class="nf">bubbleSort</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">intArray</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="k">let</span> <span class="nv">end</span> <span class="o">=</span> <span class="kt">DispatchTime</span><span class="o">.</span><span class="nf">now</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">nanoTime</span> <span class="o">=</span> <span class="n">end</span><span class="o">.</span><span class="n">uptimeNanoseconds</span> <span class="o">-</span> <span class="n">start</span><span class="o">.</span><span class="n">uptimeNanoseconds</span>
+<span class="k">let</span> <span class="nv">timeInterval</span> <span class="o">=</span> <span class="kt">Double</span><span class="p">(</span><span class="n">nanoTime</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1_000_000_000</span>
+<span class="nf">print</span><span class="p">(</span><span class="s">"Time: </span><span class="se">\(</span><span class="n">timeInterval</span><span class="se">)</span><span class="s"> seconds"</span><span class="p">)</span>
+</code></pre></div></div>
 
 <p>运行时间</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>Time: 2.391004642 seconds
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>Time: 2.391004642 seconds
+</code></pre></div></div>
 
-
-<h4>总结</h4>
-
+<h4 id="总结">总结</h4>
 <p>最早我对比的是Java和C，因为C是在Debug模式下跑的，反而比Java的慢，这个让我无法接受，不应该啊，后来让朋友跑了下，说应该用Release模式，这才反应过来，Release + O3优化后速度一下子就上来了，明显比Java快。Rust和C基本上都有Debug和Release的区分，现在看来Rust和C是一个级别，Java和Go是另一个档次上的同一级别。现在的Java运行默认是解释和编译的混合模式，所以速度上自然也不错，和Java对标的Go数据上来看略微差点，不过考虑到Java的运行时开销，Go其实还是很有诱惑的，后续有可能赶超Java。</p>
 
 <p>企业开发的话用Java依旧最好的选择，个人创业项目的话用Go其实不错。对于Rust和C，不好选择C语法上比较简洁，很多语言特性跟底层更靠近，需要一定底层知识，写操作系统的话，C依旧是首选。Rust呢？个人觉得语法上比较复杂，混杂的语言特性过于多了，既想兼容底层有想高级别的抽象上靠近现代语言，不过这样的情况下依然保持高性能，还是很令人惊讶的。这个不好选，但Rust更充满诱惑，但复杂的语法让人畏惧。</p>
@@ -1535,144 +1122,6 @@
 <p>Go语言虽然有C的传承，不过在类型定义上使用后缀的形式跟C语言正好相反，有时还是比较抵触的，另外因为GC的缘故，性能毕竟还是处于应用语言的级别。Rust太复杂，Swift没有用GC是引用计数，速度上比Rust差些，语法上其实跟Rust也差不多，不过作为一个曾经的iOS开发者，虽然Swift在一段时间大家都非常看好，不过最近几年过去了，其实Swift更多还是Oc的一种替代品，并没有突破苹果的范围，服务端也没有掀起什么风浪，Swift终究是Oc的替代品，也正因为此，他也跟苹果生态深度的绑定，成了某种无法脱颖而出的枷锁。</p>
 
 <p>我心中语言其实就是C语言的改良版，内存管理上希望在语言层面上解决，比如用引用计数。语法上不要太加很多的特性，有Go的那样就可以了，但不是Go。不过目前来看是没有的，要不就是自己写一个，也不是没有可能。但实在要是也没有的Go和Rust总还是不错的选择。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2021/03/29/go-notes/">Go学习笔记</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2021-03-29T14:46:09+08:00'><span class='date'>2021-03-29</span> <span class='time'>14:46:09</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>开始用Go应该是17年底的时候，那会做游戏，后台是用Go写的，虽然我主要负责Unity客户端方面的工作，不过也是经常帮忙给后端的Go小伙解决一些问题，自己也写一些Go的小东西。</p>
-
-<p>后来又做物流系统，重写系统时有考虑用Go，不过因为大部分的外部接口对接都是Java的，为了省事就使用了Java。不过如果是自己的项目的话，还是愿意用Go，毕竟Java还是有点重。</p>
-
-<h4>IDE</h4>
-
-<p>原来有用过GoLand，为了轻量点，先用VS Code，众所周知的原因安装插件老失败，最后设置Go的代理就可以了。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>go env -w <span class="nv">GOPROXY</span><span class="o">=</span>https://goproxy.cn,direct
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h4>C程序员的礼物</h4>
-
-<p>直接试着写个搜索二叉树，其实除了语法上跟C的一些类型定义次序上有点不习惯外，其他方面对于C程序员来说，还是熟悉的用法，比如指针的指针这样的概念，毕竟Go是原来C的那帮人搞的，兼顾C的同时也结合不少Python这样的现代语言的特性。</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-</pre></td><td class='code'><pre><code class='go'><span class='line'><span class="kn">package</span> <span class="nx">main</span>
-</span><span class='line'>
-</span><span class='line'><span class="kn">import</span> <span class="s">&quot;fmt&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">type</span> <span class="nx">Node</span> <span class="kd">struct</span> <span class="p">{</span>
-</span><span class='line'>  <span class="nx">data</span>      <span class="kt">int</span>
-</span><span class='line'>  <span class="nx">leftNode</span>  <span class="o">*</span><span class="nx">Node</span>
-</span><span class='line'>  <span class="nx">rightNode</span> <span class="o">*</span><span class="nx">Node</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">func</span> <span class="nx">insert</span><span class="p">(</span><span class="nx">tree</span> <span class="o">**</span><span class="nx">Node</span><span class="p">,</span> <span class="nx">value</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="o">*</span><span class="nx">tree</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
-</span><span class='line'>      <span class="kd">var</span> <span class="nx">tempNode</span> <span class="nx">Node</span>
-</span><span class='line'>      <span class="nx">tempNode</span><span class="p">.</span><span class="nx">data</span> <span class="p">=</span> <span class="nx">value</span>
-</span><span class='line'>      <span class="o">*</span><span class="nx">tree</span> <span class="p">=</span> <span class="o">&amp;</span><span class="nx">tempNode</span>
-</span><span class='line'>      <span class="k">return</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">data</span> <span class="p">&gt;</span> <span class="nx">value</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">leftNode</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">data</span> <span class="p">&lt;</span> <span class="nx">value</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="p">(</span><span class="o">*</span><span class="nx">tree</span><span class="p">).</span><span class="nx">rightNode</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">func</span> <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span> <span class="o">*</span><span class="nx">Node</span><span class="p">)</span> <span class="p">{</span>
-</span><span class='line'>  <span class="k">if</span> <span class="nx">tree</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
-</span><span class='line'>      <span class="nx">fmt</span><span class="p">.</span><span class="nx">Printf</span><span class="p">(</span><span class="s">&quot;data: %d\n&quot;</span><span class="p">,</span> <span class="nx">tree</span><span class="p">.</span><span class="nx">data</span><span class="p">)</span>
-</span><span class='line'>      <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">.</span><span class="nx">leftNode</span><span class="p">)</span>
-</span><span class='line'>      <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">.</span><span class="nx">rightNode</span><span class="p">)</span>
-</span><span class='line'>  <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="kd">func</span> <span class="nx">main</span><span class="p">()</span> <span class="p">{</span>
-</span><span class='line'>  <span class="kd">var</span> <span class="nx">tree</span> <span class="o">*</span><span class="nx">Node</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">17</span><span class="p">)</span>
-</span><span class='line'>  <span class="nx">insert</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">tree</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nx">perOrder</span><span class="p">(</span><span class="nx">tree</span><span class="p">)</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
 
 </div>
   
@@ -1700,6 +1149,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/26/talk-about-meditatio/">谈谈冥想</a>
       </li>
     
@@ -1715,17 +1168,12 @@
         <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2021/04/18/learn-kubernetes/">学习Kubernetes</a>
-      </li>
-    
   </ul>
 </section>
 <section>
     <h1>Categories</h1>
     <ul id="categories">
-      <li class='category'><a href='/blog/categories/du-shu/'>读书 (2)</a></li>
-
+      
     </ul>
 </section>
 

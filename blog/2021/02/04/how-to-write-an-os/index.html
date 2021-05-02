@@ -9,7 +9,8 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="缘起 做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。 大概7、8年前买过一本《Orange&rsquo;S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了， &hellip;">
+  <meta name="description" content="缘起
+做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。 大概7、8年前买过一本《Orange’S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,6 +22,7 @@
   <link rel="canonical" href="https://c2lang.com/blog/2021/02/04/how-to-write-an-os">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/github.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="无用之用" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
@@ -84,66 +86,50 @@
     
     
       <p class="meta">
-        
+		
+			
 
 
 
 
-<time class='entry-date' datetime='2021-02-04T22:21:27+08:00'><span class='date'>2021-02-04</span> <span class='time'>22:21:27</span></time>
+2021-02-04 22:21
+		
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><h3>缘起</h3>
-
+<div class="entry-content"><h3 id="缘起">缘起</h3>
 <p>做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。</p>
 
-<p>大概7、8年前买过一本《Orange&rsquo;S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太难了，中间需要跨越的东西太多了。渐渐就放弃了，后来直接把这两本书给卖掉了。</p>
+<p>大概7、8年前买过一本《Orange’S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太难了，中间需要跨越的东西太多了。渐渐就放弃了，后来直接把这两本书给卖掉了。</p>
 
-<p>今年突然间又想，我应该尝试写一个简单的操作系统，多年的工作以及自学，使得我对编程有了一个相对完整的认识，这个想法似乎不像当年那么不靠谱。但该如何下手呢？刚开始我只想能跑一个<code>Hello wrold</code>的例子也可以，网上找了下最多的居然是我当年卖掉的那本《Orange&rsquo;S 一个操作系统实现》书中的例子，可惜当年我也没怎么看懂，只是买了本书而已。</p>
+<p>今年突然间又想，我应该尝试写一个简单的操作系统，多年的工作以及自学，使得我对编程有了一个相对完整的认识，这个想法似乎不像当年那么不靠谱。但该如何下手呢？刚开始我只想能跑一个<code class="language-plaintext highlighter-rouge">Hello wrold</code>的例子也可以，网上找了下最多的居然是我当年卖掉的那本《Orange’S 一个操作系统实现》书中的例子，可惜当年我也没怎么看懂，只是买了本书而已。</p>
 
 <p>以下是这个例子的代码：</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='nasm'><span class='line'> <span class="k">org</span> <span class="mh">07c00h</span>           <span class="c1">; 告诉编译器程序加载到7c00处</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">cs</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
-</span><span class='line'>  <span class="nf">call</span> <span class="nb">Disp</span><span class="nv">Str</span>            <span class="c1">; 调用显示字符串例程</span>
-</span><span class='line'>  <span class="nf">jmp</span> <span class="kc">$</span>           <span class="c1">; 无限循环</span>
-</span><span class='line'><span class="nl">DispStr:</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nv">BootMessage</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">bp</span><span class="p">,</span> <span class="nb">ax</span>           <span class="c1">; ES:BP = 串地址</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">16</span>           <span class="c1">; CX = 串长度</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mh">01301h</span>       <span class="c1">; AH = 13,  AL = 01h</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">bx</span><span class="p">,</span> <span class="mh">000ch</span>        <span class="c1">; 页号为0(BH = 0) 黑底红字(BL = 0Ch,高亮)</span>
-</span><span class='line'>  <span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="mi">0</span>
-</span><span class='line'>  <span class="nf">int</span> <span class="mh">10h</span>         <span class="c1">; 10h 号中断</span>
-</span><span class='line'>  <span class="nf">ret</span>
-</span><span class='line'><span class="nl">BootMessage:</span>      <span class="kd">db</span>  <span class="s">&quot;Hello, OS world!&quot;</span>
-</span><span class='line'><span class="kd">times</span>     <span class="mi">510</span><span class="o">-</span><span class="p">(</span><span class="kc">$</span><span class="o">-</span><span class="kc">$$</span><span class="p">)</span>  <span class="nv">db</span>  <span class="mi">0</span>   <span class="c1">; 填充剩下的空间，使生成的二进制代码恰好为512字节</span>
-</span><span class='line'><span class="kd">dw</span>    <span class="mh">0xaa55</span>              <span class="c1">; 结束标志</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>
+	<span class="nf">org</span> <span class="mh">07c00h</span>			<span class="c1">; 告诉编译器程序加载到7c00处</span>
+	<span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">cs</span>
+	<span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
+	<span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
+	<span class="nf">call</span> <span class="nb">Disp</span><span class="nv">Str</span>			<span class="c1">; 调用显示字符串例程</span>
+	<span class="nf">jmp</span> <span class="kc">$</span>			<span class="c1">; 无限循环</span>
+<span class="nl">DispStr:</span>
+	<span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nv">BootMessage</span>
+	<span class="nf">mov</span> <span class="nb">bp</span><span class="p">,</span> <span class="nb">ax</span>			<span class="c1">; ES:BP = 串地址</span>
+	<span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">16</span>			<span class="c1">; CX = 串长度</span>
+	<span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mh">01301h</span>		<span class="c1">; AH = 13,  AL = 01h</span>
+	<span class="nf">mov</span> <span class="nb">bx</span><span class="p">,</span> <span class="mh">000ch</span>		<span class="c1">; 页号为0(BH = 0) 黑底红字(BL = 0Ch,高亮)</span>
+	<span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="mi">0</span>
+	<span class="nf">int</span> <span class="mh">10h</span>			<span class="c1">; 10h 号中断</span>
+	<span class="nf">ret</span>
+<span class="nl">BootMessage:</span>		<span class="kd">db</span>	<span class="s">"Hello, OS world!"</span>
+<span class="kd">times</span> 	<span class="mi">510</span><span class="o">-</span><span class="p">(</span><span class="kc">$</span><span class="o">-</span><span class="kc">$$</span><span class="p">)</span>	<span class="nv">db</span>	<span class="mi">0</span>	<span class="c1">; 填充剩下的空间，使生成的二进制代码恰好为512字节</span>
+<span class="kd">dw</span> 	<span class="mh">0xaa55</span>				<span class="c1">; 结束标志</span>
 
+</code></pre></div></div>
 
 <p>这就是一个直接运行到硬件上的一段程序，而不是我们平时在操作系统写应用代码那样。对于一个实践者而言，我很想把这段程序跑起来，这很关键，只要能跑起来，我们就可以试图修改下，再跑起来，这样认识上才能有提高。其实跑这个例子也是费了点功夫，首先在虚拟机上安装了一个Ubuntu的Linux系统，书中用到的汇编是跟MASM很相似的NASM，首先NASM的教程不多，不过还好可以参考MASM汇编的书籍。另外就是软盘的制作相关的东西，最后是安装Bochs虚拟机，这个虚拟机跟平时用的有些特别，不过还是了解如何操作，最后成功的把这个例子跑了起来。</p>
 
@@ -153,15 +139,14 @@
 
 <p>8086方面的书籍，8086总设计师莫尔斯写的《8086初阶-体系结构、系统设计和程序设计入门》。王爽老师《汇编语言》也主要是讲8086的汇编的。80386的书籍不多，80386的设计师写的《Programing the 80386》一书，非常不错。中文版是93年出版的《保护方式下80386及其编程》一书，虽然没有备注是翻译，但我跟英文版对照后，确认就是翻译自《Programing the 80386》，主要是学习保护模式。</p>
 
-<p>这里需要注意的是实模式与保护模式的差别，很多时候一开始如果研究的是8086的，往往需要转换下思维，最好的书籍依旧是《保护方式下80386及其编程》一书，于渊的《Orange&rsquo;S 一个操作系统实现》细节上还是有点模糊。</p>
+<p>这里需要注意的是实模式与保护模式的差别，很多时候一开始如果研究的是8086的，往往需要转换下思维，最好的书籍依旧是《保护方式下80386及其编程》一书，于渊的《Orange’S 一个操作系统实现》细节上还是有点模糊。</p>
+
 </div>
 
 
   <footer>
     <p class="meta">
       
-  
-
 <span class="byline author vcard">Posted by <span class="fn">Jasper Ji</span></span>
 
       
@@ -169,7 +154,7 @@
 
 
 
-<time class='entry-date' datetime='2021-02-04T22:21:27+08:00'><span class='date'>2021-02-04</span> <span class='time'>22:21:27</span></time>
+
       
 
 
@@ -212,6 +197,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/26/talk-about-meditatio/">谈谈冥想</a>
       </li>
     
@@ -227,17 +216,12 @@
         <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2021/04/18/learn-kubernetes/">学习Kubernetes</a>
-      </li>
-    
   </ul>
 </section>
 <section>
     <h1>Categories</h1>
     <ul id="categories">
-      <li class='category'><a href='/blog/categories/du-shu/'>读书 (2)</a></li>
-
+      
     </ul>
 </section>
 

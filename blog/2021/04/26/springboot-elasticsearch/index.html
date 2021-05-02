@@ -11,7 +11,8 @@
   
   <meta name="description" content="主要是想把Elasticsearch整合到当前的系统中，用来搜索文章。 环境 Elasticsearch 7.12.0
 Logstash 7.12.0
-Mysql 8.0 数据同步 把Elasticsearch整合到现有系统意味需要把当前要搜索的数据添加到Elasticsearch里面， &hellip;">
+Mysql 8.0 数据同步
+把Elasticsearch整合到现有系统意味需要把当前要搜索的数据添加到Elasticsearch里面， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -23,6 +24,7 @@ Mysql 8.0 数据同步 把Elasticsearch整合到现有系统意味需要把当�
   <link rel="canonical" href="https://c2lang.com/blog/2021/04/26/springboot-elasticsearch">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/github.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="无用之用" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
@@ -86,12 +88,14 @@ Mysql 8.0 数据同步 把Elasticsearch整合到现有系统意味需要把当�
     
     
       <p class="meta">
-        
+		
+			
 
 
 
 
-<time class='entry-date' datetime='2021-04-26T05:23:43+08:00'><span class='date'>2021-04-26</span> <span class='time'>05:23:43</span></time>
+2021-04-26 05:23
+		
         
       </p>
     
@@ -100,280 +104,160 @@ Mysql 8.0 数据同步 把Elasticsearch整合到现有系统意味需要把当�
 
 <div class="entry-content"><p>主要是想把Elasticsearch整合到当前的系统中，用来搜索文章。</p>
 
-<h4>环境</h4>
+<h4 id="环境">环境</h4>
 
-<p><em>Elasticsearch 7.12.0</em><br/>
-<em>Logstash 7.12.0</em><br/>
+<p><em>Elasticsearch 7.12.0</em><br />
+<em>Logstash 7.12.0</em><br />
 <em>Mysql 8.0</em></p>
 
-<h4>数据同步</h4>
-
+<h4 id="数据同步">数据同步</h4>
 <p>把Elasticsearch整合到现有系统意味需要把当前要搜索的数据添加到Elasticsearch里面，这就有个数据同步问题。因为是测试工程使用的是Logstash的全量数据同步。Logstash的新版本已经包含了Jdbc的插件，所以不需要安装。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>input {
-</span><span class='line'>  jdbc {
-</span><span class='line'>      # myslq驱动，可以官网下载，我用的是Maven依赖已经下载的Jar文件
-</span><span class='line'>      jdbc_driver_library =&gt; ""
-</span><span class='line'>      # Mysql驱动类全类名，注意mysql8.x以上需要加cj
-</span><span class='line'>      jdbc_driver_class =&gt; "com.mysql.cj.jdbc.Driver"
-</span><span class='line'>      # mysql连接url
-</span><span class='line'>      jdbc_connection_string =&gt; ""
-</span><span class='line'>      # mysql 用户名
-</span><span class='line'>      jdbc_user =&gt; ""
-</span><span class='line'>      # mysql 密码
-</span><span class='line'>      jdbc_password =&gt; ""
-</span><span class='line'>      # 设置定时任务，多久执行一次查询，默认一分钟，需要无延迟可使用schedule =&gt; "* * * * * *"
-</span><span class='line'>      schedule =&gt; "* * * * *"
-</span><span class='line'>      # 清空上次的sql_last_value记录
-</span><span class='line'>      clean_run =&gt; true
-</span><span class='line'>      # 要执行的sql（同步）语句，替换成你自己的sql
-</span><span class='line'>      statement =&gt; "SELECT * FROM t_article"
-</span><span class='line'>  }
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>output {
-</span><span class='line'>   elasticsearch {
-</span><span class='line'>      # es主机和端口
-</span><span class='line'>      hosts =&gt; ["127.0.0.1:9200"]
-</span><span class='line'>      # 同步数据在ES的索引名称，替换为你自己的。
-</span><span class='line'>      index =&gt; "my-cms"
-</span><span class='line'>      # es文档的id，表示使用mysql表的id
-</span><span class='line'>      document_id =&gt; "%{id}"
-</span><span class='line'>  }
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>input {
+  jdbc {
+      # myslq驱动，可以官网下载，我用的是Maven依赖已经下载的Jar文件
+      jdbc_driver_library =&gt; ""
+      # Mysql驱动类全类名，注意mysql8.x以上需要加cj
+      jdbc_driver_class =&gt; "com.mysql.cj.jdbc.Driver"
+      # mysql连接url
+      jdbc_connection_string =&gt; ""
+      # mysql 用户名
+      jdbc_user =&gt; ""
+      # mysql 密码
+      jdbc_password =&gt; ""
+      # 设置定时任务，多久执行一次查询，默认一分钟，需要无延迟可使用schedule =&gt; "* * * * * *"
+      schedule =&gt; "* * * * *"
+      # 清空上次的sql_last_value记录
+      clean_run =&gt; true
+      # 要执行的sql（同步）语句，替换成你自己的sql
+      statement =&gt; "SELECT * FROM t_article"
+  }
+}
 
+output {
+   elasticsearch {
+      # es主机和端口
+      hosts =&gt; ["127.0.0.1:9200"]
+      # 同步数据在ES的索引名称，替换为你自己的。
+      index =&gt; "my-cms"
+      # es文档的id，表示使用mysql表的id
+      document_id =&gt; "%{id}"
+  }
+}
+
+</code></pre></div></div>
 
 <p>生产环境的数据同步可以参考<a href="https://help.aliyun.com/document_detail/146038.html?spm=a2c4g.11186623.6.784.8fe41c61aTodOu">阿里云Elasticsearch</a></p>
 
-<p>参考: <br/>
+<p>参考: <br />
 <a href="https://www.elastic.co/guide/en/logstash/current/plugins-inputs-jdbc.html">Jdbc input plugin</a></p>
 
-<h4>Spring Boot配置</h4>
-
+<h4 id="spring-boot配置">Spring Boot配置</h4>
 <p>添加Maven依赖</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='xml'><span class='line'><span class="nt">&lt;dependency&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
-</span><span class='line'>  <span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-data-elasticsearch<span class="nt">&lt;/artifactId&gt;</span>
-</span><span class='line'><span class="nt">&lt;/dependency&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nt">&lt;dependency&gt;</span>
+	<span class="nt">&lt;groupId&gt;</span>org.springframework.boot<span class="nt">&lt;/groupId&gt;</span>
+	<span class="nt">&lt;artifactId&gt;</span>spring-boot-starter-data-elasticsearch<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
 
 <p>添加Elasticsearch客户端配置类</p>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Configuration</span>
-</span><span class='line'><span class="nd">@EnableElasticsearchRepositories</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="s">&quot;io.pratik.elasticsearch.repositories&quot;</span><span class="o">)</span>
-</span><span class='line'><span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span> <span class="s">&quot;io.pratik.elasticsearch&quot;</span> <span class="o">})</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElasticsearchClientConfig</span> <span class="kd">extends</span> <span class="n">AbstractElasticsearchConfiguration</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nd">@Override</span>
-</span><span class='line'>  <span class="nd">@Bean</span>
-</span><span class='line'>  <span class="kd">public</span> <span class="n">RestHighLevelClient</span> <span class="nf">elasticsearchClient</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>      <span class="c1">// 配置连接信息</span>
-</span><span class='line'>      <span class="kd">final</span> <span class="n">ClientConfiguration</span> <span class="n">clientConfiguration</span> <span class="o">=</span> <span class="n">ClientConfiguration</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">connectedTo</span><span class="o">(</span><span class="s">&quot;localhost:9200&quot;</span><span class="o">)</span>
-</span><span class='line'>              <span class="o">.</span><span class="na">build</span><span class="o">();</span>
-</span><span class='line'>
-</span><span class='line'>      <span class="k">return</span> <span class="n">RestClients</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">clientConfiguration</span><span class="o">).</span><span class="na">rest</span><span class="o">();</span>
-</span><span class='line'>  <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="cm">/**</span>
-</span><span class='line'><span class="cm">     * 这个很重要，不添加的话无法使用@Filed注解</span>
-</span><span class='line'><span class="cm">     */</span>
-</span><span class='line'>    <span class="nd">@Bean</span>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">EntityMapper</span> <span class="nf">entityMapper</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">ElasticsearchEntityMapper</span> <span class="n">entityMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">ElasticsearchEntityMapper</span><span class="o">(</span>
-</span><span class='line'>                <span class="n">elasticsearchMappingContext</span><span class="o">(),</span> <span class="k">new</span> <span class="nf">DefaultConversionService</span><span class="o">()</span>
-</span><span class='line'>        <span class="o">);</span>
-</span><span class='line'>        <span class="n">entityMapper</span><span class="o">.</span><span class="na">setConversions</span><span class="o">(</span><span class="n">elasticsearchCustomConversions</span><span class="o">());</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="n">entityMapper</span><span class="o">;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nd">@Configuration</span>
+<span class="nd">@EnableElasticsearchRepositories</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="s">"io.pratik.elasticsearch.repositories"</span><span class="o">)</span>
+<span class="nd">@ComponentScan</span><span class="o">(</span><span class="n">basePackages</span> <span class="o">=</span> <span class="o">{</span> <span class="s">"io.pratik.elasticsearch"</span> <span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ElasticsearchClientConfig</span> <span class="kd">extends</span> <span class="nc">AbstractElasticsearchConfiguration</span> <span class="o">{</span>
+	<span class="nd">@Override</span>
+	<span class="nd">@Bean</span>
+	<span class="kd">public</span> <span class="nc">RestHighLevelClient</span> <span class="nf">elasticsearchClient</span><span class="o">()</span> <span class="o">{</span>
+		<span class="c1">// 配置连接信息</span>
+		<span class="kd">final</span> <span class="nc">ClientConfiguration</span> <span class="n">clientConfiguration</span> <span class="o">=</span> <span class="nc">ClientConfiguration</span><span class="o">.</span><span class="na">builder</span><span class="o">().</span><span class="na">connectedTo</span><span class="o">(</span><span class="s">"localhost:9200"</span><span class="o">)</span>
+				<span class="o">.</span><span class="na">build</span><span class="o">();</span>
 
+		<span class="k">return</span> <span class="nc">RestClients</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="n">clientConfiguration</span><span class="o">).</span><span class="na">rest</span><span class="o">();</span>
+	<span class="o">}</span>
+    
+    <span class="cm">/**
+     * 这个很重要，不添加的话无法使用@Filed注解
+     */</span>
+    <span class="nd">@Bean</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="nc">EntityMapper</span> <span class="nf">entityMapper</span><span class="o">()</span> <span class="o">{</span>
 
-<p>测试文章类，必须要加<code>type='_doc'</code>，不然无法使用。另外遇到的问题是我数据库的日期用的是<code>Date</code>话，一直提示解析错误，最后使用<code>LocalDateTime</code>后就好了。</p>
+        <span class="nc">ElasticsearchEntityMapper</span> <span class="n">entityMapper</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ElasticsearchEntityMapper</span><span class="o">(</span>
+                <span class="n">elasticsearchMappingContext</span><span class="o">(),</span> <span class="k">new</span> <span class="nc">DefaultConversionService</span><span class="o">()</span>
+        <span class="o">);</span>
+        <span class="n">entityMapper</span><span class="o">.</span><span class="na">setConversions</span><span class="o">(</span><span class="n">elasticsearchCustomConversions</span><span class="o">());</span>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Data</span>
-</span><span class='line'><span class="nd">@Document</span><span class="o">(</span><span class="n">indexName</span> <span class="o">=</span> <span class="s">&quot;my-cms&quot;</span><span class="o">,</span> <span class="n">type</span> <span class="o">=</span> <span class="s">&quot;_doc&quot;</span><span class="o">)</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">EsArticle</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nd">@Id</span> <span class="c1">// org.springframework.data.annotation.Id</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">Integer</span> <span class="n">id</span><span class="o">;</span> <span class="c1">// 文章ID</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nd">@Field</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="n">FieldType</span><span class="o">.</span><span class="na">Text</span><span class="o">,</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="s">&quot;ik_max_word&quot;</span><span class="o">)</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">String</span> <span class="n">title</span><span class="o">;</span> <span class="c1">// 文章标题</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nd">@Field</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;content&quot;</span><span class="o">,</span> <span class="n">type</span> <span class="o">=</span> <span class="n">FieldType</span><span class="o">.</span><span class="na">Text</span><span class="o">,</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="s">&quot;ik_max_word&quot;</span><span class="o">)</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">String</span> <span class="n">articleContent</span><span class="o">;</span> <span class="c1">// 文章正文内容</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="nd">@JsonFormat</span><span class="o">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="s">&quot;yyyy-MM-dd HH:mm:ss&quot;</span><span class="o">)</span>
-</span><span class='line'>  <span class="nd">@Field</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;create_time&quot;</span><span class="o">)</span>
-</span><span class='line'>  <span class="kd">private</span> <span class="n">LocalDateTime</span> <span class="n">createTime</span><span class="o">;</span> <span class="c1">// 文章创建时间</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+        <span class="k">return</span> <span class="n">entityMapper</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
 
+<p>测试文章类，必须要加<code class="language-plaintext highlighter-rouge">type='_doc'</code>，不然无法使用。另外遇到的问题是我数据库的日期用的是<code class="language-plaintext highlighter-rouge">Date</code>话，一直提示解析错误，最后使用<code class="language-plaintext highlighter-rouge">LocalDateTime</code>后就好了。</p>
 
-<p>创建<code>Repository</code>类。</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nd">@Data</span>
+<span class="nd">@Document</span><span class="o">(</span><span class="n">indexName</span> <span class="o">=</span> <span class="s">"my-cms"</span><span class="o">,</span> <span class="n">type</span> <span class="o">=</span> <span class="s">"_doc"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">EsArticle</span> <span class="o">{</span>
+	<span class="nd">@Id</span> <span class="c1">// org.springframework.data.annotation.Id</span>
+	<span class="kd">private</span> <span class="nc">Integer</span> <span class="n">id</span><span class="o">;</span> <span class="c1">// 文章ID</span>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ElasticArticleRepository</span> <span class="kd">extends</span> <span class="n">ElasticsearchRepository</span><span class="o">&lt;</span><span class="n">EsArticle</span><span class="o">,</span> <span class="n">Integer</span><span class="o">&gt;</span> <span class="o">{</span>
-</span><span class='line'>  
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+	<span class="nd">@Field</span><span class="o">(</span><span class="n">type</span> <span class="o">=</span> <span class="nc">FieldType</span><span class="o">.</span><span class="na">Text</span><span class="o">,</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="s">"ik_max_word"</span><span class="o">)</span>
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">title</span><span class="o">;</span> <span class="c1">// 文章标题</span>
 
+	<span class="nd">@Field</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"content"</span><span class="o">,</span> <span class="n">type</span> <span class="o">=</span> <span class="nc">FieldType</span><span class="o">.</span><span class="na">Text</span><span class="o">,</span> <span class="n">analyzer</span> <span class="o">=</span> <span class="s">"ik_max_word"</span><span class="o">)</span>
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">articleContent</span><span class="o">;</span> <span class="c1">// 文章正文内容</span>
 
-<p>生成<code>Controller</code>，使用<em>Postman</em>测试接口是否正常工作。</p>
+	<span class="nd">@JsonFormat</span><span class="o">(</span><span class="n">pattern</span> <span class="o">=</span> <span class="s">"yyyy-MM-dd HH:mm:ss"</span><span class="o">)</span>
+	<span class="nd">@Field</span><span class="o">(</span><span class="n">name</span> <span class="o">=</span> <span class="s">"create_time"</span><span class="o">)</span>
+	<span class="kd">private</span> <span class="nc">LocalDateTime</span> <span class="n">createTime</span><span class="o">;</span> <span class="c1">// 文章创建时间</span>
+<span class="o">}</span>
+</code></pre></div></div>
 
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@RestController</span>
-</span><span class='line'><span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">&quot;/article&quot;</span><span class="o">)</span>
-</span><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">SearchController</span> <span class="o">{</span>
-</span><span class='line'>  <span class="nd">@Autowired</span>
-</span><span class='line'>    <span class="kd">private</span> <span class="n">ElasticArticleRepository</span> <span class="n">elasticRepository</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@PostMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">&quot;/search&quot;</span><span class="o">)</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">EsArticle</span><span class="o">&gt;</span> <span class="nf">handleSearchRequest</span><span class="o">(</span>
-</span><span class='line'>            <span class="nd">@RequestParam</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">requestParam</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="n">BoolQueryBuilder</span> <span class="n">queryBuilder</span> <span class="o">=</span> <span class="n">QueryBuilders</span><span class="o">.</span><span class="na">boolQuery</span><span class="o">();</span>
-</span><span class='line'>        <span class="c1">// 构造ES查询条件</span>
-</span><span class='line'>        <span class="n">String</span> <span class="n">keyword</span> <span class="o">=</span> <span class="o">(</span><span class="n">String</span><span class="o">)</span> <span class="n">requestParam</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">&quot;keyword&quot;</span><span class="o">);</span>
-</span><span class='line'>        <span class="n">queryBuilder</span><span class="o">.</span><span class="na">should</span><span class="o">(</span><span class="n">QueryBuilders</span><span class="o">.</span><span class="na">matchPhraseQuery</span><span class="o">(</span><span class="s">&quot;title&quot;</span><span class="o">,</span> <span class="n">keyword</span><span class="o">))</span>
-</span><span class='line'>                <span class="o">.</span><span class="na">should</span><span class="o">(</span><span class="n">QueryBuilders</span><span class="o">.</span><span class="na">matchPhraseQuery</span><span class="o">(</span><span class="s">&quot;content&quot;</span><span class="o">,</span> <span class="n">keyword</span><span class="o">));</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">StopWatch</span> <span class="n">watch</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">StopWatch</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">watch</span><span class="o">.</span><span class="na">start</span><span class="o">();</span> <span class="c1">// 开始计时</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">Page</span><span class="o">&lt;</span><span class="n">EsArticle</span><span class="o">&gt;</span> <span class="n">articles</span> <span class="o">=</span> <span class="o">(</span><span class="n">Page</span><span class="o">&lt;</span><span class="n">EsArticle</span><span class="o">&gt;)</span>
-</span><span class='line'>                <span class="n">elasticRepository</span><span class="o">.</span><span class="na">search</span><span class="o">(</span><span class="n">queryBuilder</span><span class="o">);</span>  <span class="c1">// 检索数据</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">watch</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>  <span class="c1">// 结束计时</span>
-</span><span class='line'>        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;数据检索耗时：%s ms&quot;</span><span class="o">,</span>
-</span><span class='line'>                <span class="n">watch</span><span class="o">.</span><span class="na">getTotalTimeMillis</span><span class="o">()));</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="n">articles</span><span class="o">.</span><span class="na">getContent</span><span class="o">();</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
+<p>创建<code class="language-plaintext highlighter-rouge">Repository</code>类。</p>
 
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">ElasticArticleRepository</span> <span class="kd">extends</span> <span class="nc">ElasticsearchRepository</span><span class="o">&lt;</span><span class="nc">EsArticle</span><span class="o">,</span> <span class="nc">Integer</span><span class="o">&gt;</span> <span class="o">{</span>
+	
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>生成<code class="language-plaintext highlighter-rouge">Controller</code>，使用<em>Postman</em>测试接口是否正常工作。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nd">@RestController</span>
+<span class="nd">@RequestMapping</span><span class="o">(</span><span class="s">"/article"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SearchController</span> <span class="o">{</span> 
+	<span class="nd">@Autowired</span>
+    <span class="kd">private</span> <span class="nc">ElasticArticleRepository</span> <span class="n">elasticRepository</span><span class="o">;</span>
+
+    <span class="nd">@PostMapping</span><span class="o">(</span><span class="n">value</span> <span class="o">=</span> <span class="s">"/search"</span><span class="o">)</span>
+    <span class="kd">public</span> <span class="nc">List</span><span class="o">&lt;</span><span class="nc">EsArticle</span><span class="o">&gt;</span> <span class="nf">handleSearchRequest</span><span class="o">(</span>
+            <span class="nd">@RequestParam</span> <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">requestParam</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">BoolQueryBuilder</span> <span class="n">queryBuilder</span> <span class="o">=</span> <span class="nc">QueryBuilders</span><span class="o">.</span><span class="na">boolQuery</span><span class="o">();</span>
+        <span class="c1">// 构造ES查询条件</span>
+        <span class="nc">String</span> <span class="n">keyword</span> <span class="o">=</span> <span class="o">(</span><span class="nc">String</span><span class="o">)</span> <span class="n">requestParam</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="s">"keyword"</span><span class="o">);</span>
+        <span class="n">queryBuilder</span><span class="o">.</span><span class="na">should</span><span class="o">(</span><span class="nc">QueryBuilders</span><span class="o">.</span><span class="na">matchPhraseQuery</span><span class="o">(</span><span class="s">"title"</span><span class="o">,</span> <span class="n">keyword</span><span class="o">))</span>
+                <span class="o">.</span><span class="na">should</span><span class="o">(</span><span class="nc">QueryBuilders</span><span class="o">.</span><span class="na">matchPhraseQuery</span><span class="o">(</span><span class="s">"content"</span><span class="o">,</span> <span class="n">keyword</span><span class="o">));</span>
+ 
+        <span class="nc">StopWatch</span> <span class="n">watch</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">StopWatch</span><span class="o">();</span>
+        <span class="n">watch</span><span class="o">.</span><span class="na">start</span><span class="o">();</span> <span class="c1">// 开始计时</span>
+ 
+        <span class="nc">Page</span><span class="o">&lt;</span><span class="nc">EsArticle</span><span class="o">&gt;</span> <span class="n">articles</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Page</span><span class="o">&lt;</span><span class="nc">EsArticle</span><span class="o">&gt;)</span>
+                <span class="n">elasticRepository</span><span class="o">.</span><span class="na">search</span><span class="o">(</span><span class="n">queryBuilder</span><span class="o">);</span>  <span class="c1">// 检索数据</span>
+ 
+        <span class="n">watch</span><span class="o">.</span><span class="na">stop</span><span class="o">();</span>  <span class="c1">// 结束计时</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"数据检索耗时：%s ms"</span><span class="o">,</span>
+                <span class="n">watch</span><span class="o">.</span><span class="na">getTotalTimeMillis</span><span class="o">()));</span>
+ 
+        <span class="k">return</span> <span class="n">articles</span><span class="o">.</span><span class="na">getContent</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
 </div>
 
 
   <footer>
     <p class="meta">
       
-  
-
 <span class="byline author vcard">Posted by <span class="fn">Jasper Ji</span></span>
 
       
@@ -381,7 +265,7 @@ Mysql 8.0 数据同步 把Elasticsearch整合到现有系统意味需要把当�
 
 
 
-<time class='entry-date' datetime='2021-04-26T05:23:43+08:00'><span class='date'>2021-04-26</span> <span class='time'>05:23:43</span></time>
+
       
 
 
@@ -424,6 +308,10 @@ Mysql 8.0 数据同步 把Elasticsearch整合到现有系统意味需要把当�
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/04/26/talk-about-meditatio/">谈谈冥想</a>
       </li>
     
@@ -439,17 +327,12 @@ Mysql 8.0 数据同步 把Elasticsearch整合到现有系统意味需要把当�
         <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2021/04/18/learn-kubernetes/">学习Kubernetes</a>
-      </li>
-    
   </ul>
 </section>
 <section>
     <h1>Categories</h1>
     <ul id="categories">
-      <li class='category'><a href='/blog/categories/du-shu/'>读书 (2)</a></li>
-
+      
     </ul>
 </section>
 
