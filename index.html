@@ -9,7 +9,8 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="升级其他软件的时候居然把Ruby版本升级到了3.0，而Octopress依赖的Jekyll的版本是2.0，对Ruby版本有限制，新版本用不了。本来想换个静态博客的框架来着，想着自己好歹也是全栈工程师，自己升级下吧。 Octopress其实是基于Jekyll的定制静态博客框架， &hellip;">
+  <meta name="description" content="缘起
+17年的时候为了练习Swift，也想验证下自己对于产品方面的想法，当时流行的应用都是通过爬虫抓取内容网站的数据，清洗数据后再通过推荐引擎展示给用户，当时我们公司也做的是这类应用，只不过后来没有成功。作为练手的业余项目，我并没有打算也做类似的项目，那会我主要做iOS客户端， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +72,7 @@
 <ul class="main-navigation">
   <li><a href="/">博客</a></li>
   <li><a href="/blog/archives">文章</a></li>
+  <li><a href="/app">应用</a></li>
 </ul>
 
 </nav>
@@ -78,6 +80,65 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/05/04/thinking-about-rss/">关于RSS的思考</a></h1>
+    
+    
+      <p class="meta">
+		
+        	
+
+
+
+
+2021-05-04 13:55
+		
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4 id="缘起">缘起</h4>
+<p>17年的时候为了练习Swift，也想验证下自己对于产品方面的想法，当时流行的应用都是通过爬虫抓取内容网站的数据，清洗数据后再通过推荐引擎展示给用户，当时我们公司也做的是这类应用，只不过后来没有成功。作为练手的业余项目，我并没有打算也做类似的项目，那会我主要做iOS客户端，对于服务端并不是很在行，而且当时这类应用有个问题时，你需要搜集大量的内容网站，可这一定是用户喜欢的吗？当时想关于用户喜欢什么样的内容让用户自己去找吧，而我只提供一个工具，因为还是想做跟内容有关的应用，最后选定了RSS阅读器，早在2013年的时候Google Reader被关闭了，之后的RSS处于逐渐没落的状态。即使这样，我在App Store上依旧能搜到不少RSS的应用，毕竟曾经辉煌过。不过很快也发现这些应用也有一些问题，比如很多应用是国外开发的，交互上不太符合国人的习惯，另外不少应用需要注册后才能使用，当然有些还是付费的。我觉得还是有改进的空间的，目标是开发一款简单的应用，首先不需要登录注册之类的，用户添加自己的RSS源，然后拉取数据，展示详情，最后这是一款免费的应用。很快这款应用就被开发出来上线了，过了段时间我看了下数据，有不少用户评价，之前的应用用户很少评价，我一直觉得用户能评价应用很难，至少我自己都很少评价了。用户多半是通过搜索下载的，这让想到了长尾效应，即使如此小众的应用，总有它的用户群体。</p>
+
+<h4 id="瓶颈">瓶颈</h4>
+
+<p>经过一年多的更新，应用基本上算是稳定了，18年底后就没有再更新过了，一方面工作有些变化，之前公司的新闻类应用已经不再运营了。而我也做了一年多的Unity游戏应用，iOS开发实际上很少了，之后离开了原来的公司。短暂的停留后，开始到现在的公司做服务器方面的开发，iOS的开发者账号也在到期后没有再续，一方面我想试下，如果账号不续费，应用还在商店吗？当然最主要的是，工作太忙iOS已经很久都不弄了，另外也没有什么好的想法。对于RSS阅读器应用，也没有更好的想法。最后每年花着钱，却没有一分的收入，这可能对于做一款免费应用者或多或少的失落吧，毕竟需要生活。苹果账号没有续费后，应用结果就被下架了。大概一年的时间，我也没有再想关于苹果开发的事。</p>
+
+<h4 id="重启">重启</h4>
+
+<p>21年四月份的时候，我又把苹果账号给续费了，在做企业应用的一年里，发现相比行业的复杂性，个人应用似乎更能好把握些吧。另外作为一个软件开发者，很大程度是依赖于工作的，工作上我们可以沉迷于技术的细节，但从宏观上来看，至少这么些年做的应用都是商业上的不成功吧，当然作为开发者很难去左右这个结果。而作为App Store的独立开发者可以很大程度上让自己在整个从产品的构想到设计，开发，到最后的营销及运营都有很大的能力的提升。苹果的伟大在于它提供了一个很好的公平的创意平台，让有想法的人得以施展，也能有所回报。</p>
+
+<p>于是我决定继续RSS阅读器的开发，iOS 13启用夜间模式后，之前的应用确实一些问题，新版本主要是适配夜间模式，之前有用户也提到是否可以开发夜间模式的显示，不过一直没有启动。因为界面比较少很快也就适配完了，内容显示那块我也学习到了如何使用CSS适配夜间模式。</p>
+
+<p>另外做了一个决定新版本将只支持iOS 13以上的版本，夜间模式和Swift UI都只能在iOS 13以上的版本使用，只想专注在功能的开发上，而不是兼容上。我自己的iPhone 6s都已经升级到iOS 14了，所以这个决定也是有一定的依据的。</p>
+
+<h4 id="迷茫">迷茫</h4>
+
+<p>关于RSS阅读器，我依旧没有更好的想法，实际上在新版本中我又去掉了几个已经失效的RSS源，而有些RSS源已经很久没有更新了。我一度想再找一些不错的源，可发现真的很难，很多都是好几年前的帖子，所以RSS阅读器的前景并不乐观，这是一块正在极速萎缩的市场，而很多开发者估计会放弃，更不可能成为一款公司的产品存在。难怪早在2012的时候谷歌就关闭了RSS阅读应用Google Reader。</p>
+
+<h4 id="反思">反思</h4>
+
+<p>我对长尾效应一直比较推崇，这也是我做了几款应用的动力，虽然小众但总是用市场的。我甚至买了那本《长尾效应》的书籍反复看了下，但一些实验让我渐渐怀疑这一切。</p>
+
+<p>现在流行应用都是靠推荐的，我把它称之为推荐流应用，在推荐流的应用中，小众是否可以被发现？我尝试在抖音上发了一些东西，事实证明很难，当然可以使用它的推广，但发现推广过后基本上没有带来流量。基于推荐流的应用中，用户对搜索这一功能的使用似乎已经很低了。推荐流应用本质上是流行榜，越是流行的东西越容易被推荐给用户，用户对某一主题感兴趣，他就推给你这类主题的各种变体，变体让用户不至于出现同质的疲劳，它是使用应用成瘾的关键，另一方面它鼓励用户创建各种流行主题的变体，这种场景下小众很难被推荐给用户。</p>
+
+<p>长尾效应似乎更适合搜索的时代，而智能推荐的流行使得搜索逐渐被弱化，小众在这种平台很难生存。智能推荐强化了大众流行的东西，却也弱化了长尾的小众用户，与搜索时代相比，小众用户更加的难以生存，但世界应该是多元的，互联网的精髓在于连接了一张大网，使得每个个体都有发光的机会，而长尾效应实际上依旧大有可为。</p>
+
+<p>这么反思后，我反倒觉得RSS不会死，RSS对于个性化阅读来说依旧有它的价值，使用RSS的用户更多的喜欢自己主动把握数据的来源。而当用户主动的寻找时，那些小众的东西才有可能被搜索到。另外从创作者而言，RSS的方式与读者而言是一种弱连接的关系，让创作者保持一种相对独立的思维去创作。</p>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -899,237 +960,6 @@ git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2021/04/02/performance-comparison-between-programming-languages/">一次语言间的性能对比</a></h1>
-    
-    
-      <p class="meta">
-		
-        	
-
-
-
-
-2021-04-02 05:53
-		
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最近突然间想对比下几个语言间的性能，日常使用的是Java，但平时也会用Python，JavaScript，C，Go之类的语言。Java写项目真的也没有什么问题，成熟的生态圈，遇到问题很容易解决。不过写点小东西的时候，还是觉得Python比较好用，不过就是速度慢了点，很早之前写过一个游戏的移植，脚本语言重构真的是个大问题。Go在上家公司的时候也使用过，不过也都是小的测试了，并没有拿来写过完整点的项目。不过语言的简洁性和C的这种传承，还是很有好感，不过在当时重写公司系统时，最后还是用了Java，主要是大部分的对接都有Java的实现。C一直是我研究的语言，虽然实际写东西不多，但是却看了很多相关的书籍，另外最近研究操作系统和学习汇编语言后，对C的认识又有了新的认识，C的厉害地方就是简洁的设计，性能强大，他的诞生就是为写Unix，缺点是实用性不强，另外内存管理，实际上成熟的项目在内存管理上都有自己的框架，所以对于C/C++之类的语言光学习了语言其实并不能做什么，离应用的距离还很远。</p>
-
-<p>回到正题，我实际上想把Go作为业务研究的语言了，虽然脑海中一直印象他的性能不错，但具体表现怎样能，好像我也并不清楚。最后选择对比的语言是Java、Go、C、Rust四个语言，程序都是运行100000000循环，循环内执行冒泡排序。</p>
-
-<h4 id="java-代码">Java 代码</h4>
-
-<div class="language-java highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
-		<span class="c1">// 记录开始时间</span>
-		<span class="kt">long</span> <span class="n">start</span> <span class="o">=</span> <span class="nc">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">();</span>
-		<span class="kt">int</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">100000000</span><span class="o">;</span>
-		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-			<span class="kt">int</span> <span class="n">arr</span><span class="o">[]</span> <span class="o">=</span> <span class="o">{</span><span class="mi">1</span><span class="o">,</span> <span class="mi">2</span><span class="o">,</span> <span class="mi">3</span><span class="o">,</span> <span class="mi">4</span><span class="o">,</span> <span class="mi">5</span><span class="o">,</span> <span class="mi">6</span><span class="o">,</span> <span class="mi">7</span><span class="o">,</span> <span class="mi">8</span><span class="o">,</span> <span class="mi">9</span><span class="o">};</span>
-			<span class="n">bubbleSort</span><span class="o">(</span><span class="n">arr</span><span class="o">);</span>
-		<span class="o">}</span>
-		<span class="c1">// 打印耗时时间</span>
-		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">nanoTime</span><span class="o">()</span> <span class="o">-</span> <span class="n">start</span><span class="o">);</span>
-	<span class="o">}</span>
-
-	<span class="c1">// 排序</span>
-	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">bubbleSort</span><span class="o">(</span><span class="kt">int</span><span class="o">[]</span> <span class="n">arr</span><span class="o">)</span> <span class="o">{</span>
-		<span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="na">length</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>
-		<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
-			<span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">-</span> <span class="n">i</span><span class="o">;</span> <span class="n">j</span><span class="o">++)</span> <span class="o">{</span>
-				<span class="k">if</span> <span class="o">(</span><span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="o">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">])</span> <span class="o">{</span>
-					<span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">];</span>
-					<span class="n">arr</span><span class="o">[</span><span class="n">j</span><span class="o">]</span> <span class="o">=</span> <span class="n">arr</span><span class="o">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">];</span>
-					<span class="n">arr</span><span class="o">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="n">temp</span><span class="o">;</span>
-				<span class="o">}</span>
-			<span class="o">}</span>
-		<span class="o">}</span>
-	<span class="o">}</span>
-<span class="o">}</span>
-</code></pre></div></div>
-
-<p>运行时间</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>3052757121
-</code></pre></div></div>
-
-<h4 id="go-代码">Go 代码</h4>
-<div class="language-go highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="k">package</span> <span class="n">main</span>
-
-<span class="k">import</span> <span class="p">(</span>
-	<span class="s">"fmt"</span>
-	<span class="s">"time"</span>
-<span class="p">)</span>
-
-<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
-	<span class="n">start</span> <span class="o">:=</span> <span class="n">time</span><span class="o">.</span><span class="n">Now</span><span class="p">()</span><span class="o">.</span><span class="n">UnixNano</span><span class="p">()</span>
-	<span class="k">const</span> <span class="n">NUM</span> <span class="kt">int</span> <span class="o">=</span> <span class="m">100000000</span>
-	<span class="k">for</span> <span class="n">i</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">NUM</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span> <span class="p">{</span>
-		<span class="n">arr</span> <span class="o">:=</span> <span class="p">[]</span><span class="kt">int</span><span class="p">{</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> <span class="m">9</span><span class="p">}</span>
-		<span class="n">bubbleSort</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
-	<span class="p">}</span>
-	<span class="c">// 打印消耗时间</span>
-	<span class="n">fmt</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">Now</span><span class="p">()</span><span class="o">.</span><span class="n">UnixNano</span><span class="p">()</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
-<span class="p">}</span>
-
-<span class="c">// 排序</span>
-<span class="k">func</span> <span class="n">bubbleSort</span><span class="p">(</span><span class="n">arr</span> <span class="p">[]</span><span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
-	<span class="k">for</span> <span class="n">j</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">-</span><span class="m">1</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span> <span class="p">{</span>
-		<span class="k">for</span> <span class="n">k</span> <span class="o">:=</span> <span class="m">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span><span class="o">-</span><span class="m">1</span><span class="o">-</span><span class="n">j</span><span class="p">;</span> <span class="n">k</span><span class="o">++</span> <span class="p">{</span>
-			<span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="m">1</span><span class="p">]</span> <span class="p">{</span>
-				<span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="m">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="m">1</span><span class="p">],</span> <span class="n">arr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
-			<span class="p">}</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>运行时间</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>3804215000 <span class="c"># 纳秒</span>
-</code></pre></div></div>
-
-<h4 id="c-代码">C 代码</h4>
-
-<div class="language-c highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="cp">#include &lt;stdlib.h&gt;
-#include &lt;stdio.h&gt;
-#include &lt;time.h&gt;
-</span>
-<span class="cp">#include &lt;sys/time.h&gt;
-#include &lt;unistd.h&gt;
-</span>
-<span class="kt">void</span> <span class="nf">bubbleSort</span><span class="p">(</span><span class="kt">int</span><span class="o">*</span> <span class="n">array</span><span class="p">,</span> <span class="kt">int</span> <span class="n">length</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">-</span><span class="mi">1</span> <span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">-</span><span class="mi">1</span> <span class="o">-</span><span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="k">if</span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="p">{</span>
-                <span class="kt">int</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
-                <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
-                <span class="n">array</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">struct</span> <span class="n">timeval</span> <span class="n">t_val</span><span class="p">;</span>
-    <span class="n">gettimeofday</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t_val</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
-    <span class="n">printf</span><span class="p">(</span><span class="s">"start, now, sec=%ld m_sec=%d </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">t_val</span><span class="p">.</span><span class="n">tv_sec</span><span class="p">,</span> <span class="n">t_val</span><span class="p">.</span><span class="n">tv_usec</span><span class="p">);</span>
-
-    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">100000000</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kt">int</span> <span class="n">array</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">};</span>
-        <span class="kt">int</span> <span class="n">length</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">array</span><span class="p">)</span><span class="o">/</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
-        <span class="n">bubbleSort</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">length</span><span class="p">);</span>
-    <span class="p">}</span>
-    
-    <span class="k">struct</span> <span class="n">timeval</span> <span class="n">t_val_end</span><span class="p">;</span>
-    <span class="n">gettimeofday</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t_val_end</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
-
-    <span class="k">struct</span> <span class="n">timeval</span> <span class="n">t_result</span><span class="p">;</span>
-    <span class="n">timersub</span><span class="p">(</span><span class="o">&amp;</span><span class="n">t_val_end</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">t_val</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">t_result</span><span class="p">);</span>
-
-    <span class="kt">double</span> <span class="n">consume</span> <span class="o">=</span> <span class="n">t_result</span><span class="p">.</span><span class="n">tv_sec</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span> <span class="o">*</span> <span class="n">t_result</span><span class="p">.</span><span class="n">tv_usec</span><span class="p">)</span><span class="o">/</span><span class="mi">1000000</span><span class="p">;</span>
-    <span class="n">printf</span><span class="p">(</span><span class="s">"end.elapsed time= %fs </span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">consume</span><span class="p">);</span>
-
-    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>运行时间</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>start, now, <span class="nv">sec</span><span class="o">=</span>1617327646 <span class="nv">m_sec</span><span class="o">=</span>57219 
-end.elapsed <span class="nb">time</span><span class="o">=</span> 1.746955s 
-</code></pre></div></div>
-
-<h4 id="rust代码">Rust代码</h4>
-
-<div class="language-rust highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="k">use</span> <span class="nn">std</span><span class="p">::</span><span class="nn">time</span><span class="p">::</span><span class="n">Instant</span><span class="p">;</span>
-
-<span class="k">pub</span> <span class="k">fn</span> <span class="n">bubble_sort</span><span class="o">&lt;</span><span class="n">T</span><span class="p">:</span> <span class="nb">Ord</span><span class="o">&gt;</span><span class="p">(</span><span class="n">arr</span><span class="p">:</span> <span class="o">&amp;</span><span class="k">mut</span> <span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="p">{</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="mi">0</span><span class="o">..</span><span class="n">arr</span><span class="nf">.len</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="n">in</span> <span class="mi">0</span><span class="o">..</span><span class="n">arr</span><span class="nf">.len</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">arr</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="p">{</span>
-                <span class="n">arr</span><span class="nf">.swap</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">fn</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-    <span class="k">let</span> <span class="n">start</span> <span class="o">=</span> <span class="nn">Instant</span><span class="p">::</span><span class="nf">now</span><span class="p">();</span>
-
-    <span class="k">for</span> <span class="mi">_</span><span class="n">i</span> <span class="n">in</span> <span class="mi">0</span><span class="o">..</span><span class="mi">100000000</span> <span class="p">{</span>
-        <span class="k">let</span> <span class="k">mut</span> <span class="n">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">];</span>
-        <span class="nf">bubble_sort</span><span class="p">(</span><span class="o">&amp;</span><span class="k">mut</span> <span class="n">numbers</span><span class="p">);</span>
-    <span class="p">}</span>
-
-    <span class="nd">println!</span><span class="p">(</span><span class="s">"time cost: {:?} ms"</span><span class="p">,</span> <span class="n">start</span><span class="nf">.elapsed</span><span class="p">()</span><span class="nf">.as_millis</span><span class="p">());</span> <span class="c">// ms</span>
-    <span class="nd">println!</span><span class="p">(</span><span class="s">"time cost: {:?} us"</span><span class="p">,</span> <span class="n">start</span><span class="nf">.elapsed</span><span class="p">()</span><span class="nf">.as_micros</span><span class="p">());</span> <span class="c">// us</span>
-    <span class="nd">println!</span><span class="p">(</span><span class="s">"time cost: {:?} ns"</span><span class="p">,</span> <span class="n">start</span><span class="nf">.elapsed</span><span class="p">()</span><span class="nf">.as_nanos</span><span class="p">());</span> <span class="c">// us</span>
-<span class="p">}</span>
-</code></pre></div></div>
-
-<p>运行时间</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">time </span>cost: 1763 ms
-<span class="nb">time </span>cost: 1763298 us
-<span class="nb">time </span>cost: 1763300912 ns
-</code></pre></div></div>
-
-<h4 id="swift-代码">Swift 代码</h4>
-
-<div class="language-swift highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="kd">import</span> <span class="kt">Foundation</span>
-
-<span class="kd">func</span> <span class="n">bubbleSort</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">:</span> <span class="kt">Comparable</span><span class="o">&gt;</span><span class="p">(</span><span class="n">with</span> <span class="nv">array</span><span class="p">:</span> <span class="k">inout</span> <span class="p">[</span><span class="kt">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">T</span><span class="p">]</span> <span class="p">{</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="k">in</span> <span class="mi">1</span><span class="o">..&lt;</span><span class="n">array</span><span class="o">.</span><span class="n">count</span> <span class="p">{</span>
-        <span class="k">for</span> <span class="n">j</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..&lt;</span><span class="n">array</span><span class="o">.</span><span class="n">count</span><span class="o">-</span><span class="n">i</span> <span class="k">where</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">array</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="p">{</span>
-            <span class="n">array</span><span class="o">.</span><span class="nf">swapAt</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="n">array</span>
-<span class="p">}</span>
-
-
-<span class="k">let</span> <span class="nv">start</span> <span class="o">=</span> <span class="kt">DispatchTime</span><span class="o">.</span><span class="nf">now</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">_</span> <span class="k">in</span> <span class="mi">0</span><span class="o">..&lt;</span><span class="mi">10000000</span> <span class="p">{</span>
-    <span class="k">var</span> <span class="nv">intArray</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
-    <span class="nf">bubbleSort</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">intArray</span><span class="p">)</span>
-<span class="p">}</span>
-<span class="k">let</span> <span class="nv">end</span> <span class="o">=</span> <span class="kt">DispatchTime</span><span class="o">.</span><span class="nf">now</span><span class="p">()</span>
-<span class="k">let</span> <span class="nv">nanoTime</span> <span class="o">=</span> <span class="n">end</span><span class="o">.</span><span class="n">uptimeNanoseconds</span> <span class="o">-</span> <span class="n">start</span><span class="o">.</span><span class="n">uptimeNanoseconds</span>
-<span class="k">let</span> <span class="nv">timeInterval</span> <span class="o">=</span> <span class="kt">Double</span><span class="p">(</span><span class="n">nanoTime</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1_000_000_000</span>
-<span class="nf">print</span><span class="p">(</span><span class="s">"Time: </span><span class="se">\(</span><span class="n">timeInterval</span><span class="se">)</span><span class="s"> seconds"</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p>运行时间</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>Time: 2.391004642 seconds
-</code></pre></div></div>
-
-<h4 id="总结">总结</h4>
-<p>最早我对比的是Java和C，因为C是在Debug模式下跑的，反而比Java的慢，这个让我无法接受，不应该啊，后来让朋友跑了下，说应该用Release模式，这才反应过来，Release + O3优化后速度一下子就上来了，明显比Java快。Rust和C基本上都有Debug和Release的区分，现在看来Rust和C是一个级别，Java和Go是另一个档次上的同一级别。现在的Java运行默认是解释和编译的混合模式，所以速度上自然也不错，和Java对标的Go数据上来看略微差点，不过考虑到Java的运行时开销，Go其实还是很有诱惑的，后续有可能赶超Java。</p>
-
-<p>企业开发的话用Java依旧最好的选择，个人创业项目的话用Go其实不错。对于Rust和C，不好选择C语法上比较简洁，很多语言特性跟底层更靠近，需要一定底层知识，写操作系统的话，C依旧是首选。Rust呢？个人觉得语法上比较复杂，混杂的语言特性过于多了，既想兼容底层有想高级别的抽象上靠近现代语言，不过这样的情况下依然保持高性能，还是很令人惊讶的。这个不好选，但Rust更充满诱惑，但复杂的语法让人畏惧。</p>
-
-<p>Go语言虽然有C的传承，不过在类型定义上使用后缀的形式跟C语言正好相反，有时还是比较抵触的，另外因为GC的缘故，性能毕竟还是处于应用语言的级别。Rust太复杂，Swift没有用GC是引用计数，速度上比Rust差些，语法上其实跟Rust也差不多，不过作为一个曾经的iOS开发者，虽然Swift在一段时间大家都非常看好，不过最近几年过去了，其实Swift更多还是Oc的一种替代品，并没有突破苹果的范围，服务端也没有掀起什么风浪，Swift终究是Oc的替代品，也正因为此，他也跟苹果生态深度的绑定，成了某种无法脱颖而出的枷锁。</p>
-
-<p>我心中语言其实就是C语言的改良版，内存管理上希望在语言层面上解决，比如用引用计数。语法上不要太加很多的特性，有Go的那样就可以了，但不是Go。不过目前来看是没有的，要不就是自己写一个，也不是没有可能。但实在要是也没有的Go和Rust总还是不错的选择。</p>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1149,6 +979,10 @@ end.elapsed <span class="nb">time</span><span class="o">=</span> 1.746955s
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/05/04/thinking-about-rss/">关于RSS的思考</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
       </li>
     
@@ -1162,10 +996,6 @@ end.elapsed <span class="nb">time</span><span class="o">=</span> 1.746955s
     
       <li class="post">
         <a href="/blog/2021/04/23/springboot-elk/">Spring Boot使用ELK</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
       </li>
     
   </ul>

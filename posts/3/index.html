@@ -9,7 +9,8 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="提前声明下这只是一个比较个人的体验，并不代表普遍适用，仅供参考。 关于断食，也有称作辟谷的，大体都是跟节食或者不吃饭有关系。我本人亲自尝试过的断食属于21天不吃饭只喝清水的这种，前一次大概是七年前，这一次也是9月13日才结束的，写这篇一方面是刚刚结束断食，想把最真实的感受记录下来。 &hellip;">
+  <meta name="description" content="服务器一直使用的是CentOS，所以特做一下使用备注。基于的版本是CentOS 8.0 VirtualBox安装
+使用VirtualBox安装会存在兼容问题，6.1的版本无法运行CentOS-8.1.1911，主要这个版本移除VBoxVGA的支持，所以只能使用6.0版本。 查看 CentOS 版本 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,6 +72,7 @@
 <ul class="main-navigation">
   <li><a href="/">博客</a></li>
   <li><a href="/blog/archives">文章</a></li>
+  <li><a href="/app">应用</a></li>
 </ul>
 
 </nav>
@@ -78,6 +80,190 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2020/09/30/centos-users-guide/">CentOS 使用指南</a></h1>
+    
+    
+      <p class="meta">
+		
+        	
+
+
+
+
+2020-09-30 13:46
+		
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>服务器一直使用的是CentOS，所以特做一下使用备注。基于的版本是<code class="language-plaintext highlighter-rouge">CentOS 8.0</code></p>
+
+<h4 id="virtualbox安装">VirtualBox安装</h4>
+<p>使用VirtualBox安装会存在兼容问题，6.1的版本无法运行<code class="language-plaintext highlighter-rouge">CentOS-8.1.1911</code>，主要这个版本移除VBoxVGA的支持，所以只能使用6.0版本。</p>
+
+<h5 id="查看-centos-版本">查看 CentOS 版本</h5>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">cat</span> /etc/centos-release
+CentOS Linux release 8.1.1911 <span class="o">(</span>Core<span class="o">)</span> 
+</code></pre></div></div>
+
+<h4 id="查看网络配置">查看网络配置</h4>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>ip addr
+</code></pre></div></div>
+
+<h4 id="防火墙">防火墙</h4>
+<p>CentOS 8 使用firewall管理防火墙</p>
+
+<h5 id="基本使用">基本使用</h5>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>systemctl start firewalld <span class="c"># 启动</span>
+systemctl stop firewalld  <span class="c"># 关闭</span>
+systemctl status firewalld <span class="c"># 查看状态</span>
+systemctl disable firewalld <span class="c"># 开机禁用</span>
+systemctl <span class="nb">enable </span>firewalld <span class="c"># 开机启用</span>
+</code></pre></div></div>
+
+<h5 id="配置firewalld-cmd">配置firewalld-cmd</h5>
+<p>查看版本</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>firewall-cmd <span class="nt">--version</span>
+</code></pre></div></div>
+
+<p>查看运行状态</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>firewall-cmd <span class="nt">--state</span>
+</code></pre></div></div>
+
+<p>添加端口</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>firewall-cmd <span class="nt">--zone</span><span class="o">=</span>public <span class="nt">--add-port</span><span class="o">=</span>80/tcp <span class="nt">--permanent</span>
+</code></pre></div></div>
+
+<p>重新载入设置（添加端口后一定要重载设置）</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>firewall-cmd <span class="nt">--reload</span>
+</code></pre></div></div>
+
+<p>查看所有端口</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>firewall-cmd <span class="nt">--list-ports</span>
+</code></pre></div></div>
+
+<p>删除某一端口</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>firewall-cmd <span class="nt">--zone</span><span class="o">=</span> public <span class="nt">--remove-port</span><span class="o">=</span>80/tcp <span class="nt">--permanent</span>
+</code></pre></div></div>
+
+<h4 id="安装mysql-80">安装Mysql 8.0</h4>
+<p>试了几种安装方式只有如下的可以安装</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>yum <span class="nb">install</span> @mysql:8.0 <span class="nt">-y</span>
+</code></pre></div></div>
+
+<p>启动服务以及开机启动</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>systemctl start mysqld
+systemctl <span class="nb">enable </span>mysqld
+</code></pre></div></div>
+
+<p>密码设置</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>mysql_secure_installation
+</code></pre></div></div>
+
+<p>远程访问，8.0跟旧版不太一样。</p>
+
+<p>创建用户</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>create user <span class="s1">'root'</span>@<span class="s1">'172.16.10.203'</span> identified by  <span class="s1">'password'</span>
+</code></pre></div></div>
+
+<p>赋予权限，with grant option这个选项表示该用户可以将自己拥有的权限授权给别人</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>grant all privileges on <span class="k">*</span>.<span class="k">*</span> to <span class="s1">'root'</span>@<span class="s1">'172.16.10.203'</span> with grant option
+</code></pre></div></div>
+
+<p>改密码&amp;授权超用户，flush privileges 命令本质上的作用是将当前user和privilige表中的用户信息/权限设置从mysql库(MySQL数据库的内置库)中提取到内存里</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>flush privileges<span class="p">;</span>
+</code></pre></div></div>
+
+<p>创建账户::create user ‘用户名’@‘访问主机’ identified by ‘密码’;<br />
+赋予权限:grant 权限列表 on 数据库 to ‘用户名’@‘访问主机’ ;<br />
+with grant option这个选项表示该用户可以将自己拥有的权限授权给别人</p>
+
+<h5 id="坑">坑</h5>
+<p>提示密码设置简单错误</p>
+
+<p>1 查看当前安全变量值</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>mysql&gt; SHOW VARIABLES LIKE <span class="s1">'validate_password%'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>2 修改变量</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>mysql&gt; <span class="nb">set </span>global validate_password.policy<span class="o">=</span>0<span class="p">;</span>
+mysql&gt; <span class="nb">set </span>global validate_password.length<span class="o">=</span>4<span class="p">;</span>
+</code></pre></div></div>
+
+<p>3 然后退出后再执行</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>mysql_secure_installation
+</code></pre></div></div>
+
+<h4 id="参考">参考</h4>
+<p><a href="http://www.jeepxie.net/article/590454.html">mysql版本:’for the right syntax to use near ‘identified by ‘password’ with grant option’</a></p>
+
+<p><a href="https://www.mf8.biz/rhel8-centos8-install-mysql-8-0/">RHEL8 CentOS8 下安装 MySQL 8.0</a></p>
+
+<p><a href="https://www.jianshu.com/p/b437566ccf98">mysql8.0 设置简单密码报错ERROR 1819 (HY000): Your password does not satisfy the current policy requirements</a></p>
+
+<h4 id="常用命令">常用命令</h4>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>lsof <span class="nt">-i</span>: 端口号 <span class="c"># 查看某个端口的进程</span>
+</code></pre></div></div>
+
+<h4 id="网络管理">网络管理</h4>
+<p>主要记录虚拟机桥接模式无法连接外网的问题，主要是CentOS 8使用nmcli来管理网卡。</p>
+
+<ol>
+  <li>编辑文件<code class="language-plaintext highlighter-rouge">vim /etc/sysconfig/network-scripts/ifcfg-ens33</code></li>
+  <li>使用<code class="language-plaintext highlighter-rouge">nmcli d connect ens33</code>激活</li>
+  <li>最后使用<code class="language-plaintext highlighter-rouge">nmcli c reload</code>重启网卡服务，稍等片刻，就可以Ping通网络了。</li>
+</ol>
+
+<h4 id="https">HTTPS</h4>
+<p>目前使用Let’s Encrypt SSL的证书，这个是免费的，唯一的缺点是只有三个月期限，到期后重新申请就可以。</p>
+<h5 id="certbot-auto">certbot-auto</h5>
+<p>主要用来<code class="language-plaintext highlighter-rouge">certbot-auto</code>申请。</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="c"># 获取certbot-auto</span>
+wget https://dl.eff.org/certbot-auto
+<span class="nb">chmod </span>a+x certbot-auto
+</code></pre></div></div>
+
+<p>申请通配符域名的证书，这个涉及域名验证，需要在DNS解析增加<code class="language-plaintext highlighter-rouge">_acme-challenge</code>的<code class="language-plaintext highlighter-rouge">TXT</code>记录。</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>./certbot-auto certonly  <span class="nt">-d</span> <span class="k">*</span>.xxxx.com <span class="nt">--manual</span> <span class="nt">--preferred-challenges</span> dns <span class="nt">--server</span> https://acme-v02.api.letsencrypt.org/directory
+</code></pre></div></div>
+
+<p>到期后的，需要删除原有证书<code class="language-plaintext highlighter-rouge">certbot delete</code>，重启Ngnix服务<code class="language-plaintext highlighter-rouge">sudo systemctl restart nginx</code>。不删除的话，会生成新的证书目录，这样的话还需要修改Ngnix的配置文件。</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>certbot certificates <span class="c"># 查看所有证书，主要是看证书是否快要过期</span>
+</code></pre></div></div>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -576,50 +762,6 @@ flush privileges<span class="p">;</span>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/11/15/ios-development-tips/">iOS开发一些总结</a></h1>
-    
-    
-      <p class="meta">
-		
-        	
-
-
-
-
-2015-11-15 17:52
-		
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>首先要是有一个界面开发的经历那最好了，类似桌面界面开发其实是相通的。游戏开发中的界面跟这个略微不同。大部分会用到框架提供的组件，熟练的使用常用的组件是很有必要的。应该尽可能的多去尝试不同组件的使用机会，这样才能扩大组件的使用见识。</p>
-
-<p>应该用面对对象的角度去研究文档，继承关系以及实现了什么样的协议，顺着这样的路走下去就会对框架有个整体的认识。不少人看着也开发了好一段时间，但就是不曾系统的研究过这些东西。遇到问题了，还是停留在百度这样境界。</p>
-
-<p>框架和语言的问题，一开始开发的时候基本上不会对这个进行分类。实际上语言是需要单独学习的，研究的越深刻才能越自由。</p>
-
-<p>设计模式，如果不是项目开发到一定规模很难会有所领悟，而且你是项目负责的，一般新手建议从研究系统框架中使用到的设计模式入手，这样更实际点。</p>
-
-<p>HTTP协议需要单独研究，有本书《HTTP权威指南》非常详尽。Charles这样的抓包工具可以作为辅助研究这个的工具。除此还可以研究下AFNetworking源代码以及原生的请求类。</p>
-
-<p>关系型数据库需要单独找本书看下，不是简单的会使用增删改查就可以了，比如怎么多表联查，怎么排序，SQL语句提供的功能远不只这些。</p>
-
-<p>Core Data应该用，建议学习下Rails这个后台开发的东西，你就会明白多数的框架都不会直接去操作SQL，而是通过包装来简化或者影藏其中的复杂性。问题远远的比想得复杂，原始的刀耕火种的方式会让你累个半死，所以最好用现成的解决方案了。</p>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/4">&larr; Older</a>
@@ -641,6 +783,10 @@ flush privileges<span class="p">;</span>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/05/04/thinking-about-rss/">关于RSS的思考</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
       </li>
     
@@ -654,10 +800,6 @@ flush privileges<span class="p">;</span>
     
       <li class="post">
         <a href="/blog/2021/04/23/springboot-elk/">Spring Boot使用ELK</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a>
       </li>
     
   </ul>
