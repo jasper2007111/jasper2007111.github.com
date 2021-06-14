@@ -4,7 +4,7 @@
   <title><![CDATA[无用之用]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2021-05-21T10:42:28+08:00</updated>
+  <updated>2021-06-14T23:36:57+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,161 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[初试WebAssembly]]></title>
+    <link href="https://c2lang.com/blog/2021/06/02/first-try-webassembly/"/>
+    <updated>2021-06-02T20:02:53+08:00</updated>
+    <id>https://c2lang.com/blog/2021/06/02/first-try-webassembly</id>
+    <content type="html"><![CDATA[<p>听闻WebAssembly已经有些年了，不过一直没有跑个例子尝试下。主要是使用Rust来编译生成WebAssembly的目标文件，虽然可以使用C/C++，但想想我的Rust学习一直进展不大，不知道用在哪里，刚好Rust对WebAssembly支持也是比较详细。</p>
+
+<h4 id="rust问题">Rust问题</h4>
+<p>安装wasm-pack时提示没有安装rustup，虽然我已经哟给Brew安装了rust，最后安装rustup后就好了。</p>
+
+<p>执行cargo install cargo-generate时，加载Crates非常慢，最后使用国内的镜像后顺利完成，这是国内镜像的配置。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>[source.crates-io]
+registry = "https://github.com/rust-lang/crates.io-index"
+# 指定镜像
+replace-with = 'sjtu'
+
+# 清华大学
+[source.tuna]
+registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"
+
+# 中国科学技术大学
+[source.ustc]
+registry = "git://mirrors.ustc.edu.cn/crates.io-index"
+
+# 上海交通大学
+[source.sjtu]
+registry = "https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index"
+
+# rustcc社区
+[source.rustcc]
+registry = "https://code.aliyun.com/rustcc/crates.io-index.git"
+</code></pre></div></div>
+
+<h4 id="总结">总结</h4>
+<p>我在iOS的Safari试了下，也可以。虽然之前也有其他语言编译为JS的做法，所以主要解决的是如何构建大型web应用的工程问题，现在ES6的普及，好像这类方案渐渐的也不怎么提了。其他语言编译成WebAssembly的做法，主要是为解决性能的问题，把一些跟性能有关系使用WebAssembly，另外WebAssembly可以解决原来JS的老是暴露的问题。理论上其他语言都可以编译WebAssembly，但是主流的还是C/C++、Go、Rust之类的编译为WebAssembly的方式了，不过</p>
+
+<p>Web开发我不是全职的那种，有需要了就写写。感觉一般Web开发者也不大会用到，有性能要求的应用可能会用到，但估计写WebAssembly估计也是领域专业的人员。</p>
+
+<h4 id="参考资料">参考资料</h4>
+<p><a href="https://rustwasm.github.io/docs/book/introduction.html">Rust 🦀 and WebAssembly 🕸</a> ，例子主要按这个来跑的。</p>
+
+<p><a href="https://developer.mozilla.org/zh-CN/docs/WebAssembly">WebAssembly</a> Mozilla开发者网站关于WebAssembly的介绍，比较详细。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[学习GTK]]></title>
+    <link href="https://c2lang.com/blog/2021/06/02/learning-gtk/"/>
+    <updated>2021-06-02T19:49:18+08:00</updated>
+    <id>https://c2lang.com/blog/2021/06/02/learning-gtk</id>
+    <content type="html"><![CDATA[<p>GTK之前有看过，还专门购买了一本关于GTK的书籍，那是主要是为了学习C的面向对象实现。现在又看GTK是因为准备购买PinePhone，主要看中了PinePhone可以运行多个Linux发行版本。现在无论是iOS还是Android都不能自由的使用喜欢的语言。作为一个曾经的iOS开发者，iOS的运行速度还真的没得说。Android因为使用Java缘故，总还是没有办法更快似乎，所以一直想着整一台Linux手机自己定制UI，不过找一台Linux手机实在是太难了，主要是目前手机都是这些公司定制的硬件，所以驱动是个大问题。</p>
+
+<p>为什么选择GTK呢？我也看了下QT，之前也简单的使用了下，确实非常适合开发UI程序，不过授权方面还是有点问题，GTK没有这个问题。另外无论C/C++对我来说都不是太大的问题，所以还是用GTK了。</p>
+
+<p>考虑到主要是用来开发Linux的，所以直接在Ubuntu下跑个例子看下。</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="cp">#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+#include &lt;stdbool.h&gt;
+#include &lt;stdnoreturn.h&gt;
+#include &lt;stdatomic.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;gtk/gtk.h&gt;
+#include &lt;glib/gprintf.h&gt;
+</span>
+<span class="cp">#ifndef var
+#define var __auto_type
+#endif
+</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">PrintMsg</span><span class="p">(</span><span class="n">GtkWidget</span> <span class="o">*</span><span class="n">widget</span><span class="p">,</span> <span class="n">gpointer</span> <span class="n">window</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">window</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+		<span class="n">g_printf</span><span class="p">(</span><span class="s">"Button clicked</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+	<span class="n">var</span> <span class="n">dialog</span> <span class="o">=</span> <span class="n">gtk_message_dialog_new</span><span class="p">(</span><span class="n">GTK_WINDOW</span><span class="p">(</span><span class="n">window</span><span class="p">),</span> <span class="n">GTK_DIALOG_MODAL</span> <span class="o">|</span> <span class="n">GTK_DIALOG_DESTROY_WITH_PARENT</span><span class="p">,</span> <span class="n">GTK_MESSAGE_INFO</span><span class="p">,</span> <span class="n">GTK_BUTTONS_OK</span><span class="p">,</span> <span class="s">u8"按钮已被按下！"</span><span class="p">);</span>
+	<span class="n">gtk_window_set_title</span><span class="p">(</span><span class="n">GTK_WINDOW</span><span class="p">(</span><span class="n">dialog</span><span class="p">),</span> <span class="s">u8"请注意"</span><span class="p">);</span>
+
+	<span class="n">gtk_dialog_run</span><span class="p">(</span><span class="n">GTK_DIALOG</span><span class="p">(</span><span class="n">dialog</span><span class="p">));</span>
+	<span class="n">gtk_widget_destroy</span><span class="p">(</span><span class="n">dialog</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+	<span class="n">gtk_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">);</span>
+	<span class="n">var</span> <span class="n">window</span> <span class="o">=</span> <span class="n">gtk_window_new</span><span class="p">(</span><span class="n">GTK_WINDOW_TOPLEVEL</span><span class="p">);</span>
+	<span class="n">gtk_window_set_title</span><span class="p">(</span><span class="n">GTK_WINDOW</span><span class="p">(</span><span class="n">window</span><span class="p">),</span> <span class="s">"GTK Test"</span><span class="p">);</span>
+	<span class="n">gtk_window_set_default_size</span><span class="p">(</span><span class="n">GTK_WINDOW</span><span class="p">(</span><span class="n">window</span><span class="p">),</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">480</span><span class="p">);</span>
+	<span class="n">gtk_window_set_position</span><span class="p">(</span><span class="n">GTK_WINDOW</span><span class="p">(</span><span class="n">window</span><span class="p">),</span> <span class="n">GTK_WIN_POS_CENTER</span><span class="p">);</span>
+	<span class="n">gtk_container_set_border_width</span><span class="p">(</span><span class="n">GTK_CONTAINER</span><span class="p">(</span><span class="n">window</span><span class="p">),</span> <span class="mi">15</span><span class="p">);</span>
+
+	<span class="n">var</span> <span class="n">button</span> <span class="o">=</span> <span class="n">gtk_button_new_with_label</span><span class="p">(</span><span class="s">"Button"</span><span class="p">);</span>
+	<span class="n">gtk_widget_set_halign</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="n">GTK_ALIGN_START</span><span class="p">);</span>
+	<span class="n">gtk_widget_set_valign</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="n">GTK_ALIGN_START</span><span class="p">);</span>
+	<span class="n">gtk_widget_set_tooltip_text</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s">"This is a button widget"</span><span class="p">);</span>
+	<span class="n">g_signal_connect</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s">"clicked"</span><span class="p">,</span> <span class="n">G_CALLBACK</span><span class="p">(</span><span class="n">PrintMsg</span><span class="p">),</span> <span class="n">window</span><span class="p">);</span> 
+	<span class="n">gtk_container_add</span><span class="p">(</span><span class="n">GTK_CONTAINER</span><span class="p">(</span><span class="n">window</span><span class="p">),</span> <span class="n">button</span><span class="p">);</span>
+	<span class="n">gtk_widget_show_all</span><span class="p">(</span><span class="n">window</span><span class="p">);</span>
+	<span class="n">g_signal_connect</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s">"destroy"</span><span class="p">,</span> <span class="n">G_CALLBACK</span><span class="p">(</span><span class="n">gtk_main_quit</span><span class="p">),</span> <span class="nb">NULL</span><span class="p">);</span>
+	<span class="n">static_assert</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">,</span> <span class="s">"Not compatible architecture!"</span><span class="p">);</span>
+	<span class="n">puts</span><span class="p">(</span><span class="s">"Will enter GTK runloop..."</span><span class="p">);</span>
+	<span class="n">gtk_main</span><span class="p">();</span>
+	<span class="n">puts</span><span class="p">(</span><span class="s">"Program terminated!"</span><span class="p">);</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="问题">问题</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>/usr/include/pango-1.0/pango/pango-coverage.h:28:10: fatal error: 'hb.h' file not found
+</code></pre></div></div>
+<p>解决方案运行<code class="language-plaintext highlighter-rouge">pkgconf --cflags harfbuzz</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>/usr/bin/ld: cannot find -lBlocksRuntime
+</code></pre></div></div>
+<p>解决方案运行<code class="language-plaintext highlighter-rouge">sudo apt-get install libblocksruntime-dev</code></p>
+
+<h4 id="编译">编译</h4>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>clang main.c <span class="nt">-std</span><span class="o">=</span>gnu11 <span class="nt">-fblocks</span> <span class="nt">-lBlocksRuntime</span> <span class="nt">-I</span>/usr/include/glib-2.0/ <span class="nt">-I</span>/usr/include/atk-1.0/ <span class="nt">-I</span>/usr/include/gdk-pixbuf-2.0/ <span class="nt">-I</span>/usr/include/cairo/ <span class="nt">-I</span>/usr/include/pango-1.0/ <span class="nt">-I</span>/usr/lib/x86_64-linux-gnu/glib-2.0/include/ <span class="nt">-I</span>/usr/include/gtk-3.0/ <span class="nt">-I</span> /usr/include/harfbuzz/ <span class="nt">-L</span>/usr/lib/x86_64-linux-gnu/ <span class="nt">-lgtk-3</span> <span class="nt">-lgobject-2</span>.0 <span class="nt">-lpangocairo-1</span>.0 <span class="nt">-lgio-2</span>.0 <span class="nt">-latk-1</span>.0 <span class="nt">-lgdk-3</span> <span class="nt">-lglib-2</span>.0    <span class="nt">-o</span> gtk-test
+</code></pre></div></div>
+
+<h4 id="总结">总结</h4>
+<p>GTK开发确实比较麻烦，后续还的配置个好的IDE环境，不过想想要求的OC开发，其实对于C还是蛮亲切的。其实一旦涉及真实项目，更多都是对框架的学习了，先挖个坑。</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[天童如净禅师]]></title>
+    <link href="https://c2lang.com/blog/2021/05/27/tiantong-rujing/"/>
+    <updated>2021-05-27T11:33:27+08:00</updated>
+    <id>https://c2lang.com/blog/2021/05/27/tiantong-rujing</id>
+    <content type="html"><![CDATA[<p>去年专门去了趟宁波天童寺，雪窦山、净慈寺，几个跟如净禅师有关的地方，这样加深了我对禅师的一些了解。</p>
+
+<p>《续指月录》有关于如净禅师的记录</p>
+
+<blockquote>
+  <p>慶元天童長翁如淨禪師</p>
+
+  <p>生而岐嶷。不類常童。長學出世法。參足庵鑑公於雪竇。看庭前柏樹子話有省。呈頌曰。西來祖意庭前柏。鼻孔寥寥對眼睛。落地枯枝纔[跳-兆+孛]跳。松蘿亮鬲笑掀騰。鑑頷之。出世屢主名剎。勑住天童。開爐上堂。召眾打圓相曰。箇是天童火爐。近前則燒殺。退後則凍殺。忽有箇漢出來道。合作麼生[囗@力]。火爐動也。便下座○上堂。霜風號肅殺。霜葉隨蕭[颱-台+(癸-天+虫)]。舉拂曰。看。惟有玲瓏巖。崔嵬望轉高。所謂天童滯貨。今朝短販一遭。莫有酬價底麼。下座巡寮○上堂。外不放入。內不放出。痛下一槌。萬事了畢。如何太白峰前令斬新。內外紀綱俱委悉○上堂。陸修靜。陶淵明。文殊普賢。作圓相曰。咦。一款具呈。且道憑誰批判。若是孔夫子。吾無隱乎爾○師六坐道場。未言稟承。眾有是請。師曰。我待涅槃堂裏拈出。臨終果拈香曰。如淨行脚四十餘年。首到乳峰。失脚墮於陷穽。此香今不免拈出。鈍置我住雪竇足庵大和尚。并書辭世頌曰。六十六年。罪犯彌天。打箇[跳-兆+孛]跳。活陷黃泉。咦，從來死生不相干。擲筆而逝。塔全身於本山。</p>
+</blockquote>
+
+<h4 id="葬在何处">葬在何处？</h4>
+<p>一种说法是葬在了天童寺的附近，我上次去的时候塔院正在维修，也没有看到塔。净慈寺的如净禅师塔，这个是网上能搜到的，我也亲自去拜祭过。</p>
+
+<h4 id="语录">语录</h4>
+<p>现存的语录有两本《如净禅师语录》和《如净禅师续语录》，《如净禅师语录》比较完整，我刚完成了注音版的编辑工作，之前去天童寺的时候有请了本线装本的语录，内容包含两本的内容。唯一的缺点是因为是繁体竖排，另外很多的字不知道发音，尝试的读过一些，感觉还是有困难，携带其实也不方便。最近又在孔网上买了一本简体注音的32开本，确实让我读进去了一些内容，不过这个版本的问题是缺少了大概两页的内容，另外有些无法打出来的字体直接用问号显示，于是我想着还是自己整理一个版本吧，虽然不到一百页的内容，实际整理的时间也差不多有半个月时间，我整理的是繁体版，这次整理工作确实也让我学习了一些东西，目前初版算是完成了。后续我再校对一些发音和内容，没有问题的话，打算印本自己看看了。</p>
+
+<p>《如净禅师语录》注音版我在Github上建了个项目，有兴趣的可以拉下来读读。<a href="https://github.com/jasper2007111/tiantong-rujing">项目地址</a></p>
+
+<h4 id="其他资料">其他资料</h4>
+<p>道元禅师的《宝庆记》也是了解如净禅师比较好的资料，另外道元禅师的《正法眼藏》中也有不少如净禅师的记录。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[关于RSS的思考]]></title>
@@ -71,7 +226,7 @@
     <link href="https://c2lang.com/blog/2021/04/26/talk-about-meditatio/"/>
     <updated>2021-04-26T23:06:57+08:00</updated>
     <id>https://c2lang.com/blog/2021/04/26/talk-about-meditatio</id>
-    <content type="html"><![CDATA[<p>冥想已经有六七年了，略有点经验与大家分享下，一家之言，只供参考。</p>
+    <content type="html"><![CDATA[<p>坚持冥想已经有六七年了，略有点经验与大家分享下，一家之言，只供参考。</p>
 
 <h4 id="时间">时间</h4>
 <p>冥想多长时间比较好？我目前是30分钟，之前一段时间都是1个小时，改成30分钟是因为后来找的工作太远，个人建议不低于30分钟为好。</p>
@@ -79,9 +234,9 @@
 <p>什么时间冥想比较好？我是早上冥想了，下午很少冥想。首先早上精神比较好，不容易发困，下午冥想的时候往往劳累一天状态不是很好。早上冥想是因为时间比较好安排，只要你起的早，时间都是可以挪出来的。</p>
 
 <h4 id="姿势">姿势</h4>
-<p>首推双盘，其次单盘，最不好散盘。能单盘不要散盘，能双盘不要单盘。单盘基本上大家都可以，双盘如果身体不够瘦或者腿实在太硬，还是有点难度的。不过双盘只是时间问题了，我单盘五年一直双盘不上，基本上我都觉得已经放弃对双盘的想法，不过五年后的某天我居然可以双盘了，所以现在觉得双盘这个只是时间的问题，可能每个人不太一样，不过就是不要太主观的设置一个时间点，顺其自然就好，功夫到了自然盘的上。</p>
+<p>首推双盘，其次单盘，最不好散盘。能单盘不要散盘，能双盘不要单盘。单盘基本上大家都可以，双盘如果身体不够瘦或者腿实在太硬，还是有点难度的。不过双盘只是时间问题了，我单盘五年一直双盘不上，基本上都已经放弃对双盘的想法，不过五年后的某天我居然可以双盘了，所以现在觉得双盘这个只是时间的问题，可能每个人不太一样，不过就是不要太主观的设置一个时间点，顺其自然就好，功夫到了自然盘的上。</p>
 
-<p>双盘和单盘冥想有什么差别，进入状态后其实差别不大，不过双盘确实比较稳，另外双盘时呼吸是到腹部的，但是像我在单盘的时候，呼吸实际比较浅，没有到腹部，关注点在鼻端。双盘时，这种呼吸需要一段时间的适应。</p>
+<p>双盘和单盘冥想有什么差别，进入状态后其实差别不大，不过双盘确实比较稳。双盘比较难，很大程度是因为在一开始不熟练的情况下，疼痛会干扰到无法安心坐下去。双盘我目前采用先盘左腿，再盘右腿的吉祥坐，另外手印也采用右手放在左手掌的方式，目前自我感觉这样的姿势可以很好的安心双盘。</p>
 
 <p>调身，总的来说身体瘦一点，下午少吃点，对于盘腿还是有帮助的。我断食21天时，双盘完全不是问题，所以还是不要自己太胖。</p>
 
@@ -89,12 +244,10 @@
 <p>干坐着，心可能会更乱，一般人都会觉得坐不了多久，自己就想不坐了。我早期接触的时候，也是不得其法，一开始就那样坐着，时间比较短。后来去了禅寺的禅堂坐了几次香（打坐），下午香时间最长一个半小时，当时还是散盘，到最后腿巨痛，虽然坚持了下来，后来问一个坐的比较好的小姑娘，原来她在用数呼吸，我也学着使用这个方式。数呼吸，一呼一吸算一下，从1到10，重复，实际上比较难，你会发现你的心会莫名的飞出个念头，打乱数呼吸的节奏。不过你只要持续的数，专注了，我当时觉得时间一下子变短了，腿也不痛了，所以数呼吸对于摄心还是很有效果了。结果一数就是到现在了，关于数呼吸详细的内容可以参阅南传佛教的典籍《清静道论》。</p>
 
 <h4 id="心态">心态</h4>
-<p>不管什么原因让你开始冥想，但不要对冥想有一个心理期许，放长远一点，用余生去练习，每个阶段你能收获什么取决于你走的有多远，而多远不是你主观可以预判的。虎头蛇尾的冥想我也见过几个，其实冥想对我而言更多获得了一种内心的平静，而我觉得这就够了。但很多人，不是这样想的，期许太多，最终没有能坚持下来。</p>
-
-<p>坚持冥想，全身心的投入到工作，让冥想成为一种习惯，不要太热衷，也不要太懈怠。</p>
+<p>不管什么原因让你开始冥想，但不要对冥想有一个心理期许，放长远一点，用余生去练习，每个阶段你能收获什么取决于你走的有多远，而多远不是你主观可以预判的。虎头蛇尾的冥想我也见过几个，其实冥想对我而言更多获得了一种内心的平静，而我觉得这就够了。但很多人，不是这样想的，期许太多，最终没有能坚持下来。坚持冥想，全身心的投入到工作，让冥想成为一种习惯，不要太热衷，也不要太懈怠。</p>
 
 <h4 id="书籍">书籍</h4>
-<p>最好的依旧是坚持练习，少看书，偶尔看一点就可以了，多了反而是障碍。只推荐《禅者的初心》这一本吧。</p>
+<p>最好的依旧是坚持练习，少看书，偶尔看一点就可以了，多了反而是障碍。偏方法的推荐《清静道论》或者南传佛教相关的书籍，不过《清静道论》是根本。心态类的推荐《禅者的初心》，心态要对，这很关键。</p>
 
 <h4 id="如何开始">如何开始？</h4>
 <p>去禅寺的禅堂学习冥想是我走过的路，正规的禅寺有一套很完备的机制，让你短时间内可以上路。不过很多人在禅寺的时候可以冥想，但出了禅寺就不行了，总是找各种理由。禅寺只是开始的地方，冥想之路才刚开始。</p>
@@ -1087,116 +1240,6 @@ x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
 <p>8086方面的书籍，8086总设计师莫尔斯写的《8086初阶-体系结构、系统设计和程序设计入门》。王爽老师《汇编语言》也主要是讲8086的汇编的。80386的书籍不多，80386的设计师写的《Programing the 80386》一书，非常不错。中文版是93年出版的《保护方式下80386及其编程》一书，虽然没有备注是翻译，但我跟英文版对照后，确认就是翻译自《Programing the 80386》，主要是学习保护模式。</p>
 
 <p>这里需要注意的是实模式与保护模式的差别，很多时候一开始如果研究的是8086的，往往需要转换下思维，最好的书籍依旧是《保护方式下80386及其编程》一书，于渊的《Orange’S 一个操作系统实现》细节上还是有点模糊。</p>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[在CentOS 8上Mysql 8.0的主从配置实践]]></title>
-    <link href="https://c2lang.com/blog/2021/01/05/how-to-configure-mysql-8-master-slave-replication-on-centos-8/"/>
-    <updated>2021-01-05T10:47:17+08:00</updated>
-    <id>https://c2lang.com/blog/2021/01/05/how-to-configure-mysql-8-master-slave-replication-on-centos-8</id>
-    <content type="html"><![CDATA[<p>主要试了下基于二进制日志文件的方法</p>
-
-<h4 id="主库设置">主库设置</h4>
-
-<p>主要的坑，一般教程上写的是编辑<code class="language-plaintext highlighter-rouge">/etc/my.cnf</code>。安装的Mysql 8的配置略微有些问题，<code class="language-plaintext highlighter-rouge">my.cnf</code>文件导入的是另一配置<code class="language-plaintext highlighter-rouge">!includedir /etc/my.cnf.d</code>，所以以下配置我是写在了<code class="language-plaintext highlighter-rouge">/etc/my.cnf.d/mysql-server.cnf</code>里面。</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="c">###主从数据库配置核心部分</span>
-<span class="c"># 设置同步的binary log二进制日志文件名前缀，默认为binlog</span>
-log-bin<span class="o">=</span>mysql-bin
-<span class="c"># 服务器唯一id，默认为1  主数据库和从数据库的server-id不能重复</span>
-server-id<span class="o">=</span>1          
-
-<span class="c">###可选配置</span>
-<span class="c"># 需要主从复制的数据库</span>
-binlog-do-db<span class="o">=</span><span class="nb">test</span>
-<span class="c"># 复制过滤：也就是指定哪个数据库不用同步（mysql库一般不同步）</span>
-binlog-ignore-db<span class="o">=</span>mysql
-<span class="c"># 为每个session分配的内存，在事务过程中用来存储二进制日志的缓存</span>
-<span class="nv">binlog_cache_size</span><span class="o">=</span>1M
-<span class="c"># 主从复制的格式（mixed,statement,row，默认格式是statement。建议是设置为row，主从复制时数据更加能够统一）</span>
-<span class="nv">binlog_format</span><span class="o">=</span>row
-<span class="c"># 设置二进制日志自动删除/过期的天数，避免占用磁盘空间。默认值为0，表示不自动删除。</span>
-<span class="nv">expire_logs_days</span><span class="o">=</span>7
-<span class="c"># 跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制中断。</span>
-<span class="c"># 如：1062错误是指一些主键重复，1032错误是因为主从数据库数据不一致</span>
-<span class="nv">slave_skip_errors</span><span class="o">=</span>1062
-</code></pre></div></div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[iPhone 12 Pro试用感受]]></title>
-    <link href="https://c2lang.com/blog/2020/11/12/try-iphone-12-pro/"/>
-    <updated>2020-11-12T13:54:26+08:00</updated>
-    <id>https://c2lang.com/blog/2020/11/12/try-iphone-12-pro</id>
-    <content type="html"><![CDATA[<p>iPhone 6s已经用5年了，待电确实比较差，外出的话离不开充电宝。iPhone 12出来后，我就下单iPhone 12 pro了。这次的iPhone 吸引我的是新外观以及对5G的支持，当然pro系列有激光雷达的功能。外观回归到iPhone 4时的设计，因为宽度比原来宽，所以拿着还是有点割手，套上外壳能好点。大小上来说，对于我这种小手还是觉得iPhone 6s的尺寸刚好，iPhone 12 pro的单手操作还是有担心机子摔在地上的风险。自从iPhone出了刘海屏后，我一直比较难以接受这样的设计，更钟情于iPhone 6s 这样的设计，其实在我看来苹果可以把手机的上下部分变短，比刘海这样的设计好。iPhone 12 pro的相机确实牛，这点是值得升级的，另外拍立得这个功能也非常不错。</p>
-
-<p>谈谈我最后为什么退货呢，作为一个曾经的iOS开发者，对这几年的iPhone已经失去了升级的想法，一方面新iPhone价位比以前贵，功能其实没有太大的突破，从生产力角度来看，我更愿意在macbook pro上投资，而不是iPhone。另外iPhone 6s本身不怎么卡，只是电池不行了，这个完全可以换一个就可以了。升级最大的动力是支持5G，但是目前运营商的5G有点贵，而且5G设施也还在陆续建设中，另外平时用的更多是Wi-Fi，移动网络下也很少看视频之类的，所以并没有高速网络的需求。目前iPhone 12是支持5G的初代产品，所以有提升的空间。最后一点，刘海设计依旧是心里吐槽的对象，如果他出一个iPhone 6s的设计，但支持5G的手机，我可能更愿意接受。</p>
-
-<h4 id="退货流程">退货流程</h4>
-<p>这是头一次退货，在订单中确认退货，会显示取货。取货的时间都没有问题，来了一个邮政的人员把机子简单的验证后，然后就把机子拿走了，没有留下快递单号。因为是头一次，取货后的第二天我看来下订单状态，依旧显示取货中，过了两天我发现还是这个状态。心里有点嘀咕，不会被骗吧，一般的寄送快递，当天晚上基本上状态都改变了。后来我直接给苹果客服打电话确认了，说一切都正常，机子也确实被取走了，因为会寄送到工厂，工厂收到后还要验货后才会更新订单的状态。大概是一周后，订单状态终于变了，钱也退了。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[天童寺游记]]></title>
-    <link href="https://c2lang.com/blog/2020/10/06/travelogue-of-tiantong-temple/"/>
-    <updated>2020-10-06T13:48:16+08:00</updated>
-    <id>https://c2lang.com/blog/2020/10/06/travelogue-of-tiantong-temple</id>
-    <content type="html"><![CDATA[<h3 id="缘起">缘起</h3>
-
-<p>今年十一长假因为跟中秋重叠，放八天假，趁着时间长决定去一趟宁波的天童寺去看一下。天童寺位于浙江省宁波市鄞州区太白山麓，为什么要去这座寺庙呢？说到这里要追述到《乔布斯传》这本书，大都数人因为这本书也会知道另一本书《禅者的初心》，作者是铃木俊隆，当然再深挖一点，就会知道一位与乔布斯关系密切的禅师乙川弘文。铃木俊隆与乙川弘文都是日本曹洞宗的僧侣。说到日本曹洞宗，不得不提他的开山祖师道元禅师，时间大概可以追述到南宋时期，道元禅师跨海来寻觅佛法，最后在天童寺遇到了如净禅师，得到如净禅师的认可后，回到日本后创建了日本曹洞宗。</p>
-
-<p>关于天童寺的记载文献还是很多的，而关于如净禅师的记载则比较少，很多都是从道元禅师的记述中得知。这点类似李小龙跟叶问一样，因为道元禅师在日本的成功以及后世日本曹洞宗僧侣在海外弘法的成功，使得如净禅师逐渐为人们所知。不少关于乔布斯跟禅的文中没有切中要点，往往泛泛而谈，说是禅宗。准确的说乔布斯接触的是禅宗曹洞宗一脉的教法，更准确的是日本曹洞宗，但往上追述一点则到了南宋时期如净禅师传承的曹洞宗的一脉。</p>
-
-<p>如净禅师，浙江宁波人，十九岁时出家，拜在雪窦智鉴禅师的门下，晚年入住天童寺，圆寂后葬在了西湖边的净慈禅寺，净慈禅寺曾经也是禅师入住过的道场。所以本次行程一条线就是围绕着如净禅师来走的，宁波奉化的雪窦山、天童寺、杭州西湖旁的净慈禅寺，这三个地方大略勾勒出了禅师的一生。</p>
-
-<p>另一条线是围绕着道元禅师来走的，主要是天童寺、阿育王寺。二者在天童寺相会，另外我也带着道元禅师《正法眼藏》中文翻译版一书，在我看来一个人能留下来的无非是他的思想，而带着他的著作犹如带着这位禅师，在700多年后重走这条路。道元禅师在归国后第二年如净禅师圆寂，从此师徒再无相见的可能，所以带着道元的《正法眼藏》专程去杭州净慈禅寺拜祭如净禅师的塔墓，也算另一种相见吧。</p>
-
-<h3 id="行程">行程</h3>
-
-<h4 id="天童寺">天童寺</h4>
-
-<p>确定好行程后，十一一大早就坐高铁去了宁波，大概在下午的五点半左右到了宁波。宁波确实跟西安这样的北方城市不一样，矮山、多水洼地。第二天一大早，乘坐地铁一号线直接到达宝幢站，下站后再乘坐育王站的162公交，终点站是公交天童站。不知道是跟疫情有关系还是其他，总之没有门票。穿过一段松柏的路，逐渐看到了天童寺，放生池，旁边山头的塔，再往里面走，隔着一个池子，东南佛国的照壁映入眼帘。照壁后面就是天王殿，穿过天王殿就是佛殿，寺院最上面有罗汉堂。基本的寺院结构跟大多数的寺庙差不多，但建筑上有着天童寺独有的特点。寺里的师父都非常友好，尤其跟寺图书馆的一位师父相谈甚欢，得知寺图书馆没有道元的《正法眼藏》这本书时，当即在原来购买书的那个商家那里下了10本的订单给禅寺，算尽点薄力。禅寺非常好的一点是提供15块一份的素餐，像我这种每次去寺庙不知道如何解决午餐的问题的人来说提供一种方便。天童寺历代都是出高僧的地方，近代有八指头陀、圆瑛法师（中国佛教协会第一任会长），有幸请到一本《八指头陀诗文集》，也算此行的一种意收获。寺里有不少处都有立牌，主要是关于道元禅师的，其中有个殿专门立有《日本道元禅师得法灵迹碑》，可见天童寺与日本曹洞宗的渊源，更被日本曹洞宗尊为祖庭。寺里的师父对于道元禅师也不陌生，都还充满敬意。当天刚好赶上面向在家人的禅七活动即将要开始，因为来的匆忙，不然真想去参加下。天童寺可能是国内仅有的几处仍在传承曹洞宗禅法的寺院，所以对于我们这些修行上更倾向于曹洞宗的人来说，弥足珍贵。</p>
-
-<h4 id="阿育王寺">阿育王寺</h4>
-
-<p>阿育王寺有两座，一座叫阿育王寺，在公路旁边，另一座叫阿育王古寺，在山上。来之前只知道阿育王寺，不知道还有古寺一说。查了下大概阿育王寺有东塔院、西塔院，东塔院即阿育王古寺，也是最初建寺的地方，当年开山祖师惠达（俗名刘萨诃）在这里发现了佛舍利，因此而建寺。唐先天二年时，修建了西塔寺，即现在的阿育王寺，东塔寺的香火逐渐衰落，后来被毁逐渐废弃，现在的阿育王古寺是在原来的遗址上盖了一座崭新的寺庙。古寺因为在山上，知道的人不多，去的人也不多。在大略逛完阿育王寺后，我就打车前往了古寺那边看了下，那边虽然有公交但是发车间隔太长，只好打车了。顺便说下曹操专车，这个在西安也有，与传统的出租相比价格透明，因为我当时有问过一个出租车司机，结果报价明显比我后来坐曹操专车贵不少。古寺山后有阿育王寺开山祖师的塔墓，另外发现佛舍利的地方正在盖舍利大殿，寺里现在好像传承的是天台宗。</p>
-
-<p>阿育王寺总体更加的古朴一点，也可能是一直没有断过的缘故。古寺虽然历史悠久，但因为是新建的，那份与古代的链接需要脑补。阿育王寺也是当年鉴真大师东渡日本失败时入住过的寺庙，里面也供奉着鉴真大师的像。</p>
-
-<h4 id="雪窦山雪窦寺弥勒道场">雪窦山、雪窦寺、弥勒道场</h4>
-
-<p>单说雪窦山，其实也算是一座风景秀丽的名山，再加上雪窦寺以及弥勒道场，使之更加有名。不过这里似乎商业味有点过浓，另外说到雪窦山就不得不说老蒋，因为山下就是老蒋故居，我买的是联票210，包括蒋氏故居和雪窦山风景区。</p>
-
-<p>要到雪窦寺确实比较难，风景区的专用车顺着蜿蜒的道路，过了许久才到达雪窦寺。雪窦寺位于一个山顶的洼地，依山而建。整个寺庙几乎都是新建的，最引人关注的就是寺庙半山腰上巨大的弥勒菩萨像，如果你要登临菩萨像的上面需要门票20元。站在菩萨像的上方俯瞰整个寺庙，一览无余。寺庙因为是弥勒道场的缘故，整个寺庙分为两部分，一部分是围绕巨大弥勒像的主轴线相关建筑，包括大殿供奉的也是弥勒菩萨的像。另一部分则是老寺部分，就是传统大雄宝殿的建筑群。里面有些旧的东西，比如有张学良被幽静时手植的树，不过大部分建筑还是新建的。</p>
-
-<p>提到雪窦山，总会想到雪窦禅师，当然我此行的目的是因为当年如净禅师学道于雪窦智鉴禅师。不过我们并没有找到相关的东西，浓郁的弥勒道场道场味，几乎将禅宗寺院的本来面目都冲淡，虽然也号称曹洞宗的祖庭之一，但实无其名。甚至连太虚大师，这位当年极力倡导雪窦山为佛教五大名山，弥勒道场的发起人的塔院都隐匿在一个不起眼的山坳里。除此以外就是跟张学良幽静有关的景点，雪窦山更多像是老蒋的私人景区一般。山依旧是那个山，只是一切变了。</p>
-
-<h4 id="净慈禅寺">净慈禅寺</h4>
-
-<p>本以为去天童寺也就顺便把如净禅师的塔给拜一下，不过网上一查发现如净禅师圆寂后并没有葬在天童寺，而是葬在了他曾经主持过的杭州西湖边的净慈禅寺。于是行程的最后一站有了杭州这一站，不过也许都是因缘，实际上如果葬在天童寺的话，我去的这会也看不了，因为那边现在正在建设维修中，并不对外开放。</p>
-
-<p>前两日的天气都不错，不过当我要去杭州的时候，天气预报显示那边下雨，而宁波这边也是有雨，为此我专门改签了去杭州的车次，推后了一点，主要害怕过去下雨，行程不便了。不过也许是上天的某种眷顾吧，从宁波出发的时候，天气显示下雨，但实际不下雨。经过一个小时到杭州后，发现天气虽阴，但也没有下雨。花了点时间终于坐上了数字旅游2号线，在净寺站下，靠西湖的一边是雷峰塔，雷峰塔隔着公路的对面则是净慈禅寺，与雷峰塔的游客蜂拥而至相比，净慈禅寺禅寺显得比较清净。如果不是如净禅师的塔墓在这里，我好像也只知道灵隐寺了，禅寺的门票是10块钱，也算是一种象征性的收费，也合理。我也不免俗的去敲了一下南屏晚钟，一次10元。</p>
-
-<p>一心想要去塔墓拜祭，老居士说在后山，中途遇到一位师父，给我说那边不开放，心里瞬间有点凉。不过我依旧往释迦殿的方向走，发现殿的一侧有个亭子，跟网上看到塔墓照片差不多了，本想直接沿着山坡往上爬，发现释迦殿上去后可以直接到塔墓那边。果然是对的，穿过一个亭子，旁边有济公像一尊，塔墓这边没有人，还好并没有像那位师父说的不开放，也不知道他出于什么样心里。塔墓被后建的石亭笼罩，旁边还立有如净禅师简介的石碑。在塔墓旁待了许久后，下山把整个寺庙大概转了下，净慈禅寺另一个出名的地方是这里是济公修行的地方，不过济公似乎如同神话人物一般，也没有留下塔墓之类的。大雄宝殿主供的是毗卢遮那佛，跟一般寺庙好像不太一样，但又跟原来看过日本曹洞宗的一些书里有提到毗卢遮那佛，这块不是很懂。</p>
-
-<p>寺庙也是正在重建中，我也尽了点微薄之力。不过寺里的师父看似并不友好，倒是居士们很友好。深处西湖景区，能这样已经不错了，后来发现禅寺也有开展面对普通人的禅修，愿他们能珍惜这个道场。</p>
-
-<h3 id="归途">归途</h3>
-
-<p>原来还打算去灵隐寺去看下，不过发现时间不够，沿着西湖略转了下。就朝火车站走了，骑着共享单车走了一段，离火车站不远的地方逐渐下起了下雨，而我也要开始返程了。</p>
-
-<p>这次行程总体上非常的圆满，作为去年就想前往的地方，今年终于得以成行。打坐七年时间，曹洞宗似乎离自己有点远，只是在书里，在日本，而这次行程，终于让这一切变的真实起来。其实他并遥远，如果想去总能去的。行程结束了，我也把道元禅师的《正法眼藏》的书籍认真的看了一部分，此时这书才似乎能够看的进去，一切有点特别但又没有什么特别，唯一能想到的就是苏轼的那首《庐山烟雨浙江潮》</p>
-
-<blockquote>
-  <p>庐山烟雨浙江潮，<br />
-未至千般恨不消。<br />
-到得还来别无事，<br />
-庐山烟雨浙江潮。</p>
-</blockquote>
 
 ]]></content>
   </entry>

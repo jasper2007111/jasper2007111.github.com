@@ -9,7 +9,7 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="最近突然间想对比下几个语言间的性能，日常使用的是Java，但平时也会用Python，JavaScript，C，Go之类的语言。Java写项目真的也没有什么问题，成熟的生态圈，遇到问题很容易解决。不过写点小东西的时候，还是觉得Python比较好用，不过就是速度慢了点，很早之前写过一个游戏的移植， &hellip;">
+  <meta name="description" content="去年年底的时候，当时有简单的研究下Docker，不过只是下载了一些类似MongoDB的镜像运行了下，感觉Docker非常适合安装这些软件。最近开始看Kubernetes，Docker的研究难免，那么如何把现有项目打包成一个Docker镜像以及运行，去年好像有简单的试下，不过有点遗忘， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +79,231 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/04/16/learn-docker/">学习Docker使用</a></h1>
+    
+    
+      <p class="meta">
+		
+        	
+
+
+
+
+2021-04-16 21:01
+		
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>去年年底的时候，当时有简单的研究下Docker，不过只是下载了一些类似MongoDB的镜像运行了下，感觉Docker非常适合安装这些软件。最近开始看Kubernetes，Docker的研究难免，那么如何把现有项目打包成一个Docker镜像以及运行，去年好像有简单的试下，不过有点遗忘，再次运行发现一些问题。</p>
+
+<h4 id="准备">准备</h4>
+
+<p>这里运行Flask的一个简单例子，只为演示。创建一个文件flask_test的文件夹，</p>
+
+<p>目录文件</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>app.py
+requirements.txt
+Dockerfile
+</code></pre></div></div>
+
+<p><strong><em>app.py</em></strong>，默认host是127.0.0.1，这里有个问题就是打包成镜像，无法访问端口。在mac和linux都一样，具体可以参考这篇文章<a href="https://pythonspeed.com/articles/docker-connection-refused/">《Connection refused? Docker networking and how it impacts your image》</a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s">'Hello, World!'</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">app</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">"0.0.0.0"</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong><em>requirements.txt</em></strong>，这个主要是放置python依赖库，目前只有flask一项。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>flask
+</code></pre></div></div>
+
+<p><strong><em>Dockerfile</em></strong>，这个是Build Docker的配置文件，<code class="language-plaintext highlighter-rouge">EXPOSE 5000</code>这个是指定容器内部的端口的，在Mac使用Docker客户端启动镜像时会有出现在设置里面。在Linux上构建镜像时出现下载python依赖https的错误<code class="language-plaintext highlighter-rouge">SSL: CERTIFICATE_VERIFY_FAILED</code>，需要去掉验证，<code class="language-plaintext highlighter-rouge">RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt</code>，下面这个是在Mac上可以运行的配置。</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>FROM python:3.9
+WORKDIR /code
+EXPOSE 5000
+
+COPY requirements.txt ./
+RUN pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt <span class="nt">-i</span> https://pypi.tuna.tsinghua.edu.cn/simple
+
+COPY <span class="nb">.</span> <span class="nb">.</span>
+
+CMD <span class="o">[</span><span class="s2">"python"</span>, <span class="s2">"app.py"</span><span class="o">]</span>
+
+</code></pre></div></div>
+
+<h4 id="构建">构建</h4>
+
+<p>构建Docker镜像，在当前目录运行该命令，记得不要忽略这个<code class="language-plaintext highlighter-rouge">.</code>，另外镜像的名字不能出现大写，我一直开始写成<code class="language-plaintext highlighter-rouge">testFlask</code>，结果构建失败。</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">sudo </span>docker build <span class="nt">-t</span> <span class="s1">'testflask'</span> <span class="nb">.</span>
+</code></pre></div></div>
+
+<p>####运行
+下面这个是以后台形式运行容器，<code class="language-plaintext highlighter-rouge">8000</code>是外部的访问端口，<code class="language-plaintext highlighter-rouge">5000</code>是容器内的端口。</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>docker run <span class="nt">-p</span> 8000:5000 <span class="nt">-d</span> testflask
+</code></pre></div></div>
+
+<h4 id="常用命令">常用命令</h4>
+<p>Mac上我会用Docker Desktop，不过Linux上还是命令行是王道。主要记几个常用的命令。</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>docker ps <span class="c"># 列出运行的容器</span>
+docker images <span class="c"># 列出当前的所有镜像</span>
+docker <span class="nb">rm </span>容器ID <span class="c"># 删除指定的容器</span>
+docker rmi 镜像ID <span class="c"># 删除指定的镜像</span>
+</code></pre></div></div>
+
+<h4 id="后记">后记</h4>
+<p>目前打包出的镜像居然有900多M，只有一个python和flask的依赖，觉得可能还是研究的不够。通过这个例子，发现还是得找本Docker的书籍系统的研究下，问题解决了，但是缺乏理论依据。</p>
+
+<h4 id="更新">更新</h4>
+<p>因为初次接触docker，后来发现可以使用基础版本，修改Dockerfile文件<code class="language-plaintext highlighter-rouge">FROM python:3.9-alpine</code>，最后打包后50M。</p>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/04/16/brew-practices/">Brew实践</a></h1>
+    
+    
+      <p class="meta">
+		
+        	
+
+
+
+
+2021-04-16 09:20
+		
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Mac上安装软件基本上都在使用Brew，记录下使用坑。</p>
+
+<h4 id="慢">慢</h4>
+<p>执行<code class="language-plaintext highlighter-rouge">brew update</code>时很慢的问题，主要是是Github访问慢的缘故，设置从镜像拉取，基本上可以解决这个问题。用了中科大的源，亲测速度感刚的。</p>
+
+<h5 id="替换brewgit">替换<code class="language-plaintext highlighter-rouge">brew.git</code></h5>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">cd</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--repo</span><span class="si">)</span><span class="s2">"</span>
+git remote set-url origin https://mirrors.ustc.edu.cn/brew.git
+</code></pre></div></div>
+
+<h5 id="替换homebrew-coregit">替换<code class="language-plaintext highlighter-rouge">homebrew-core.git</code></h5>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">cd</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--repo</span><span class="si">)</span><span class="s2">"</span>/Library/Taps/homebrew/homebrew-core
+git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
+</code></pre></div></div>
+
+<h5 id="替换homebrew-caskgit">替换<code class="language-plaintext highlighter-rouge">homebrew-cask.git</code></h5>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">cd</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--repo</span><span class="si">)</span><span class="s2">"</span>/Library/Taps/homebrew/homebrew-cask
+git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
+</code></pre></div></div>
+
+<h4 id="参考">参考</h4>
+<p><a href="https://zhuanlan.zhihu.com/p/351199589">brew update 更新时 shallow clone</a><br />
+<a href="https://www.jianshu.com/p/62f1b963baa6">mac使用brew update无反应,更新慢解决办法</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/04/14/eclipse-notes/">Eclipse笔记</a></h1>
+    
+    
+      <p class="meta">
+		
+        	
+
+
+
+
+2021-04-14 06:43
+		
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4 id="为什么是eclispe">为什么是Eclispe</h4>
+<p>最早接触Eclispe主要是用来开发Android应用，早期Android开发没有Android Studio，只能通过安装插件来开发。后来开发iOS后，Eclispe就用的少了，偶尔用来跑些简单的例子。后来做Java web，Eclispe又开始用了起来。</p>
+
+<p>虽然很多人推荐IntelliJ IDEA，下载的试用了下，某些功能确实比Eclispe强大，但是Eclispe+Spring Tools，对目前的开发来说确实已经够用了，另外还是有点用不习惯，也没有Spring tools 这样的插件，所以干嘛花钱买个自己用不惯的东西呢？</p>
+
+<h4 id="自动补全">自动补全</h4>
+<p>默认出现点号时才会出现自动补全的提示，不过可以设置，这里以Mac环境为例。</p>
+
+<p>选择菜单<code class="language-plaintext highlighter-rouge">Perferences-&gt;Java-&gt;Content Assist-&gt;Auto activation triggers for Java</code>，默认为<strong><em>.</em></strong>，使用<code class="language-plaintext highlighter-rouge">.abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWSYZ_</code>替换，点击Ok。</p>
+
+<h4 id="常用插件">常用插件</h4>
+<p><strong>EasyShell</strong>，这个工具主要是可以快速在当前目录打开Shell以及打开当前的文件夹。</p>
+
+<h4 id="maven-配置文件报错">Maven 配置文件报错</h4>
+
+<p>Maven使用本地Jar包后pom.xml显示错误，实际上本地Jar包是可以加载的，但总是提示错误。</p>
+<blockquote>
+  <p>dependencies.dependency.systemPath’ for com.test:test:jar must specify an absolute path but is ${pom.basedir}/libs/test.jar</p>
+</blockquote>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nt">&lt;dependency&gt;</span>
+	<span class="nt">&lt;groupId&gt;</span>com.test<span class="nt">&lt;/groupId&gt;</span>
+	<span class="nt">&lt;artifactId&gt;</span>test<span class="nt">&lt;/artifactId&gt;</span>
+	<span class="nt">&lt;version&gt;</span>1.0<span class="nt">&lt;/version&gt;</span>
+	<span class="nt">&lt;scope&gt;</span>system<span class="nt">&lt;/scope&gt;</span>
+	<span class="nt">&lt;systemPath&gt;</span>${pom.basedir}/libs/test.jar<span class="nt">&lt;/systemPath&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>这个问题虽然不影响使用，但是老显示红叉，总感觉像去掉的。我原来使用Eclispe版本是2020-03 (4.15.0)，没有这个问题。但是使用最新的Eclipse版本2021-03 (4.19.0)有这个问题，包括Spring ToolSuite 4也有这个问题，我把4.15.0到4.19.0版本下载几个对比后，终于发现4.16.0开始都有问题，最后发现4.16.0版本Preferences多了一个XMl（Wide Web Developer）项，把子项Validation &amp; Resolution，Enable validation 禁用就没有了。</p>
+
+<h4 id="升级与不升级">升级与不升级</h4>
+<p>如果现有环境稳定，那就最好不要升级。Eclispe好处是可以支持多个语言的开发，可以装一堆插件支持，但感觉只把它当作Java IDE就可以了，现在VS Code完全可以做其他语言的IDE。</p>
+
+<p>之前的Eclispe很稳定，但一次插件的安装后，弹出需要更高版本的Eclispe，然后就无法启动了。一气之下，直接删除Eclispe，重新安装那些插件，结果发现2020-03 (4.15.0)下载的Spring Tools插件不能使用，发现Spring Tools 4已经出了，但是我当前这个版本无法使用。最后下载了Spring Tools官方出品的Eclispe整合版本Spring ToolSuite 4，就结果就出现了上面提到的Maven配置报错的问题，虽然问题解决了，但是还是提示插件安装也是要谨慎，可能升级不对就的折腾半天了。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -663,182 +888,6 @@ x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2021/01/05/how-to-configure-mysql-8-master-slave-replication-on-centos-8/">在CentOS 8上Mysql 8.0的主从配置实践</a></h1>
-    
-    
-      <p class="meta">
-		
-        	
-
-
-
-
-2021-01-05 10:47
-		
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>主要试了下基于二进制日志文件的方法</p>
-
-<h4 id="主库设置">主库设置</h4>
-
-<p>主要的坑，一般教程上写的是编辑<code class="language-plaintext highlighter-rouge">/etc/my.cnf</code>。安装的Mysql 8的配置略微有些问题，<code class="language-plaintext highlighter-rouge">my.cnf</code>文件导入的是另一配置<code class="language-plaintext highlighter-rouge">!includedir /etc/my.cnf.d</code>，所以以下配置我是写在了<code class="language-plaintext highlighter-rouge">/etc/my.cnf.d/mysql-server.cnf</code>里面。</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="c">###主从数据库配置核心部分</span>
-<span class="c"># 设置同步的binary log二进制日志文件名前缀，默认为binlog</span>
-log-bin<span class="o">=</span>mysql-bin
-<span class="c"># 服务器唯一id，默认为1  主数据库和从数据库的server-id不能重复</span>
-server-id<span class="o">=</span>1          
-
-<span class="c">###可选配置</span>
-<span class="c"># 需要主从复制的数据库</span>
-binlog-do-db<span class="o">=</span><span class="nb">test</span>
-<span class="c"># 复制过滤：也就是指定哪个数据库不用同步（mysql库一般不同步）</span>
-binlog-ignore-db<span class="o">=</span>mysql
-<span class="c"># 为每个session分配的内存，在事务过程中用来存储二进制日志的缓存</span>
-<span class="nv">binlog_cache_size</span><span class="o">=</span>1M
-<span class="c"># 主从复制的格式（mixed,statement,row，默认格式是statement。建议是设置为row，主从复制时数据更加能够统一）</span>
-<span class="nv">binlog_format</span><span class="o">=</span>row
-<span class="c"># 设置二进制日志自动删除/过期的天数，避免占用磁盘空间。默认值为0，表示不自动删除。</span>
-<span class="nv">expire_logs_days</span><span class="o">=</span>7
-<span class="c"># 跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制中断。</span>
-<span class="c"># 如：1062错误是指一些主键重复，1032错误是因为主从数据库数据不一致</span>
-<span class="nv">slave_skip_errors</span><span class="o">=</span>1062
-</code></pre></div></div>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2020/11/12/try-iphone-12-pro/">iPhone 12 Pro试用感受</a></h1>
-    
-    
-      <p class="meta">
-		
-        	
-
-
-
-
-2020-11-12 13:54
-		
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>iPhone 6s已经用5年了，待电确实比较差，外出的话离不开充电宝。iPhone 12出来后，我就下单iPhone 12 pro了。这次的iPhone 吸引我的是新外观以及对5G的支持，当然pro系列有激光雷达的功能。外观回归到iPhone 4时的设计，因为宽度比原来宽，所以拿着还是有点割手，套上外壳能好点。大小上来说，对于我这种小手还是觉得iPhone 6s的尺寸刚好，iPhone 12 pro的单手操作还是有担心机子摔在地上的风险。自从iPhone出了刘海屏后，我一直比较难以接受这样的设计，更钟情于iPhone 6s 这样的设计，其实在我看来苹果可以把手机的上下部分变短，比刘海这样的设计好。iPhone 12 pro的相机确实牛，这点是值得升级的，另外拍立得这个功能也非常不错。</p>
-
-<p>谈谈我最后为什么退货呢，作为一个曾经的iOS开发者，对这几年的iPhone已经失去了升级的想法，一方面新iPhone价位比以前贵，功能其实没有太大的突破，从生产力角度来看，我更愿意在macbook pro上投资，而不是iPhone。另外iPhone 6s本身不怎么卡，只是电池不行了，这个完全可以换一个就可以了。升级最大的动力是支持5G，但是目前运营商的5G有点贵，而且5G设施也还在陆续建设中，另外平时用的更多是Wi-Fi，移动网络下也很少看视频之类的，所以并没有高速网络的需求。目前iPhone 12是支持5G的初代产品，所以有提升的空间。最后一点，刘海设计依旧是心里吐槽的对象，如果他出一个iPhone 6s的设计，但支持5G的手机，我可能更愿意接受。</p>
-
-<h4 id="退货流程">退货流程</h4>
-<p>这是头一次退货，在订单中确认退货，会显示取货。取货的时间都没有问题，来了一个邮政的人员把机子简单的验证后，然后就把机子拿走了，没有留下快递单号。因为是头一次，取货后的第二天我看来下订单状态，依旧显示取货中，过了两天我发现还是这个状态。心里有点嘀咕，不会被骗吧，一般的寄送快递，当天晚上基本上状态都改变了。后来我直接给苹果客服打电话确认了，说一切都正常，机子也确实被取走了，因为会寄送到工厂，工厂收到后还要验货后才会更新订单的状态。大概是一周后，订单状态终于变了，钱也退了。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2020/10/06/travelogue-of-tiantong-temple/">天童寺游记</a></h1>
-    
-    
-      <p class="meta">
-		
-        	
-
-
-
-
-2020-10-06 13:48
-		
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="缘起">缘起</h3>
-
-<p>今年十一长假因为跟中秋重叠，放八天假，趁着时间长决定去一趟宁波的天童寺去看一下。天童寺位于浙江省宁波市鄞州区太白山麓，为什么要去这座寺庙呢？说到这里要追述到《乔布斯传》这本书，大都数人因为这本书也会知道另一本书《禅者的初心》，作者是铃木俊隆，当然再深挖一点，就会知道一位与乔布斯关系密切的禅师乙川弘文。铃木俊隆与乙川弘文都是日本曹洞宗的僧侣。说到日本曹洞宗，不得不提他的开山祖师道元禅师，时间大概可以追述到南宋时期，道元禅师跨海来寻觅佛法，最后在天童寺遇到了如净禅师，得到如净禅师的认可后，回到日本后创建了日本曹洞宗。</p>
-
-<p>关于天童寺的记载文献还是很多的，而关于如净禅师的记载则比较少，很多都是从道元禅师的记述中得知。这点类似李小龙跟叶问一样，因为道元禅师在日本的成功以及后世日本曹洞宗僧侣在海外弘法的成功，使得如净禅师逐渐为人们所知。不少关于乔布斯跟禅的文中没有切中要点，往往泛泛而谈，说是禅宗。准确的说乔布斯接触的是禅宗曹洞宗一脉的教法，更准确的是日本曹洞宗，但往上追述一点则到了南宋时期如净禅师传承的曹洞宗的一脉。</p>
-
-<p>如净禅师，浙江宁波人，十九岁时出家，拜在雪窦智鉴禅师的门下，晚年入住天童寺，圆寂后葬在了西湖边的净慈禅寺，净慈禅寺曾经也是禅师入住过的道场。所以本次行程一条线就是围绕着如净禅师来走的，宁波奉化的雪窦山、天童寺、杭州西湖旁的净慈禅寺，这三个地方大略勾勒出了禅师的一生。</p>
-
-<p>另一条线是围绕着道元禅师来走的，主要是天童寺、阿育王寺。二者在天童寺相会，另外我也带着道元禅师《正法眼藏》中文翻译版一书，在我看来一个人能留下来的无非是他的思想，而带着他的著作犹如带着这位禅师，在700多年后重走这条路。道元禅师在归国后第二年如净禅师圆寂，从此师徒再无相见的可能，所以带着道元的《正法眼藏》专程去杭州净慈禅寺拜祭如净禅师的塔墓，也算另一种相见吧。</p>
-
-<h3 id="行程">行程</h3>
-
-<h4 id="天童寺">天童寺</h4>
-
-<p>确定好行程后，十一一大早就坐高铁去了宁波，大概在下午的五点半左右到了宁波。宁波确实跟西安这样的北方城市不一样，矮山、多水洼地。第二天一大早，乘坐地铁一号线直接到达宝幢站，下站后再乘坐育王站的162公交，终点站是公交天童站。不知道是跟疫情有关系还是其他，总之没有门票。穿过一段松柏的路，逐渐看到了天童寺，放生池，旁边山头的塔，再往里面走，隔着一个池子，东南佛国的照壁映入眼帘。照壁后面就是天王殿，穿过天王殿就是佛殿，寺院最上面有罗汉堂。基本的寺院结构跟大多数的寺庙差不多，但建筑上有着天童寺独有的特点。寺里的师父都非常友好，尤其跟寺图书馆的一位师父相谈甚欢，得知寺图书馆没有道元的《正法眼藏》这本书时，当即在原来购买书的那个商家那里下了10本的订单给禅寺，算尽点薄力。禅寺非常好的一点是提供15块一份的素餐，像我这种每次去寺庙不知道如何解决午餐的问题的人来说提供一种方便。天童寺历代都是出高僧的地方，近代有八指头陀、圆瑛法师（中国佛教协会第一任会长），有幸请到一本《八指头陀诗文集》，也算此行的一种意收获。寺里有不少处都有立牌，主要是关于道元禅师的，其中有个殿专门立有《日本道元禅师得法灵迹碑》，可见天童寺与日本曹洞宗的渊源，更被日本曹洞宗尊为祖庭。寺里的师父对于道元禅师也不陌生，都还充满敬意。当天刚好赶上面向在家人的禅七活动即将要开始，因为来的匆忙，不然真想去参加下。天童寺可能是国内仅有的几处仍在传承曹洞宗禅法的寺院，所以对于我们这些修行上更倾向于曹洞宗的人来说，弥足珍贵。</p>
-
-<h4 id="阿育王寺">阿育王寺</h4>
-
-<p>阿育王寺有两座，一座叫阿育王寺，在公路旁边，另一座叫阿育王古寺，在山上。来之前只知道阿育王寺，不知道还有古寺一说。查了下大概阿育王寺有东塔院、西塔院，东塔院即阿育王古寺，也是最初建寺的地方，当年开山祖师惠达（俗名刘萨诃）在这里发现了佛舍利，因此而建寺。唐先天二年时，修建了西塔寺，即现在的阿育王寺，东塔寺的香火逐渐衰落，后来被毁逐渐废弃，现在的阿育王古寺是在原来的遗址上盖了一座崭新的寺庙。古寺因为在山上，知道的人不多，去的人也不多。在大略逛完阿育王寺后，我就打车前往了古寺那边看了下，那边虽然有公交但是发车间隔太长，只好打车了。顺便说下曹操专车，这个在西安也有，与传统的出租相比价格透明，因为我当时有问过一个出租车司机，结果报价明显比我后来坐曹操专车贵不少。古寺山后有阿育王寺开山祖师的塔墓，另外发现佛舍利的地方正在盖舍利大殿，寺里现在好像传承的是天台宗。</p>
-
-<p>阿育王寺总体更加的古朴一点，也可能是一直没有断过的缘故。古寺虽然历史悠久，但因为是新建的，那份与古代的链接需要脑补。阿育王寺也是当年鉴真大师东渡日本失败时入住过的寺庙，里面也供奉着鉴真大师的像。</p>
-
-<h4 id="雪窦山雪窦寺弥勒道场">雪窦山、雪窦寺、弥勒道场</h4>
-
-<p>单说雪窦山，其实也算是一座风景秀丽的名山，再加上雪窦寺以及弥勒道场，使之更加有名。不过这里似乎商业味有点过浓，另外说到雪窦山就不得不说老蒋，因为山下就是老蒋故居，我买的是联票210，包括蒋氏故居和雪窦山风景区。</p>
-
-<p>要到雪窦寺确实比较难，风景区的专用车顺着蜿蜒的道路，过了许久才到达雪窦寺。雪窦寺位于一个山顶的洼地，依山而建。整个寺庙几乎都是新建的，最引人关注的就是寺庙半山腰上巨大的弥勒菩萨像，如果你要登临菩萨像的上面需要门票20元。站在菩萨像的上方俯瞰整个寺庙，一览无余。寺庙因为是弥勒道场的缘故，整个寺庙分为两部分，一部分是围绕巨大弥勒像的主轴线相关建筑，包括大殿供奉的也是弥勒菩萨的像。另一部分则是老寺部分，就是传统大雄宝殿的建筑群。里面有些旧的东西，比如有张学良被幽静时手植的树，不过大部分建筑还是新建的。</p>
-
-<p>提到雪窦山，总会想到雪窦禅师，当然我此行的目的是因为当年如净禅师学道于雪窦智鉴禅师。不过我们并没有找到相关的东西，浓郁的弥勒道场道场味，几乎将禅宗寺院的本来面目都冲淡，虽然也号称曹洞宗的祖庭之一，但实无其名。甚至连太虚大师，这位当年极力倡导雪窦山为佛教五大名山，弥勒道场的发起人的塔院都隐匿在一个不起眼的山坳里。除此以外就是跟张学良幽静有关的景点，雪窦山更多像是老蒋的私人景区一般。山依旧是那个山，只是一切变了。</p>
-
-<h4 id="净慈禅寺">净慈禅寺</h4>
-
-<p>本以为去天童寺也就顺便把如净禅师的塔给拜一下，不过网上一查发现如净禅师圆寂后并没有葬在天童寺，而是葬在了他曾经主持过的杭州西湖边的净慈禅寺。于是行程的最后一站有了杭州这一站，不过也许都是因缘，实际上如果葬在天童寺的话，我去的这会也看不了，因为那边现在正在建设维修中，并不对外开放。</p>
-
-<p>前两日的天气都不错，不过当我要去杭州的时候，天气预报显示那边下雨，而宁波这边也是有雨，为此我专门改签了去杭州的车次，推后了一点，主要害怕过去下雨，行程不便了。不过也许是上天的某种眷顾吧，从宁波出发的时候，天气显示下雨，但实际不下雨。经过一个小时到杭州后，发现天气虽阴，但也没有下雨。花了点时间终于坐上了数字旅游2号线，在净寺站下，靠西湖的一边是雷峰塔，雷峰塔隔着公路的对面则是净慈禅寺，与雷峰塔的游客蜂拥而至相比，净慈禅寺禅寺显得比较清净。如果不是如净禅师的塔墓在这里，我好像也只知道灵隐寺了，禅寺的门票是10块钱，也算是一种象征性的收费，也合理。我也不免俗的去敲了一下南屏晚钟，一次10元。</p>
-
-<p>一心想要去塔墓拜祭，老居士说在后山，中途遇到一位师父，给我说那边不开放，心里瞬间有点凉。不过我依旧往释迦殿的方向走，发现殿的一侧有个亭子，跟网上看到塔墓照片差不多了，本想直接沿着山坡往上爬，发现释迦殿上去后可以直接到塔墓那边。果然是对的，穿过一个亭子，旁边有济公像一尊，塔墓这边没有人，还好并没有像那位师父说的不开放，也不知道他出于什么样心里。塔墓被后建的石亭笼罩，旁边还立有如净禅师简介的石碑。在塔墓旁待了许久后，下山把整个寺庙大概转了下，净慈禅寺另一个出名的地方是这里是济公修行的地方，不过济公似乎如同神话人物一般，也没有留下塔墓之类的。大雄宝殿主供的是毗卢遮那佛，跟一般寺庙好像不太一样，但又跟原来看过日本曹洞宗的一些书里有提到毗卢遮那佛，这块不是很懂。</p>
-
-<p>寺庙也是正在重建中，我也尽了点微薄之力。不过寺里的师父看似并不友好，倒是居士们很友好。深处西湖景区，能这样已经不错了，后来发现禅寺也有开展面对普通人的禅修，愿他们能珍惜这个道场。</p>
-
-<h3 id="归途">归途</h3>
-
-<p>原来还打算去灵隐寺去看下，不过发现时间不够，沿着西湖略转了下。就朝火车站走了，骑着共享单车走了一段，离火车站不远的地方逐渐下起了下雨，而我也要开始返程了。</p>
-
-<p>这次行程总体上非常的圆满，作为去年就想前往的地方，今年终于得以成行。打坐七年时间，曹洞宗似乎离自己有点远，只是在书里，在日本，而这次行程，终于让这一切变的真实起来。其实他并遥远，如果想去总能去的。行程结束了，我也把道元禅师的《正法眼藏》的书籍认真的看了一部分，此时这书才似乎能够看的进去，一切有点特别但又没有什么特别，唯一能想到的就是苏轼的那首《庐山烟雨浙江潮》</p>
-
-<blockquote>
-  <p>庐山烟雨浙江潮，<br />
-未至千般恨不消。<br />
-到得还来别无事，<br />
-庐山烟雨浙江潮。</p>
-</blockquote>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -860,23 +909,23 @@ binlog-ignore-db<span class="o">=</span>mysql
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/06/02/first-try-webassembly/">初试WebAssembly</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/06/02/learning-gtk/">学习GTK</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/05/27/tiantong-rujing/">天童如净禅师</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/05/04/thinking-about-rss/">关于RSS的思考</a>
       </li>
     
       <li class="post">
         <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/04/26/talk-about-meditatio/">谈谈冥想</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/04/26/springboot-elasticsearch/">Spring Boot使用Elasticsearch</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/04/23/springboot-elk/">Spring Boot使用ELK</a>
       </li>
     
   </ul>

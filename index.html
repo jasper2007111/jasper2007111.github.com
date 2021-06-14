@@ -9,8 +9,8 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="缘起
-17年的时候为了练习Swift，也想验证下自己对于产品方面的想法，当时流行的应用都是通过爬虫抓取内容网站的数据，清洗数据后再通过推荐引擎展示给用户，当时我们公司也做的是这类应用，只不过后来没有成功。作为练手的业余项目，我并没有打算也做类似的项目，那会我主要做iOS客户端， &hellip;">
+  <meta name="description" content="听闻WebAssembly已经有些年了，不过一直没有跑个例子尝试下。主要是使用Rust来编译生成WebAssembly的目标文件，虽然可以使用C/C++，但想想我的Rust学习一直进展不大，不知道用在哪里，刚好Rust对WebAssembly支持也是比较详细。 Rust问题
+安装wasm- &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +80,227 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/06/02/first-try-webassembly/">初试WebAssembly</a></h1>
+    
+    
+      <p class="meta">
+		
+        	
+
+
+
+
+2021-06-02 20:02
+		
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>听闻WebAssembly已经有些年了，不过一直没有跑个例子尝试下。主要是使用Rust来编译生成WebAssembly的目标文件，虽然可以使用C/C++，但想想我的Rust学习一直进展不大，不知道用在哪里，刚好Rust对WebAssembly支持也是比较详细。</p>
+
+<h4 id="rust问题">Rust问题</h4>
+<p>安装wasm-pack时提示没有安装rustup，虽然我已经哟给Brew安装了rust，最后安装rustup后就好了。</p>
+
+<p>执行cargo install cargo-generate时，加载Crates非常慢，最后使用国内的镜像后顺利完成，这是国内镜像的配置。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>[source.crates-io]
+registry = "https://github.com/rust-lang/crates.io-index"
+# 指定镜像
+replace-with = 'sjtu'
+
+# 清华大学
+[source.tuna]
+registry = "https://mirrors.tuna.tsinghua.edu.cn/git/crates.io-index.git"
+
+# 中国科学技术大学
+[source.ustc]
+registry = "git://mirrors.ustc.edu.cn/crates.io-index"
+
+# 上海交通大学
+[source.sjtu]
+registry = "https://mirrors.sjtug.sjtu.edu.cn/git/crates.io-index"
+
+# rustcc社区
+[source.rustcc]
+registry = "https://code.aliyun.com/rustcc/crates.io-index.git"
+</code></pre></div></div>
+
+<h4 id="总结">总结</h4>
+<p>我在iOS的Safari试了下，也可以。虽然之前也有其他语言编译为JS的做法，所以主要解决的是如何构建大型web应用的工程问题，现在ES6的普及，好像这类方案渐渐的也不怎么提了。其他语言编译成WebAssembly的做法，主要是为解决性能的问题，把一些跟性能有关系使用WebAssembly，另外WebAssembly可以解决原来JS的老是暴露的问题。理论上其他语言都可以编译WebAssembly，但是主流的还是C/C++、Go、Rust之类的编译为WebAssembly的方式了，不过</p>
+
+<p>Web开发我不是全职的那种，有需要了就写写。感觉一般Web开发者也不大会用到，有性能要求的应用可能会用到，但估计写WebAssembly估计也是领域专业的人员。</p>
+
+<h4 id="参考资料">参考资料</h4>
+<p><a href="https://rustwasm.github.io/docs/book/introduction.html">Rust 🦀 and WebAssembly 🕸</a> ，例子主要按这个来跑的。</p>
+
+<p><a href="https://developer.mozilla.org/zh-CN/docs/WebAssembly">WebAssembly</a> Mozilla开发者网站关于WebAssembly的介绍，比较详细。</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/06/02/learning-gtk/">学习GTK</a></h1>
+    
+    
+      <p class="meta">
+		
+        	
+
+
+
+
+2021-06-02 19:49
+		
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>GTK之前有看过，还专门购买了一本关于GTK的书籍，那是主要是为了学习C的面向对象实现。现在又看GTK是因为准备购买PinePhone，主要看中了PinePhone可以运行多个Linux发行版本。现在无论是iOS还是Android都不能自由的使用喜欢的语言。作为一个曾经的iOS开发者，iOS的运行速度还真的没得说。Android因为使用Java缘故，总还是没有办法更快似乎，所以一直想着整一台Linux手机自己定制UI，不过找一台Linux手机实在是太难了，主要是目前手机都是这些公司定制的硬件，所以驱动是个大问题。</p>
+
+<p>为什么选择GTK呢？我也看了下QT，之前也简单的使用了下，确实非常适合开发UI程序，不过授权方面还是有点问题，GTK没有这个问题。另外无论C/C++对我来说都不是太大的问题，所以还是用GTK了。</p>
+
+<p>考虑到主要是用来开发Linux的，所以直接在Ubuntu下跑个例子看下。</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="cp">#include &lt;stdio.h&gt;
+#include &lt;stdint.h&gt;
+#include &lt;stdbool.h&gt;
+#include &lt;stdnoreturn.h&gt;
+#include &lt;stdatomic.h&gt;
+#include &lt;assert.h&gt;
+#include &lt;gtk/gtk.h&gt;
+#include &lt;glib/gprintf.h&gt;
+</span>
+<span class="cp">#ifndef var
+#define var __auto_type
+#endif
+</span>
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">PrintMsg</span><span class="p">(</span><span class="n">GtkWidget</span> <span class="o">*</span><span class="n">widget</span><span class="p">,</span> <span class="n">gpointer</span> <span class="n">window</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">if</span><span class="p">(</span><span class="n">window</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+		<span class="n">g_printf</span><span class="p">(</span><span class="s">"Button clicked</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+
+	<span class="n">var</span> <span class="n">dialog</span> <span class="o">=</span> <span class="n">gtk_message_dialog_new</span><span class="p">(</span><span class="n">GTK_WINDOW</span><span class="p">(</span><span class="n">window</span><span class="p">),</span> <span class="n">GTK_DIALOG_MODAL</span> <span class="o">|</span> <span class="n">GTK_DIALOG_DESTROY_WITH_PARENT</span><span class="p">,</span> <span class="n">GTK_MESSAGE_INFO</span><span class="p">,</span> <span class="n">GTK_BUTTONS_OK</span><span class="p">,</span> <span class="s">u8"按钮已被按下！"</span><span class="p">);</span>
+	<span class="n">gtk_window_set_title</span><span class="p">(</span><span class="n">GTK_WINDOW</span><span class="p">(</span><span class="n">dialog</span><span class="p">),</span> <span class="s">u8"请注意"</span><span class="p">);</span>
+
+	<span class="n">gtk_dialog_run</span><span class="p">(</span><span class="n">GTK_DIALOG</span><span class="p">(</span><span class="n">dialog</span><span class="p">));</span>
+	<span class="n">gtk_widget_destroy</span><span class="p">(</span><span class="n">dialog</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+	<span class="n">gtk_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">);</span>
+	<span class="n">var</span> <span class="n">window</span> <span class="o">=</span> <span class="n">gtk_window_new</span><span class="p">(</span><span class="n">GTK_WINDOW_TOPLEVEL</span><span class="p">);</span>
+	<span class="n">gtk_window_set_title</span><span class="p">(</span><span class="n">GTK_WINDOW</span><span class="p">(</span><span class="n">window</span><span class="p">),</span> <span class="s">"GTK Test"</span><span class="p">);</span>
+	<span class="n">gtk_window_set_default_size</span><span class="p">(</span><span class="n">GTK_WINDOW</span><span class="p">(</span><span class="n">window</span><span class="p">),</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">480</span><span class="p">);</span>
+	<span class="n">gtk_window_set_position</span><span class="p">(</span><span class="n">GTK_WINDOW</span><span class="p">(</span><span class="n">window</span><span class="p">),</span> <span class="n">GTK_WIN_POS_CENTER</span><span class="p">);</span>
+	<span class="n">gtk_container_set_border_width</span><span class="p">(</span><span class="n">GTK_CONTAINER</span><span class="p">(</span><span class="n">window</span><span class="p">),</span> <span class="mi">15</span><span class="p">);</span>
+
+	<span class="n">var</span> <span class="n">button</span> <span class="o">=</span> <span class="n">gtk_button_new_with_label</span><span class="p">(</span><span class="s">"Button"</span><span class="p">);</span>
+	<span class="n">gtk_widget_set_halign</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="n">GTK_ALIGN_START</span><span class="p">);</span>
+	<span class="n">gtk_widget_set_valign</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="n">GTK_ALIGN_START</span><span class="p">);</span>
+	<span class="n">gtk_widget_set_tooltip_text</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s">"This is a button widget"</span><span class="p">);</span>
+	<span class="n">g_signal_connect</span><span class="p">(</span><span class="n">button</span><span class="p">,</span> <span class="s">"clicked"</span><span class="p">,</span> <span class="n">G_CALLBACK</span><span class="p">(</span><span class="n">PrintMsg</span><span class="p">),</span> <span class="n">window</span><span class="p">);</span> 
+	<span class="n">gtk_container_add</span><span class="p">(</span><span class="n">GTK_CONTAINER</span><span class="p">(</span><span class="n">window</span><span class="p">),</span> <span class="n">button</span><span class="p">);</span>
+	<span class="n">gtk_widget_show_all</span><span class="p">(</span><span class="n">window</span><span class="p">);</span>
+	<span class="n">g_signal_connect</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="s">"destroy"</span><span class="p">,</span> <span class="n">G_CALLBACK</span><span class="p">(</span><span class="n">gtk_main_quit</span><span class="p">),</span> <span class="nb">NULL</span><span class="p">);</span>
+	<span class="n">static_assert</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">,</span> <span class="s">"Not compatible architecture!"</span><span class="p">);</span>
+	<span class="n">puts</span><span class="p">(</span><span class="s">"Will enter GTK runloop..."</span><span class="p">);</span>
+	<span class="n">gtk_main</span><span class="p">();</span>
+	<span class="n">puts</span><span class="p">(</span><span class="s">"Program terminated!"</span><span class="p">);</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="问题">问题</h4>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>/usr/include/pango-1.0/pango/pango-coverage.h:28:10: fatal error: 'hb.h' file not found
+</code></pre></div></div>
+<p>解决方案运行<code class="language-plaintext highlighter-rouge">pkgconf --cflags harfbuzz</code></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>/usr/bin/ld: cannot find -lBlocksRuntime
+</code></pre></div></div>
+<p>解决方案运行<code class="language-plaintext highlighter-rouge">sudo apt-get install libblocksruntime-dev</code></p>
+
+<h4 id="编译">编译</h4>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>clang main.c <span class="nt">-std</span><span class="o">=</span>gnu11 <span class="nt">-fblocks</span> <span class="nt">-lBlocksRuntime</span> <span class="nt">-I</span>/usr/include/glib-2.0/ <span class="nt">-I</span>/usr/include/atk-1.0/ <span class="nt">-I</span>/usr/include/gdk-pixbuf-2.0/ <span class="nt">-I</span>/usr/include/cairo/ <span class="nt">-I</span>/usr/include/pango-1.0/ <span class="nt">-I</span>/usr/lib/x86_64-linux-gnu/glib-2.0/include/ <span class="nt">-I</span>/usr/include/gtk-3.0/ <span class="nt">-I</span> /usr/include/harfbuzz/ <span class="nt">-L</span>/usr/lib/x86_64-linux-gnu/ <span class="nt">-lgtk-3</span> <span class="nt">-lgobject-2</span>.0 <span class="nt">-lpangocairo-1</span>.0 <span class="nt">-lgio-2</span>.0 <span class="nt">-latk-1</span>.0 <span class="nt">-lgdk-3</span> <span class="nt">-lglib-2</span>.0    <span class="nt">-o</span> gtk-test
+</code></pre></div></div>
+
+<h4 id="总结">总结</h4>
+<p>GTK开发确实比较麻烦，后续还的配置个好的IDE环境，不过想想要求的OC开发，其实对于C还是蛮亲切的。其实一旦涉及真实项目，更多都是对框架的学习了，先挖个坑。</p>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/05/27/tiantong-rujing/">天童如净禅师</a></h1>
+    
+    
+      <p class="meta">
+		
+        	
+
+
+
+
+2021-05-27 11:33
+		
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>去年专门去了趟宁波天童寺，雪窦山、净慈寺，几个跟如净禅师有关的地方，这样加深了我对禅师的一些了解。</p>
+
+<p>《续指月录》有关于如净禅师的记录</p>
+
+<blockquote>
+  <p>慶元天童長翁如淨禪師</p>
+
+  <p>生而岐嶷。不類常童。長學出世法。參足庵鑑公於雪竇。看庭前柏樹子話有省。呈頌曰。西來祖意庭前柏。鼻孔寥寥對眼睛。落地枯枝纔[跳-兆+孛]跳。松蘿亮鬲笑掀騰。鑑頷之。出世屢主名剎。勑住天童。開爐上堂。召眾打圓相曰。箇是天童火爐。近前則燒殺。退後則凍殺。忽有箇漢出來道。合作麼生[囗@力]。火爐動也。便下座○上堂。霜風號肅殺。霜葉隨蕭[颱-台+(癸-天+虫)]。舉拂曰。看。惟有玲瓏巖。崔嵬望轉高。所謂天童滯貨。今朝短販一遭。莫有酬價底麼。下座巡寮○上堂。外不放入。內不放出。痛下一槌。萬事了畢。如何太白峰前令斬新。內外紀綱俱委悉○上堂。陸修靜。陶淵明。文殊普賢。作圓相曰。咦。一款具呈。且道憑誰批判。若是孔夫子。吾無隱乎爾○師六坐道場。未言稟承。眾有是請。師曰。我待涅槃堂裏拈出。臨終果拈香曰。如淨行脚四十餘年。首到乳峰。失脚墮於陷穽。此香今不免拈出。鈍置我住雪竇足庵大和尚。并書辭世頌曰。六十六年。罪犯彌天。打箇[跳-兆+孛]跳。活陷黃泉。咦，從來死生不相干。擲筆而逝。塔全身於本山。</p>
+</blockquote>
+
+<h4 id="葬在何处">葬在何处？</h4>
+<p>一种说法是葬在了天童寺的附近，我上次去的时候塔院正在维修，也没有看到塔。净慈寺的如净禅师塔，这个是网上能搜到的，我也亲自去拜祭过。</p>
+
+<h4 id="语录">语录</h4>
+<p>现存的语录有两本《如净禅师语录》和《如净禅师续语录》，《如净禅师语录》比较完整，我刚完成了注音版的编辑工作，之前去天童寺的时候有请了本线装本的语录，内容包含两本的内容。唯一的缺点是因为是繁体竖排，另外很多的字不知道发音，尝试的读过一些，感觉还是有困难，携带其实也不方便。最近又在孔网上买了一本简体注音的32开本，确实让我读进去了一些内容，不过这个版本的问题是缺少了大概两页的内容，另外有些无法打出来的字体直接用问号显示，于是我想着还是自己整理一个版本吧，虽然不到一百页的内容，实际整理的时间也差不多有半个月时间，我整理的是繁体版，这次整理工作确实也让我学习了一些东西，目前初版算是完成了。后续我再校对一些发音和内容，没有问题的话，打算印本自己看看了。</p>
+
+<p>《如净禅师语录》注音版我在Github上建了个项目，有兴趣的可以拉下来读读。<a href="https://github.com/jasper2007111/tiantong-rujing">项目地址</a></p>
+
+<h4 id="其他资料">其他资料</h4>
+<p>道元禅师的《宝庆记》也是了解如净禅师比较好的资料，另外道元禅师的《正法眼藏》中也有不少如净禅师的记录。</p>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -201,7 +422,7 @@
   </header>
 
 
-  <div class="entry-content"><p>冥想已经有六七年了，略有点经验与大家分享下，一家之言，只供参考。</p>
+  <div class="entry-content"><p>坚持冥想已经有六七年了，略有点经验与大家分享下，一家之言，只供参考。</p>
 
 <h4 id="时间">时间</h4>
 <p>冥想多长时间比较好？我目前是30分钟，之前一段时间都是1个小时，改成30分钟是因为后来找的工作太远，个人建议不低于30分钟为好。</p>
@@ -209,9 +430,9 @@
 <p>什么时间冥想比较好？我是早上冥想了，下午很少冥想。首先早上精神比较好，不容易发困，下午冥想的时候往往劳累一天状态不是很好。早上冥想是因为时间比较好安排，只要你起的早，时间都是可以挪出来的。</p>
 
 <h4 id="姿势">姿势</h4>
-<p>首推双盘，其次单盘，最不好散盘。能单盘不要散盘，能双盘不要单盘。单盘基本上大家都可以，双盘如果身体不够瘦或者腿实在太硬，还是有点难度的。不过双盘只是时间问题了，我单盘五年一直双盘不上，基本上我都觉得已经放弃对双盘的想法，不过五年后的某天我居然可以双盘了，所以现在觉得双盘这个只是时间的问题，可能每个人不太一样，不过就是不要太主观的设置一个时间点，顺其自然就好，功夫到了自然盘的上。</p>
+<p>首推双盘，其次单盘，最不好散盘。能单盘不要散盘，能双盘不要单盘。单盘基本上大家都可以，双盘如果身体不够瘦或者腿实在太硬，还是有点难度的。不过双盘只是时间问题了，我单盘五年一直双盘不上，基本上都已经放弃对双盘的想法，不过五年后的某天我居然可以双盘了，所以现在觉得双盘这个只是时间的问题，可能每个人不太一样，不过就是不要太主观的设置一个时间点，顺其自然就好，功夫到了自然盘的上。</p>
 
-<p>双盘和单盘冥想有什么差别，进入状态后其实差别不大，不过双盘确实比较稳，另外双盘时呼吸是到腹部的，但是像我在单盘的时候，呼吸实际比较浅，没有到腹部，关注点在鼻端。双盘时，这种呼吸需要一段时间的适应。</p>
+<p>双盘和单盘冥想有什么差别，进入状态后其实差别不大，不过双盘确实比较稳。双盘比较难，很大程度是因为在一开始不熟练的情况下，疼痛会干扰到无法安心坐下去。双盘我目前采用先盘左腿，再盘右腿的吉祥坐，另外手印也采用右手放在左手掌的方式，目前自我感觉这样的姿势可以很好的安心双盘。</p>
 
 <p>调身，总的来说身体瘦一点，下午少吃点，对于盘腿还是有帮助的。我断食21天时，双盘完全不是问题，所以还是不要自己太胖。</p>
 
@@ -219,12 +440,10 @@
 <p>干坐着，心可能会更乱，一般人都会觉得坐不了多久，自己就想不坐了。我早期接触的时候，也是不得其法，一开始就那样坐着，时间比较短。后来去了禅寺的禅堂坐了几次香（打坐），下午香时间最长一个半小时，当时还是散盘，到最后腿巨痛，虽然坚持了下来，后来问一个坐的比较好的小姑娘，原来她在用数呼吸，我也学着使用这个方式。数呼吸，一呼一吸算一下，从1到10，重复，实际上比较难，你会发现你的心会莫名的飞出个念头，打乱数呼吸的节奏。不过你只要持续的数，专注了，我当时觉得时间一下子变短了，腿也不痛了，所以数呼吸对于摄心还是很有效果了。结果一数就是到现在了，关于数呼吸详细的内容可以参阅南传佛教的典籍《清静道论》。</p>
 
 <h4 id="心态">心态</h4>
-<p>不管什么原因让你开始冥想，但不要对冥想有一个心理期许，放长远一点，用余生去练习，每个阶段你能收获什么取决于你走的有多远，而多远不是你主观可以预判的。虎头蛇尾的冥想我也见过几个，其实冥想对我而言更多获得了一种内心的平静，而我觉得这就够了。但很多人，不是这样想的，期许太多，最终没有能坚持下来。</p>
-
-<p>坚持冥想，全身心的投入到工作，让冥想成为一种习惯，不要太热衷，也不要太懈怠。</p>
+<p>不管什么原因让你开始冥想，但不要对冥想有一个心理期许，放长远一点，用余生去练习，每个阶段你能收获什么取决于你走的有多远，而多远不是你主观可以预判的。虎头蛇尾的冥想我也见过几个，其实冥想对我而言更多获得了一种内心的平静，而我觉得这就够了。但很多人，不是这样想的，期许太多，最终没有能坚持下来。坚持冥想，全身心的投入到工作，让冥想成为一种习惯，不要太热衷，也不要太懈怠。</p>
 
 <h4 id="书籍">书籍</h4>
-<p>最好的依旧是坚持练习，少看书，偶尔看一点就可以了，多了反而是障碍。只推荐《禅者的初心》这一本吧。</p>
+<p>最好的依旧是坚持练习，少看书，偶尔看一点就可以了，多了反而是障碍。偏方法的推荐《清静道论》或者南传佛教相关的书籍，不过《清静道论》是根本。心态类的推荐《禅者的初心》，心态要对，这很关键。</p>
 
 <h4 id="如何开始">如何开始？</h4>
 <p>去禅寺的禅堂学习冥想是我走过的路，正规的禅寺有一套很完备的机制，让你短时间内可以上路。不过很多人在禅寺的时候可以冥想，但出了禅寺就不行了，总是找各种理由。禅寺只是开始的地方，冥想之路才刚开始。</p>
@@ -725,231 +944,6 @@ http.cors.allow-origin: "*"
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2021/04/16/learn-docker/">学习Docker使用</a></h1>
-    
-    
-      <p class="meta">
-		
-        	
-
-
-
-
-2021-04-16 21:01
-		
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>去年年底的时候，当时有简单的研究下Docker，不过只是下载了一些类似MongoDB的镜像运行了下，感觉Docker非常适合安装这些软件。最近开始看Kubernetes，Docker的研究难免，那么如何把现有项目打包成一个Docker镜像以及运行，去年好像有简单的试下，不过有点遗忘，再次运行发现一些问题。</p>
-
-<h4 id="准备">准备</h4>
-
-<p>这里运行Flask的一个简单例子，只为演示。创建一个文件flask_test的文件夹，</p>
-
-<p>目录文件</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>app.py
-requirements.txt
-Dockerfile
-</code></pre></div></div>
-
-<p><strong><em>app.py</em></strong>，默认host是127.0.0.1，这里有个问题就是打包成镜像，无法访问端口。在mac和linux都一样，具体可以参考这篇文章<a href="https://pythonspeed.com/articles/docker-connection-refused/">《Connection refused? Docker networking and how it impacts your image》</a></p>
-
-<div class="language-python highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span>
-<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
-
-<span class="o">@</span><span class="n">app</span><span class="p">.</span><span class="n">route</span><span class="p">(</span><span class="s">'/'</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">hello_world</span><span class="p">():</span>
-    <span class="k">return</span> <span class="s">'Hello, World!'</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
-    <span class="n">app</span><span class="p">.</span><span class="n">run</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s">"0.0.0.0"</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p><strong><em>requirements.txt</em></strong>，这个主要是放置python依赖库，目前只有flask一项。</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>flask
-</code></pre></div></div>
-
-<p><strong><em>Dockerfile</em></strong>，这个是Build Docker的配置文件，<code class="language-plaintext highlighter-rouge">EXPOSE 5000</code>这个是指定容器内部的端口的，在Mac使用Docker客户端启动镜像时会有出现在设置里面。在Linux上构建镜像时出现下载python依赖https的错误<code class="language-plaintext highlighter-rouge">SSL: CERTIFICATE_VERIFY_FAILED</code>，需要去掉验证，<code class="language-plaintext highlighter-rouge">RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt</code>，下面这个是在Mac上可以运行的配置。</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>FROM python:3.9
-WORKDIR /code
-EXPOSE 5000
-
-COPY requirements.txt ./
-RUN pip <span class="nb">install</span> <span class="nt">-r</span> requirements.txt <span class="nt">-i</span> https://pypi.tuna.tsinghua.edu.cn/simple
-
-COPY <span class="nb">.</span> <span class="nb">.</span>
-
-CMD <span class="o">[</span><span class="s2">"python"</span>, <span class="s2">"app.py"</span><span class="o">]</span>
-
-</code></pre></div></div>
-
-<h4 id="构建">构建</h4>
-
-<p>构建Docker镜像，在当前目录运行该命令，记得不要忽略这个<code class="language-plaintext highlighter-rouge">.</code>，另外镜像的名字不能出现大写，我一直开始写成<code class="language-plaintext highlighter-rouge">testFlask</code>，结果构建失败。</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">sudo </span>docker build <span class="nt">-t</span> <span class="s1">'testflask'</span> <span class="nb">.</span>
-</code></pre></div></div>
-
-<p>####运行
-下面这个是以后台形式运行容器，<code class="language-plaintext highlighter-rouge">8000</code>是外部的访问端口，<code class="language-plaintext highlighter-rouge">5000</code>是容器内的端口。</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>docker run <span class="nt">-p</span> 8000:5000 <span class="nt">-d</span> testflask
-</code></pre></div></div>
-
-<h4 id="常用命令">常用命令</h4>
-<p>Mac上我会用Docker Desktop，不过Linux上还是命令行是王道。主要记几个常用的命令。</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>docker ps <span class="c"># 列出运行的容器</span>
-docker images <span class="c"># 列出当前的所有镜像</span>
-docker <span class="nb">rm </span>容器ID <span class="c"># 删除指定的容器</span>
-docker rmi 镜像ID <span class="c"># 删除指定的镜像</span>
-</code></pre></div></div>
-
-<h4 id="后记">后记</h4>
-<p>目前打包出的镜像居然有900多M，只有一个python和flask的依赖，觉得可能还是研究的不够。通过这个例子，发现还是得找本Docker的书籍系统的研究下，问题解决了，但是缺乏理论依据。</p>
-
-<h4 id="更新">更新</h4>
-<p>因为初次接触docker，后来发现可以使用基础版本，修改Dockerfile文件<code class="language-plaintext highlighter-rouge">FROM python:3.9-alpine</code>，最后打包后50M。</p>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2021/04/16/brew-practices/">Brew实践</a></h1>
-    
-    
-      <p class="meta">
-		
-        	
-
-
-
-
-2021-04-16 09:20
-		
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Mac上安装软件基本上都在使用Brew，记录下使用坑。</p>
-
-<h4 id="慢">慢</h4>
-<p>执行<code class="language-plaintext highlighter-rouge">brew update</code>时很慢的问题，主要是是Github访问慢的缘故，设置从镜像拉取，基本上可以解决这个问题。用了中科大的源，亲测速度感刚的。</p>
-
-<h5 id="替换brewgit">替换<code class="language-plaintext highlighter-rouge">brew.git</code></h5>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">cd</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--repo</span><span class="si">)</span><span class="s2">"</span>
-git remote set-url origin https://mirrors.ustc.edu.cn/brew.git
-</code></pre></div></div>
-
-<h5 id="替换homebrew-coregit">替换<code class="language-plaintext highlighter-rouge">homebrew-core.git</code></h5>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">cd</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--repo</span><span class="si">)</span><span class="s2">"</span>/Library/Taps/homebrew/homebrew-core
-git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-core.git
-</code></pre></div></div>
-
-<h5 id="替换homebrew-caskgit">替换<code class="language-plaintext highlighter-rouge">homebrew-cask.git</code></h5>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">cd</span> <span class="s2">"</span><span class="si">$(</span>brew <span class="nt">--repo</span><span class="si">)</span><span class="s2">"</span>/Library/Taps/homebrew/homebrew-cask
-git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
-</code></pre></div></div>
-
-<h4 id="参考">参考</h4>
-<p><a href="https://zhuanlan.zhihu.com/p/351199589">brew update 更新时 shallow clone</a><br />
-<a href="https://www.jianshu.com/p/62f1b963baa6">mac使用brew update无反应,更新慢解决办法</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2021/04/14/eclipse-notes/">Eclipse笔记</a></h1>
-    
-    
-      <p class="meta">
-		
-        	
-
-
-
-
-2021-04-14 06:43
-		
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h4 id="为什么是eclispe">为什么是Eclispe</h4>
-<p>最早接触Eclispe主要是用来开发Android应用，早期Android开发没有Android Studio，只能通过安装插件来开发。后来开发iOS后，Eclispe就用的少了，偶尔用来跑些简单的例子。后来做Java web，Eclispe又开始用了起来。</p>
-
-<p>虽然很多人推荐IntelliJ IDEA，下载的试用了下，某些功能确实比Eclispe强大，但是Eclispe+Spring Tools，对目前的开发来说确实已经够用了，另外还是有点用不习惯，也没有Spring tools 这样的插件，所以干嘛花钱买个自己用不惯的东西呢？</p>
-
-<h4 id="自动补全">自动补全</h4>
-<p>默认出现点号时才会出现自动补全的提示，不过可以设置，这里以Mac环境为例。</p>
-
-<p>选择菜单<code class="language-plaintext highlighter-rouge">Perferences-&gt;Java-&gt;Content Assist-&gt;Auto activation triggers for Java</code>，默认为<strong><em>.</em></strong>，使用<code class="language-plaintext highlighter-rouge">.abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWSYZ_</code>替换，点击Ok。</p>
-
-<h4 id="常用插件">常用插件</h4>
-<p><strong>EasyShell</strong>，这个工具主要是可以快速在当前目录打开Shell以及打开当前的文件夹。</p>
-
-<h4 id="maven-配置文件报错">Maven 配置文件报错</h4>
-
-<p>Maven使用本地Jar包后pom.xml显示错误，实际上本地Jar包是可以加载的，但总是提示错误。</p>
-<blockquote>
-  <p>dependencies.dependency.systemPath’ for com.test:test:jar must specify an absolute path but is ${pom.basedir}/libs/test.jar</p>
-</blockquote>
-
-<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nt">&lt;dependency&gt;</span>
-	<span class="nt">&lt;groupId&gt;</span>com.test<span class="nt">&lt;/groupId&gt;</span>
-	<span class="nt">&lt;artifactId&gt;</span>test<span class="nt">&lt;/artifactId&gt;</span>
-	<span class="nt">&lt;version&gt;</span>1.0<span class="nt">&lt;/version&gt;</span>
-	<span class="nt">&lt;scope&gt;</span>system<span class="nt">&lt;/scope&gt;</span>
-	<span class="nt">&lt;systemPath&gt;</span>${pom.basedir}/libs/test.jar<span class="nt">&lt;/systemPath&gt;</span>
-<span class="nt">&lt;/dependency&gt;</span>
-</code></pre></div></div>
-
-<p>这个问题虽然不影响使用，但是老显示红叉，总感觉像去掉的。我原来使用Eclispe版本是2020-03 (4.15.0)，没有这个问题。但是使用最新的Eclipse版本2021-03 (4.19.0)有这个问题，包括Spring ToolSuite 4也有这个问题，我把4.15.0到4.19.0版本下载几个对比后，终于发现4.16.0开始都有问题，最后发现4.16.0版本Preferences多了一个XMl（Wide Web Developer）项，把子项Validation &amp; Resolution，Enable validation 禁用就没有了。</p>
-
-<h4 id="升级与不升级">升级与不升级</h4>
-<p>如果现有环境稳定，那就最好不要升级。Eclispe好处是可以支持多个语言的开发，可以装一堆插件支持，但感觉只把它当作Java IDE就可以了，现在VS Code完全可以做其他语言的IDE。</p>
-
-<p>之前的Eclispe很稳定，但一次插件的安装后，弹出需要更高版本的Eclispe，然后就无法启动了。一气之下，直接删除Eclispe，重新安装那些插件，结果发现2020-03 (4.15.0)下载的Spring Tools插件不能使用，发现Spring Tools 4已经出了，但是我当前这个版本无法使用。最后下载了Spring Tools官方出品的Eclispe整合版本Spring ToolSuite 4，就结果就出现了上面提到的Maven配置报错的问题，虽然问题解决了，但是还是提示插件安装也是要谨慎，可能升级不对就的折腾半天了。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -969,23 +963,23 @@ git remote set-url origin https://mirrors.ustc.edu.cn/homebrew-cask.git
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/06/02/first-try-webassembly/">初试WebAssembly</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/06/02/learning-gtk/">学习GTK</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/05/27/tiantong-rujing/">天童如净禅师</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/05/04/thinking-about-rss/">关于RSS的思考</a>
       </li>
     
       <li class="post">
         <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/04/26/talk-about-meditatio/">谈谈冥想</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/04/26/springboot-elasticsearch/">Spring Boot使用Elasticsearch</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/04/23/springboot-elk/">Spring Boot使用ELK</a>
       </li>
     
   </ul>
