@@ -9,8 +9,10 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="持续记录在工作中一些MySQL使用心得。 二进制日志
-二进制日志文件默认会存放在/var/lib/mysql目录下，配合mysqlbinlog可以查看数据的变更，--base64-output=decode-rows -v加上这个可以使日志可读。 mysqlbinlog --start- &hellip;">
+  <meta name="description" content="rake 'new_post["title"]' # 创建文章
+rake generate # 生成文章
+rake preview # 本地预览博客
+rake deploy # 发布博客 修改文章创建的日期格式，我比较喜欢类似2020-01-01 00:00:00这样的格式，修改_config. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -80,6 +82,47 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2020/07/22/octopress-users-guide/">Octopress使用指南</a></h1>
+    
+    
+      <p class="meta">
+		
+        	
+
+
+
+
+2020-07-22 15:14
+		
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>rake <span class="s1">'new_post["title"]'</span> <span class="c"># 创建文章</span>
+rake generate <span class="c"># 生成文章</span>
+rake preview <span class="c"># 本地预览博客</span>
+rake deploy <span class="c"># 发布博客</span>
+</code></pre></div></div>
+
+<p>修改文章创建的日期格式，我比较喜欢类似<code class="language-plaintext highlighter-rouge">2020-01-01 00:00:00</code>这样的格式，修改<code class="language-plaintext highlighter-rouge">_config.yml</code>。</p>
+
+<div class="language-yml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="na">date_format</span><span class="pi">:</span> <span class="s2">"</span><span class="s">%Y-%m-%d"</span>
+<span class="na">time_format</span><span class="pi">:</span> <span class="s2">"</span><span class="s">%H:%M:%S"</span> <span class="c1"># 这个新增的，默认配置文件没有的</span>
+</code></pre></div></div>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -321,6 +364,10 @@ flush privileges<span class="p">;</span>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/06/17/talk-in-detail-zuohui/">《详谈：左晖》读后感</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/06/02/first-try-webassembly/">初试WebAssembly</a>
       </li>
     
@@ -334,10 +381,6 @@ flush privileges<span class="p">;</span>
     
       <li class="post">
         <a href="/blog/2021/05/04/thinking-about-rss/">关于RSS的思考</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
       </li>
     
   </ul>

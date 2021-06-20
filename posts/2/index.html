@@ -9,7 +9,7 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="去年年底的时候，当时有简单的研究下Docker，不过只是下载了一些类似MongoDB的镜像运行了下，感觉Docker非常适合安装这些软件。最近开始看Kubernetes，Docker的研究难免，那么如何把现有项目打包成一个Docker镜像以及运行，去年好像有简单的试下，不过有点遗忘， &hellip;">
+  <meta name="description" content="学习Docker后，发现还是得学习下k8s，目前使用Spring Cloud，引入k8s后原来现有的架构确实会有些变化，比如k8s的服务与Spring Eureka实际上有些功能相似的地方。最早我打算使用微服务的时候也是看中可以使用其他语言，但实际上使用了Eureka后，发现用其他语言还是有困难的 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +79,113 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/04/18/learn-kubernetes/">学习Kubernetes</a></h1>
+    
+    
+      <p class="meta">
+		
+        	
+
+
+
+
+2021-04-18 11:19
+		
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>学习Docker后，发现还是得学习下k8s，目前使用Spring Cloud，引入k8s后原来现有的架构确实会有些变化，比如k8s的服务与Spring Eureka实际上有些功能相似的地方。最早我打算使用微服务的时候也是看中可以使用其他语言，但实际上使用了Eureka后，发现用其他语言还是有困难的，Java依旧是服务的首选。引入k8s后这似乎成为了一些可能，不过目前还没有使用来着。</p>
+
+<h4 id="书籍">书籍</h4>
+<p>关于k8s的书籍目前只买了《Kubernetes实战》，之前也是选了几本，但这本当时一看就觉得干货很多，不过在解决细节问题时还是依赖网路了，不过这次可能错了，关于k8s的资料网上的还是太少，解决细节的问题最后还是依靠这本书。这本书在理论和细节方面结合的很好。</p>
+
+<h4 id="使用本地镜像">使用本地镜像</h4>
+<p>我用的<code class="language-plaintext highlighter-rouge">minikube</code>，本地构建的doker镜像，我并没有推送到docker的镜像服务器，打出的docker镜像，其实还是蛮大的，Python和Flask，只是个简单的Hello World的例子，有800多M。再将这个推送到docker镜像服务器太慢了，实际我根本就没有成功，但拉取镜像速度还不错。</p>
+
+<p>一开始我使用<code class="language-plaintext highlighter-rouge">kubectrl run</code>创建Pods。</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>kubectrl run testflask <span class="nt">--image</span><span class="o">=</span>testflask <span class="nt">--port</span><span class="o">=</span>5000 <span class="nt">--generator</span><span class="o">=</span>run/v1
+</code></pre></div></div>
+
+<p>上面这种方式还是有局限，网上说要把<code class="language-plaintext highlighter-rouge">imagePullPolicy</code>设置成<code class="language-plaintext highlighter-rouge">IfNotPresent</code>或者<code class="language-plaintext highlighter-rouge">Never</code>。但是怎么设置？网上的博文根本不说，最后还是从《Kubernetes实战》这书找到答案，使用配置文件来创建，创建一个<code class="language-plaintext highlighter-rouge">flasktest.yaml</code>的配置文件。这里需要注意的是配置文件中一定要使用空格缩进而不是Tab，貌似我用的vs code和textmate都是使用Tab缩进。</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">Pod</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">flasktest</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">containers</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">testflask</span>
+    <span class="na">name</span><span class="pi">:</span> <span class="s">flasktest-container</span>
+    <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span> <span class="c1"># 拉取的策略</span>
+    <span class="na">ports</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">5000</span> <span class="c1"># 容器的端口</span>
+      <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+</code></pre></div></div>
+
+<p>通过配置文件来创建pods</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>kubectl create <span class="nt">-f</span> flasktest.yaml <span class="c"># 通过配置文件创建pods</span>
+</code></pre></div></div>
+
+<p>最后发现还是有问题，这个镜像始终还是无法拉下来，网上搜索半天也没有找到个解决方案，最后打算直接使用<code class="language-plaintext highlighter-rouge">docker</code>的公共镜像<code class="language-plaintext highlighter-rouge">docker/getting-started</code>，估计是网络的问题，始终没有拉取下来。我一直把<code class="language-plaintext highlighter-rouge">minikube</code>的当成本地的了，<code class="language-plaintext highlighter-rouge">docker</code>也是共用一个，实际上犯了个严重的认知错误，<code class="language-plaintext highlighter-rouge">minikube</code>在VirtualBox创建了一个<code class="language-plaintext highlighter-rouge">minikube</code>虚拟机在运行，<code class="language-plaintext highlighter-rouge">docker</code>肯定与我本地的不是一个，《Kubernetes实战》书中提供了一种把本地的docker复制到<code class="language-plaintext highlighter-rouge">minikube</code>虚拟机中<code class="language-plaintext highlighter-rouge">docker</code>镜像库的方法。</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>docker save testflask | <span class="o">(</span><span class="nb">eval</span> <span class="si">$(</span>minikube docker-env<span class="si">)</span> <span class="o">&amp;&amp;</span> docker load<span class="o">)</span>
+</code></pre></div></div>
+
+<p>可以使用<code class="language-plaintext highlighter-rouge">minikube ssh</code>登录到<code class="language-plaintext highlighter-rouge">minikube</code>虚拟机中，查看<code class="language-plaintext highlighter-rouge">docker</code>镜像是否已经复制过去了。最后顺利启动了，不过怎么访问服务呢？</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>kubectl expose rc flasktest <span class="nt">--type</span><span class="o">=</span>LoadBalancer <span class="nt">--name</span> flasktest-http
+</code></pre></div></div>
+
+<p>不过这里也个问题，提示<code class="language-plaintext highlighter-rouge">replicationcontrollers "flasktest" not found</code>。其实命令<code class="language-plaintext highlighter-rouge">kubectrl run testflask --image=testflask --port=5000 --generator=run/v1</code>中，<code class="language-plaintext highlighter-rouge">--generator=run/v1</code>是创建<code class="language-plaintext highlighter-rouge">replicationcontroller</code>的，但我使用的是配置文件创建，问题不大，修改下配置文件。如下：</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="na">apiVersion</span><span class="pi">:</span> <span class="s">v1</span>
+<span class="na">kind</span><span class="pi">:</span> <span class="s">ReplicationController</span>
+<span class="na">metadata</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">flasktest</span>
+<span class="na">spec</span><span class="pi">:</span>
+  <span class="na">replicas</span><span class="pi">:</span> <span class="m">3</span>
+  <span class="na">selector</span><span class="pi">:</span>
+    <span class="na">app</span><span class="pi">:</span> <span class="s">flasktest</span>
+  <span class="na">template</span><span class="pi">:</span>
+    <span class="na">metadata</span><span class="pi">:</span>
+      <span class="na">labels</span><span class="pi">:</span>
+        <span class="na">app</span><span class="pi">:</span> <span class="s">flasktest</span>
+    <span class="na">spec</span><span class="pi">:</span>
+        <span class="na">containers</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="na">image</span><span class="pi">:</span> <span class="s">testflask</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">flasktest-container</span>
+          <span class="na">imagePullPolicy</span><span class="pi">:</span> <span class="s">IfNotPresent</span>
+          <span class="na">ports</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="na">containerPort</span><span class="pi">:</span> <span class="m">5000</span>
+            <span class="na">protocol</span><span class="pi">:</span> <span class="s">TCP</span>
+</code></pre></div></div>
+
+<p>重新创建，再启动服务，服务时启动了，不过还是有问题，使用<code class="language-plaintext highlighter-rouge">minikube</code>没有外部的ip的访问，需要使用如下命令。不过这个端口是随机的，跟原来用docker的那个不太一样。</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>minikube service flasktest-http
+</code></pre></div></div>
+
+<h4 id="总结">总结</h4>
+
+<p>网络的问题使本来简单的入门变得复杂，另外k8s的资料目前确实不是很多，一些细节网上的很少有人总结出来。不过感觉方案虽好，但是镜像大，以及可能要自己部署私有的镜像，再到其他的，其实投入还是蛮多的。</p>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -817,77 +924,6 @@ x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2021/02/04/how-to-write-an-os/">如何写一个操作系统</a></h1>
-    
-    
-      <p class="meta">
-		
-        	
-
-
-
-
-2021-02-04 22:21
-		
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="缘起">缘起</h3>
-<p>做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。</p>
-
-<p>大概7、8年前买过一本《Orange’S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太难了，中间需要跨越的东西太多了。渐渐就放弃了，后来直接把这两本书给卖掉了。</p>
-
-<p>今年突然间又想，我应该尝试写一个简单的操作系统，多年的工作以及自学，使得我对编程有了一个相对完整的认识，这个想法似乎不像当年那么不靠谱。但该如何下手呢？刚开始我只想能跑一个<code class="language-plaintext highlighter-rouge">Hello wrold</code>的例子也可以，网上找了下最多的居然是我当年卖掉的那本《Orange’S 一个操作系统实现》书中的例子，可惜当年我也没怎么看懂，只是买了本书而已。</p>
-
-<p>以下是这个例子的代码：</p>
-
-<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>
-	<span class="nf">org</span> <span class="mh">07c00h</span>			<span class="c1">; 告诉编译器程序加载到7c00处</span>
-	<span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">cs</span>
-	<span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
-	<span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
-	<span class="nf">call</span> <span class="nb">Disp</span><span class="nv">Str</span>			<span class="c1">; 调用显示字符串例程</span>
-	<span class="nf">jmp</span> <span class="kc">$</span>			<span class="c1">; 无限循环</span>
-<span class="nl">DispStr:</span>
-	<span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nv">BootMessage</span>
-	<span class="nf">mov</span> <span class="nb">bp</span><span class="p">,</span> <span class="nb">ax</span>			<span class="c1">; ES:BP = 串地址</span>
-	<span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">16</span>			<span class="c1">; CX = 串长度</span>
-	<span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mh">01301h</span>		<span class="c1">; AH = 13,  AL = 01h</span>
-	<span class="nf">mov</span> <span class="nb">bx</span><span class="p">,</span> <span class="mh">000ch</span>		<span class="c1">; 页号为0(BH = 0) 黑底红字(BL = 0Ch,高亮)</span>
-	<span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="mi">0</span>
-	<span class="nf">int</span> <span class="mh">10h</span>			<span class="c1">; 10h 号中断</span>
-	<span class="nf">ret</span>
-<span class="nl">BootMessage:</span>		<span class="kd">db</span>	<span class="s">"Hello, OS world!"</span>
-<span class="kd">times</span> 	<span class="mi">510</span><span class="o">-</span><span class="p">(</span><span class="kc">$</span><span class="o">-</span><span class="kc">$$</span><span class="p">)</span>	<span class="nv">db</span>	<span class="mi">0</span>	<span class="c1">; 填充剩下的空间，使生成的二进制代码恰好为512字节</span>
-<span class="kd">dw</span> 	<span class="mh">0xaa55</span>				<span class="c1">; 结束标志</span>
-
-</code></pre></div></div>
-
-<p>这就是一个直接运行到硬件上的一段程序，而不是我们平时在操作系统写应用代码那样。对于一个实践者而言，我很想把这段程序跑起来，这很关键，只要能跑起来，我们就可以试图修改下，再跑起来，这样认识上才能有提高。其实跑这个例子也是费了点功夫，首先在虚拟机上安装了一个Ubuntu的Linux系统，书中用到的汇编是跟MASM很相似的NASM，首先NASM的教程不多，不过还好可以参考MASM汇编的书籍。另外就是软盘的制作相关的东西，最后是安装Bochs虚拟机，这个虚拟机跟平时用的有些特别，不过还是了解如何操作，最后成功的把这个例子跑了起来。</p>
-
-<p>似乎可以继续一路朝前了，可惜看了头三章后，我发现了些问题。首先我对NASM汇编的东西几乎是一片空白，书的前几章几乎离不开汇编语言了，而看的非常吃力。另一个是我对PC的体系缺乏细节的了解，虽然之前也有了解但实操的过程中遇到的问题更具体。</p>
-
-<p>NASM的书籍不多，《汇编语言.基于Linux环境.第三版》是一本从体系的角度来讲解NASM的书籍，一方面学习了NASM，也让重新思考从8086到80386的一些变化，好几个点很有启发。王爽老师的《汇编语言》，也是一本非常不错的参考书，汇编语言在形式上与高级语言还是有着巨大差异，一开始我把心思放在那些寄存器之类上了，而忽略了一个编程语言应该是能够写点东西出来这事上。《汇编语言》这书很好的带我进入如何写点东西的正轨上。</p>
-
-<p>8086方面的书籍，8086总设计师莫尔斯写的《8086初阶-体系结构、系统设计和程序设计入门》。王爽老师《汇编语言》也主要是讲8086的汇编的。80386的书籍不多，80386的设计师写的《Programing the 80386》一书，非常不错。中文版是93年出版的《保护方式下80386及其编程》一书，虽然没有备注是翻译，但我跟英文版对照后，确认就是翻译自《Programing the 80386》，主要是学习保护模式。</p>
-
-<p>这里需要注意的是实模式与保护模式的差别，很多时候一开始如果研究的是8086的，往往需要转换下思维，最好的书籍依旧是《保护方式下80386及其编程》一书，于渊的《Orange’S 一个操作系统实现》细节上还是有点模糊。</p>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -909,6 +945,10 @@ x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/06/17/talk-in-detail-zuohui/">《详谈：左晖》读后感</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/06/02/first-try-webassembly/">初试WebAssembly</a>
       </li>
     
@@ -922,10 +962,6 @@ x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
     
       <li class="post">
         <a href="/blog/2021/05/04/thinking-about-rss/">关于RSS的思考</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/05/02/octopress-upgrade/">Octopress升级</a>
       </li>
     
   </ul>

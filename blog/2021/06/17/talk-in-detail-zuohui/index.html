@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>《Orange'S:一个操作系统的实现》笔记 - 无用之用</title>
+  <title>《详谈：左晖》读后感 - 无用之用</title>
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="使用FreeDOS运行COM
-FreeDOS运行COM文件记录，主要是拷贝软盘里面，然后执行。 sudo mount -o loop xxx.img /mnt/floppy # 挂载，挂在失败的话在mnt目录下创建floppy文件夹
-sudo cp xxx.com /mnt/floppy/ # &hellip;">
+  <meta name="description" content="左晖这个人要不是最近因为去世，我估计也不太知道是谁。首次听到链家，那会觉得是一家新起来的互联网的网站，感觉好像很是风口，因为挖了不少技术的牛人过去。自己那会打算买房时也专门下载了链家的APP，不过感觉那上面的房子好像偏贵。而贝壳呢？好像那会广告打的比较凶。近一两年发现， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ sudo cp xxx.com /mnt/floppy/ # &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="https://c2lang.com/blog/2021/03/24/notes-on-oranges-an-operating-system-implementation">
+  <link rel="canonical" href="https://c2lang.com/blog/2021/06/17/talk-in-detail-zuohui">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/github.css" media="screen, projection" rel="stylesheet" type="text/css">
@@ -84,7 +82,7 @@ sudo cp xxx.com /mnt/floppy/ # &hellip;">
   
   <header>
     
-      <h1 class="entry-title">《Orange'S:一个操作系统的实现》笔记</h1>
+      <h1 class="entry-title">《详谈：左晖》读后感</h1>
     
     
       <p class="meta">
@@ -94,7 +92,7 @@ sudo cp xxx.com /mnt/floppy/ # &hellip;">
 
 
 
-2021-03-24 15:18
+2021-06-17 22:33
 		
         
       </p>
@@ -102,38 +100,12 @@ sudo cp xxx.com /mnt/floppy/ # &hellip;">
   </header>
 
 
-<div class="entry-content"><h4 id="使用freedos运行com">使用FreeDOS运行COM</h4>
-<p>FreeDOS运行COM文件记录，主要是拷贝软盘里面，然后执行。</p>
+<div class="entry-content"><p>左晖这个人要不是最近因为去世，我估计也不太知道是谁。首次听到链家，那会觉得是一家新起来的互联网的网站，感觉好像很是风口，因为挖了不少技术的牛人过去。自己那会打算买房时也专门下载了链家的APP，不过感觉那上面的房子好像偏贵。而贝壳呢？好像那会广告打的比较凶。近一两年发现，发现附近多了好多叫德佑的房产中介，最近跟一位卖房的中介聊天时才发现德佑跟贝壳的关系。作为技术人我非常好奇他是如何实现传统行业加互联网的逆袭的？因为我最近两年一直在传统企业做相关的系统，但是成效很低，所以非常想一睹左晖的思路。</p>
 
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">sudo </span>mount <span class="nt">-o</span> loop xxx.img /mnt/floppy <span class="c"># 挂载，挂在失败的话在mnt目录下创建floppy文件夹</span>
-<span class="nb">sudo cp </span>xxx.com /mnt/floppy/ <span class="c"># 拷贝文件</span>
-<span class="nb">sudo </span>umount /mnt/floppy <span class="c"># 卸载</span>
-</code></pre></div></div>
+<p>《详谈左晖》是本不到180页的32开小册子，我大概用了2个多小时读完了此书。主要是17年和20年对左晖的访谈内容。左晖虽然从事的是传统行业，实际上他是计算机专业毕业，只不过人家没有做技术，首先做过保险，后来因为政策的缘故，改做卖房中介，链家其实很早了，2001年就创建了，虽然早期也有网站，但实际主要做线下了，链家实际是一家有着IT基因的公司，这点很关键。另一家公司就是京东，一开始是摆柜台，后来借助互联网，终成巨头。左晖一直强调传统行业在基础方面的薄弱，主要体现在战略、组织、信息化、IT方面。个人深有体会，传统的中小企业重业务，流程上比较灵活，信息化还停留在表格的阶段。</p>
 
-<p>网上书中的源码中的<code class="language-plaintext highlighter-rouge">freedos.img</code>并不包含<code class="language-plaintext highlighter-rouge">debug</code>这样的工具，不过<code class="language-plaintext highlighter-rouge">debug</code>并不能调试保护模式的代码。</p>
-
-<p>在<code class="language-plaintext highlighter-rouge">bochsrc</code>配置文件中添加</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>magic_break: enabled = 1
-</code></pre></div></div>
-
-<p>最后在汇编代码需要断点的地方添加</p>
-
-<div class="language-nasm highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nf">xchg</span> <span class="nb">bx</span><span class="p">,</span> <span class="nb">bx</span>
-</code></pre></div></div>
-
-<p>在FreeDOS执行COM文件后，就会进入到bochs调试。</p>
-
-<h4 id="bochs">Bochs</h4>
-<h5 id="有用的调试系统的命令">有用的调试系统的命令</h5>
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>sreg <span class="c"># 显示段寄存器的内容</span>
-info gdt  <span class="c"># 显示GDTR寄存器的内容</span>
-creg <span class="c"># 显示CR0寄存器的内容</span>
-print-stack <span class="c"># 查看栈的内容</span>
-</code></pre></div></div>
-
-<h4 id="参考">参考</h4>
-<p><a href="https://techlog.cn/article/list/10183462">如何调试操作系统</a></p>
+<h4 id="总结">总结</h4>
+<p>传统行业的互联化一定要紧密建立在业务环节，并且要能够利用数字以及互联网来优化或者抽象化一些细节流程，这样才能有所作为，当然也很容易变成信息化与流程的脱节问题，关键是在于落实。</p>
 </div>
 
 
@@ -162,10 +134,8 @@ print-stack <span class="c"># 查看栈的内容</span>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2021/03/22/nasm-notes/" title="Previous Post: NASM 笔记">&laquo; NASM 笔记</a>
+        <a class="basic-alignment left" href="/blog/2021/06/02/first-try-webassembly/" title="Previous Post: 初试WebAssembly">&laquo; 初试WebAssembly</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2021/03/28/thoughts-after-reading-the-biography-of-masayoshi-son/" title="Next Post: 《孙正义传》读后感">《孙正义传》读后感 &raquo;</a>
       
     </p>
   </footer>
@@ -240,8 +210,8 @@ print-stack <span class="c"># 查看栈的内容</span>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'https://c2lang.com/blog/2021/03/24/notes-on-oranges-an-operating-system-implementation/';
-        var disqus_url = 'https://c2lang.com/blog/2021/03/24/notes-on-oranges-an-operating-system-implementation/';
+        var disqus_identifier = 'https://c2lang.com/blog/2021/06/17/talk-in-detail-zuohui/';
+        var disqus_url = 'https://c2lang.com/blog/2021/06/17/talk-in-detail-zuohui/';
         var disqus_script = 'embed.js';
       
     (function () {
