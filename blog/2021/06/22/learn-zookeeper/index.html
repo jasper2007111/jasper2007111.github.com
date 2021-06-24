@@ -1,0 +1,291 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>学习Zookeeper的使用 - 无用之用</title>
+  <meta name="author" content="Jasper Ji">
+
+  
+  <meta name="description" content="ZooKeeper没有直接用过，所以想研究下，本来读《ZooKeeper：分布式过程协同技术详解》，感觉还是很模糊，虽然大概明白分布式会需要这样一个东西，现在使用的Spring微服务中Eureka跟ZooKeeper有相似的地方。纸上得来终归浅，所以觉得跑一些实际的例子。 安装
+我的环境是Mac， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="https://c2lang.com/blog/2021/06/22/learn-zookeeper">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/github.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="无用之用" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="https://code.jquery.com/jquery-1.9.1.min.js" integrity="sha256-wS9gmOZBqsqWxgIVgA8Y9WcQOa7PgSIX+rPA0VL2rbQ=" crossorigin="anonymous"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-84644923-7']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">无用之用</a></h1>
+  
+    <h2>The palest ink is better than the best memory</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:c2lang.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">博客</a></li>
+  <li><a href="/blog/archives">文章</a></li>
+  <li><a href="/app">应用</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">学习Zookeeper的使用</h1>
+    
+    
+      <p class="meta">
+		
+			
+
+
+
+
+2021-06-22 15:03
+		
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>ZooKeeper没有直接用过，所以想研究下，本来读《ZooKeeper：分布式过程协同技术详解》，感觉还是很模糊，虽然大概明白分布式会需要这样一个东西，现在使用的Spring微服务中Eureka跟ZooKeeper有相似的地方。纸上得来终归浅，所以觉得跑一些实际的例子。</p>
+
+<h4 id="安装">安装</h4>
+<p>我的环境是Mac，使用Brew安装。</p>
+
+<h4 id="可视化界面">可视化界面</h4>
+<p>ZooKeeper自带的zkCli命令行工具，其实也能用。也有可视化的界面工具<a href="https://github.com/DeemOpen/zkui">ZKUI</a>，最后使用的ZKUI。</p>
+
+<h4 id="客户端">客户端</h4>
+<p>使用的Java跑的例子，有点类似数据的增删改查了，当然也有监听。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+	<span class="c1">// 连接地址及端口号</span>
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">SERVER_HOST</span> <span class="o">=</span> <span class="s">"127.0.0.1:2181"</span><span class="o">;</span>
+
+	<span class="c1">// 会话超时时间</span>
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">SESSION_TIME_OUT</span> <span class="o">=</span> <span class="mi">2000</span><span class="o">;</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+		<span class="c1">// 参数一：服务端地址及端口号</span>
+		<span class="c1">// 参数二：超时时间</span>
+		<span class="c1">// 参数三：监听器</span>
+		<span class="nc">ZooKeeper</span> <span class="n">zooKeeper</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ZooKeeper</span><span class="o">(</span><span class="no">SERVER_HOST</span><span class="o">,</span> <span class="no">SESSION_TIME_OUT</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Watcher</span><span class="o">()</span> <span class="o">{</span>
+			<span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="nc">WatchedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+				<span class="c1">// TODO Auto-generated method stub</span>
+				<span class="c1">// 获取事件的状态</span>
+				<span class="nc">Event</span><span class="o">.</span><span class="na">KeeperState</span> <span class="n">state</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">getState</span><span class="o">();</span>
+				<span class="c1">// 判断是否是连接事件</span>
+				<span class="k">if</span> <span class="o">(</span><span class="nc">Event</span><span class="o">.</span><span class="na">KeeperState</span><span class="o">.</span><span class="na">SyncConnected</span> <span class="o">==</span> <span class="n">state</span><span class="o">)</span> <span class="o">{</span>
+					<span class="nc">Event</span><span class="o">.</span><span class="na">EventType</span> <span class="n">type</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">getType</span><span class="o">();</span>
+					<span class="k">if</span> <span class="o">(</span><span class="nc">Event</span><span class="o">.</span><span class="na">EventType</span><span class="o">.</span><span class="na">None</span> <span class="o">==</span> <span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+						<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"zk客户端已连接..."</span><span class="o">);</span>
+					<span class="o">}</span>
+				<span class="o">}</span>
+			<span class="o">}</span>
+		<span class="o">});</span>
+		<span class="n">zooKeeper</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">"/go"</span><span class="o">,</span> <span class="s">"Hello World"</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(),</span> <span class="nc">ZooDefs</span><span class="o">.</span><span class="na">Ids</span><span class="o">.</span><span class="na">OPEN_ACL_UNSAFE</span><span class="o">,</span> <span class="nc">CreateMode</span><span class="o">.</span><span class="na">PERSISTENT</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"新增ZNode成功"</span><span class="o">);</span>
+		<span class="n">zooKeeper</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>更高级的可以使用Curator，出了基本的客户端功能外，还提供了锁、选举、屏障、缓存、持久化节点、队列这样的功能。</p>
+
+<p>参考：
+<a href="https://zhuanlan.zhihu.com/p/158986527">ZooKeeper入门，看这篇就够了！</a></p>
+
+<h4 id="书籍">书籍</h4>
+<p>目前的书籍不多，在省图找到了这本《ZooKeeper：分布式过程协同技术详解》，此书不太适合一点经验都没有的人阅读，
+相对来说偏实战了。此书还在读，目前来看结构清晰，推荐。吐槽下《ZooKeeper：Distributed Process Coordination》的中文版翻译为《ZooKeeper：分布式过程协同技术详解》，把“Process”翻译为“过程”确实没有“进程”或者“程序”好。ZooKeeper官方的说明是一种协调分布式服务的应用程序，这个其实很贴合意思。</p>
+
+<h4 id="总结">总结</h4>
+<p>我还是习惯了从代码理解原理，这么跑下来，至少从代码的角度是理解了。初看有点简单，不就是一些节点数据么，但这样也很容易陷入技术细节，所以还是要看几个应用场景的实际例子，从整体上理解。</p>
+
+<p>参考：</p>
+
+<p><a href="https://blog.csdn.net/liyiming2017/article/details/83035157?spm=1001.2014.3001.5501">原创ZooKeeper入门实战教程</a>，这个博主系列文章非常不错，浅显明了。</p>
+
+<p><a href="https://www.cnblogs.com/centos2017/p/8119190.html">Zookeeper 应用实例</a>，入门级的例子。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+<span class="byline author vcard">Posted by <span class="fn">Jasper Ji</span></span>
+
+      
+
+
+
+
+
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2021/06/17/talk-in-detail-zuohui/" title="Previous Post: 《详谈：左晖》读后感">&laquo; 《详谈：左晖》读后感</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>关于</h1>
+  <p>程序员一个，喜欢读书，偶尔出去旅游下。</p>
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2021/06/22/learn-zookeeper/">学习Zookeeper的使用</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/06/17/talk-in-detail-zuohui/">《详谈：左晖》读后感</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/06/02/first-try-webassembly/">初试WebAssembly</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/06/02/learning-gtk/">学习GTK</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2021/05/27/tiantong-rujing/">天童如净禅师</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+    <h1>Categories</h1>
+    <ul id="categories">
+      
+    </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2021 - Jasper Ji -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'c2lang-com';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'https://c2lang.com/blog/2021/06/22/learn-zookeeper/';
+        var disqus_url = 'https://c2lang.com/blog/2021/06/22/learn-zookeeper/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

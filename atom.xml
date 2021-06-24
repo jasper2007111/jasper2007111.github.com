@@ -4,7 +4,7 @@
   <title><![CDATA[无用之用]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2021-06-20T19:06:45+08:00</updated>
+  <updated>2021-06-24T11:31:09+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,75 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[学习Zookeeper的使用]]></title>
+    <link href="https://c2lang.com/blog/2021/06/22/learn-zookeeper/"/>
+    <updated>2021-06-22T15:03:35+08:00</updated>
+    <id>https://c2lang.com/blog/2021/06/22/learn-zookeeper</id>
+    <content type="html"><![CDATA[<p>ZooKeeper没有直接用过，所以想研究下，本来读《ZooKeeper：分布式过程协同技术详解》，感觉还是很模糊，虽然大概明白分布式会需要这样一个东西，现在使用的Spring微服务中Eureka跟ZooKeeper有相似的地方。纸上得来终归浅，所以觉得跑一些实际的例子。</p>
+
+<h4 id="安装">安装</h4>
+<p>我的环境是Mac，使用Brew安装。</p>
+
+<h4 id="可视化界面">可视化界面</h4>
+<p>ZooKeeper自带的zkCli命令行工具，其实也能用。也有可视化的界面工具<a href="https://github.com/DeemOpen/zkui">ZKUI</a>，最后使用的ZKUI。</p>
+
+<h4 id="客户端">客户端</h4>
+<p>使用的Java跑的例子，有点类似数据的增删改查了，当然也有监听。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+	<span class="c1">// 连接地址及端口号</span>
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">String</span> <span class="no">SERVER_HOST</span> <span class="o">=</span> <span class="s">"127.0.0.1:2181"</span><span class="o">;</span>
+
+	<span class="c1">// 会话超时时间</span>
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="no">SESSION_TIME_OUT</span> <span class="o">=</span> <span class="mi">2000</span><span class="o">;</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="nc">Exception</span> <span class="o">{</span>
+		<span class="c1">// 参数一：服务端地址及端口号</span>
+		<span class="c1">// 参数二：超时时间</span>
+		<span class="c1">// 参数三：监听器</span>
+		<span class="nc">ZooKeeper</span> <span class="n">zooKeeper</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ZooKeeper</span><span class="o">(</span><span class="no">SERVER_HOST</span><span class="o">,</span> <span class="no">SESSION_TIME_OUT</span><span class="o">,</span> <span class="k">new</span> <span class="nc">Watcher</span><span class="o">()</span> <span class="o">{</span>
+			<span class="kd">public</span> <span class="kt">void</span> <span class="nf">process</span><span class="o">(</span><span class="nc">WatchedEvent</span> <span class="n">event</span><span class="o">)</span> <span class="o">{</span>
+				<span class="c1">// TODO Auto-generated method stub</span>
+				<span class="c1">// 获取事件的状态</span>
+				<span class="nc">Event</span><span class="o">.</span><span class="na">KeeperState</span> <span class="n">state</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">getState</span><span class="o">();</span>
+				<span class="c1">// 判断是否是连接事件</span>
+				<span class="k">if</span> <span class="o">(</span><span class="nc">Event</span><span class="o">.</span><span class="na">KeeperState</span><span class="o">.</span><span class="na">SyncConnected</span> <span class="o">==</span> <span class="n">state</span><span class="o">)</span> <span class="o">{</span>
+					<span class="nc">Event</span><span class="o">.</span><span class="na">EventType</span> <span class="n">type</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="na">getType</span><span class="o">();</span>
+					<span class="k">if</span> <span class="o">(</span><span class="nc">Event</span><span class="o">.</span><span class="na">EventType</span><span class="o">.</span><span class="na">None</span> <span class="o">==</span> <span class="n">type</span><span class="o">)</span> <span class="o">{</span>
+						<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"zk客户端已连接..."</span><span class="o">);</span>
+					<span class="o">}</span>
+				<span class="o">}</span>
+			<span class="o">}</span>
+		<span class="o">});</span>
+		<span class="n">zooKeeper</span><span class="o">.</span><span class="na">create</span><span class="o">(</span><span class="s">"/go"</span><span class="o">,</span> <span class="s">"Hello World"</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(),</span> <span class="nc">ZooDefs</span><span class="o">.</span><span class="na">Ids</span><span class="o">.</span><span class="na">OPEN_ACL_UNSAFE</span><span class="o">,</span> <span class="nc">CreateMode</span><span class="o">.</span><span class="na">PERSISTENT</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"新增ZNode成功"</span><span class="o">);</span>
+		<span class="n">zooKeeper</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></div></div>
+
+<p>更高级的可以使用Curator，出了基本的客户端功能外，还提供了锁、选举、屏障、缓存、持久化节点、队列这样的功能。</p>
+
+<p>参考：
+<a href="https://zhuanlan.zhihu.com/p/158986527">ZooKeeper入门，看这篇就够了！</a></p>
+
+<h4 id="书籍">书籍</h4>
+<p>目前的书籍不多，在省图找到了这本《ZooKeeper：分布式过程协同技术详解》，此书不太适合一点经验都没有的人阅读，
+相对来说偏实战了。此书还在读，目前来看结构清晰，推荐。吐槽下《ZooKeeper：Distributed Process Coordination》的中文版翻译为《ZooKeeper：分布式过程协同技术详解》，把“Process”翻译为“过程”确实没有“进程”或者“程序”好。ZooKeeper官方的说明是一种协调分布式服务的应用程序，这个其实很贴合意思。</p>
+
+<h4 id="总结">总结</h4>
+<p>我还是习惯了从代码理解原理，这么跑下来，至少从代码的角度是理解了。初看有点简单，不就是一些节点数据么，但这样也很容易陷入技术细节，所以还是要看几个应用场景的实际例子，从整体上理解。</p>
+
+<p>参考：</p>
+
+<p><a href="https://blog.csdn.net/liyiming2017/article/details/83035157?spm=1001.2014.3001.5501">原创ZooKeeper入门实战教程</a>，这个博主系列文章非常不错，浅显明了。</p>
+
+<p><a href="https://www.cnblogs.com/centos2017/p/8119190.html">Zookeeper 应用实例</a>，入门级的例子。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[《详谈：左晖》读后感]]></title>
@@ -757,9 +826,15 @@ docker rmi 镜像ID <span class="c"># 删除指定的镜像</span>
     <link href="https://c2lang.com/blog/2021/04/16/brew-practices/"/>
     <updated>2021-04-16T09:20:13+08:00</updated>
     <id>https://c2lang.com/blog/2021/04/16/brew-practices</id>
-    <content type="html"><![CDATA[<p>Mac上安装软件基本上都在使用Brew，记录下使用坑。</p>
+    <content type="html"><![CDATA[<p>Mac上安装软件基本上都在使用Brew，做一些记录。</p>
 
-<h4 id="慢">慢</h4>
+<p>###常用命令</p>
+
+<p>brew info 有些软件长时间不用了，记不起来命令的使用，用这个可以查到如何使用。</p>
+
+<p>###常见问题</p>
+
+<h4 id="更新慢">更新慢</h4>
 <p>执行<code class="language-plaintext highlighter-rouge">brew update</code>时很慢的问题，主要是是Github访问慢的缘故，设置从镜像拉取，基本上可以解决这个问题。用了中科大的源，亲测速度感刚的。</p>
 
 <h5 id="替换brewgit">替换<code class="language-plaintext highlighter-rouge">brew.git</code></h5>
@@ -1195,17 +1270,6 @@ x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
 <h3 id="参考">参考</h3>
 <p><a href="https://samsclass.info/127/proj/ASM110.htm">ASM 110: Gdb (30 pts)</a><br />
 <a href="https://deepzz.com/post/gdb-debug.html">GDB命令基础，让你的程序bug无处躲藏</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[《保护方式下的80386及其编程》笔记]]></title>
-    <link href="https://c2lang.com/blog/2021/03/11/programming-the-80386-notes/"/>
-    <updated>2021-03-11T09:42:24+08:00</updated>
-    <id>https://c2lang.com/blog/2021/03/11/programming-the-80386-notes</id>
-    <content type="html"><![CDATA[<p>《保护方式下的80386及其编程》即《Programming the 80386》的中文翻译版，不过当年并没有标注翻译出处。这本书对于写一个基于x86操作系统非常有用，另外对于研究早期的Linux内核也很有参考，因为林纳斯当年也是参考《Programming the 80386》这本书的，包括386BSD的作者也是参考这本书了。</p>
-
-<p>这本书是了解80386的保护模式最好的书籍，关于8086的书籍和汇编语言资料不少，但是关于80386的保护模式书籍很少，很多后来的书籍的知识都是转来转去的，有些只是讲个大概，没有把细节说明清楚，往往是一知半解了。不同的是此书可以说是讲解非常细致，概念很清晰，主要是此书的作者是80386的总设计师，所以这本书如果讲不明白，那还有其他书籍吗。</p>
 ]]></content>
   </entry>
   

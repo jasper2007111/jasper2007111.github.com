@@ -9,7 +9,7 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="学习Docker后，发现还是得学习下k8s，目前使用Spring Cloud，引入k8s后原来现有的架构确实会有些变化，比如k8s的服务与Spring Eureka实际上有些功能相似的地方。最早我打算使用微服务的时候也是看中可以使用其他语言，但实际上使用了Eureka后，发现用其他语言还是有困难的 &hellip;">
+  <meta name="description" content="打包现有Java工程的Jar到Docker镜像，也是遇到了问题。 不熟悉Dockerfile COPY 源 目标 一开始把源和目标的顺序给弄反了，但是还在镜像中有那个文件，结果执行java -jar xxx.jar老提示Error: Unable to access jarfile xxx.jar &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +79,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/04/19/learn-docker-2/">学习Docker使用二</a></h1>
+    
+    
+      <p class="meta">
+		
+        	
+
+
+
+
+2021-04-19 06:01
+		
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>打包现有Java工程的Jar到Docker镜像，也是遇到了问题。</p>
+
+<h4 id="不熟悉dockerfile">不熟悉Dockerfile</h4>
+
+<h6 id="copy-源-目标">COPY 源 目标</h6>
+
+<p>一开始把源和目标的顺序给弄反了，但是还在镜像中有那个文件，结果执行<code class="language-plaintext highlighter-rouge">java -jar xxx.jar</code>老提示<code class="language-plaintext highlighter-rouge">Error: Unable to access jarfile xxx.jar</code>。最后登录到容器内部发现jar的文件大小不对，最后才反应过来把顺序弄反了。</p>
+
+<h4 id="登入容器内部">登入容器内部</h4>
+<p>一开始为了诊断Java运行Jar文件不成功的问题，我就想看看容器内的文件是否已经在。最后用如下命令，登入容器，这个还是比较有用，不过应该去掉镜像的<code class="language-plaintext highlighter-rouge">CMD</code>命令。</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>docker run <span class="nt">-t</span> <span class="nt">-i</span> xxx_container /bin/bash
+</code></pre></div></div>
+
+<h4 id="镜像大小">镜像大小</h4>
+<p>一开始用的<code class="language-plaintext highlighter-rouge">FROM openjdk:8</code>，打出的镜像有800多M，后来使用<code class="language-plaintext highlighter-rouge">FROM openjdk:8-jdk-alpine</code>，大小150多M，我的Jar包实际只有不到50M的样子，所以还是比较大了。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -314,9 +360,15 @@ docker rmi 镜像ID <span class="c"># 删除指定的镜像</span>
   </header>
 
 
-  <div class="entry-content"><p>Mac上安装软件基本上都在使用Brew，记录下使用坑。</p>
+  <div class="entry-content"><p>Mac上安装软件基本上都在使用Brew，做一些记录。</p>
 
-<h4 id="慢">慢</h4>
+<p>###常用命令</p>
+
+<p>brew info 有些软件长时间不用了，记不起来命令的使用，用这个可以查到如何使用。</p>
+
+<p>###常见问题</p>
+
+<h4 id="更新慢">更新慢</h4>
 <p>执行<code class="language-plaintext highlighter-rouge">brew update</code>时很慢的问题，主要是是Github访问慢的缘故，设置从镜像拉取，基本上可以解决这个问题。用了中科大的源，亲测速度感刚的。</p>
 
 <h5 id="替换brewgit">替换<code class="language-plaintext highlighter-rouge">brew.git</code></h5>
@@ -891,39 +943,6 @@ x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2021/03/11/programming-the-80386-notes/">《保护方式下的80386及其编程》笔记</a></h1>
-    
-    
-      <p class="meta">
-		
-        	
-
-
-
-
-2021-03-11 09:42
-		
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>《保护方式下的80386及其编程》即《Programming the 80386》的中文翻译版，不过当年并没有标注翻译出处。这本书对于写一个基于x86操作系统非常有用，另外对于研究早期的Linux内核也很有参考，因为林纳斯当年也是参考《Programming the 80386》这本书的，包括386BSD的作者也是参考这本书了。</p>
-
-<p>这本书是了解80386的保护模式最好的书籍，关于8086的书籍和汇编语言资料不少，但是关于80386的保护模式书籍很少，很多后来的书籍的知识都是转来转去的，有些只是讲个大概，没有把细节说明清楚，往往是一知半解了。不同的是此书可以说是讲解非常细致，概念很清晰，主要是此书的作者是80386的总设计师，所以这本书如果讲不明白，那还有其他书籍吗。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -945,6 +964,10 @@ x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/06/22/learn-zookeeper/">学习Zookeeper的使用</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/06/17/talk-in-detail-zuohui/">《详谈：左晖》读后感</a>
       </li>
     
@@ -958,10 +981,6 @@ x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
     
       <li class="post">
         <a href="/blog/2021/05/27/tiantong-rujing/">天童如净禅师</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/05/04/thinking-about-rss/">关于RSS的思考</a>
       </li>
     
   </ul>
