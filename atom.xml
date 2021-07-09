@@ -4,7 +4,7 @@
   <title><![CDATA[无用之用]]></title>
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   <link href="https://c2lang.com/"/>
-  <updated>2021-06-24T11:31:09+08:00</updated>
+  <updated>2021-07-09T17:25:21+08:00</updated>
   <id>https://c2lang.com/</id>
   <author>
     <name><![CDATA[Jasper Ji]]></name>
@@ -12,6 +12,35 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[开源仓储系统Jeewms使用指南]]></title>
+    <link href="https://c2lang.com/blog/2021/07/02/jeewms-user-guide/"/>
+    <updated>2021-07-02T13:08:11+08:00</updated>
+    <id>https://c2lang.com/blog/2021/07/02/jeewms-user-guide</id>
+    <content type="html"><![CDATA[<p>一直想找一款开源仓储系统，发现<a href="https://gitee.com/erzhongxmu/jeewms">Jeewms</a>还不错，也有演示Demo。这个主要放在Gitee上大概有3.2K的Star，使用Java开发。</p>
+
+<h3 id="java">Java</h3>
+<p>主要遇到的坑是JDK版本一定要是Java 8，我本地因为安装最新的Eclispe时安装了Java 11，结果编译后报各种错，一直没有跑起来，主要是Java 11去掉了某些库。最后设置JAVA_HOME为Java 8后就好了。</p>
+
+<h3 id="数据库">数据库</h3>
+<p>这个项目的数据库的设计上字段名称上有些使用英文命名，业务部分的字段是拼音命名，好在不是简写的，另外也有个数据库设计文件可以参考，字段上也有注释，对于习惯了使用英文命名的人来说可能会想着修改，但是还是有难度的，不建议重构。</p>
+
+<p>也使了用视图，知道这个东西，但实际项目中并没有使用过，如果没有用过的需要注意下。</p>
+
+<p>也使用了触发器的东西，也需要注意下，如果是直接拿项目里面的sql文件还原的话问题不大，但如果是重新导出sql的时候一定要注意，触发器这些设置也要一并导出，像我使用的MySQL Workbench默认是没有勾选的，而我也没有太注意是否使用了触发器，结果本地好着了，正式服务器却发现有问题，一查看是一个字段没有更新的缘故，习惯性的在代码里面查找哪里有修改，结果没有发现，最后查看二进制日志，最后想到应该是触发器的问题，结果果然是通过触发器更新的，而服务器上的因为导出的sql没有勾选触发器的缘故。</p>
+
+<h3 id="架构方面">架构方面</h3>
+<p>这个使用Tomcat+Spring MVC，并不是现在流行的SpringBoot，所以对于只接触过SpringBoot的人需要注意下。操作数据方面使用的是Hibernat，反正没有用过，只使用过Mybatis，感觉还是学习下的。视图方面使用的是JSP，之前只使用Thymeleaf。</p>
+
+<h3 id="业务规则">业务规则</h3>
+<p>这块并没有详细的文档说明，如果没有做个仓储系统的，需要修改一些东西还是会有点摸不着头绪，需要好好的厘清下。</p>
+
+<h3 id="总结">总结</h3>
+<p>这个项目是可以拿来用的，但要重构架构的话可能比较有难度，因为并不是最新的技术，并不是很适合拿来学习，如果不了解之前的这类项目的开发技术的话，倒也是一种参考。</p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[学习Zookeeper的使用]]></title>
@@ -1237,39 +1266,6 @@ print-stack <span class="c"># 查看栈的内容</span>
 
 <h4 id="参考">参考</h4>
 <p><a href="https://techlog.cn/article/list/10183462">如何调试操作系统</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[NASM 笔记]]></title>
-    <link href="https://c2lang.com/blog/2021/03/22/nasm-notes/"/>
-    <updated>2021-03-22T14:57:28+08:00</updated>
-    <id>https://c2lang.com/blog/2021/03/22/nasm-notes</id>
-    <content type="html"><![CDATA[<h3 id="编译">编译</h3>
-<p>目前使用的是64位的Ubuntu环境，默认会编译成64位的，编译成32位的在参数上有些差异。</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>nasm <span class="nt">-f</span> elf32 foo.asm <span class="nt">-o</span> foo.o <span class="c"># NASM编译成ELF32位目标文件</span>
-gcc <span class="nt">-m32</span> <span class="nt">-g</span> <span class="nt">-c</span> bar.c <span class="nt">-o</span> bar.o <span class="c"># GCC编译成32的目标文件</span>
-ld <span class="nt">-m</span> elf_i386 foo.o bar.o <span class="nt">-o</span> foobar <span class="c"># 链接目标文件，生成执行文件</span>
-</code></pre></div></div>
-
-<h3 id="gdb">GDB</h3>
-<p>一些常用的GDB调试的命令</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">set </span>disassembly-flavor intel <span class="c"># 默认AT&amp;T格式，可以设置为Intel格式</span>
-disassemble _start <span class="c"># 反汇编，这一步主要是为了后续设置断点用</span>
-<span class="nb">break</span> <span class="k">*</span> _start + 10 <span class="c"># 设置断点，此处是_start开始的第10行代码处</span>
-run <span class="c"># 执行程序，设置断点后会停在断点处</span>
-step <span class="c"># 单步调试，可以简写为s</span>
-info registers <span class="c"># 显示寄存器</span>
-layout reg <span class="c"># 一般我会使用这个</span>
-q <span class="c"># 退出程序</span>
-x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
-</code></pre></div></div>
-
-<h3 id="参考">参考</h3>
-<p><a href="https://samsclass.info/127/proj/ASM110.htm">ASM 110: Gdb (30 pts)</a><br />
-<a href="https://deepzz.com/post/gdb-debug.html">GDB命令基础，让你的程序bug无处躲藏</a></p>
 ]]></content>
   </entry>
   

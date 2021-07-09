@@ -9,7 +9,8 @@
   <meta name="author" content="Jasper Ji">
 
   
-  <meta name="description" content="打包现有Java工程的Jar到Docker镜像，也是遇到了问题。 不熟悉Dockerfile COPY 源 目标 一开始把源和目标的顺序给弄反了，但是还在镜像中有那个文件，结果执行java -jar xxx.jar老提示Error: Unable to access jarfile xxx.jar &hellip;">
+  <meta name="description" content="是在Mac环境下跑的例子。 安装ELK相关软件
+ELK主要指Elasticsearch、Logstash、Kibana，使用elastic.co提供的安装指南，使用Brew安装。 切换Tab brew tap elastic/tap 安装软件 brew install elastic/tap/ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -79,6 +80,162 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2021/04/23/springboot-elk/">Spring Boot使用ELK</a></h1>
+    
+    
+      <p class="meta">
+		
+        	
+
+
+
+
+2021-04-23 08:31
+		
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>是在Mac环境下跑的例子。</p>
+
+<h4 id="安装elk相关软件">安装ELK相关软件</h4>
+<p>ELK主要指Elasticsearch、Logstash、Kibana，使用<code class="language-plaintext highlighter-rouge">elastic.co</code>提供的安装指南，使用Brew安装。</p>
+
+<p>切换Tab</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>brew tap elastic/tap
+</code></pre></div></div>
+
+<p>安装软件</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>brew <span class="nb">install </span>elastic/tap/elasticsearch-full  <span class="c"># 安装Elasticsearch</span>
+brew <span class="nb">install </span>elastic/tap/logstash-full <span class="c"># Logstash</span>
+brew <span class="nb">install </span>elastic/tap/kibana-full <span class="c"># Kibana</span>
+</code></pre></div></div>
+
+<p>可以在前台或者后台启动软件</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>brew services start elastic/tap/elasticsearch-full <span class="c"># 后台启动</span>
+elasticsearch <span class="c"># 前台启动</span>
+
+brew services start elastic/tap/logstash-full
+logstash
+
+brew services start elastic/tap/kibana-full
+kibana
+</code></pre></div></div>
+
+<h4 id="spring-boot配置">Spring Boot配置</h4>
+<p>Maven添加Logstash依赖</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nt">&lt;dependency&gt;</span>
+	<span class="nt">&lt;groupId&gt;</span>net.logstash.logback<span class="nt">&lt;/groupId&gt;</span>
+	<span class="nt">&lt;artifactId&gt;</span>logstash-logback-encoder<span class="nt">&lt;/artifactId&gt;</span>
+	<span class="nt">&lt;version&gt;</span>5.3<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<p>在Resources目录下添加<code class="language-plaintext highlighter-rouge">logback-spring.xml</code>配置文件</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>&lt;?xml <span class="nv">version</span><span class="o">=</span><span class="s2">"1.0"</span> <span class="nv">encoding</span><span class="o">=</span><span class="s2">"UTF-8"</span>?&gt;
+&lt;configuration&gt;
+    &lt;include <span class="nv">resource</span><span class="o">=</span><span class="s2">"org/springframework/boot/logging/logback/base.xml"</span> /&gt;
+    &lt;appender <span class="nv">name</span><span class="o">=</span><span class="s2">"LOGSTASH"</span> <span class="nv">class</span><span class="o">=</span><span class="s2">"net.logstash.logback.appender.LogstashTcpSocketAppender"</span><span class="o">&gt;</span>
+    	&lt;<span class="o">!</span><span class="nt">--</span> 配置输出地址 <span class="nt">--</span><span class="o">&gt;</span>
+        &lt;destination&gt;127.0.0.1:4560&lt;/destination&gt;
+        &lt;<span class="o">!</span><span class="nt">--</span> 日志输出编码 <span class="nt">--</span><span class="o">&gt;</span>
+        &lt;encoder <span class="nv">charset</span><span class="o">=</span><span class="s2">"UTF-8"</span>
+                <span class="nv">class</span><span class="o">=</span><span class="s2">"net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder"</span><span class="o">&gt;</span>
+            &lt;providers&gt;
+                &lt;timestamp&gt;
+                    &lt;timeZone&gt;UTC&lt;/timeZone&gt;
+                &lt;/timestamp&gt;
+                &lt;pattern&gt;
+                    &lt;pattern&gt;
+                        <span class="o">{</span>
+                        <span class="s2">"logLevel"</span>: <span class="s2">"%level"</span>,
+                        <span class="s2">"serviceName"</span>: <span class="s2">"</span><span class="k">${</span><span class="nv">springAppName</span><span class="k">:-}</span><span class="s2">"</span>,
+                        <span class="s2">"pid"</span>: <span class="s2">"</span><span class="k">${</span><span class="nv">PID</span><span class="k">:-}</span><span class="s2">"</span>,
+                        <span class="s2">"thread"</span>: <span class="s2">"%thread"</span>,
+                        <span class="s2">"class"</span>: <span class="s2">"%logger{40}"</span>,
+                        <span class="s2">"rest"</span>: <span class="s2">"%message"</span>
+                        <span class="o">}</span>
+                    &lt;/pattern&gt;
+                &lt;/pattern&gt;
+            &lt;/providers&gt;
+        &lt;/encoder&gt;
+    &lt;/appender&gt;
+    &lt;root <span class="nv">level</span><span class="o">=</span><span class="s2">"INFO"</span><span class="o">&gt;</span>
+        &lt;appender-ref <span class="nv">ref</span><span class="o">=</span><span class="s2">"LOGSTASH"</span> /&gt;
+        &lt;appender-ref <span class="nv">ref</span><span class="o">=</span><span class="s2">"CONSOLE"</span> /&gt;
+    &lt;/root&gt;
+&lt;/configuration&gt;
+</code></pre></div></div>
+<p>配置Logstash，创建一个<code class="language-plaintext highlighter-rouge">logstash-sample.conf</code>文件</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>input {
+  tcp {
+    mode =&gt; "server"
+    host =&gt; "0.0.0.0"
+    port =&gt; 4560
+    codec =&gt; json
+  }
+}
+output{
+  elasticsearch {
+     hosts =&gt; ["http://localhost:9200"] # Elasticsearch 地址
+     index =&gt; "spring_cms-%{+YYYY.MM.dd}" # 这里我用spring_cms，可以替换为自己的。需要注意ES关于索引的命名规范
+  }
+}
+</code></pre></div></div>
+
+<p>使用配置文件重启Logstash服务</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>logstash  <span class="nt">-f</span> logstash-sample.conf
+</code></pre></div></div>
+
+<p>最后在项目中输出一段测试日志</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="n">logger</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">"Hello，ELK"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>最后在Kibana创建索引就应该能看到日志了。</p>
+
+<h4 id="额外工具">额外工具</h4>
+
+<p>一开始发现Kibana中没有数据，猜测Elasticsearch没有收到数据，最后用到了<a href="https://github.com/mobz/elasticsearch-head">ElasticSearch head</a>这个可以查看Elasticsearch存储的工具，具体安装可以参考Github的说明。</p>
+
+<p>运行这个工具遇到问题，发现ElasticSearch连接不上，原来是跨域访问的问题，使用brew安装ElasticSearch后会有如下目录</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>Data:    /usr/local/var/lib/elasticsearch/elasticsearch_xxxx/ # xxxx此处是你自己的电脑名
+Logs:    /usr/local/var/log/elasticsearch/elasticsearch_xxxx.log # xxxx此处是你自己的电脑名
+Plugins: /usr/local/var/elasticsearch/plugins/
+Config:  /usr/local/etc/elasticsearch/
+</code></pre></div></div>
+
+<p>编辑配置文件<code class="language-plaintext highlighter-rouge">nano /usr/local/etc/elasticsearch/elasticsearch.yml</code>，添加如下配置。</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>http.cors.enabled: true
+http.cors.allow-origin: "*"
+</code></pre></div></div>
+<p>最后就可以正常访问了。</p>
+
+<h4 id="总结">总结</h4>
+<p>使用ELK访问日志确实很方便，实际开发中可能会使用云服务商提供ELK服务。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -888,61 +1045,6 @@ print-stack <span class="c"># 查看栈的内容</span>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2021/03/22/nasm-notes/">NASM 笔记</a></h1>
-    
-    
-      <p class="meta">
-		
-        	
-
-
-
-
-2021-03-22 14:57
-		
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><h3 id="编译">编译</h3>
-<p>目前使用的是64位的Ubuntu环境，默认会编译成64位的，编译成32位的在参数上有些差异。</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code>nasm <span class="nt">-f</span> elf32 foo.asm <span class="nt">-o</span> foo.o <span class="c"># NASM编译成ELF32位目标文件</span>
-gcc <span class="nt">-m32</span> <span class="nt">-g</span> <span class="nt">-c</span> bar.c <span class="nt">-o</span> bar.o <span class="c"># GCC编译成32的目标文件</span>
-ld <span class="nt">-m</span> elf_i386 foo.o bar.o <span class="nt">-o</span> foobar <span class="c"># 链接目标文件，生成执行文件</span>
-</code></pre></div></div>
-
-<h3 id="gdb">GDB</h3>
-<p>一些常用的GDB调试的命令</p>
-
-<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="codehilite"><code><span class="nb">set </span>disassembly-flavor intel <span class="c"># 默认AT&amp;T格式，可以设置为Intel格式</span>
-disassemble _start <span class="c"># 反汇编，这一步主要是为了后续设置断点用</span>
-<span class="nb">break</span> <span class="k">*</span> _start + 10 <span class="c"># 设置断点，此处是_start开始的第10行代码处</span>
-run <span class="c"># 执行程序，设置断点后会停在断点处</span>
-step <span class="c"># 单步调试，可以简写为s</span>
-info registers <span class="c"># 显示寄存器</span>
-layout reg <span class="c"># 一般我会使用这个</span>
-q <span class="c"># 退出程序</span>
-x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
-</code></pre></div></div>
-
-<h3 id="参考">参考</h3>
-<p><a href="https://samsclass.info/127/proj/ASM110.htm">ASM 110: Gdb (30 pts)</a><br />
-<a href="https://deepzz.com/post/gdb-debug.html">GDB命令基础，让你的程序bug无处躲藏</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/3">&larr; Older</a>
@@ -964,6 +1066,10 @@ x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2021/07/02/jeewms-user-guide/">开源仓储系统Jeewms使用指南</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2021/06/22/learn-zookeeper/">学习Zookeeper的使用</a>
       </li>
     
@@ -977,10 +1083,6 @@ x 0xffffd070 <span class="c"># 查看0xffffd070地址处的内存</span>
     
       <li class="post">
         <a href="/blog/2021/06/02/learning-gtk/">学习GTK</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2021/05/27/tiantong-rujing/">天童如净禅师</a>
       </li>
     
   </ul>
