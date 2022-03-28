@@ -730,7 +730,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-08 09:01:17" itemprop="dateModified" datetime="2021-03-08T09:01:17+08:00">2021-03-08</time>
+                <time title="Modified: 2022-03-29 00:05:50" itemprop="dateModified" datetime="2022-03-29T00:05:50+08:00">2022-03-29</time>
               </span>
 
           
@@ -745,6 +745,9 @@
 
       
           <p>服务器一直使用的是CentOS，所以特做一下使用备注。基于的版本是<code>CentOS 8.0</code></p>
+<h4 id="AppStream下载元数据失败"><a href="#AppStream下载元数据失败" class="headerlink" title="AppStream下载元数据失败"></a>AppStream下载元数据失败</h4><p>主要参考阿里云的<a target="_blank" rel="noopener" href="https://developer.aliyun.com/mirror/centos?spm=a2c6h.13651102.0.0.521f1b115QnBld&accounttraceid=c111d6bbda4248d09e149ccc2637ff58pajx">CentOS 镜像</a>，设置完成后还会提示<code>AppStream下载元数据失败</code>的问题，需要把整个<code>/etc/yum.repos.d </code>整个目录备份，重新创建一个，再执行就好了。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mv</span> /etc/yum.repos.d /etc/yum.repos.d.backup</span><br><span class="line"><span class="built_in">mkdir</span> /etc/yum.repos.d</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <h4 id="VirtualBox安装"><a href="#VirtualBox安装" class="headerlink" title="VirtualBox安装"></a>VirtualBox安装</h4><p>使用VirtualBox安装会存在兼容问题，6.1的版本无法运行<code>CentOS-8.1.1911</code>，主要这个版本移除VBoxVGA的支持，所以只能使用6.0版本。</p>
 <h5 id="查看-CentOS-版本"><a href="#查看-CentOS-版本" class="headerlink" title="查看 CentOS 版本"></a>查看 CentOS 版本</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/centos-release</span><br><span class="line">CentOS Linux release 8.1.1911 (Core) </span><br></pre></td></tr></table></figure>
 
