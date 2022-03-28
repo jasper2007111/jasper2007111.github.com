@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="是在Mac环境下跑的例子。 安装ELK相关软件ELK主要指Elasticsearch、Logstash、Kibana，使用elastic.co提供的安装指南，使用Brew安装。 切换Tab 1brew tap elastic&#x2F;tap  安装软件 123brew install elastic&#x2F;tap&#x2F;elasticsearch-full  # 安装Elasticsearchbrew install">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring Boot使用ELK">
+<meta property="og:url" content="http://example.com/2021/04/23/2021-04-23-springboot-elk/index.html">
+<meta property="og:site_name" content="Jasper Ji">
+<meta property="og:description" content="是在Mac环境下跑的例子。 安装ELK相关软件ELK主要指Elasticsearch、Logstash、Kibana，使用elastic.co提供的安装指南，使用Brew安装。 切换Tab 1brew tap elastic&#x2F;tap  安装软件 123brew install elastic&#x2F;tap&#x2F;elasticsearch-full  # 安装Elasticsearchbrew install">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-04-23T00:31:23.000Z">
+<meta property="article:modified_time" content="2021-04-30T17:04:21.371Z">
+<meta property="article:author" content="Jasper Ji">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/04/23/2021-04-23-springboot-elk/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>Spring Boot使用ELK | Jasper Ji</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jasper Ji</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">始以竹篦子久知痛痒，后因一滴水渐至澎冲。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/04/23/2021-04-23-springboot-elk/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring Boot使用ELK
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-04-23 08:31:23" itemprop="dateCreated datePublished" datetime="2021-04-23T08:31:23+08:00">2021-04-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-05-01 01:04:21" itemprop="dateModified" datetime="2021-05-01T01:04:21+08:00">2021-05-01</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>是在Mac环境下跑的例子。</p>
+<h4 id="安装ELK相关软件"><a href="#安装ELK相关软件" class="headerlink" title="安装ELK相关软件"></a>安装ELK相关软件</h4><p>ELK主要指Elasticsearch、Logstash、Kibana，使用<code>elastic.co</code>提供的安装指南，使用Brew安装。</p>
+<p>切换Tab</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew tap elastic/tap</span><br></pre></td></tr></table></figure>
+
+<p>安装软件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew install elastic/tap/elasticsearch-full  <span class="comment"># 安装Elasticsearch</span></span><br><span class="line">brew install elastic/tap/logstash-full <span class="comment"># Logstash</span></span><br><span class="line">brew install elastic/tap/kibana-full <span class="comment"># Kibana</span></span><br></pre></td></tr></table></figure>
+
+<p>可以在前台或者后台启动软件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">brew services start elastic/tap/elasticsearch-full <span class="comment"># 后台启动</span></span><br><span class="line">elasticsearch <span class="comment"># 前台启动</span></span><br><span class="line"></span><br><span class="line">brew services start elastic/tap/logstash-full</span><br><span class="line">logstash</span><br><span class="line"></span><br><span class="line">brew services start elastic/tap/kibana-full</span><br><span class="line">kibana</span><br></pre></td></tr></table></figure>
+
+<h4 id="Spring-Boot配置"><a href="#Spring-Boot配置" class="headerlink" title="Spring Boot配置"></a>Spring Boot配置</h4><p>Maven添加Logstash依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>net.logstash.logback<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logstash-logback-encoder<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>5.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在Resources目录下添加<code>logback-spring.xml</code>配置文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;include resource=<span class="string">&quot;org/springframework/boot/logging/logback/base.xml&quot;</span> /&gt;</span><br><span class="line">    &lt;appender name=<span class="string">&quot;LOGSTASH&quot;</span> class=<span class="string">&quot;net.logstash.logback.appender.LogstashTcpSocketAppender&quot;</span>&gt;</span><br><span class="line">    	&lt;!-- 配置输出地址 --&gt;</span><br><span class="line">        &lt;destination&gt;127.0.0.1:4560&lt;/destination&gt;</span><br><span class="line">        &lt;!-- 日志输出编码 --&gt;</span><br><span class="line">        &lt;encoder charset=<span class="string">&quot;UTF-8&quot;</span></span><br><span class="line">                class=<span class="string">&quot;net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder&quot;</span>&gt;</span><br><span class="line">            &lt;providers&gt;</span><br><span class="line">                &lt;timestamp&gt;</span><br><span class="line">                    &lt;timeZone&gt;UTC&lt;/timeZone&gt;</span><br><span class="line">                &lt;/timestamp&gt;</span><br><span class="line">                &lt;pattern&gt;</span><br><span class="line">                    &lt;pattern&gt;</span><br><span class="line">                        &#123;</span><br><span class="line">                        <span class="string">&quot;logLevel&quot;</span>: <span class="string">&quot;%level&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;serviceName&quot;</span>: <span class="string">&quot;<span class="variable">$&#123;springAppName:-&#125;</span>&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;pid&quot;</span>: <span class="string">&quot;<span class="variable">$&#123;PID:-&#125;</span>&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;thread&quot;</span>: <span class="string">&quot;%thread&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;class&quot;</span>: <span class="string">&quot;%logger&#123;40&#125;&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;rest&quot;</span>: <span class="string">&quot;%message&quot;</span></span><br><span class="line">                        &#125;</span><br><span class="line">                    &lt;/pattern&gt;</span><br><span class="line">                &lt;/pattern&gt;</span><br><span class="line">            &lt;/providers&gt;</span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line">    &lt;root level=<span class="string">&quot;INFO&quot;</span>&gt;</span><br><span class="line">        &lt;appender-ref ref=<span class="string">&quot;LOGSTASH&quot;</span> /&gt;</span><br><span class="line">        &lt;appender-ref ref=<span class="string">&quot;CONSOLE&quot;</span> /&gt;</span><br><span class="line">    &lt;/root&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
+<p>配置Logstash，创建一个<code>logstash-sample.conf</code>文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">  tcp &#123;</span><br><span class="line">    mode =&gt; &quot;server&quot;</span><br><span class="line">    host =&gt; &quot;0.0.0.0&quot;</span><br><span class="line">    port =&gt; 4560</span><br><span class="line">    codec =&gt; json</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">output&#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">     hosts =&gt; [&quot;http://localhost:9200&quot;] # Elasticsearch 地址</span><br><span class="line">     index =&gt; &quot;spring_cms-%&#123;+YYYY.MM.dd&#125;&quot; # 这里我用spring_cms，可以替换为自己的。需要注意ES关于索引的命名规范</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用配置文件重启Logstash服务</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logstash  -f logstash-sample.conf</span><br></pre></td></tr></table></figure>
+
+<p>最后在项目中输出一段测试日志</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.info(<span class="string">&quot;Hello，ELK&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>最后在Kibana创建索引就应该能看到日志了。</p>
+<h4 id="额外工具"><a href="#额外工具" class="headerlink" title="额外工具"></a>额外工具</h4><p>一开始发现Kibana中没有数据，猜测Elasticsearch没有收到数据，最后用到了<a target="_blank" rel="noopener" href="https://github.com/mobz/elasticsearch-head">ElasticSearch head</a>这个可以查看Elasticsearch存储的工具，具体安装可以参考Github的说明。</p>
+<p>运行这个工具遇到问题，发现ElasticSearch连接不上，原来是跨域访问的问题，使用brew安装ElasticSearch后会有如下目录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Data:    /usr/local/var/lib/elasticsearch/elasticsearch_xxxx/ # xxxx此处是你自己的电脑名</span><br><span class="line">Logs:    /usr/local/var/log/elasticsearch/elasticsearch_xxxx.log # xxxx此处是你自己的电脑名</span><br><span class="line">Plugins: /usr/local/var/elasticsearch/plugins/</span><br><span class="line">Config:  /usr/local/etc/elasticsearch/</span><br></pre></td></tr></table></figure>
+
+<p>编辑配置文件<code>nano /usr/local/etc/elasticsearch/elasticsearch.yml</code>，添加如下配置。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http.cors.enabled: true</span><br><span class="line">http.cors.allow-origin: &quot;*&quot;</span><br></pre></td></tr></table></figure>
+<p>最后就可以正常访问了。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>使用ELK访问日志确实很方便，实际开发中可能会使用云服务商提供ELK服务。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/19/2021-04-19-learn-docker-2/" rel="prev" title="学习Docker使用二">
+      <i class="fa fa-chevron-left"></i> 学习Docker使用二
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/04/26/2021-04-26-springboot-elasticsearch/" rel="next" title="Spring Boot使用Elasticsearch">
+      Spring Boot使用Elasticsearch <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85ELK%E7%9B%B8%E5%85%B3%E8%BD%AF%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">安装ELK相关软件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Spring-Boot%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">Spring Boot配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%9D%E5%A4%96%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text">额外工具</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jasper Ji</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jasper Ji</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

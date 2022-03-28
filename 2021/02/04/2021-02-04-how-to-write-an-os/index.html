@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="缘起做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。 大概7、8年前买过一本《Orange’S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何写一个操作系统">
+<meta property="og:url" content="http://example.com/2021/02/04/2021-02-04-how-to-write-an-os/index.html">
+<meta property="og:site_name" content="Jasper Ji">
+<meta property="og:description" content="缘起做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。 大概7、8年前买过一本《Orange’S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-02-04T14:21:27.000Z">
+<meta property="article:modified_time" content="2021-07-09T07:05:35.470Z">
+<meta property="article:author" content="Jasper Ji">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/02/04/2021-02-04-how-to-write-an-os/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>如何写一个操作系统 | Jasper Ji</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jasper Ji</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">始以竹篦子久知痛痒，后因一滴水渐至澎冲。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/02/04/2021-02-04-how-to-write-an-os/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何写一个操作系统
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-02-04 22:21:27" itemprop="dateCreated datePublished" datetime="2021-02-04T22:21:27+08:00">2021-02-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-07-09 15:05:35" itemprop="dateModified" datetime="2021-07-09T15:05:35+08:00">2021-07-09</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h3><p>做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。</p>
+<p>大概7、8年前买过一本《Orange’S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太难了，中间需要跨越的东西太多了。渐渐就放弃了，后来直接把这两本书给卖掉了。</p>
+<p>今年突然间又想，我应该尝试写一个简单的操作系统，多年的工作以及自学，使得我对编程有了一个相对完整的认识，这个想法似乎不像当年那么不靠谱。但该如何下手呢？刚开始我只想能跑一个<code>Hello wrold</code>的例子也可以，网上找了下最多的居然是我当年卖掉的那本《Orange’S 一个操作系统实现》书中的例子，可惜当年我也没怎么看懂，只是买了本书而已。</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>最简单的例子，来自《Orange’S 一个操作系统实现》一书。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">	org 07c00h			; 告诉编译器程序加载到7c00处</span><br><span class="line">	mov ax, cs</span><br><span class="line">	mov ds, ax</span><br><span class="line">	mov es, ax</span><br><span class="line">	call DispStr			; 调用显示字符串例程</span><br><span class="line">	jmp $			; 无限循环</span><br><span class="line">DispStr:</span><br><span class="line">	mov ax, BootMessage</span><br><span class="line">	mov bp, ax			; ES:BP = 串地址</span><br><span class="line">	mov cx, 16			; CX = 串长度</span><br><span class="line">	mov ax, 01301h		; AH = 13,  AL = 01h</span><br><span class="line">	mov bx, 000ch		; 页号为0(BH = 0) 黑底红字(BL = 0Ch,高亮)</span><br><span class="line">	mov dl, 0</span><br><span class="line">	int 10h			; 10h 号中断</span><br><span class="line">	ret</span><br><span class="line">BootMessage:		db	&quot;Hello, OS world!&quot;</span><br><span class="line">times 	510-($-$$)	db	0	; 填充剩下的空间，使生成的二进制代码恰好为512字节</span><br><span class="line">dw 	0xaa55				; 结束标志</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这就是一个直接运行到硬件上的一段程序，而不是我们平时在操作系统写应用代码那样。对于一个实践者而言，我很想把这段程序跑起来，这很关键，只要能跑起来，我们就可以试图修改下，再跑起来，这样认识上才能有提高。其实跑这个例子也是费了点功夫，首先在虚拟机上安装了一个的Linux发行版Ubuntu系统，书中用到的汇编是跟MASM很相似的NASM，首先NASM的教程不多，不过还好可以参考MASM汇编的书籍。另外就是软盘的制作相关的东西，最后是安装Bochs虚拟机，这个虚拟机跟平时用的有些特别，不过还是了解如何操作，最后成功的把这个例子跑了起来。</p>
+<h3 id="汇编和CPU"><a href="#汇编和CPU" class="headerlink" title="汇编和CPU"></a>汇编和CPU</h3><p>似乎可以继续一路向前了，可惜看了头三章后，我发现了些问题。首先我对NASM汇编的东西几乎是一片空白，书的前几章几乎离不开汇编语言了，而看的非常吃力。另一个是我对PC的体系缺乏细节的了解，虽然之前也有了解但实操的过程中遇到的问题更具体。</p>
+<p>NASM的书籍不多，《汇编语言.基于Linux环境.第三版》是一本从体系的角度来讲解NASM的书籍，一方面学习了NASM，也让我重新思考从8086到80386的一些变化，好几个点很有启发。王爽老师的《汇编语言》，也是一本非常不错的参考书，汇编语言在形式上与高级语言还是有着巨大差异，一开始我把心思放在那些寄存器之类上了，而忽略了一个编程语言应该是能够写点东西出来这事上。《汇编语言》这书很好的带我进入如何写点东西的正轨上。</p>
+<p>8086方面的书籍，8086总设计师莫尔斯写的《8086初阶-体系结构、系统设计和程序设计入门》。王爽老师《汇编语言》也主要是讲8086的汇编的。80386的书籍不多，80386的设计师写的《Programing the 80386》一书，非常不错。中文版是93年出版的《保护方式下80386及其编程》一书，虽然没有备注是翻译，但我跟英文版对照后，确认就是翻译自《Programing the 80386》，主要是学习保护模式。</p>
+<p>这里需要注意的是实模式与保护模式的差别，很多时候一开始如果研究的是8086的，往往需要转换下思维，最好的书籍依旧是《保护方式下80386及其编程》一书，于渊的《Orange’S 一个操作系统实现》细节上还是有点模糊。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最终操作系统并没有完整的实验下去，主要是因为最难的部分也是最容易忽略的如何在特定架构上如何开始，把这一步迈过去后，基本上跟大多操作系统讲的差不多了，主要部分就是使用C语言来实现。</p>
+<p>虽然实验已经过去了几个月了，最近一直在看Java并发的东西，发现实际写过点操作系统还是很有帮助的，比如更能从CPU的角度来思考。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/05/2021-01-05-how-to-configure-mysql-8-master-slave-replication-on-centos-8/" rel="prev" title="在CentOS 8上Mysql 8.0的主从配置实践">
+      <i class="fa fa-chevron-left"></i> 在CentOS 8上Mysql 8.0的主从配置实践
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/11/2021-03-11-programming-the-80386-notes/" rel="next" title="《保护方式下的80386及其编程》笔记">
+      《保护方式下的80386及其编程》笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%98%E8%B5%B7"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">2.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B1%87%E7%BC%96%E5%92%8CCPU"><span class="nav-number">3.</span> <span class="nav-text">汇编和CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jasper Ji</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jasper Ji</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

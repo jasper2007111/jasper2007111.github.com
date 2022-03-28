@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Gitlab部署后一年多基本没出问题，最近一次提交突然失败，后台也登不上去了，显示502错误页面。用top命令确实发现CPU飙升，满负荷运行，怎么办呢？ 重启重启可能是最实用的方法吧，于是我第一步就先重启，刚一开始还能访问下，但很快就不行了，发现CUP还是很高。 升级后来发现好像是Gitlab漏洞的问题，于是就像想着赶紧升级到最新的版本吧。一顿猛操作，就把版本升级到最新的版本了，但还是无法访问，C">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记Gitlab一次故障">
+<meta property="og:url" content="http://example.com/2021/11/12/2021-11-12-remembering-a-gitlab-failure/index.html">
+<meta property="og:site_name" content="Jasper Ji">
+<meta property="og:description" content="Gitlab部署后一年多基本没出问题，最近一次提交突然失败，后台也登不上去了，显示502错误页面。用top命令确实发现CPU飙升，满负荷运行，怎么办呢？ 重启重启可能是最实用的方法吧，于是我第一步就先重启，刚一开始还能访问下，但很快就不行了，发现CUP还是很高。 升级后来发现好像是Gitlab漏洞的问题，于是就像想着赶紧升级到最新的版本吧。一顿猛操作，就把版本升级到最新的版本了，但还是无法访问，C">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-11-12T03:52:59.000Z">
+<meta property="article:modified_time" content="2022-03-17T02:53:39.197Z">
+<meta property="article:author" content="Jasper Ji">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2021/11/12/2021-11-12-remembering-a-gitlab-failure/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>记Gitlab一次故障 | Jasper Ji</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jasper Ji</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">始以竹篦子久知痛痒，后因一滴水渐至澎冲。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/11/12/2021-11-12-remembering-a-gitlab-failure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          记Gitlab一次故障
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-11-12 11:52:59" itemprop="dateCreated datePublished" datetime="2021-11-12T11:52:59+08:00">2021-11-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-03-17 10:53:39" itemprop="dateModified" datetime="2022-03-17T10:53:39+08:00">2022-03-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>Gitlab部署后一年多基本没出问题，最近一次提交突然失败，后台也登不上去了，显示502错误页面。用<code>top</code>命令确实发现CPU飙升，满负荷运行，怎么办呢？</p>
+<h4 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h4><p>重启可能是最实用的方法吧，于是我第一步就先重启，刚一开始还能访问下，但很快就不行了，发现CUP还是很高。</p>
+<h4 id="升级"><a href="#升级" class="headerlink" title="升级"></a>升级</h4><p>后来发现好像是Gitlab漏洞的问题，于是就像想着赶紧升级到最新的版本吧。一顿猛操作，就把版本升级到最新的版本了，但还是无法访问，CPU还是占用很高。</p>
+<h4 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h4><p>使用<code>gitlab-ctl start</code>后并没有哪个是异常的，然后使用<code>gitlab-ctl status</code>，也是没有看出问题。最后决定查看日志吧，其实这个应该是最先想到的，可是每次都有点滞后。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/var/log/gitlab/gitlab-rails/production.log <span class="comment"># Gitlab日志目录</span></span><br><span class="line"></span><br><span class="line">gitlab-ctl <span class="built_in">tail</span> <span class="comment"># 也可以用这个查询</span></span><br></pre></td></tr></table></figure>
+
+<p>发现是数据库连接的问题，最新版本和我原来的数据是不同的版本，无法直接升级。</p>
+<h4 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h4><p>我之前安装的Gitlab是什么版本？原来也没有太注意。但这个很重要，我最后是通过备份文件的后缀知道我原来安装的版本的，我根据Postgres报错信息，定位到了原来的Postgres是11，但是发现Gitlab12和13版本，我先选择的12，是可以访问了，但是项目点进去后项目显示不存在。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /opt/gitlab/embedded/service/gitlab-rails/VERSION <span class="comment"># 比较靠谱</span></span><br><span class="line">网址/help <span class="comment"># 这个也可以查，但是网站502时不行。</span></span><br><span class="line">sudo gitlab-rake gitlab:<span class="built_in">env</span>:info <span class="comment"># 这个方法，我第一次使用的时候，因为有个报错所以也不行。</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h4><p>我已经有点想放弃了，干脆重装或者换个Gitlab类似的东西。可作为一个技术，还是决定再试下。网上说要恢复备份，好在Gitlab有一个默认备份，大概是7天备份一次，还好我最近一直没有提交过。我决定恢复备份，结果发现版本不对，备份的后缀有一个版本号，是13.0.4，而我装的是12。于是又下载重装了版本。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/opt/gitlab/backups <span class="comment"># 默认备份路径</span></span><br></pre></td></tr></table></figure>
+
+<p>重装后实际上还不能访问，需要恢复备份。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-rake gitlab:backup:restore BACKUP=需要恢复的版本名称 <span class="comment"># _gitlab_backup.tar 之前的所有。</span></span><br></pre></td></tr></table></figure>
+
+<p>最后成功运行。</p>
+<h4 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h4><p>执行<code>gitlab-ctl reconfigure</code>报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PG::ConnectionBad: could not connect to server: No such file or directory</span><br><span class="line">Is the server running locally and accepting</span><br><span class="line">connections on Unix domain socket “/var/opt/gitlab/postgresql/.s.PGSQL.5432”?</span><br></pre></td></tr></table></figure>
+
+<p>解决方案</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo gitlab-ctl stop <span class="comment"># 停止gitlab</span></span><br><span class="line">sudo <span class="built_in">chmod</span> 755 /var/opt/gitlab/postgresql</span><br><span class="line">sudo systemctl restart gitlab-runsvdir</span><br><span class="line">sudo gitlab-ctl reconfigure</span><br><span class="line">sudo gitlab-ctl restart</span><br></pre></td></tr></table></figure>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>应该解决问题，而不是轻易的重装。</p>
+<ol>
+<li>出现故障不要轻易的跨版本升级，比如Postgres的版本就有点频繁，而Gitlab也好像喜欢用最新的版本。</li>
+<li>一定要记住当前的版本</li>
+<li>备份</li>
+<li>出现问题先看日志</li>
+<li>机器配置，我的机子是单核4G的理论上是可以的，CPU占用率在50%上下，内存占有率也是在50%左右，实际上是可以运行的。</li>
+</ol>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://packages.gitlab.com/gitlab">Gitlab官方包中心</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jxd283465/p/11525629.html">gitlab安装、备份、恢复、升级、内存消耗问题</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/10/06/2021-10-06-tenth-anniversary-of-steve-jobs-death/" rel="prev" title="乔布斯去世十周年">
+      <i class="fa fa-chevron-left"></i> 乔布斯去世十周年
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/02/21/2022-02-21-spring-cloud-practice/" rel="next" title="Spring Cloud 实践">
+      Spring Cloud 实践 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%87%8D%E5%90%AF"><span class="nav-number">1.</span> <span class="nav-text">重启</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%87%E7%BA%A7"><span class="nav-number">2.</span> <span class="nav-text">升级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A5%E5%BF%97"><span class="nav-number">3.</span> <span class="nav-text">日志</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%88%E6%9C%AC"><span class="nav-number">4.</span> <span class="nav-text">版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD"><span class="nav-number">5.</span> <span class="nav-text">备份</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E7%82%B9"><span class="nav-number">6.</span> <span class="nav-text">问题点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">8.</span> <span class="nav-text">参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jasper Ji</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jasper Ji</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
