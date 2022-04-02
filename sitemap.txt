@@ -1,11 +1,10 @@
+https://c2lang.com/2022/03/28/blog-migration-to-hexo/
 https://c2lang.com/about/index.html
 https://c2lang.com/2020/09/30/2020-09-30-centos-users-guide/
-https://c2lang.com/2022/03/28/blog-migration-to-hexo/
 https://c2lang.com/2022/03/24/2022-03-24-gitlab-upgrade/
 https://c2lang.com/2021/11/12/2021-11-12-remembering-a-gitlab-failure/
 https://c2lang.com/2022/03/17/2022-03-17-clean-up-linux-viru/
 https://c2lang.com/2022/02/23/2022-02-23-spring-cloud-stream-practices/
-https://c2lang.com/2022/02/21/2022-02-21-spring-cloud-practice/
 https://c2lang.com/2021/10/01/2021-10-01-cat-diary/
 https://c2lang.com/2021/05/27/2021-05-27-tiantong-rujing/
 https://c2lang.com/2021/09/26/2021-09-26-virtualbox-centos-8-expansio/
