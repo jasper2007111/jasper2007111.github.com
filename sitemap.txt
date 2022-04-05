@@ -1,3 +1,5 @@
+https://c2lang.com/2022/04/05/webAssembly-reverie/
+https://c2lang.com/2021/06/02/2021-06-02-first-try-webassembly/
 https://c2lang.com/2022/03/28/blog-migration-to-hexo/
 https://c2lang.com/about/index.html
 https://c2lang.com/2020/09/30/2020-09-30-centos-users-guide/
@@ -18,7 +20,6 @@ https://c2lang.com/2021/06/22/2021-06-22-learn-zookeeper/
 https://c2lang.com/2021/04/16/2021-04-16-brew-practices/
 https://c2lang.com/2021/06/17/2021-06-17-talk-in-detail-zuohui/
 https://c2lang.com/2021/06/02/2021-06-02-learning-gtk/
-https://c2lang.com/2021/06/02/2021-06-02-first-try-webassembly/
 https://c2lang.com/2021/04/26/2021-04-26-talk-about-meditatio/
 https://c2lang.com/2020/08/08/2020-08-08-the-innovators-dilemma/
 https://c2lang.com/2021/05/04/2021-05-04-thinking-about-rss/
