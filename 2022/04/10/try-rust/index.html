@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"c2lang.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="编译目前使用的是64位的Ubuntu环境，默认会编译成64位的，编译成32位的在参数上有些差异。 123nasm -f elf32 foo.asm -o foo.o # NASM编译成ELF32位目标文件gcc -m32 -g -c bar.c -o bar.o # GCC编译成32的目标文件ld -m elf_i386 foo.o bar.o -o foobar # 链接目标文件，生成执行文件">
+  <meta name="description" content="最近在看WebAssembly的东西，结果最后觉得Rust写基于WebAssembly的Web应用好像是不错的选择。另外Rust这门语言，很早就听说的了，后来也买了《Rust权威指南》这本书，只是简单的翻了翻。不像Go可以写写Web服务器的东西，Rust一时半刻对于我而言，好像没有什么用。好不容易想可以写Web，于是终于给自己找了个理由开始Rust的编程的机会。 我找的是Yew这个框架，这是一个很">
 <meta property="og:type" content="article">
-<meta property="og:title" content="NASM 笔记">
-<meta property="og:url" content="https://c2lang.com/2021/03/22/2021-03-22-nasm-notes/index.html">
+<meta property="og:title" content="尝试Rust">
+<meta property="og:url" content="https://c2lang.com/2022/04/10/try-rust/index.html">
 <meta property="og:site_name" content="Jasper Ji">
-<meta property="og:description" content="编译目前使用的是64位的Ubuntu环境，默认会编译成64位的，编译成32位的在参数上有些差异。 123nasm -f elf32 foo.asm -o foo.o # NASM编译成ELF32位目标文件gcc -m32 -g -c bar.c -o bar.o # GCC编译成32的目标文件ld -m elf_i386 foo.o bar.o -o foobar # 链接目标文件，生成执行文件">
+<meta property="og:description" content="最近在看WebAssembly的东西，结果最后觉得Rust写基于WebAssembly的Web应用好像是不错的选择。另外Rust这门语言，很早就听说的了，后来也买了《Rust权威指南》这本书，只是简单的翻了翻。不像Go可以写写Web服务器的东西，Rust一时半刻对于我而言，好像没有什么用。好不容易想可以写Web，于是终于给自己找了个理由开始Rust的编程的机会。 我找的是Yew这个框架，这是一个很">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-03-22T06:57:28.000Z">
-<meta property="article:modified_time" content="2021-03-22T08:10:42.422Z">
+<meta property="article:published_time" content="2022-04-10T09:28:22.000Z">
+<meta property="article:modified_time" content="2022-04-10T10:29:16.221Z">
 <meta property="article:author" content="Jasper Ji">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://c2lang.com/2021/03/22/2021-03-22-nasm-notes/">
+<link rel="canonical" href="https://c2lang.com/2022/04/10/try-rust/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>NASM 笔记 | Jasper Ji</title>
+  <title>尝试Rust | Jasper Ji</title>
   
 
 
@@ -156,7 +156,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/03/22/2021-03-22-nasm-notes/">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/10/try-rust/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -169,7 +169,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          NASM 笔记
+          尝试Rust
         </h1>
 
         <div class="post-meta">
@@ -180,7 +180,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2021-03-22 14:57:28 / 修改时间：16:10:42" itemprop="dateCreated datePublished" datetime="2021-03-22T14:57:28+08:00">2021-03-22</time>
+              <time title="创建时间：2022-04-10 17:28:22 / 修改时间：18:29:16" itemprop="dateCreated datePublished" datetime="2022-04-10T17:28:22+08:00">2022-04-10</time>
             </span>
 
           
@@ -194,13 +194,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>目前使用的是64位的Ubuntu环境，默认会编译成64位的，编译成32位的在参数上有些差异。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nasm -f elf32 foo.asm -o foo.o <span class="comment"># NASM编译成ELF32位目标文件</span></span><br><span class="line">gcc -m32 -g -c bar.c -o bar.o <span class="comment"># GCC编译成32的目标文件</span></span><br><span class="line">ld -m elf_i386 foo.o bar.o -o foobar <span class="comment"># 链接目标文件，生成执行文件</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="GDB"><a href="#GDB" class="headerlink" title="GDB"></a>GDB</h3><p>一些常用的GDB调试的命令</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> disassembly-flavor intel <span class="comment"># 默认AT&amp;T格式，可以设置为Intel格式</span></span><br><span class="line">disassemble _start <span class="comment"># 反汇编，这一步主要是为了后续设置断点用</span></span><br><span class="line"><span class="built_in">break</span> * _start + 10 <span class="comment"># 设置断点，此处是_start开始的第10行代码处</span></span><br><span class="line">run <span class="comment"># 执行程序，设置断点后会停在断点处</span></span><br><span class="line">step <span class="comment"># 单步调试，可以简写为s</span></span><br><span class="line">info registers <span class="comment"># 显示寄存器</span></span><br><span class="line">layout reg <span class="comment"># 一般我会使用这个</span></span><br><span class="line">q <span class="comment"># 退出程序</span></span><br><span class="line">x 0xffffd070 <span class="comment"># 查看0xffffd070地址处的内存</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://samsclass.info/127/proj/ASM110.htm">ASM 110: Gdb (30 pts)</a><br><a target="_blank" rel="noopener" href="https://deepzz.com/post/gdb-debug.html">GDB命令基础，让你的程序bug无处躲藏</a></p>
+        <p>最近在看WebAssembly的东西，结果最后觉得Rust写基于WebAssembly的Web应用好像是不错的选择。另外Rust这门语言，很早就听说的了，后来也买了《Rust权威指南》这本书，只是简单的翻了翻。不像Go可以写写Web服务器的东西，Rust一时半刻对于我而言，好像没有什么用。好不容易想可以写Web，于是终于给自己找了个理由开始Rust的编程的机会。</p>
+<p>我找的是Yew这个框架，这是一个很活跃的框架，虽然不知道未来如何，但至少当下是不错的选择。选择框架而不是选择相对原始的东西来写，也是不像让自己一开始就有一种挫败感吧。写Web应用，怎么也得选个主题吧，那就写个备忘录吧。初步构想是使用IndexedDB来存储（自从做了服务端后，一些思维确实跟原来制作客户端是不一样的）。</p>
+<p>首先Yew这个框架，更新的太快了，我一开始用的上一个版本，结果因为一个库，就换成了最新的版本。对于Rust的了解，发现是属于这种小项目都做不了的境地，原来看的Rust的东西太简单了，《Rust权威指南》这样的书只是一个初级水平，真的到了项目，似乎远远的不够用。虽然各个库都有文档，但还是缺乏例子，尤其是向我这样的Rust来说，另外有些官方的例子也更新的不及时，照着写也会出错。其中比较坑的一个地方就是使用IndexedDB库的时候，设置回调的问题，参数显示<code>js_sys::Function</code>，我想着那就构造个Function出来，结果翻遍文档没有看到如何构造的例子，最后解决方案是闭包转Function的方式，一开始也是报错，提示闭包已久被销毁了，后来发现官方的例子有点问题，最后修复了。</p>
+<p>解决了IndexedDB初始话的问题，但因为路由会切换都不同的页面，共享数据的问题就出现了，我就想着写个单例吧，结果一下子就卡在这了，即使使用<code>lazy_static</code>这样库，依旧是提示<code>*mut u8` cannot be shared between threads safely</code>这样的错误。心太累了，看似简单的应用实际上写起来真的语言这关都是大问题，先放放了。</p>
+<p>这个备忘录的项目，这是两天时间，后续还得继续了。用Rust写Web应用，我觉得暂时或者很长一段时间都不会流行，首先是没有稳定成熟的框架，整个工具链还是不够完备，打包出来的wasm还是很大的，有2M。再说说Rust的这个语言吧，都说学习曲线比较陡，原来没有觉得，这次也算领教了。Rust语言本身的没有垃圾回收，使用所有权这种东西，有着C一般的性能，又可以有写脚本语言的体验，这绝对是个错觉。看似没有负担，实际上你都得负担去想。如果用来写业务系统的话，觉得还是比较的蹩脚了，这个语言更适合写系统应用了，但问题也很明显，就是杂烩的东西太多了，跟C++有一拼，或许C语言是个参考吧，底层的东西就是一种底层思维，而不是你用一种看似语法糖的方法写了一个底层的东西，结果出错时告诉他这是一个底层问题，说到底还是这门语言的太过于追求形式化了，用禅宗的话就是不能直指人心吧，太绕了。</p>
 
     </div>
 
@@ -216,13 +214,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/03/11/2021-03-11-programming-the-80386-notes/" rel="prev" title="《保护方式下的80386及其编程》笔记">
-      <i class="fa fa-chevron-left"></i> 《保护方式下的80386及其编程》笔记
+    <a href="/2022/04/05/webAssembly-reverie/" rel="prev" title="WebAssembly 遐想">
+      <i class="fa fa-chevron-left"></i> WebAssembly 遐想
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/03/24/2021-03-24-notes-on-oranges-an-operating-system-implementation/" rel="next" title="《Orange'S:一个操作系统的实现》笔记">
-      《Orange'S:一个操作系统的实现》笔记 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -281,7 +276,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91"><span class="nav-number">1.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GDB"><span class="nav-number">2.</span> <span class="nav-text">GDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

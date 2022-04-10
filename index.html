@@ -151,6 +151,69 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/10/try-rust/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/10/try-rust/" class="post-title-link" itemprop="url">尝试Rust</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-04-10 17:28:22 / 修改时间：18:29:16" itemprop="dateCreated datePublished" datetime="2022-04-10T17:28:22+08:00">2022-04-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近在看WebAssembly的东西，结果最后觉得Rust写基于WebAssembly的Web应用好像是不错的选择。另外Rust这门语言，很早就听说的了，后来也买了《Rust权威指南》这本书，只是简单的翻了翻。不像Go可以写写Web服务器的东西，Rust一时半刻对于我而言，好像没有什么用。好不容易想可以写Web，于是终于给自己找了个理由开始Rust的编程的机会。</p>
+<p>我找的是Yew这个框架，这是一个很活跃的框架，虽然不知道未来如何，但至少当下是不错的选择。选择框架而不是选择相对原始的东西来写，也是不像让自己一开始就有一种挫败感吧。写Web应用，怎么也得选个主题吧，那就写个备忘录吧。初步构想是使用IndexedDB来存储（自从做了服务端后，一些思维确实跟原来制作客户端是不一样的）。</p>
+<p>首先Yew这个框架，更新的太快了，我一开始用的上一个版本，结果因为一个库，就换成了最新的版本。对于Rust的了解，发现是属于这种小项目都做不了的境地，原来看的Rust的东西太简单了，《Rust权威指南》这样的书只是一个初级水平，真的到了项目，似乎远远的不够用。虽然各个库都有文档，但还是缺乏例子，尤其是向我这样的Rust来说，另外有些官方的例子也更新的不及时，照着写也会出错。其中比较坑的一个地方就是使用IndexedDB库的时候，设置回调的问题，参数显示<code>js_sys::Function</code>，我想着那就构造个Function出来，结果翻遍文档没有看到如何构造的例子，最后解决方案是闭包转Function的方式，一开始也是报错，提示闭包已久被销毁了，后来发现官方的例子有点问题，最后修复了。</p>
+<p>解决了IndexedDB初始话的问题，但因为路由会切换都不同的页面，共享数据的问题就出现了，我就想着写个单例吧，结果一下子就卡在这了，即使使用<code>lazy_static</code>这样库，依旧是提示<code>*mut u8` cannot be shared between threads safely</code>这样的错误。心太累了，看似简单的应用实际上写起来真的语言这关都是大问题，先放放了。</p>
+<p>这个备忘录的项目，这是两天时间，后续还得继续了。用Rust写Web应用，我觉得暂时或者很长一段时间都不会流行，首先是没有稳定成熟的框架，整个工具链还是不够完备，打包出来的wasm还是很大的，有2M。再说说Rust的这个语言吧，都说学习曲线比较陡，原来没有觉得，这次也算领教了。Rust语言本身的没有垃圾回收，使用所有权这种东西，有着C一般的性能，又可以有写脚本语言的体验，这绝对是个错觉。看似没有负担，实际上你都得负担去想。如果用来写业务系统的话，觉得还是比较的蹩脚了，这个语言更适合写系统应用了，但问题也很明显，就是杂烩的东西太多了，跟C++有一拼，或许C语言是个参考吧，底层的东西就是一种底层思维，而不是你用一种看似语法糖的方法写了一个底层的东西，结果出错时告诉他这是一个底层问题，说到底还是这门语言的太过于追求形式化了，用禅宗的话就是不能直指人心吧，太绕了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/05/webAssembly-reverie/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -806,87 +869,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/09/08/2021-09-08-learning-java-bytecode/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/08/2021-09-08-learning-java-bytecode/" class="post-title-link" itemprop="url">学习Java字节码</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-09-08 09:21:48 / 修改时间：14:31:51" itemprop="dateCreated datePublished" datetime="2021-09-08T09:21:48+08:00">2021-09-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Java字节码只是简单的了解，感觉缺乏深入的了解，特写此篇记录下。</p>
-<p>准备一个HelloWorld的测试类。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloWorld</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Hello, World!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>编译生成HelloWorld.class文件</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javac HelloWorld.java</span><br></pre></td></tr></table></figure>
-
-<p>我们使用javap命令来查看class文件</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javap -v HelloWorld.class</span><br></pre></td></tr></table></figure>
-
-<p>输出结果</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">Classfile /Users/jasperji/eclipse-workspace/maventest/src/main/java/com/jasper/ji/maven/test/HelloWorld.class</span><br><span class="line">  Last modified 2021-9-8; size 452 bytes</span><br><span class="line">  MD5 checksum 1f346aeb85559b06180507b8838406dd</span><br><span class="line">  Compiled from <span class="string">&quot;HelloWorld.java&quot;</span></span><br><span class="line">public class com.jasper.ji.maven.test.HelloWorld</span><br><span class="line">  minor version: 0</span><br><span class="line">  major version: 52</span><br><span class="line">  flags: ACC_PUBLIC, ACC_SUPER</span><br><span class="line">Constant pool:</span><br><span class="line">   <span class="comment">#1 = Methodref          #6.#15         // java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">   <span class="comment">#2 = Fieldref           #16.#17        // java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">   <span class="comment">#3 = String             #18            // Hello, World!</span></span><br><span class="line">   <span class="comment">#4 = Methodref          #19.#20        // java/io/PrintStream.println:(Ljava/lang/String;)V</span></span><br><span class="line">   <span class="comment">#5 = Class              #21            // com/jasper/ji/maven/test/HelloWorld</span></span><br><span class="line">   <span class="comment">#6 = Class              #22            // java/lang/Object</span></span><br><span class="line">   <span class="comment">#7 = Utf8               &lt;init&gt;</span></span><br><span class="line">   <span class="comment">#8 = Utf8               ()V</span></span><br><span class="line">   <span class="comment">#9 = Utf8               Code</span></span><br><span class="line">  <span class="comment">#10 = Utf8               LineNumberTable</span></span><br><span class="line">  <span class="comment">#11 = Utf8               main</span></span><br><span class="line">  <span class="comment">#12 = Utf8               ([Ljava/lang/String;)V</span></span><br><span class="line">  <span class="comment">#13 = Utf8               SourceFile</span></span><br><span class="line">  <span class="comment">#14 = Utf8               HelloWorld.java</span></span><br><span class="line">  <span class="comment">#15 = NameAndType        #7:#8          // &quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">  <span class="comment">#16 = Class              #23            // java/lang/System</span></span><br><span class="line">  <span class="comment">#17 = NameAndType        #24:#25        // out:Ljava/io/PrintStream;</span></span><br><span class="line">  <span class="comment">#18 = Utf8               Hello, World!</span></span><br><span class="line">  <span class="comment">#19 = Class              #26            // java/io/PrintStream</span></span><br><span class="line">  <span class="comment">#20 = NameAndType        #27:#28        // println:(Ljava/lang/String;)V</span></span><br><span class="line">  <span class="comment">#21 = Utf8               com/jasper/ji/maven/test/HelloWorld</span></span><br><span class="line">  <span class="comment">#22 = Utf8               java/lang/Object</span></span><br><span class="line">  <span class="comment">#23 = Utf8               java/lang/System</span></span><br><span class="line">  <span class="comment">#24 = Utf8               out</span></span><br><span class="line">  <span class="comment">#25 = Utf8               Ljava/io/PrintStream;</span></span><br><span class="line">  <span class="comment">#26 = Utf8               java/io/PrintStream</span></span><br><span class="line">  <span class="comment">#27 = Utf8               println</span></span><br><span class="line">  <span class="comment">#28 = Utf8               (Ljava/lang/String;)V</span></span><br><span class="line">&#123;</span><br><span class="line">  public com.jasper.ji.maven.test.HelloWorld();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=1, locals=1, args_size=1</span><br><span class="line">         0: aload_0</span><br><span class="line">         1: invokespecial <span class="comment">#1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">         4: <span class="built_in">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 3: 0</span><br><span class="line"></span><br><span class="line">  public static void main(java.lang.String[]);</span><br><span class="line">    descriptor: ([Ljava/lang/String;)V</span><br><span class="line">    flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=2, locals=1, args_size=1</span><br><span class="line">         0: getstatic     <span class="comment">#2                  // Field java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">         3: ldc           <span class="comment">#3                  // String Hello, World!</span></span><br><span class="line">         5: invokevirtual <span class="comment">#4                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V</span></span><br><span class="line">         8: <span class="built_in">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 5: 0</span><br><span class="line">        line 6: 8</span><br><span class="line">&#125;</span><br><span class="line">SourceFile: <span class="string">&quot;HelloWorld.java&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>另外也可以直接查看二进制，这里使用hexdump。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexdump HelloWorld.class</span><br></pre></td></tr></table></figure>
-
-<p>不过感觉还是javap提供的这个比较人性化，更好的阅读。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>字节码作为一种中间形式，Java可以编译成字节码，Scala也可以编译成字节码，但是从语言层面他们又是不一样的。这个也让我重新再读了下《Java程序员修炼之道》这本书，原来对于书中第三部分JVM上的多语言编程，不是很感冒。但字节码并不是机器码，所以在理解某些问题时最终还是要落到汇编语言级别的。</p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://tech.meituan.com/2019/09/05/java-bytecode-enhancement.html">字节码增强技术探索</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -952,7 +938,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

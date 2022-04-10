@@ -151,6 +151,83 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/09/08/2021-09-08-learning-java-bytecode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/08/2021-09-08-learning-java-bytecode/" class="post-title-link" itemprop="url">学习Java字节码</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-09-08 09:21:48 / 修改时间：14:31:51" itemprop="dateCreated datePublished" datetime="2021-09-08T09:21:48+08:00">2021-09-08</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Java字节码只是简单的了解，感觉缺乏深入的了解，特写此篇记录下。</p>
+<p>准备一个HelloWorld的测试类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloWorld</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Hello, World!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>编译生成HelloWorld.class文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javac HelloWorld.java</span><br></pre></td></tr></table></figure>
+
+<p>我们使用javap命令来查看class文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javap -v HelloWorld.class</span><br></pre></td></tr></table></figure>
+
+<p>输出结果</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">Classfile /Users/jasperji/eclipse-workspace/maventest/src/main/java/com/jasper/ji/maven/test/HelloWorld.class</span><br><span class="line">  Last modified 2021-9-8; size 452 bytes</span><br><span class="line">  MD5 checksum 1f346aeb85559b06180507b8838406dd</span><br><span class="line">  Compiled from <span class="string">&quot;HelloWorld.java&quot;</span></span><br><span class="line">public class com.jasper.ji.maven.test.HelloWorld</span><br><span class="line">  minor version: 0</span><br><span class="line">  major version: 52</span><br><span class="line">  flags: ACC_PUBLIC, ACC_SUPER</span><br><span class="line">Constant pool:</span><br><span class="line">   <span class="comment">#1 = Methodref          #6.#15         // java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">   <span class="comment">#2 = Fieldref           #16.#17        // java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">   <span class="comment">#3 = String             #18            // Hello, World!</span></span><br><span class="line">   <span class="comment">#4 = Methodref          #19.#20        // java/io/PrintStream.println:(Ljava/lang/String;)V</span></span><br><span class="line">   <span class="comment">#5 = Class              #21            // com/jasper/ji/maven/test/HelloWorld</span></span><br><span class="line">   <span class="comment">#6 = Class              #22            // java/lang/Object</span></span><br><span class="line">   <span class="comment">#7 = Utf8               &lt;init&gt;</span></span><br><span class="line">   <span class="comment">#8 = Utf8               ()V</span></span><br><span class="line">   <span class="comment">#9 = Utf8               Code</span></span><br><span class="line">  <span class="comment">#10 = Utf8               LineNumberTable</span></span><br><span class="line">  <span class="comment">#11 = Utf8               main</span></span><br><span class="line">  <span class="comment">#12 = Utf8               ([Ljava/lang/String;)V</span></span><br><span class="line">  <span class="comment">#13 = Utf8               SourceFile</span></span><br><span class="line">  <span class="comment">#14 = Utf8               HelloWorld.java</span></span><br><span class="line">  <span class="comment">#15 = NameAndType        #7:#8          // &quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">  <span class="comment">#16 = Class              #23            // java/lang/System</span></span><br><span class="line">  <span class="comment">#17 = NameAndType        #24:#25        // out:Ljava/io/PrintStream;</span></span><br><span class="line">  <span class="comment">#18 = Utf8               Hello, World!</span></span><br><span class="line">  <span class="comment">#19 = Class              #26            // java/io/PrintStream</span></span><br><span class="line">  <span class="comment">#20 = NameAndType        #27:#28        // println:(Ljava/lang/String;)V</span></span><br><span class="line">  <span class="comment">#21 = Utf8               com/jasper/ji/maven/test/HelloWorld</span></span><br><span class="line">  <span class="comment">#22 = Utf8               java/lang/Object</span></span><br><span class="line">  <span class="comment">#23 = Utf8               java/lang/System</span></span><br><span class="line">  <span class="comment">#24 = Utf8               out</span></span><br><span class="line">  <span class="comment">#25 = Utf8               Ljava/io/PrintStream;</span></span><br><span class="line">  <span class="comment">#26 = Utf8               java/io/PrintStream</span></span><br><span class="line">  <span class="comment">#27 = Utf8               println</span></span><br><span class="line">  <span class="comment">#28 = Utf8               (Ljava/lang/String;)V</span></span><br><span class="line">&#123;</span><br><span class="line">  public com.jasper.ji.maven.test.HelloWorld();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=1, locals=1, args_size=1</span><br><span class="line">         0: aload_0</span><br><span class="line">         1: invokespecial <span class="comment">#1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">         4: <span class="built_in">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 3: 0</span><br><span class="line"></span><br><span class="line">  public static void main(java.lang.String[]);</span><br><span class="line">    descriptor: ([Ljava/lang/String;)V</span><br><span class="line">    flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=2, locals=1, args_size=1</span><br><span class="line">         0: getstatic     <span class="comment">#2                  // Field java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">         3: ldc           <span class="comment">#3                  // String Hello, World!</span></span><br><span class="line">         5: invokevirtual <span class="comment">#4                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V</span></span><br><span class="line">         8: <span class="built_in">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 5: 0</span><br><span class="line">        line 6: 8</span><br><span class="line">&#125;</span><br><span class="line">SourceFile: <span class="string">&quot;HelloWorld.java&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>另外也可以直接查看二进制，这里使用hexdump。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexdump HelloWorld.class</span><br></pre></td></tr></table></figure>
+
+<p>不过感觉还是javap提供的这个比较人性化，更好的阅读。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>字节码作为一种中间形式，Java可以编译成字节码，Scala也可以编译成字节码，但是从语言层面他们又是不一样的。这个也让我重新再读了下《Java程序员修炼之道》这本书，原来对于书中第三部分JVM上的多语言编程，不是很感冒。但字节码并不是机器码，所以在理解某些问题时最终还是要落到汇编语言级别的。</p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://tech.meituan.com/2019/09/05/java-bytecode-enhancement.html">字节码增强技术探索</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/09/07/2021-09-07-learn-jni/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -790,76 +867,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/05/02/2021-05-02-octopress-upgrade/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/02/2021-05-02-octopress-upgrade/" class="post-title-link" itemprop="url">Octopress升级</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-05-02 00:15:59 / 修改时间：00:53:58" itemprop="dateCreated datePublished" datetime="2021-05-02T00:15:59+08:00">2021-05-02</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>升级其他软件的时候居然把Ruby版本升级到了3.0，而Octopress依赖的Jekyll的版本是2.0，对Ruby版本有限制，新版本用不了。本来想换个静态博客的框架来着，想着自己好歹也是全栈工程师，自己升级下吧。</p>
-<p>Octopress其实是基于Jekyll的定制静态博客框架，生成静态内容主要依赖于Jekyll了。看了下Jekyll已经到4.0了，干脆直接升级到4.0了。不过发现一些问题，4.0后放弃了对RDiscount、Pygments的支持，默认的Markdown解析用的是Kramdown。Octopress分别使用了RDiscount、Pygments，所以这块只能弃用了，改用Kramdown。</p>
-<p>升级后发现代码高亮有点问题，4.0因为弃用了Pygments，所以只能使用默认的Rouge。Octopress自己实现了一个代码高亮的样式，但是有兼容问题，最后直接弃用。使用Rouge生成Github的样式，最后修改了下，最终变成现在的样子，总之还是不太喜欢之前的暗背景的样式。</p>
-<p>生成文章方面，因为Jekyll的一些变更，遇到三个问题，首先是文章列表是生序排序的，修改了下也好了。其次发现首页没有文章，主要是没有安装jekyll-paginate的缘故。最后就是生成的文章没有时间，Octopress自定义了一个时间格式的钩子，但是没有起作用，最后直接使用原生的方式解决了。</p>
-<p>博客预览使用<code>rake preview</code>会报错，最后直接在Public目录下起了个Python的Web服务器，这个并不影响使用。 </p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>现在还在用Octopress人确实不多了，多半都是不更新的僵尸博客了。其实这些静态博客解决方案原理大同小异的，之前有人吐槽Octopress生成博客文章慢，实际上主要是Jekyll慢了，不过现在都4.0了，目前我觉得速度还是能接受的。</p>
-<p>既然Octopress作者都不维护了，想着后续问题修复的差不多了，把修改的版本放出了，也算是尽一份力吧。</p>
-<p>参考:<br><a target="_blank" rel="noopener" href="https://jekyllrb.com/news/2019/08/20/jekyll-4-0-0-released/">Jekyll 4.0.0 Released</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -925,7 +936,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">50</span>
+          <span class="site-state-item-count">51</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
