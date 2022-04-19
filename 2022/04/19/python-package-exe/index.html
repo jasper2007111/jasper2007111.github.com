@@ -20,19 +20,19 @@
     var CONFIG = {"hostname":"c2lang.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="消息队列这个东西一直有关注，RabbitMQ相关的东西书籍也入手了，也跑过简单的例子，不过一直没有上。一开始使用的是Spring Boot集成RabbitMQ的方案，因为用的是Spring Cloud的微服务解决方案，发现Spring Cloud Stream这个东西，用这个的好处就是这是一个高层次的实现，可以支持RabbitMQ和Kafka，所以后续切换也方便。 Source、Sink、Proc">
+  <meta name="description" content="Python平时主要是处理数据用，在Mac上使用很方便，最近想把一个程序让下面让你用，他们的是Window环境，Python他们并不熟悉，所以直接把源文件丢过去，他们又得折腾一番。我就想到打包成exe，其实很早就有这样的想法，但一直没有做过。用的是PyInstaller这个库，还想着这么简单，结果一打包，发现并不是Window下的exe，原来是我理解的错误，以为可以直接打包成Window上执行的e">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Spring Cloud Stream 实践">
-<meta property="og:url" content="https://c2lang.com/2022/02/23/2022-02-23-spring-cloud-stream-practices/index.html">
+<meta property="og:title" content="Python打包exe">
+<meta property="og:url" content="https://c2lang.com/2022/04/19/python-package-exe/index.html">
 <meta property="og:site_name" content="Jasper Ji">
-<meta property="og:description" content="消息队列这个东西一直有关注，RabbitMQ相关的东西书籍也入手了，也跑过简单的例子，不过一直没有上。一开始使用的是Spring Boot集成RabbitMQ的方案，因为用的是Spring Cloud的微服务解决方案，发现Spring Cloud Stream这个东西，用这个的好处就是这是一个高层次的实现，可以支持RabbitMQ和Kafka，所以后续切换也方便。 Source、Sink、Proc">
+<meta property="og:description" content="Python平时主要是处理数据用，在Mac上使用很方便，最近想把一个程序让下面让你用，他们的是Window环境，Python他们并不熟悉，所以直接把源文件丢过去，他们又得折腾一番。我就想到打包成exe，其实很早就有这样的想法，但一直没有做过。用的是PyInstaller这个库，还想着这么简单，结果一打包，发现并不是Window下的exe，原来是我理解的错误，以为可以直接打包成Window上执行的e">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-02-23T06:10:11.000Z">
-<meta property="article:modified_time" content="2022-02-23T07:49:11.734Z">
+<meta property="article:published_time" content="2022-04-19T08:08:41.000Z">
+<meta property="article:modified_time" content="2022-04-19T08:46:52.883Z">
 <meta property="article:author" content="Jasper Ji">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://c2lang.com/2022/02/23/2022-02-23-spring-cloud-stream-practices/">
+<link rel="canonical" href="https://c2lang.com/2022/04/19/python-package-exe/">
 
 
 <script id="page-configurations">
@@ -45,7 +45,7 @@
   };
 </script>
 
-  <title>Spring Cloud Stream 实践 | Jasper Ji</title>
+  <title>Python打包exe | Jasper Ji</title>
   
 
 
@@ -156,7 +156,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/02/23/2022-02-23-spring-cloud-stream-practices/">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/19/python-package-exe/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -169,7 +169,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Spring Cloud Stream 实践
+          Python打包exe
         </h1>
 
         <div class="post-meta">
@@ -180,7 +180,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-02-23 14:10:11 / 修改时间：15:49:11" itemprop="dateCreated datePublished" datetime="2022-02-23T14:10:11+08:00">2022-02-23</time>
+              <time title="创建时间：2022-04-19 16:08:41 / 修改时间：16:46:52" itemprop="dateCreated datePublished" datetime="2022-04-19T16:08:41+08:00">2022-04-19</time>
             </span>
 
           
@@ -194,11 +194,20 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>消息队列这个东西一直有关注，RabbitMQ相关的东西书籍也入手了，也跑过简单的例子，不过一直没有上。一开始使用的是Spring Boot集成RabbitMQ的方案，因为用的是Spring Cloud的微服务解决方案，发现Spring Cloud Stream这个东西，用这个的好处就是这是一个高层次的实现，可以支持RabbitMQ和Kafka，所以后续切换也方便。</p>
-<h4 id="Source、Sink、Processor"><a href="#Source、Sink、Processor" class="headerlink" title="Source、Sink、Processor"></a>Source、Sink、Processor</h4><p>这三个是Spring Cloud Stream自带的，Source用来发送消息、Sink用来接收消息，Processor集成了二者。最初的构想是一个微服务生产消息，另一个微服务消费这些消息，我一开始用的是<code>@EnableBinding(value = &#123;Processor.class&#125;)</code>注解，这样话等于我要同时处理生产和消费的东西。如果只是实现我最初的构想的话，只需要绑定Source或者Sink其中一个就好。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>Spring Cloud Stream网上的资料并不多，一开始上手有点难。</p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/fengzheng/p/11576661.html">Spring Cloud 系列之 Spring Cloud Stream </a></p>
-<p><a target="_blank" rel="noopener" href="https://www.hangge.com/blog/cache/detail_2794.html">消息驱动微服务框架Spring Cloud Stream使用详解2（基本用法）</a><br>这个文章广告比较多</p>
+        <p>Python平时主要是处理数据用，在Mac上使用很方便，最近想把一个程序让下面让你用，他们的是Window环境，Python他们并不熟悉，所以直接把源文件丢过去，他们又得折腾一番。我就想到打包成exe，其实很早就有这样的想法，但一直没有做过。用的是PyInstaller这个库，还想着这么简单，结果一打包，发现并不是Window下的exe，原来是我理解的错误，以为可以直接打包成Window上执行的exe了，实际上PyInstaller只是在不同平台上将python打包成对应平台的应用了。难道我又得找台Windows，环境弄好，再打包一个？真麻烦，想着可以交叉编译吗？查了下PyInstaller以前好像可以，后来就去掉了。之前用过点Go语言，就是可以交叉编译的，一时间我尽有想用Go重写那个功能的想法，但是一对比还是Python方便。最后找了一个通过docker进行打包的方案<a target="_blank" rel="noopener" href="https://github.com/cdrx/docker-pyinstaller">docker-pyinstaller</a></p>
+<p>直接这个命令就可以打包了，具体可以参考文档。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v <span class="string">&quot;<span class="subst">$(pwd)</span>:/src/&quot;</span> cdrx/pyinstaller-windows</span><br></pre></td></tr></table></figure>
+
+<p>但是有个问题，打包出来的应用一执行，提示一个依赖的库，没有找到。不对啊，文档中明明说把依赖写在<code>requirements.txt</code>文件里，我也写了的。</p>
+<p>文档中的这段话，看着没有其他的操作，也没有相关的示例代码。</p>
+<blockquote>
+<p>If the src folder has a requirements.txt file, the packages will be installed into the environment before PyInstaller runs.</p>
+</blockquote>
+<p>折腾了好几个小时，最后找到了一篇日文的文章，看完后豁然开朗，原来是写法的问题，我对docker的一些东西不够熟吧。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run --<span class="built_in">rm</span> -v <span class="string">&quot;<span class="subst">$(pwd)</span>:/src/&quot;</span> cdrx/pyinstaller-windows -c \</span><br><span class="line">  <span class="string">&quot;pip install -r requirements.txt &amp;&amp; \</span></span><br><span class="line"><span class="string">  pyinstaller main.py --onedir --onefile --clean &amp;&amp; \</span></span><br><span class="line"><span class="string">  mv dist/main.exe main.exe &amp;&amp; \</span></span><br><span class="line"><span class="string">  rm -rf __pycache__/ build/ dist/ main.spec&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>最后打包后的exe就没有依赖缺失的问题了。不过打包成exe后，我最终还是改了下python的代码，比如<code>os.path.dirname(__file__)</code>是无法使用了，另外打开文件时提示<code>UnicodeDecodeError: &#39;gbk&#39; codec can&#39;t decode byte</code>的错误，需要加<code>encoding=&#39;utf-8&#39;</code>。</p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://qiita.com/ryoheiszk/items/2ea26594d24304c721e2">Docker環境のPyInstallerでキレイにExe化する</a></p>
 
     </div>
 
@@ -214,13 +223,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/11/12/2021-11-12-remembering-a-gitlab-failure/" rel="prev" title="记Gitlab一次故障">
-      <i class="fa fa-chevron-left"></i> 记Gitlab一次故障
+    <a href="/2022/04/10/try-rust/" rel="prev" title="尝试Rust">
+      <i class="fa fa-chevron-left"></i> 尝试Rust
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/03/17/2022-03-17-clean-up-linux-viru/" rel="next" title="清理Linux病毒">
-      清理Linux病毒 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -279,7 +285,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Source%E3%80%81Sink%E3%80%81Processor"><span class="nav-number">1.</span> <span class="nav-text">Source、Sink、Processor</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.</span> <span class="nav-text">参考</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
