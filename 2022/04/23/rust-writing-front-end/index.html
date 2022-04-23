@@ -20,28 +20,32 @@
     var CONFIG = {"hostname":"c2lang.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Jasper Ji">
-<meta property="og:url" content="https://c2lang.com/index.html">
+  <meta name="description" content="尝试用Rust已经有点时间了，之前主要的问题是卡在IndexedDB的使用上，最后的代码是这样。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667spawn_local(async move &amp;#1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust写前端">
+<meta property="og:url" content="https://c2lang.com/2022/04/23/rust-writing-front-end/index.html">
 <meta property="og:site_name" content="Jasper Ji">
+<meta property="og:description" content="尝试用Rust已经有点时间了，之前主要的问题是卡在IndexedDB的使用上，最后的代码是这样。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667spawn_local(async move &amp;#1">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-04-23T10:36:07.000Z">
+<meta property="article:modified_time" content="2022-04-23T12:08:38.469Z">
 <meta property="article:author" content="Jasper Ji">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://c2lang.com/">
+<link rel="canonical" href="https://c2lang.com/2022/04/23/rust-writing-front-end/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>Jasper Ji</title>
+  <title>Rust写前端 | Jasper Ji</title>
   
 
 
@@ -145,9 +149,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -163,10 +168,9 @@
       <meta itemprop="name" content="Jasper Ji">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/23/rust-writing-front-end/" class="post-title-link" itemprop="url">Rust写前端</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Rust写前端
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -190,7 +194,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>尝试用Rust已经有点时间了，之前主要的问题是卡在IndexedDB的使用上，最后的代码是这样。</p>
+        <p>尝试用Rust已经有点时间了，之前主要的问题是卡在IndexedDB的使用上，最后的代码是这样。</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">spawn_local</span>(<span class="keyword">async</span> <span class="keyword">move</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> (tx, rx) = oneshot::channel::&lt;IdbDatabase&gt;();</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">window</span> = web_sys::<span class="title function_ invoke__">window</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">idb_factory</span> = window.<span class="title function_ invoke__">indexed_db</span>().<span class="title function_ invoke__">unwrap</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">open_request</span> = idb_factory</span><br><span class="line">            .<span class="title function_ invoke__">open_with_u32</span>(String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;todo&quot;</span>).<span class="title function_ invoke__">as_str</span>(), <span class="number">1</span>)</span><br><span class="line">            .<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">on_upgradeneeded</span> = Closure::<span class="title function_ invoke__">once</span>(<span class="keyword">move</span> |event: &amp;Event| &#123;</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">target</span> = event.<span class="title function_ invoke__">target</span>().<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Event should have a target; qed&quot;</span>);</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">req</span> = target</span><br><span class="line">                .dyn_ref::&lt;IdbRequest&gt;()</span><br><span class="line">                .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Event target is IdbRequest; qed&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> <span class="variable">result</span> = req</span><br><span class="line">                .<span class="title function_ invoke__">result</span>()</span><br><span class="line">                .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;IndexedDB.onsuccess should have a valid result; qed&quot;</span>);</span><br><span class="line">            <span class="built_in">assert!</span>(result.is_instance_of::&lt;IdbDatabase&gt;());</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">db</span> = IdbDatabase::<span class="title function_ invoke__">from</span>(result);</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">store</span>:IdbObjectStore = db.<span class="title function_ invoke__">create_object_store</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;user&quot;</span>)).<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">_index</span> = store.<span class="title function_ invoke__">create_index_with_str</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;name&quot;</span>), &amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;name&quot;</span>)).<span class="title function_ invoke__">expect</span>(<span class="string">&quot;create_index_with_str error&quot;</span>);</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line">        open_request.<span class="title function_ invoke__">set_onupgradeneeded</span>(<span class="title function_ invoke__">Some</span>(on_upgradeneeded.<span class="title function_ invoke__">as_ref</span>().<span class="title function_ invoke__">unchecked_ref</span>()));</span><br><span class="line">        on_upgradeneeded.<span class="title function_ invoke__">forget</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">on_success</span> = Closure::<span class="title function_ invoke__">once</span>(<span class="keyword">move</span> |event: &amp;Event| &#123;</span><br><span class="line">            <span class="comment">// Extract database handle from the event</span></span><br><span class="line">            <span class="keyword">let</span> <span class="variable">target</span> = event.<span class="title function_ invoke__">target</span>().<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Event should have a target; qed&quot;</span>);</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">req</span> = target</span><br><span class="line">                .dyn_ref::&lt;IdbRequest&gt;()</span><br><span class="line">                .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Event target is IdbRequest; qed&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> <span class="variable">result</span> = req</span><br><span class="line">                .<span class="title function_ invoke__">result</span>()</span><br><span class="line">                .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;IndexedDB.onsuccess should have a valid result; qed&quot;</span>);</span><br><span class="line">            <span class="built_in">assert!</span>(result.is_instance_of::&lt;IdbDatabase&gt;());</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> <span class="variable">db</span> = IdbDatabase::<span class="title function_ invoke__">from</span>(result);</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">_</span> = tx.<span class="title function_ invoke__">send</span>(db);</span><br><span class="line">        &#125;);</span><br><span class="line">        open_request.<span class="title function_ invoke__">set_onsuccess</span>(<span class="title function_ invoke__">Some</span>(on_success.<span class="title function_ invoke__">as_ref</span>().<span class="title function_ invoke__">unchecked_ref</span>()));</span><br><span class="line">        on_success.<span class="title function_ invoke__">forget</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">db</span> = rx.<span class="keyword">await</span>.<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">transaction</span> = db.<span class="title function_ invoke__">transaction_with_str_and_mode</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;user&quot;</span>), IdbTransactionMode::Readwrite).<span class="title function_ invoke__">expect</span>(<span class="string">&quot;transaction_with_str error&quot;</span>);</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">store</span> = transaction.<span class="title function_ invoke__">object_store</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;user&quot;</span>)).<span class="title function_ invoke__">expect</span>(<span class="string">&quot;store error&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">name</span> = JsValue::<span class="title function_ invoke__">from_str</span>(_content_element.<span class="title function_ invoke__">value</span>().<span class="title function_ invoke__">as_str</span>());</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">add_request</span> = store.<span class="title function_ invoke__">add_with_key</span>(&amp;name, &amp;JsValue::<span class="title function_ invoke__">from</span>(<span class="string">&quot;name&quot;</span>)).<span class="title function_ invoke__">expect</span>(<span class="string">&quot;add error&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">on_add_error</span> = Closure::<span class="title function_ invoke__">once</span>(<span class="keyword">move</span> |event: &amp;Event| &#123;</span><br><span class="line">            console::<span class="title function_ invoke__">log_1</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;写入数据失败&quot;</span>).<span class="title function_ invoke__">into</span>());</span><br><span class="line">            console::<span class="title function_ invoke__">log_1</span>(&amp;event.<span class="title function_ invoke__">into</span>());</span><br><span class="line">        &#125;);</span><br><span class="line">        add_request.<span class="title function_ invoke__">set_onerror</span>(<span class="title function_ invoke__">Some</span>(on_add_error.<span class="title function_ invoke__">as_ref</span>().<span class="title function_ invoke__">unchecked_ref</span>()));</span><br><span class="line">        on_add_error.<span class="title function_ invoke__">forget</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">on_add_success</span> = Closure::<span class="title function_ invoke__">once</span>(<span class="keyword">move</span> |event: &amp;Event| &#123;</span><br><span class="line">            console::<span class="title function_ invoke__">log_1</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;写入数据成功&quot;</span>).<span class="title function_ invoke__">into</span>());</span><br><span class="line">        &#125;);</span><br><span class="line">        add_request.<span class="title function_ invoke__">set_onsuccess</span>(<span class="title function_ invoke__">Some</span>(on_add_success.<span class="title function_ invoke__">as_ref</span>().<span class="title function_ invoke__">unchecked_ref</span>()));</span><br><span class="line">        on_add_success.<span class="title function_ invoke__">forget</span>();</span><br><span class="line"></span><br><span class="line">        console::<span class="title function_ invoke__">log_1</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;do&quot;</span>).<span class="title function_ invoke__">into</span>());</span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
 <p>因为IndexedDB连接成功是个异步事件，<code>db</code>    只能在成功事件中才能拿到，最初因为对IndexedDB的使用不熟悉，这玩意在很早以前看HTML5的时候就看到过，不过一直没有用过。我在成功事件中创建数据库，结果给报错了，实际上创建数据库只能在<code>onupgradeneeded</code>事件中处理。</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">myDatabase</span> = MyDatabase::<span class="title function_ invoke__">new</span>();</span><br><span class="line">myDatabase.<span class="title function_ invoke__">add</span>(String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;jasper&quot;</span>, String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;name&quot;</span>)));</span><br></pre></td></tr></table></figure>
@@ -206,654 +210,31 @@
 <p>再谈谈Rust学习的东西，实际上《Rust权威指南》这本书我只是看了个大概，而目前的实验项目中并没有使用Rust去一些运算的代码，更多的是调用，所以用Rust写前端这个方式，起步会比一般的难点，主要还是牵涉的东西不只是Rust的问题，还有Wasm以及JS相关的东西，最重要的还是要明白他的运行环境是浏览器中Wasm虚拟机。</p>
 <p>虽然项目整体进展不大，也走了一些弯路，不过却也让我思考到了更多的东西。现在感觉Rust是未来全栈程序员必备的语言，这门语言是非常考验你是不是一个合格的程序员，因为他既有很底层的东西，比如内存概念，也有很现代的语法，但前提是你需要都懂，对于那些不是科班出身又没有好好学习计算机相关的东西人来说，这个确实有难度。</p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/19/python-package-exe/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/19/python-package-exe/" class="post-title-link" itemprop="url">Python打包exe</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-04-19 16:08:41 / 修改时间：17:05:24" itemprop="dateCreated datePublished" datetime="2022-04-19T16:08:41+08:00">2022-04-19</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Python平时主要是处理数据用，在Mac上使用很方便，最近想把一个程序让下面人用，他们是Window环境，Python他们并不熟悉，所以直接把源文件丢过去，他们又得折腾一番。我就想到打包成exe，其实很早就有这样的想法，但一直没有做过。用的是PyInstaller这个库，还想着这么简单，结果一打包，发现并不是Window下的exe，原来是我理解的错误，以为可以直接打包成Window上执行的exe了，实际上PyInstaller只是在不同平台上将python打包成对应平台的应用了。难道我又得找台Windows，环境弄好，再打包一个？真麻烦，想着可以交叉编译吗？查了下PyInstaller以前好像可以，后来就去掉了。之前用过点Go语言，就是可以交叉编译的，一时间我尽有想用Go重写那个功能的想法，但是一对比还是Python方便。最后找了一个通过docker进行打包的方案<a target="_blank" rel="noopener" href="https://github.com/cdrx/docker-pyinstaller">docker-pyinstaller</a></p>
-<p>直接这个命令就可以打包了，具体可以参考文档。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v <span class="string">&quot;<span class="subst">$(pwd)</span>:/src/&quot;</span> cdrx/pyinstaller-windows</span><br></pre></td></tr></table></figure>
-
-<p>但是有个问题，打包出来的应用一执行，提示一个依赖的库，没有找到。不对啊，文档中明明说把依赖写在<code>requirements.txt</code>文件里，我也写了的。</p>
-<p>文档中的这段话，看着没有其他的操作，也没有相关的示例代码。</p>
-<blockquote>
-<p>If the src folder has a requirements.txt file, the packages will be installed into the environment before PyInstaller runs.</p>
-</blockquote>
-<p>折腾了好几个小时，最后找到了一篇日文的文章，看完后豁然开朗，原来是写法的问题，我对docker的一些东西不够熟吧。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run --<span class="built_in">rm</span> -v <span class="string">&quot;<span class="subst">$(pwd)</span>:/src/&quot;</span> cdrx/pyinstaller-windows -c \</span><br><span class="line">  <span class="string">&quot;pip install -r requirements.txt &amp;&amp; \</span></span><br><span class="line"><span class="string">  pyinstaller main.py --onedir --onefile --clean &amp;&amp; \</span></span><br><span class="line"><span class="string">  mv dist/main.exe main.exe &amp;&amp; \</span></span><br><span class="line"><span class="string">  rm -rf __pycache__/ build/ dist/ main.spec&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>最后打包后的exe就没有依赖缺失的问题了。不过打包成exe后，我最终还是改了下python的代码，比如<code>os.path.dirname(__file__)</code>是无法使用了，另外打开文件时提示<code>UnicodeDecodeError: &#39;gbk&#39; codec can&#39;t decode byte</code>的错误，需要加<code>encoding=&#39;utf-8&#39;</code>。</p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://qiita.com/ryoheiszk/items/2ea26594d24304c721e2">Docker環境のPyInstallerでキレイにExe化する</a></p>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/19/python-package-exe/" rel="prev" title="Python打包exe">
+      <i class="fa fa-chevron-left"></i> Python打包exe
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/10/try-rust/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/10/try-rust/" class="post-title-link" itemprop="url">尝试Rust</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-10 17:28:22" itemprop="dateCreated datePublished" datetime="2022-04-10T17:28:22+08:00">2022-04-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-11 11:27:07" itemprop="dateModified" datetime="2022-04-11T11:27:07+08:00">2022-04-11</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近在看WebAssembly的东西，觉得Rust写基于WebAssembly的Web应用好像是不错的选择。另外Rust这门语言，很早就听说的了，后来也买了《Rust权威指南》这本书，只是简单的翻了翻，并没有做过什么项目。于是就起了个备忘录的简单项目。</p>
-<h4 id="Yew"><a href="#Yew" class="headerlink" title="Yew"></a>Yew</h4><p>有点类似React，用起来还是比较顺手了。目前版本迭代还是相当的快，我一开始用的0.19.0的版本，最后因为一个库的关系，直接选择了最新的版本，版本之间还时存在兼容问题。我打包后有2M，相比传统的还是比较大了，不过可能是是没有优化的结果。在代码里面写Html，主要的问题是格式化的问题，vscode里面一格式化代码后，html的代码就乱了。</p>
-<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>Yew本身提供的文档还可以，有问题看看文档也能解决。主要的问题是wey_sys的一些库的使用，比如我想使用IndexedDB这个东西，其实JS版的文档很好看懂，Rust版的就有点不知所措，主要还是我对Rust了解不够，再加上这些库并没有特别全的文档，所以折腾半天。比如设置IndexedDB回调的问题，参数显示<code>js_sys::Function</code>，我想着那就构造个Function出来，结果翻遍文档没有看到如何构造的例子，最后解决方案是闭包转Function的方式，一开始也是报错，提示闭包已久被销毁了，后来发现官方的例子有点问题，最后修复了。</p>
-<p>另外因为要在几个页面间共享一些数据，想着写个单例吧，发现不那么简单，找了个<code>lazy_static</code>这样库，提示<code>*mut u8` cannot be shared between threads safely</code>这样的错误，最终还是停了下来。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>Rust的学习曲线比较陡，主要是很多语法不同于传统的C体系，所以感觉原来的经验无法施展，而且沿着经验的思路反而会比较绕，发现还是得按Rust的方式解决问题。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/05/webAssembly-reverie/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/05/webAssembly-reverie/" class="post-title-link" itemprop="url">WebAssembly 遐想</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-04-05 21:06:10 / 修改时间：22:56:04" itemprop="dateCreated datePublished" datetime="2022-04-05T21:06:10+08:00">2022-04-05</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>上次去省图偶然看到了《WebAssembly 实战》一书，之前就有关注到，于是就借了回来，刚好趁清明假期看看。之前有写过一篇<a href="https://c2lang.com/2021/06/02/2021-06-02-first-try-webassembly/">《初试WebAssembly》</a>，本身Rust语言不熟，虽然我买了本《Rust权威指南》，但一直没有什么项目可以练手，基本上没有进展。《WebAssembly 实战》一书是基于C&#x2F;C++的，相对来说读起来障碍不大。实际我也跑了一个例子试了下，当然如果真拿C&#x2F;C++来写Web应用的话，估计会很奔溃了。接着我又看了好几个关于WebAssembly的视频演讲，发现有了新的想法。</p>
-<p>推出WebAssembly这个东西主要是因为现有的优化已经无法满足性能的进一步提升了，语言肯定不能大改了，JS这么用的广。记得早些年使用Flash的时候，那会是在嵌入式上跑AS2，性能的问题真的是让我当时无语。后来又推出了AS3性能又大幅的提升，但是很长一段时间，我们公司的引擎没有升级，所以我基本上还是用AS2。虽然现在的Web开发没有像当年那样，毕竟开放的环境还是不一样。回到正题，如果单纯的写WebAssembly的话，好像也没有这个必要，而且据说和JS的调用开销不小，所以到底什么时候用，是个问题。反过来想要是哪天整个的Web可以大部分都用WebAssembly来写的话，那就好了，不过目前还不能直接操作Dom，这是一个很大的问题，理论和JS是相互调用的，我看到Rust有个web_sys的库，可以操作dom，不过我想应该也是自己实现的吧。目前看到几个Rust的例子，是直接用WebAssembly来写整个的Web应用的，比如Yew这个Rust的框架允许你构建基于WebAssembly的应用。另外微软的Blazor，允许使用C#来编写基于WebAssembly的单页应用。还有Go的Vugu。</p>
-<p>所以如果和JS混着用，那么实际上是把WebAssembly作为一个计算密集型的一个解决方案吧，实际开发中大部分的Web应用都是些轻客户端，主要还是界面相关的操作了，其实大部分情况下很难想到用WebAssembly了，这也是我最早尝试时的感想。但是如果未来解决了类似调DOM的成本比较高的的问题，那么有没有可能Web语言变成Rust为主，为什么是Rust呢？首先WebAssembly本身没有垃圾回收，内存是手动处理了。Rust呢？标榜的是一个没有垃圾回收的安全语言，与C&#x2F;C++相比实际上是语言层面上处理内存管理的问题。这么一想Rust与WebAssembly真是绝配，当然其他的语言也可以编译成WebAssembly，但对于垃圾回收的语言，是比要实现一个垃圾回收的运行时环境，这样性能上就会有折扣。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>想来想去，最终落到Rust这个语言上了，或者说WebAssembly本身的设计这种在底层改变的东西无疑为未来提供了各种改变的可能性，即使不是Rust也许会是其他的语言。C&#x2F;C++用户可以让现有的库移植到Web上使用，另外Web应用一定是现在这样的轻客户端的类型吗？WebAssembly的引入确实提供另一种可能。另外一定要用JS来写Web应用吗？过去是没有办法，但是底层的改变让未来可以使用统一基于WebAssembly的语言来写Web成为了可能，而不像过去所有新的语言实际上都得编译成JS。基于WebAssembly的框架，有微软这样的大厂，也有基于Go的，某种程度这是一场大厂利好的事，但坏处是当有各种的语言可以写Web时，会不会有点分裂，毕竟只学一个JS，大家共用资源，而用不同的语言有学习成本。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/03/28/blog-migration-to-hexo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/28/blog-migration-to-hexo/" class="post-title-link" itemprop="url">博客迁移到Hexo</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-03-28 21:31:46" itemprop="dateCreated datePublished" datetime="2022-03-28T21:31:46+08:00">2022-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-02 13:44:22" itemprop="dateModified" datetime="2022-04-02T13:44:22+08:00">2022-04-02</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本站14年建立的，那会Octopress确实流行，好多的技术大拿都用，可惜当时只是建了个站，就没有写东西，后来想写东西了，发现大家都不用Octopress了，有人说慢，其实我的电脑上还行。一开始我也没有想着换，Octopress的问题是作者已经不更新了，所以就有一堆的升级的问题，总之对于程序员而言也无所谓，改改还是可以用的，就这样一直坚持到写这篇文章的晚上。</p>
-<p>我比较在意代码高亮，上次就把Octopress的代码高亮给改了，不过不完美。其实博客很大程度是我的一些技术的记录了，想想这个，就一时兴起尝试的迁移吧。虽然静态博客框架很多，不过自己最近3年一直有写JS，另外Hexo确实很多人用。这次的迁移可以说相当的顺利。Hexo的文档非常不错，基本上照着来网站就好了。原来想着在Github再建一个项目，后来发现不需要，直接把我旧的网站一覆盖就可以了。</p>
-<p>使用的主题是NexT，我比较喜欢简洁的，这个主题的文档也非常不错，很快就搞定了，看着焕然一新的博客，Octopress已成过去时了。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/03/24/2022-03-24-gitlab-upgrade/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/24/2022-03-24-gitlab-upgrade/" class="post-title-link" itemprop="url">Gitlab升级</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-03-24 09:32:07" itemprop="dateCreated datePublished" datetime="2022-03-24T09:32:07+08:00">2022-03-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-25 11:47:58" itemprop="dateModified" datetime="2022-03-25T11:47:58+08:00">2022-03-25</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>我安装的是13.0.4的版本，20年安装的，当时也没有想到要升级，觉得小团队用。但是自从去年被病毒入侵后，在反反复复的杀病毒后，病毒还是不断的重来，严重的影响了开发。</p>
-<p>Gitlab的升级不能直接跨版本升级，需要一步步的来。可以参考<a target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/update/index.html#upgrade-paths">官方升级路线</a>。我的版本是13.0.4，官方的路线<code>13.0.14 -&gt; 13.1.11 -&gt; 13.8.8 -&gt; 13.12.15 -&gt; 14.0.12 -&gt; latest 14.Y.Z</code>，我原来想着是不是需要先升级到13.0.14，按一般的管理，最后这个应该是布丁版本了，实际是直接升级13.1.11就可以了，装完后再安装13.8.8，以此类推。</p>
-<p>Gitlab的各个版本的镜像地址<a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el7/">清华大学开源软件镜像站</a>，速度还是非常给力。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>对于Gitlab这类软件，还是要定期升级的，不然就版本的漏洞导致的瘫痪实在是划不来。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/03/17/2022-03-17-clean-up-linux-viru/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/17/2022-03-17-clean-up-linux-viru/" class="post-title-link" itemprop="url">清理Linux病毒</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-03-17 10:08:48 / 修改时间：10:46:54" itemprop="dateCreated datePublished" datetime="2022-03-17T10:08:48+08:00">2022-03-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h4><p>Windows上中毒已经习以为常，但是Linux中毒，之前没有遇到过。之前写过一篇<a href="https://c2lang.com/blog/2021/11/12/remembering-a-gitlab-failure/">《记Gitlab一次故障》</a>，当时以为Gitlab服务器就好了，后来发现还是会时不时的就访问不了，CPU还是占的满满的，想着是不是要降低Gitlab的配置，最后把配置降低后，CPU还是满满的，我一度想换个Gitlab类似的东西，直到我发现即使把Gitlab停止后，依旧有两个Git的用户的程序把CPU占的满满的。其中一个叫kthreaddk的，隐约的感觉到好像中毒了，一搜发现这是一个挖矿的木马程序。</p>
-<p>把进程Kill掉后，发现过一会又启动了。看来还是要深度清理了，参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/wzysz117/article/details/122662915">《挖矿木马kthreaddk清理》</a>这篇文章后，终于把这个木马清理了。主要是安装Gitlab时会创建一个git的用户，而木马程序就是这个用户下运行的，定时任务也是在这个用户下。遇到的主要问题是我不知道git用户的密码，不过这个可以用root账号来修改。</p>
-<h4 id="修改Git用户密码"><a href="#修改Git用户密码" class="headerlink" title="修改Git用户密码"></a>修改Git用户密码</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd git <span class="comment"># 这个是修改用户密码，用户密码密码无法查看，即使你是管理员。</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="清理木马"><a href="#清理木马" class="headerlink" title="清理木马"></a>清理木马</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">su git <span class="comment"># 切换到git用户</span></span><br><span class="line"></span><br><span class="line">crontab -l <span class="comment"># 查看定时任务</span></span><br><span class="line"></span><br><span class="line">sudo /etc/init.d/cron stop <span class="comment"># 停掉定时程序</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">kill</span> -9 进程ID 进程ID <span class="comment"># 这个木马会有两个进程</span></span><br><span class="line"></span><br><span class="line">crontab -r <span class="comment"># 移除定时任务</span></span><br><span class="line"></span><br><span class="line">sudo /etc/init.d/cron start <span class="comment"># 重启定时任务</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>整个Gillab的故障中我一直没有想到中毒的问题，而上次出现故障时，我发现Gitlab账户多了一个管理员的用户，遂即就把这个用户给禁用了，这就已经是一个预兆了。通过这次事件，也算是给上了一课，之前也有使用top这个命令，但从来没有过深入的理解。另外开源的这些软件的漏洞的问题，也是值得关注的，搞不好就有被利用的可能性。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/02/23/2022-02-23-spring-cloud-stream-practices/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/02/23/2022-02-23-spring-cloud-stream-practices/" class="post-title-link" itemprop="url">Spring Cloud Stream 实践</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-02-23 14:10:11 / 修改时间：15:49:11" itemprop="dateCreated datePublished" datetime="2022-02-23T14:10:11+08:00">2022-02-23</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>消息队列这个东西一直有关注，RabbitMQ相关的东西书籍也入手了，也跑过简单的例子，不过一直没有上。一开始使用的是Spring Boot集成RabbitMQ的方案，因为用的是Spring Cloud的微服务解决方案，发现Spring Cloud Stream这个东西，用这个的好处就是这是一个高层次的实现，可以支持RabbitMQ和Kafka，所以后续切换也方便。</p>
-<h4 id="Source、Sink、Processor"><a href="#Source、Sink、Processor" class="headerlink" title="Source、Sink、Processor"></a>Source、Sink、Processor</h4><p>这三个是Spring Cloud Stream自带的，Source用来发送消息、Sink用来接收消息，Processor集成了二者。最初的构想是一个微服务生产消息，另一个微服务消费这些消息，我一开始用的是<code>@EnableBinding(value = &#123;Processor.class&#125;)</code>注解，这样话等于我要同时处理生产和消费的东西。如果只是实现我最初的构想的话，只需要绑定Source或者Sink其中一个就好。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>Spring Cloud Stream网上的资料并不多，一开始上手有点难。</p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/fengzheng/p/11576661.html">Spring Cloud 系列之 Spring Cloud Stream </a></p>
-<p><a target="_blank" rel="noopener" href="https://www.hangge.com/blog/cache/detail_2794.html">消息驱动微服务框架Spring Cloud Stream使用详解2（基本用法）</a><br>这个文章广告比较多</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/11/12/2021-11-12-remembering-a-gitlab-failure/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/11/12/2021-11-12-remembering-a-gitlab-failure/" class="post-title-link" itemprop="url">记Gitlab一次故障</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-11-12 11:52:59" itemprop="dateCreated datePublished" datetime="2021-11-12T11:52:59+08:00">2021-11-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-17 10:53:39" itemprop="dateModified" datetime="2022-03-17T10:53:39+08:00">2022-03-17</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Gitlab部署后一年多基本没出问题，最近一次提交突然失败，后台也登不上去了，显示502错误页面。用<code>top</code>命令确实发现CPU飙升，满负荷运行，怎么办呢？</p>
-<h4 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h4><p>重启可能是最实用的方法吧，于是我第一步就先重启，刚一开始还能访问下，但很快就不行了，发现CUP还是很高。</p>
-<h4 id="升级"><a href="#升级" class="headerlink" title="升级"></a>升级</h4><p>后来发现好像是Gitlab漏洞的问题，于是就像想着赶紧升级到最新的版本吧。一顿猛操作，就把版本升级到最新的版本了，但还是无法访问，CPU还是占用很高。</p>
-<h4 id="日志"><a href="#日志" class="headerlink" title="日志"></a>日志</h4><p>使用<code>gitlab-ctl start</code>后并没有哪个是异常的，然后使用<code>gitlab-ctl status</code>，也是没有看出问题。最后决定查看日志吧，其实这个应该是最先想到的，可是每次都有点滞后。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/var/log/gitlab/gitlab-rails/production.log <span class="comment"># Gitlab日志目录</span></span><br><span class="line"></span><br><span class="line">gitlab-ctl <span class="built_in">tail</span> <span class="comment"># 也可以用这个查询</span></span><br></pre></td></tr></table></figure>
-
-<p>发现是数据库连接的问题，最新版本和我原来的数据是不同的版本，无法直接升级。</p>
-<h4 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h4><p>我之前安装的Gitlab是什么版本？原来也没有太注意。但这个很重要，我最后是通过备份文件的后缀知道我原来安装的版本的，我根据Postgres报错信息，定位到了原来的Postgres是11，但是发现Gitlab12和13版本，我先选择的12，是可以访问了，但是项目点进去后项目显示不存在。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /opt/gitlab/embedded/service/gitlab-rails/VERSION <span class="comment"># 比较靠谱</span></span><br><span class="line">网址/help <span class="comment"># 这个也可以查，但是网站502时不行。</span></span><br><span class="line">sudo gitlab-rake gitlab:<span class="built_in">env</span>:info <span class="comment"># 这个方法，我第一次使用的时候，因为有个报错所以也不行。</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="备份"><a href="#备份" class="headerlink" title="备份"></a>备份</h4><p>我已经有点想放弃了，干脆重装或者换个Gitlab类似的东西。可作为一个技术，还是决定再试下。网上说要恢复备份，好在Gitlab有一个默认备份，大概是7天备份一次，还好我最近一直没有提交过。我决定恢复备份，结果发现版本不对，备份的后缀有一个版本号，是13.0.4，而我装的是12。于是又下载重装了版本。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/var/opt/gitlab/backups <span class="comment"># 默认备份路径</span></span><br></pre></td></tr></table></figure>
-
-<p>重装后实际上还不能访问，需要恢复备份。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-rake gitlab:backup:restore BACKUP=需要恢复的版本名称 <span class="comment"># _gitlab_backup.tar 之前的所有。</span></span><br></pre></td></tr></table></figure>
-
-<p>最后成功运行。</p>
-<h4 id="问题点"><a href="#问题点" class="headerlink" title="问题点"></a>问题点</h4><p>执行<code>gitlab-ctl reconfigure</code>报错</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">PG::ConnectionBad: could not connect to server: No such file or directory</span><br><span class="line">Is the server running locally and accepting</span><br><span class="line">connections on Unix domain socket “/var/opt/gitlab/postgresql/.s.PGSQL.5432”?</span><br></pre></td></tr></table></figure>
-
-<p>解决方案</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo gitlab-ctl stop <span class="comment"># 停止gitlab</span></span><br><span class="line">sudo <span class="built_in">chmod</span> 755 /var/opt/gitlab/postgresql</span><br><span class="line">sudo systemctl restart gitlab-runsvdir</span><br><span class="line">sudo gitlab-ctl reconfigure</span><br><span class="line">sudo gitlab-ctl restart</span><br></pre></td></tr></table></figure>
-
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>应该解决问题，而不是轻易的重装。</p>
-<ol>
-<li>出现故障不要轻易的跨版本升级，比如Postgres的版本就有点频繁，而Gitlab也好像喜欢用最新的版本。</li>
-<li>一定要记住当前的版本</li>
-<li>备份</li>
-<li>出现问题先看日志</li>
-<li>机器配置，我的机子是单核4G的理论上是可以的，CPU占用率在50%上下，内存占有率也是在50%左右，实际上是可以运行的。</li>
-</ol>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://packages.gitlab.com/gitlab">Gitlab官方包中心</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jxd283465/p/11525629.html">gitlab安装、备份、恢复、升级、内存消耗问题</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/10/06/2021-10-06-tenth-anniversary-of-steve-jobs-death/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/06/2021-10-06-tenth-anniversary-of-steve-jobs-death/" class="post-title-link" itemprop="url">乔布斯去世十周年</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-10-06 15:12:42" itemprop="dateCreated datePublished" datetime="2021-10-06T15:12:42+08:00">2021-10-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-08 11:20:33" itemprop="dateModified" datetime="2021-10-08T11:20:33+08:00">2021-10-08</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="移动市场发展缓慢"><a href="#移动市场发展缓慢" class="headerlink" title="移动市场发展缓慢"></a>移动市场发展缓慢</h4><p>经过十年的发展，移动市场的机会似乎越来越少了。我也从iOS开发者，转做服务端开发了。iPhone是越来越贵了，我的6s已经扛过了第五个年头了。随着个人开发技能的提高，我现在反而喜欢纯粹的Linux手机。不过这类手机太少了，淘宝上购买的PinePhone自从6月中旬购买后，到现在也没有到货，只能寄希望于国庆后了。</p>
-<p>移动设备的性能已经高过了需求，有些东西正在朝着另外一些方向转移，比如物联网。不过我观察了半天感觉这块市场太碎了，不好插手。</p>
-<h4 id="乙川弘文"><a href="#乙川弘文" class="headerlink" title="乙川弘文"></a>乙川弘文</h4><p>十年间乔布斯相关的书籍出版不少，即使连给乔布斯做过寿司的老板也出书了，可是关于乙川弘文的书籍却没有出版，早期确实是没有的，不过后来有人根据他生前的录音整理了一本关于他的书籍《kobun-sesshin-talks》，后来16年出版后叫《Embracing Mind》。不过这么些年过去了，此书的中文版一直没有面世，我买过此书的英文版，大略的毒了一遍，觉得这事一本跟《禅者的初心》不太一样的书籍，对于打坐修行的人来说是非常有参考价值，从去年开始我就利用机器翻译加人工校对的形式在整理此书，最近终于把剩余的给全部弄完了。已经放到了GitHub上《<a target="_blank" rel="noopener" href="https://github.com/jasper2007111/kobun-sesshin-talks-zh">kobun-sesshin-talks</a>》，喜欢的可以去看看，欢迎共同完善。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
@@ -905,6 +286,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
