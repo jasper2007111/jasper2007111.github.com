@@ -151,6 +151,95 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/04/16/2021-04-16-learn-docker/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/16/2021-04-16-learn-docker/" class="post-title-link" itemprop="url">学习Docker使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-16 21:01:29" itemprop="dateCreated datePublished" datetime="2021-04-16T21:01:29+08:00">2021-04-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-19 16:12:42" itemprop="dateModified" datetime="2021-04-19T16:12:42+08:00">2021-04-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>去年年底的时候，当时有简单的研究下Docker，不过只是下载了一些类似MongoDB的镜像运行了下，感觉Docker非常适合安装这些软件。最近开始看Kubernetes，Docker的研究难免，那么如何把现有项目打包成一个Docker镜像以及运行，去年好像有简单的试下，不过有点遗忘，再次运行发现一些问题。</p>
+<h4 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h4><p>这里运行Flask的一个简单例子，只为演示。创建一个文件flask_test的文件夹，</p>
+<p>目录文件</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">app.py</span><br><span class="line">requirements.txt</span><br><span class="line">Dockerfile</span><br></pre></td></tr></table></figure>
+
+<p><em><strong>app.py</strong></em>，默认host是127.0.0.1，这里有个问题就是打包成镜像，无法访问端口。在mac和linux都一样，具体可以参考这篇文章<a target="_blank" rel="noopener" href="https://pythonspeed.com/articles/docker-connection-refused/">《Connection refused? Docker networking and how it impacts your image》</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">hello_world</span>():</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, World!&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(host=<span class="string">&quot;0.0.0.0&quot;</span>, port=<span class="number">5000</span>)</span><br></pre></td></tr></table></figure>
+
+<p><em><strong>requirements.txt</strong></em>，这个主要是放置python依赖库，目前只有flask一项。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flask</span><br></pre></td></tr></table></figure>
+
+<p><em><strong>Dockerfile</strong></em>，这个是Build Docker的配置文件，<code>EXPOSE 5000</code>这个是指定容器内部的端口的，在Mac使用Docker客户端启动镜像时会有出现在设置里面。在Linux上构建镜像时出现下载python依赖https的错误<code>SSL: CERTIFICATE_VERIFY_FAILED</code>，需要去掉验证，<code>RUN pip install --trusted-host pypi.org --trusted-host files.pythonhosted.org -r requirements.txt</code>，下面这个是在Mac上可以运行的配置。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FROM python:3.9</span><br><span class="line">WORKDIR /code</span><br><span class="line">EXPOSE 5000</span><br><span class="line"></span><br><span class="line">COPY requirements.txt ./</span><br><span class="line">RUN pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple</span><br><span class="line"></span><br><span class="line">COPY . .</span><br><span class="line"></span><br><span class="line">CMD [<span class="string">&quot;python&quot;</span>, <span class="string">&quot;app.py&quot;</span>]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="构建"><a href="#构建" class="headerlink" title="构建"></a>构建</h4><p>构建Docker镜像，在当前目录运行该命令，记得不要忽略这个<code>.</code>，另外镜像的名字不能出现大写，我一直开始写成<code>testFlask</code>，结果构建失败。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker build -t <span class="string">&#x27;testflask&#x27;</span> .</span><br></pre></td></tr></table></figure>
+
+<p>####运行<br>下面这个是以后台形式运行容器，<code>8000</code>是外部的访问端口，<code>5000</code>是容器内的端口。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 8000:5000 -d testflask</span><br></pre></td></tr></table></figure>
+
+<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><p>Mac上我会用Docker Desktop，不过Linux上还是命令行是王道。主要记几个常用的命令。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker ps <span class="comment"># 列出运行的容器</span></span><br><span class="line">docker images <span class="comment"># 列出当前的所有镜像</span></span><br><span class="line">docker <span class="built_in">rm</span> 容器ID <span class="comment"># 删除指定的容器</span></span><br><span class="line">docker rmi 镜像ID <span class="comment"># 删除指定的镜像</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h4><p>目前打包出的镜像居然有900多M，只有一个python和flask的依赖，觉得可能还是研究的不够。通过这个例子，发现还是得找本Docker的书籍系统的研究下，问题解决了，但是缺乏理论依据。</p>
+<h4 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h4><p>因为初次接触docker，后来发现可以使用基础版本，修改Dockerfile文件<code>FROM python:3.9-alpine</code>，最后打包后50M。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/04/16/2021-04-16-brew-practices/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -799,66 +888,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/01/05/2021-01-05-how-to-configure-mysql-8-master-slave-replication-on-centos-8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/05/2021-01-05-how-to-configure-mysql-8-master-slave-replication-on-centos-8/" class="post-title-link" itemprop="url">在CentOS 8上Mysql 8.0的主从配置实践</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-01-05 10:47:17 / 修改时间：11:09:07" itemprop="dateCreated datePublished" datetime="2021-01-05T10:47:17+08:00">2021-01-05</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>主要试了下基于二进制日志文件的方法</p>
-<h4 id="主库设置"><a href="#主库设置" class="headerlink" title="主库设置"></a>主库设置</h4><p>主要的坑，一般教程上写的是编辑<code>/etc/my.cnf</code>。安装的Mysql 8的配置略微有些问题，<code>my.cnf</code>文件导入的是另一配置<code>!includedir /etc/my.cnf.d</code>，所以以下配置我是写在了<code>/etc/my.cnf.d/mysql-server.cnf</code>里面。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">###主从数据库配置核心部分</span></span><br><span class="line"><span class="comment"># 设置同步的binary log二进制日志文件名前缀，默认为binlog</span></span><br><span class="line">log-bin=mysql-bin</span><br><span class="line"><span class="comment"># 服务器唯一id，默认为1  主数据库和从数据库的server-id不能重复</span></span><br><span class="line">server-id=1          </span><br><span class="line"></span><br><span class="line"><span class="comment">###可选配置</span></span><br><span class="line"><span class="comment"># 需要主从复制的数据库</span></span><br><span class="line">binlog-do-db=<span class="built_in">test</span></span><br><span class="line"><span class="comment"># 复制过滤：也就是指定哪个数据库不用同步（mysql库一般不同步）</span></span><br><span class="line">binlog-ignore-db=mysql</span><br><span class="line"><span class="comment"># 为每个session分配的内存，在事务过程中用来存储二进制日志的缓存</span></span><br><span class="line">binlog_cache_size=1M</span><br><span class="line"><span class="comment"># 主从复制的格式（mixed,statement,row，默认格式是statement。建议是设置为row，主从复制时数据更加能够统一）</span></span><br><span class="line">binlog_format=row</span><br><span class="line"><span class="comment"># 设置二进制日志自动删除/过期的天数，避免占用磁盘空间。默认值为0，表示不自动删除。</span></span><br><span class="line">expire_logs_days=7</span><br><span class="line"><span class="comment"># 跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制中断。</span></span><br><span class="line"><span class="comment"># 如：1062错误是指一些主键重复，1032错误是因为主从数据库数据不一致</span></span><br><span class="line">slave_skip_errors=1062</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -928,7 +957,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-count">55</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
