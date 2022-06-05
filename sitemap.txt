@@ -1,3 +1,6 @@
+https://c2lang.com/2021/10/06/2021-10-06-tenth-anniversary-of-steve-jobs-death/
+https://c2lang.com/2020/10/06/2020-10-06-travelogue-of-tiantong-temple/
+https://c2lang.com/2022/05/17/flutter-background-fetch/
 https://c2lang.com/2022/05/13/lg-nexus-5x-settings/
 https://c2lang.com/2022/05/02/write-a-notepad-with-rust-and-yew/
 https://c2lang.com/2022/04/23/rust-writing-front-end/
@@ -15,7 +18,6 @@ https://c2lang.com/2022/02/23/2022-02-23-spring-cloud-stream-practices/
 https://c2lang.com/2021/10/01/2021-10-01-cat-diary/
 https://c2lang.com/2021/05/27/2021-05-27-tiantong-rujing/
 https://c2lang.com/2021/09/26/2021-09-26-virtualbox-centos-8-expansio/
-https://c2lang.com/2021/10/06/2021-10-06-tenth-anniversary-of-steve-jobs-death/
 https://c2lang.com/2021/09/08/2021-09-08-learning-java-bytecode/
 https://c2lang.com/2021/09/07/2021-09-07-learn-jni/
 https://c2lang.com/2021/08/13/2021-08-13-mysql-practice/
@@ -45,7 +47,6 @@ https://c2lang.com/2021/03/11/2021-03-11-programming-the-80386-notes/
 https://c2lang.com/2020/09/13/2020-09-13-talk-about-fasting/
 https://c2lang.com/2021/01/05/2021-01-05-how-to-configure-mysql-8-master-slave-replication-on-centos-8/
 https://c2lang.com/2020/11/12/2020-11-12-try-iphone-12-pro/
-https://c2lang.com/2020/10/06/2020-10-06-travelogue-of-tiantong-temple/
 https://c2lang.com/2020/07/22/2020-07-22-octopress-users-guide/
 https://c2lang.com/2020/07/27/2020-07-27-installing-nginx-on-mac/
 https://c2lang.com/2020/07/26/2020-07-26-anonymous-functions-and-closures/

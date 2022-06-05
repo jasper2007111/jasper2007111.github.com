@@ -151,6 +151,69 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/02/23/2022-02-23-spring-cloud-stream-practices/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/23/2022-02-23-spring-cloud-stream-practices/" class="post-title-link" itemprop="url">Spring Cloud Stream 实践</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-02-23 14:10:11 / 修改时间：15:49:11" itemprop="dateCreated datePublished" datetime="2022-02-23T14:10:11+08:00">2022-02-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>消息队列这个东西一直有关注，RabbitMQ相关的东西书籍也入手了，也跑过简单的例子，不过一直没有上。一开始使用的是Spring Boot集成RabbitMQ的方案，因为用的是Spring Cloud的微服务解决方案，发现Spring Cloud Stream这个东西，用这个的好处就是这是一个高层次的实现，可以支持RabbitMQ和Kafka，所以后续切换也方便。</p>
+<h4 id="Source、Sink、Processor"><a href="#Source、Sink、Processor" class="headerlink" title="Source、Sink、Processor"></a>Source、Sink、Processor</h4><p>这三个是Spring Cloud Stream自带的，Source用来发送消息、Sink用来接收消息，Processor集成了二者。最初的构想是一个微服务生产消息，另一个微服务消费这些消息，我一开始用的是<code>@EnableBinding(value = &#123;Processor.class&#125;)</code>注解，这样话等于我要同时处理生产和消费的东西。如果只是实现我最初的构想的话，只需要绑定Source或者Sink其中一个就好。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>Spring Cloud Stream网上的资料并不多，一开始上手有点难。</p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/fengzheng/p/11576661.html">Spring Cloud 系列之 Spring Cloud Stream </a></p>
+<p><a target="_blank" rel="noopener" href="https://www.hangge.com/blog/cache/detail_2794.html">消息驱动微服务框架Spring Cloud Stream使用详解2（基本用法）</a><br>这个文章广告比较多</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/11/12/2021-11-12-remembering-a-gitlab-failure/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -278,7 +341,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-08 11:20:33" itemprop="dateModified" datetime="2021-10-08T11:20:33+08:00">2021-10-08</time>
+                <time title="修改时间：2022-06-05 14:12:14" itemprop="dateModified" datetime="2022-06-05T14:12:14+08:00">2022-06-05</time>
               </span>
 
           
@@ -294,7 +357,7 @@
       
           <h4 id="移动市场发展缓慢"><a href="#移动市场发展缓慢" class="headerlink" title="移动市场发展缓慢"></a>移动市场发展缓慢</h4><p>经过十年的发展，移动市场的机会似乎越来越少了。我也从iOS开发者，转做服务端开发了。iPhone是越来越贵了，我的6s已经扛过了第五个年头了。随着个人开发技能的提高，我现在反而喜欢纯粹的Linux手机。不过这类手机太少了，淘宝上购买的PinePhone自从6月中旬购买后，到现在也没有到货，只能寄希望于国庆后了。</p>
 <p>移动设备的性能已经高过了需求，有些东西正在朝着另外一些方向转移，比如物联网。不过我观察了半天感觉这块市场太碎了，不好插手。</p>
-<h4 id="乙川弘文"><a href="#乙川弘文" class="headerlink" title="乙川弘文"></a>乙川弘文</h4><p>十年间乔布斯相关的书籍出版不少，即使连给乔布斯做过寿司的老板也出书了，可是关于乙川弘文的书籍却没有出版，早期确实是没有的，不过后来有人根据他生前的录音整理了一本关于他的书籍《kobun-sesshin-talks》，后来16年出版后叫《Embracing Mind》。不过这么些年过去了，此书的中文版一直没有面世，我买过此书的英文版，大略的毒了一遍，觉得这事一本跟《禅者的初心》不太一样的书籍，对于打坐修行的人来说是非常有参考价值，从去年开始我就利用机器翻译加人工校对的形式在整理此书，最近终于把剩余的给全部弄完了。已经放到了GitHub上《<a target="_blank" rel="noopener" href="https://github.com/jasper2007111/kobun-sesshin-talks-zh">kobun-sesshin-talks</a>》，喜欢的可以去看看，欢迎共同完善。</p>
+<h4 id="乙川弘文"><a href="#乙川弘文" class="headerlink" title="乙川弘文"></a>乙川弘文</h4><p>十年间乔布斯相关的书籍出版不少，即使连给乔布斯做过寿司的老板也出书了，可是关于乙川弘文的书籍却没有出版，早期确实是没有的，不过后来有人根据他生前的录音整理了一本关于他的书籍《Kobun Sesshin Talks》，后来16年出版后叫《Embracing Mind》。不过这么些年过去了，此书的中文版一直没有面世，我买过此书的英文版，大略的读了一遍，觉得这是一本跟《禅者的初心》不太一样的书籍，对于打坐修行的人来说是非常有参考价值，从去年开始我就利用机器翻译加人工校对的形式在整理此书，最近终于把剩余的给全部弄完了。已经放到了GitHub上《<a target="_blank" rel="noopener" href="https://github.com/jasper2007111/kobun-sesshin-talks-zh">kobun-sesshin-talks</a>》，喜欢的可以去看看，欢迎共同完善。</p>
 
       
     </div>
@@ -848,73 +911,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/06/17/2021-06-17-talk-in-detail-zuohui/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/17/2021-06-17-talk-in-detail-zuohui/" class="post-title-link" itemprop="url">《详谈：左晖》读后感</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-06-17 22:33:39" itemprop="dateCreated datePublished" datetime="2021-06-17T22:33:39+08:00">2021-06-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-20 19:05:57" itemprop="dateModified" datetime="2021-06-20T19:05:57+08:00">2021-06-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>左晖这个人要不是最近因为去世，我估计也不太知道是谁。首次听到链家，那会觉得是一家新起来的互联网的网站，感觉好像很是风口，因为挖了不少技术的牛人过去。自己那会打算买房时也专门下载了链家的APP，不过感觉那上面的房子好像偏贵。而贝壳呢？好像那会广告打的比较凶。近一两年发现，发现附近多了好多叫德佑的房产中介，最近跟一位卖房的中介聊天时才发现德佑跟贝壳的关系。作为技术人我非常好奇他是如何实现传统行业加互联网的逆袭的？因为我最近两年一直在传统企业做相关的系统，但是成效很低，所以非常想一睹左晖的思路。</p>
-<p>《详谈左晖》是本不到180页的32开小册子，我大概用了2个多小时读完了此书。主要是17年和20年对左晖的访谈内容。左晖虽然从事的是传统行业，实际上他是计算机专业毕业，只不过人家没有做技术，首先做过保险，后来因为政策的缘故，改做卖房中介，链家其实很早了，2001年就创建了，虽然早期也有网站，但实际主要做线下了，链家实际是一家有着IT基因的公司，这点很关键。另一家公司就是京东，一开始是摆柜台，后来借助互联网，终成巨头。左晖一直强调传统行业在基础方面的薄弱，主要体现在战略、组织、信息化、IT方面。个人深有体会，传统的中小企业重业务，流程上比较灵活，信息化还停留在表格的阶段。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>传统行业的互联化一定要紧密建立在业务环节，并且要能够利用数字以及互联网来优化或者抽象化一些细节流程，这样才能有所作为，当然也很容易变成信息化与流程的脱节问题，关键是在于落实。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -984,7 +980,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

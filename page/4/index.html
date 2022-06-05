@@ -151,6 +151,95 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/04/18/2021-04-18-learn-kubernetes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/18/2021-04-18-learn-kubernetes/" class="post-title-link" itemprop="url">学习Kubernetes</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-18 11:19:34" itemprop="dateCreated datePublished" datetime="2021-04-18T11:19:34+08:00">2021-04-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-19 16:14:53" itemprop="dateModified" datetime="2021-04-19T16:14:53+08:00">2021-04-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>学习Docker后，发现还是得学习下k8s，目前使用Spring Cloud，引入k8s后原来现有的架构确实会有些变化，比如k8s的服务与Spring Eureka实际上有些功能相似的地方。最早我打算使用微服务的时候也是看中可以使用其他语言，但实际上使用了Eureka后，发现用其他语言还是有困难的，Java依旧是服务的首选。引入k8s后这似乎成为了一些可能，不过目前还没有使用来着。</p>
+<h4 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h4><p>关于k8s的书籍目前只买了《Kubernetes实战》，之前也是选了几本，但这本当时一看就觉得干货很多，不过在解决细节问题时还是依赖网路了，不过这次可能错了，关于k8s的资料网上的还是太少，解决细节的问题最后还是依靠这本书。这本书在理论和细节方面结合的很好。</p>
+<h4 id="使用本地镜像"><a href="#使用本地镜像" class="headerlink" title="使用本地镜像"></a>使用本地镜像</h4><p>我用的<code>minikube</code>，本地构建的doker镜像，我并没有推送到docker的镜像服务器，打出的docker镜像，其实还是蛮大的，Python和Flask，只是个简单的Hello World的例子，有800多M。再将这个推送到docker镜像服务器太慢了，实际我根本就没有成功，但拉取镜像速度还不错。</p>
+<p>一开始我使用<code>kubectrl run</code>创建Pods。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectrl run testflask --image=testflask --port=5000 --generator=run/v1</span><br></pre></td></tr></table></figure>
+
+<p>上面这种方式还是有局限，网上说要把<code>imagePullPolicy</code>设置成<code>IfNotPresent</code>或者<code>Never</code>。但是怎么设置？网上的博文根本不说，最后还是从《Kubernetes实战》这书找到答案，使用配置文件来创建，创建一个<code>flasktest.yaml</code>的配置文件。这里需要注意的是配置文件中一定要使用空格缩进而不是Tab，貌似我用的vs code和textmate都是使用Tab缩进。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">flasktest</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">testflask</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">flasktest-container</span></span><br><span class="line">    <span class="attr">imagePullPolicy:</span> <span class="string">IfNotPresent</span> <span class="comment"># 拉取的策略</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">5000</span> <span class="comment"># 容器的端口</span></span><br><span class="line">      <span class="attr">protocol:</span> <span class="string">TCP</span></span><br></pre></td></tr></table></figure>
+
+<p>通过配置文件来创建pods</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f flasktest.yaml <span class="comment"># 通过配置文件创建pods</span></span><br></pre></td></tr></table></figure>
+
+<p>最后发现还是有问题，这个镜像始终还是无法拉下来，网上搜索半天也没有找到个解决方案，最后打算直接使用<code>docker</code>的公共镜像<code>docker/getting-started</code>，估计是网络的问题，始终没有拉取下来。我一直把<code>minikube</code>的当成本地的了，<code>docker</code>也是共用一个，实际上犯了个严重的认知错误，<code>minikube</code>在VirtualBox创建了一个<code>minikube</code>虚拟机在运行，<code>docker</code>肯定与我本地的不是一个，《Kubernetes实战》书中提供了一种把本地的docker复制到<code>minikube</code>虚拟机中<code>docker</code>镜像库的方法。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker save testflask | (<span class="built_in">eval</span> $(minikube docker-env) &amp;&amp; docker load)</span><br></pre></td></tr></table></figure>
+
+<p>可以使用<code>minikube ssh</code>登录到<code>minikube</code>虚拟机中，查看<code>docker</code>镜像是否已经复制过去了。最后顺利启动了，不过怎么访问服务呢？</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl expose rc flasktest --<span class="built_in">type</span>=LoadBalancer --name flasktest-http</span><br></pre></td></tr></table></figure>
+
+<p>不过这里也个问题，提示<code>replicationcontrollers &quot;flasktest&quot; not found</code>。其实命令<code>kubectrl run testflask --image=testflask --port=5000 --generator=run/v1</code>中，<code>--generator=run/v1</code>是创建<code>replicationcontroller</code>的，但我使用的是配置文件创建，问题不大，修改下配置文件。如下：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">ReplicationController</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">flasktest</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">flasktest</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">flasktest</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">        <span class="attr">containers:</span></span><br><span class="line">        <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">testflask</span></span><br><span class="line">          <span class="attr">name:</span> <span class="string">flasktest-container</span></span><br><span class="line">          <span class="attr">imagePullPolicy:</span> <span class="string">IfNotPresent</span></span><br><span class="line">          <span class="attr">ports:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">containerPort:</span> <span class="number">5000</span></span><br><span class="line">            <span class="attr">protocol:</span> <span class="string">TCP</span></span><br></pre></td></tr></table></figure>
+
+<p>重新创建，再启动服务，服务时启动了，不过还是有问题，使用<code>minikube</code>没有外部的ip的访问，需要使用如下命令。不过这个端口是随机的，跟原来用docker的那个不太一样。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube service flasktest-http</span><br></pre></td></tr></table></figure>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>网络的问题使本来简单的入门变得复杂，另外k8s的资料目前确实不是很多，一些细节网上的很少有人总结出来。不过感觉方案虽好，但是镜像大，以及可能要自己部署私有的镜像，再到其他的，其实投入还是蛮多的。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/04/16/2021-04-16-learn-docker/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -811,83 +900,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/02/04/2021-02-04-how-to-write-an-os/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/02/04/2021-02-04-how-to-write-an-os/" class="post-title-link" itemprop="url">如何写一个操作系统</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-02-04 22:21:27" itemprop="dateCreated datePublished" datetime="2021-02-04T22:21:27+08:00">2021-02-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-09 15:05:35" itemprop="dateModified" datetime="2021-07-09T15:05:35+08:00">2021-07-09</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h3><p>做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。</p>
-<p>大概7、8年前买过一本《Orange’S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太难了，中间需要跨越的东西太多了。渐渐就放弃了，后来直接把这两本书给卖掉了。</p>
-<p>今年突然间又想，我应该尝试写一个简单的操作系统，多年的工作以及自学，使得我对编程有了一个相对完整的认识，这个想法似乎不像当年那么不靠谱。但该如何下手呢？刚开始我只想能跑一个<code>Hello wrold</code>的例子也可以，网上找了下最多的居然是我当年卖掉的那本《Orange’S 一个操作系统实现》书中的例子，可惜当年我也没怎么看懂，只是买了本书而已。</p>
-<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>最简单的例子，来自《Orange’S 一个操作系统实现》一书。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">	org 07c00h			; 告诉编译器程序加载到7c00处</span><br><span class="line">	mov ax, cs</span><br><span class="line">	mov ds, ax</span><br><span class="line">	mov es, ax</span><br><span class="line">	call DispStr			; 调用显示字符串例程</span><br><span class="line">	jmp $			; 无限循环</span><br><span class="line">DispStr:</span><br><span class="line">	mov ax, BootMessage</span><br><span class="line">	mov bp, ax			; ES:BP = 串地址</span><br><span class="line">	mov cx, 16			; CX = 串长度</span><br><span class="line">	mov ax, 01301h		; AH = 13,  AL = 01h</span><br><span class="line">	mov bx, 000ch		; 页号为0(BH = 0) 黑底红字(BL = 0Ch,高亮)</span><br><span class="line">	mov dl, 0</span><br><span class="line">	int 10h			; 10h 号中断</span><br><span class="line">	ret</span><br><span class="line">BootMessage:		db	&quot;Hello, OS world!&quot;</span><br><span class="line">times 	510-($-$$)	db	0	; 填充剩下的空间，使生成的二进制代码恰好为512字节</span><br><span class="line">dw 	0xaa55				; 结束标志</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>这就是一个直接运行到硬件上的一段程序，而不是我们平时在操作系统写应用代码那样。对于一个实践者而言，我很想把这段程序跑起来，这很关键，只要能跑起来，我们就可以试图修改下，再跑起来，这样认识上才能有提高。其实跑这个例子也是费了点功夫，首先在虚拟机上安装了一个的Linux发行版Ubuntu系统，书中用到的汇编是跟MASM很相似的NASM，首先NASM的教程不多，不过还好可以参考MASM汇编的书籍。另外就是软盘的制作相关的东西，最后是安装Bochs虚拟机，这个虚拟机跟平时用的有些特别，不过还是了解如何操作，最后成功的把这个例子跑了起来。</p>
-<h3 id="汇编和CPU"><a href="#汇编和CPU" class="headerlink" title="汇编和CPU"></a>汇编和CPU</h3><p>似乎可以继续一路向前了，可惜看了头三章后，我发现了些问题。首先我对NASM汇编的东西几乎是一片空白，书的前几章几乎离不开汇编语言了，而看的非常吃力。另一个是我对PC的体系缺乏细节的了解，虽然之前也有了解但实操的过程中遇到的问题更具体。</p>
-<p>NASM的书籍不多，《汇编语言.基于Linux环境.第三版》是一本从体系的角度来讲解NASM的书籍，一方面学习了NASM，也让我重新思考从8086到80386的一些变化，好几个点很有启发。王爽老师的《汇编语言》，也是一本非常不错的参考书，汇编语言在形式上与高级语言还是有着巨大差异，一开始我把心思放在那些寄存器之类上了，而忽略了一个编程语言应该是能够写点东西出来这事上。《汇编语言》这书很好的带我进入如何写点东西的正轨上。</p>
-<p>8086方面的书籍，8086总设计师莫尔斯写的《8086初阶-体系结构、系统设计和程序设计入门》。王爽老师《汇编语言》也主要是讲8086的汇编的。80386的书籍不多，80386的设计师写的《Programing the 80386》一书，非常不错。中文版是93年出版的《保护方式下80386及其编程》一书，虽然没有备注是翻译，但我跟英文版对照后，确认就是翻译自《Programing the 80386》，主要是学习保护模式。</p>
-<p>这里需要注意的是实模式与保护模式的差别，很多时候一开始如果研究的是8086的，往往需要转换下思维，最好的书籍依旧是《保护方式下80386及其编程》一书，于渊的《Orange’S 一个操作系统实现》细节上还是有点模糊。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最终操作系统并没有完整的实验下去，主要是因为最难的部分也是最容易忽略的如何在特定架构上如何开始，把这一步迈过去后，基本上跟大多操作系统讲的差不多了，主要部分就是使用C语言来实现。</p>
-<p>虽然实验已经过去了几个月了，最近一直在看Java并发的东西，发现实际写过点操作系统还是很有帮助的，比如更能从CPU的角度来思考。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -957,7 +969,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

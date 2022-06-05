@@ -2,6 +2,33 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://c2lang.com/2021/10/06/2021-10-06-tenth-anniversary-of-steve-jobs-death/</loc>
+    
+    <lastmod>2022-06-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://c2lang.com/2020/10/06/2020-10-06-travelogue-of-tiantong-temple/</loc>
+    
+    <lastmod>2022-06-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://c2lang.com/2022/05/17/flutter-background-fetch/</loc>
+    
+    <lastmod>2022-05-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://c2lang.com/2022/05/13/lg-nexus-5x-settings/</loc>
     
     <lastmod>2022-05-13</lastmod>
@@ -149,15 +176,6 @@
     <loc>https://c2lang.com/2021/09/26/2021-09-26-virtualbox-centos-8-expansio/</loc>
     
     <lastmod>2021-10-09</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/10/06/2021-10-06-tenth-anniversary-of-steve-jobs-death/</loc>
-    
-    <lastmod>2021-10-08</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -425,15 +443,6 @@
   </url>
   
   <url>
-    <loc>https://c2lang.com/2020/10/06/2020-10-06-travelogue-of-tiantong-temple/</loc>
-    
-    <lastmod>2020-10-18</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://c2lang.com/2020/07/22/2020-07-22-octopress-users-guide/</loc>
     
     <lastmod>2020-07-28</lastmod>
@@ -508,7 +517,7 @@
 
   <url>
     <loc>https://c2lang.com/</loc>
-    <lastmod>2022-05-13</lastmod>
+    <lastmod>2022-06-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>

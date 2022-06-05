@@ -151,6 +151,83 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/02/04/2021-02-04-how-to-write-an-os/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/02/04/2021-02-04-how-to-write-an-os/" class="post-title-link" itemprop="url">如何写一个操作系统</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-04 22:21:27" itemprop="dateCreated datePublished" datetime="2021-02-04T22:21:27+08:00">2021-02-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-09 15:05:35" itemprop="dateModified" datetime="2021-07-09T15:05:35+08:00">2021-07-09</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h3><p>做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。</p>
+<p>大概7、8年前买过一本《Orange’S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太难了，中间需要跨越的东西太多了。渐渐就放弃了，后来直接把这两本书给卖掉了。</p>
+<p>今年突然间又想，我应该尝试写一个简单的操作系统，多年的工作以及自学，使得我对编程有了一个相对完整的认识，这个想法似乎不像当年那么不靠谱。但该如何下手呢？刚开始我只想能跑一个<code>Hello wrold</code>的例子也可以，网上找了下最多的居然是我当年卖掉的那本《Orange’S 一个操作系统实现》书中的例子，可惜当年我也没怎么看懂，只是买了本书而已。</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>最简单的例子，来自《Orange’S 一个操作系统实现》一书。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">	org 07c00h			; 告诉编译器程序加载到7c00处</span><br><span class="line">	mov ax, cs</span><br><span class="line">	mov ds, ax</span><br><span class="line">	mov es, ax</span><br><span class="line">	call DispStr			; 调用显示字符串例程</span><br><span class="line">	jmp $			; 无限循环</span><br><span class="line">DispStr:</span><br><span class="line">	mov ax, BootMessage</span><br><span class="line">	mov bp, ax			; ES:BP = 串地址</span><br><span class="line">	mov cx, 16			; CX = 串长度</span><br><span class="line">	mov ax, 01301h		; AH = 13,  AL = 01h</span><br><span class="line">	mov bx, 000ch		; 页号为0(BH = 0) 黑底红字(BL = 0Ch,高亮)</span><br><span class="line">	mov dl, 0</span><br><span class="line">	int 10h			; 10h 号中断</span><br><span class="line">	ret</span><br><span class="line">BootMessage:		db	&quot;Hello, OS world!&quot;</span><br><span class="line">times 	510-($-$$)	db	0	; 填充剩下的空间，使生成的二进制代码恰好为512字节</span><br><span class="line">dw 	0xaa55				; 结束标志</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这就是一个直接运行到硬件上的一段程序，而不是我们平时在操作系统写应用代码那样。对于一个实践者而言，我很想把这段程序跑起来，这很关键，只要能跑起来，我们就可以试图修改下，再跑起来，这样认识上才能有提高。其实跑这个例子也是费了点功夫，首先在虚拟机上安装了一个的Linux发行版Ubuntu系统，书中用到的汇编是跟MASM很相似的NASM，首先NASM的教程不多，不过还好可以参考MASM汇编的书籍。另外就是软盘的制作相关的东西，最后是安装Bochs虚拟机，这个虚拟机跟平时用的有些特别，不过还是了解如何操作，最后成功的把这个例子跑了起来。</p>
+<h3 id="汇编和CPU"><a href="#汇编和CPU" class="headerlink" title="汇编和CPU"></a>汇编和CPU</h3><p>似乎可以继续一路向前了，可惜看了头三章后，我发现了些问题。首先我对NASM汇编的东西几乎是一片空白，书的前几章几乎离不开汇编语言了，而看的非常吃力。另一个是我对PC的体系缺乏细节的了解，虽然之前也有了解但实操的过程中遇到的问题更具体。</p>
+<p>NASM的书籍不多，《汇编语言.基于Linux环境.第三版》是一本从体系的角度来讲解NASM的书籍，一方面学习了NASM，也让我重新思考从8086到80386的一些变化，好几个点很有启发。王爽老师的《汇编语言》，也是一本非常不错的参考书，汇编语言在形式上与高级语言还是有着巨大差异，一开始我把心思放在那些寄存器之类上了，而忽略了一个编程语言应该是能够写点东西出来这事上。《汇编语言》这书很好的带我进入如何写点东西的正轨上。</p>
+<p>8086方面的书籍，8086总设计师莫尔斯写的《8086初阶-体系结构、系统设计和程序设计入门》。王爽老师《汇编语言》也主要是讲8086的汇编的。80386的书籍不多，80386的设计师写的《Programing the 80386》一书，非常不错。中文版是93年出版的《保护方式下80386及其编程》一书，虽然没有备注是翻译，但我跟英文版对照后，确认就是翻译自《Programing the 80386》，主要是学习保护模式。</p>
+<p>这里需要注意的是实模式与保护模式的差别，很多时候一开始如果研究的是8086的，往往需要转换下思维，最好的书籍依旧是《保护方式下80386及其编程》一书，于渊的《Orange’S 一个操作系统实现》细节上还是有点模糊。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最终操作系统并没有完整的实验下去，主要是因为最难的部分也是最容易忽略的如何在特定架构上如何开始，把这一步迈过去后，基本上跟大多操作系统讲的差不多了，主要部分就是使用C语言来实现。</p>
+<p>虽然实验已经过去了几个月了，最近一直在看Java并发的东西，发现实际写过点操作系统还是很有帮助的，比如更能从CPU的角度来思考。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/01/05/2021-01-05-how-to-configure-mysql-8-master-slave-replication-on-centos-8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -309,7 +386,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-18 19:17:36" itemprop="dateModified" datetime="2020-10-18T19:17:36+08:00">2020-10-18</time>
+                <time title="修改时间：2022-06-05 14:06:30" itemprop="dateModified" datetime="2022-06-05T14:06:30+08:00">2022-06-05</time>
               </span>
 
           
@@ -336,7 +413,7 @@
 <h4 id="净慈禅寺"><a href="#净慈禅寺" class="headerlink" title="净慈禅寺"></a>净慈禅寺</h4><p>本以为去天童寺也就顺便把如净禅师的塔给拜一下，不过网上一查发现如净禅师圆寂后并没有葬在天童寺，而是葬在了他曾经主持过的杭州西湖边的净慈禅寺。于是行程的最后一站有了杭州这一站，不过也许都是因缘，实际上如果葬在天童寺的话，我去的这会也看不了，因为那边现在正在建设维修中，并不对外开放。</p>
 <p>前两日的天气都不错，不过当我要去杭州的时候，天气预报显示那边下雨，而宁波这边也是有雨，为此我专门改签了去杭州的车次，推后了一点，主要害怕过去下雨，行程不便了。不过也许是上天的某种眷顾吧，从宁波出发的时候，天气显示下雨，但实际不下雨。经过一个小时到杭州后，发现天气虽阴，但也没有下雨。花了点时间终于坐上了数字旅游2号线，在净寺站下，靠西湖的一边是雷峰塔，雷峰塔隔着公路的对面则是净慈禅寺，与雷峰塔的游客蜂拥而至相比，净慈禅寺禅寺显得比较清净。如果不是如净禅师的塔墓在这里，我好像也只知道灵隐寺了，禅寺的门票是10块钱，也算是一种象征性的收费，也合理。我也不免俗的去敲了一下南屏晚钟，一次10元。</p>
 <p>一心想要去塔墓拜祭，老居士说在后山，中途遇到一位师父，给我说那边不开放，心里瞬间有点凉。不过我依旧往释迦殿的方向走，发现殿的一侧有个亭子，跟网上看到塔墓照片差不多了，本想直接沿着山坡往上爬，发现释迦殿上去后可以直接到塔墓那边。果然是对的，穿过一个亭子，旁边有济公像一尊，塔墓这边没有人，还好并没有像那位师父说的不开放，也不知道他出于什么样心里。塔墓被后建的石亭笼罩，旁边还立有如净禅师简介的石碑。在塔墓旁待了许久后，下山把整个寺庙大概转了下，净慈禅寺另一个出名的地方是这里是济公修行的地方，不过济公似乎如同神话人物一般，也没有留下塔墓之类的。大雄宝殿主供的是毗卢遮那佛，跟一般寺庙好像不太一样，但又跟原来看过日本曹洞宗的一些书里有提到毗卢遮那佛，这块不是很懂。</p>
-<p>寺庙也是正在重建中，我也尽了点微薄之力。不过寺里的师父看似并不友好，倒是居士们很友好。深处西湖景区，能这样已经不错了，后来发现禅寺也有开展面对普通人的禅修，愿他们能珍惜这个道场。</p>
+<p>寺庙也是正在重建中，我也尽了点微薄之力。不过寺里的师父看似并不友好，倒是居士们很友好。身处西湖景区，能这样已经不错了，后来发现禅寺也有开展面对普通人的禅修，愿他们能珍惜这个道场。</p>
 <h3 id="归途"><a href="#归途" class="headerlink" title="归途"></a>归途</h3><p>原来还打算去灵隐寺去看下，不过发现时间不够，沿着西湖略转了下。就朝火车站走了，骑着共享单车走了一段，离火车站不远的地方逐渐下起了下雨，而我也要开始返程了。</p>
 <p>这次行程总体上非常的圆满，作为去年就想前往的地方，今年终于得以成行。打坐七年时间，曹洞宗似乎离自己有点远，只是在书里，在日本，而这次行程，终于让这一切变的真实起来。其实他并遥远，如果想去总能去的。行程结束了，我也把道元禅师的《正法眼藏》的书籍认真的看了一部分，此时这书才似乎能够看的进去，一切有点特别但又没有什么特别，唯一能想到的就是苏轼的那首《庐山烟雨浙江潮》</p>
 <blockquote>
@@ -851,73 +928,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2020/07/22/2020-07-22-octopress-users-guide/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/22/2020-07-22-octopress-users-guide/" class="post-title-link" itemprop="url">Octopress使用指南</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-22 15:14:59" itemprop="dateCreated datePublished" datetime="2020-07-22T15:14:59+08:00">2020-07-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-28 11:50:47" itemprop="dateModified" datetime="2020-07-28T11:50:47+08:00">2020-07-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rake <span class="string">&#x27;new_post[&quot;title&quot;]&#x27;</span> <span class="comment"># 创建文章</span></span><br><span class="line">rake generate <span class="comment"># 生成文章</span></span><br><span class="line">rake preview <span class="comment"># 本地预览博客</span></span><br><span class="line">rake deploy <span class="comment"># 发布博客</span></span><br></pre></td></tr></table></figure>
-
-<p>修改文章创建的日期格式，我比较喜欢类似<code>2020-01-01 00:00:00</code>这样的格式，修改<code>_config.yml</code>。</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">date_format:</span> <span class="string">&quot;%Y-%m-%d&quot;</span></span><br><span class="line"><span class="attr">time_format:</span> <span class="string">&quot;%H:%M:%S&quot;</span> <span class="comment"># 这个新增的，默认配置文件没有的</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -987,7 +997,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-count">56</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
