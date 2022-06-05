@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://c2lang.com/2021/10/01/2021-10-01-cat-diary/</loc>
+    
+    <lastmod>2022-06-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://c2lang.com/2021/10/06/2021-10-06-tenth-anniversary-of-steve-jobs-death/</loc>
     
     <lastmod>2022-06-05</lastmod>
@@ -149,15 +158,6 @@
     <loc>https://c2lang.com/2022/02/23/2022-02-23-spring-cloud-stream-practices/</loc>
     
     <lastmod>2022-02-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/10/01/2021-10-01-cat-diary/</loc>
-    
-    <lastmod>2022-02-20</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
