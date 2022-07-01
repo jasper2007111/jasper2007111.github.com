@@ -2,6 +2,33 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://c2lang.com/2022/07/01/study-code-push-server/</loc>
+    
+    <lastmod>2022-07-01</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://c2lang.com/2022/06/30/adb-cannot-connect/</loc>
+    
+    <lastmod>2022-07-01</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://c2lang.com/2022/06/09/the-bite-in-the-apple-reading-notes/</loc>
+    
+    <lastmod>2022-06-12</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://c2lang.com/2021/10/01/2021-10-01-cat-diary/</loc>
     
     <lastmod>2022-06-05</lastmod>
@@ -517,7 +544,7 @@
 
   <url>
     <loc>https://c2lang.com/</loc>
-    <lastmod>2022-06-05</lastmod>
+    <lastmod>2022-07-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
