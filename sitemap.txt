@@ -1,6 +1,9 @@
+https://c2lang.com/2022/07/19/docker-install-gitlab/
+https://c2lang.com/2022/07/14/spring-boot-rabbitmq/
+https://c2lang.com/2021/06/17/2021-06-17-talk-in-detail-zuohui/
+https://c2lang.com/2022/06/09/the-bite-in-the-apple-reading-notes/
 https://c2lang.com/2022/07/01/study-code-push-server/
 https://c2lang.com/2022/06/30/adb-cannot-connect/
-https://c2lang.com/2022/06/09/the-bite-in-the-apple-reading-notes/
 https://c2lang.com/2021/10/01/2021-10-01-cat-diary/
 https://c2lang.com/2021/10/06/2021-10-06-tenth-anniversary-of-steve-jobs-death/
 https://c2lang.com/2020/10/06/2020-10-06-travelogue-of-tiantong-temple/
@@ -28,7 +31,6 @@ https://c2lang.com/2021/07/02/2021-07-02-jeewms-user-guide/
 https://c2lang.com/2021/02/04/2021-02-04-how-to-write-an-os/
 https://c2lang.com/2021/06/22/2021-06-22-learn-zookeeper/
 https://c2lang.com/2021/04/16/2021-04-16-brew-practices/
-https://c2lang.com/2021/06/17/2021-06-17-talk-in-detail-zuohui/
 https://c2lang.com/2021/06/02/2021-06-02-learning-gtk/
 https://c2lang.com/2021/04/26/2021-04-26-talk-about-meditatio/
 https://c2lang.com/2020/08/08/2020-08-08-the-innovators-dilemma/

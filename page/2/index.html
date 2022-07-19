@@ -151,6 +151,137 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/10/try-rust/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/10/try-rust/" class="post-title-link" itemprop="url">尝试Rust</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-04-10 17:28:22" itemprop="dateCreated datePublished" datetime="2022-04-10T17:28:22+08:00">2022-04-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-11 11:27:07" itemprop="dateModified" datetime="2022-04-11T11:27:07+08:00">2022-04-11</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近在看WebAssembly的东西，觉得Rust写基于WebAssembly的Web应用好像是不错的选择。另外Rust这门语言，很早就听说的了，后来也买了《Rust权威指南》这本书，只是简单的翻了翻，并没有做过什么项目。于是就起了个备忘录的简单项目。</p>
+<h4 id="Yew"><a href="#Yew" class="headerlink" title="Yew"></a>Yew</h4><p>有点类似React，用起来还是比较顺手了。目前版本迭代还是相当的快，我一开始用的0.19.0的版本，最后因为一个库的关系，直接选择了最新的版本，版本之间还时存在兼容问题。我打包后有2M，相比传统的还是比较大了，不过可能是是没有优化的结果。在代码里面写Html，主要的问题是格式化的问题，vscode里面一格式化代码后，html的代码就乱了。</p>
+<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p>Yew本身提供的文档还可以，有问题看看文档也能解决。主要的问题是wey_sys的一些库的使用，比如我想使用IndexedDB这个东西，其实JS版的文档很好看懂，Rust版的就有点不知所措，主要还是我对Rust了解不够，再加上这些库并没有特别全的文档，所以折腾半天。比如设置IndexedDB回调的问题，参数显示<code>js_sys::Function</code>，我想着那就构造个Function出来，结果翻遍文档没有看到如何构造的例子，最后解决方案是闭包转Function的方式，一开始也是报错，提示闭包已久被销毁了，后来发现官方的例子有点问题，最后修复了。</p>
+<p>另外因为要在几个页面间共享一些数据，想着写个单例吧，发现不那么简单，找了个<code>lazy_static</code>这样库，提示<code>*mut u8` cannot be shared between threads safely</code>这样的错误，最终还是停了下来。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>Rust的学习曲线比较陡，主要是很多语法不同于传统的C体系，所以感觉原来的经验无法施展，而且沿着经验的思路反而会比较绕，发现还是得按Rust的方式解决问题。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/05/webAssembly-reverie/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/05/webAssembly-reverie/" class="post-title-link" itemprop="url">WebAssembly 遐想</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-04-05 21:06:10 / 修改时间：22:56:04" itemprop="dateCreated datePublished" datetime="2022-04-05T21:06:10+08:00">2022-04-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>上次去省图偶然看到了《WebAssembly 实战》一书，之前就有关注到，于是就借了回来，刚好趁清明假期看看。之前有写过一篇<a href="https://c2lang.com/2021/06/02/2021-06-02-first-try-webassembly/">《初试WebAssembly》</a>，本身Rust语言不熟，虽然我买了本《Rust权威指南》，但一直没有什么项目可以练手，基本上没有进展。《WebAssembly 实战》一书是基于C&#x2F;C++的，相对来说读起来障碍不大。实际我也跑了一个例子试了下，当然如果真拿C&#x2F;C++来写Web应用的话，估计会很奔溃了。接着我又看了好几个关于WebAssembly的视频演讲，发现有了新的想法。</p>
+<p>推出WebAssembly这个东西主要是因为现有的优化已经无法满足性能的进一步提升了，语言肯定不能大改了，JS这么用的广。记得早些年使用Flash的时候，那会是在嵌入式上跑AS2，性能的问题真的是让我当时无语。后来又推出了AS3性能又大幅的提升，但是很长一段时间，我们公司的引擎没有升级，所以我基本上还是用AS2。虽然现在的Web开发没有像当年那样，毕竟开放的环境还是不一样。回到正题，如果单纯的写WebAssembly的话，好像也没有这个必要，而且据说和JS的调用开销不小，所以到底什么时候用，是个问题。反过来想要是哪天整个的Web可以大部分都用WebAssembly来写的话，那就好了，不过目前还不能直接操作Dom，这是一个很大的问题，理论和JS是相互调用的，我看到Rust有个web_sys的库，可以操作dom，不过我想应该也是自己实现的吧。目前看到几个Rust的例子，是直接用WebAssembly来写整个的Web应用的，比如Yew这个Rust的框架允许你构建基于WebAssembly的应用。另外微软的Blazor，允许使用C#来编写基于WebAssembly的单页应用。还有Go的Vugu。</p>
+<p>所以如果和JS混着用，那么实际上是把WebAssembly作为一个计算密集型的一个解决方案吧，实际开发中大部分的Web应用都是些轻客户端，主要还是界面相关的操作了，其实大部分情况下很难想到用WebAssembly了，这也是我最早尝试时的感想。但是如果未来解决了类似调DOM的成本比较高的的问题，那么有没有可能Web语言变成Rust为主，为什么是Rust呢？首先WebAssembly本身没有垃圾回收，内存是手动处理了。Rust呢？标榜的是一个没有垃圾回收的安全语言，与C&#x2F;C++相比实际上是语言层面上处理内存管理的问题。这么一想Rust与WebAssembly真是绝配，当然其他的语言也可以编译成WebAssembly，但对于垃圾回收的语言，是比要实现一个垃圾回收的运行时环境，这样性能上就会有折扣。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>想来想去，最终落到Rust这个语言上了，或者说WebAssembly本身的设计这种在底层改变的东西无疑为未来提供了各种改变的可能性，即使不是Rust也许会是其他的语言。C&#x2F;C++用户可以让现有的库移植到Web上使用，另外Web应用一定是现在这样的轻客户端的类型吗？WebAssembly的引入确实提供另一种可能。另外一定要用JS来写Web应用吗？过去是没有办法，但是底层的改变让未来可以使用统一基于WebAssembly的语言来写Web成为了可能，而不像过去所有新的语言实际上都得编译成JS。基于WebAssembly的框架，有微软这样的大厂，也有基于Go的，某种程度这是一场大厂利好的事，但坏处是当有各种的语言可以写Web时，会不会有点分裂，毕竟只学一个JS，大家共用资源，而用不同的语言有学习成本。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/03/28/blog-migration-to-hexo/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -746,168 +877,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/09/08/2021-09-08-learning-java-bytecode/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/08/2021-09-08-learning-java-bytecode/" class="post-title-link" itemprop="url">学习Java字节码</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-09-08 09:21:48 / 修改时间：14:31:51" itemprop="dateCreated datePublished" datetime="2021-09-08T09:21:48+08:00">2021-09-08</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Java字节码只是简单的了解，感觉缺乏深入的了解，特写此篇记录下。</p>
-<p>准备一个HelloWorld的测试类。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloWorld</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Hello, World!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>编译生成HelloWorld.class文件</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javac HelloWorld.java</span><br></pre></td></tr></table></figure>
-
-<p>我们使用javap命令来查看class文件</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javap -v HelloWorld.class</span><br></pre></td></tr></table></figure>
-
-<p>输出结果</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">Classfile /Users/jasperji/eclipse-workspace/maventest/src/main/java/com/jasper/ji/maven/test/HelloWorld.class</span><br><span class="line">  Last modified 2021-9-8; size 452 bytes</span><br><span class="line">  MD5 checksum 1f346aeb85559b06180507b8838406dd</span><br><span class="line">  Compiled from <span class="string">&quot;HelloWorld.java&quot;</span></span><br><span class="line">public class com.jasper.ji.maven.test.HelloWorld</span><br><span class="line">  minor version: 0</span><br><span class="line">  major version: 52</span><br><span class="line">  flags: ACC_PUBLIC, ACC_SUPER</span><br><span class="line">Constant pool:</span><br><span class="line">   <span class="comment">#1 = Methodref          #6.#15         // java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">   <span class="comment">#2 = Fieldref           #16.#17        // java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">   <span class="comment">#3 = String             #18            // Hello, World!</span></span><br><span class="line">   <span class="comment">#4 = Methodref          #19.#20        // java/io/PrintStream.println:(Ljava/lang/String;)V</span></span><br><span class="line">   <span class="comment">#5 = Class              #21            // com/jasper/ji/maven/test/HelloWorld</span></span><br><span class="line">   <span class="comment">#6 = Class              #22            // java/lang/Object</span></span><br><span class="line">   <span class="comment">#7 = Utf8               &lt;init&gt;</span></span><br><span class="line">   <span class="comment">#8 = Utf8               ()V</span></span><br><span class="line">   <span class="comment">#9 = Utf8               Code</span></span><br><span class="line">  <span class="comment">#10 = Utf8               LineNumberTable</span></span><br><span class="line">  <span class="comment">#11 = Utf8               main</span></span><br><span class="line">  <span class="comment">#12 = Utf8               ([Ljava/lang/String;)V</span></span><br><span class="line">  <span class="comment">#13 = Utf8               SourceFile</span></span><br><span class="line">  <span class="comment">#14 = Utf8               HelloWorld.java</span></span><br><span class="line">  <span class="comment">#15 = NameAndType        #7:#8          // &quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">  <span class="comment">#16 = Class              #23            // java/lang/System</span></span><br><span class="line">  <span class="comment">#17 = NameAndType        #24:#25        // out:Ljava/io/PrintStream;</span></span><br><span class="line">  <span class="comment">#18 = Utf8               Hello, World!</span></span><br><span class="line">  <span class="comment">#19 = Class              #26            // java/io/PrintStream</span></span><br><span class="line">  <span class="comment">#20 = NameAndType        #27:#28        // println:(Ljava/lang/String;)V</span></span><br><span class="line">  <span class="comment">#21 = Utf8               com/jasper/ji/maven/test/HelloWorld</span></span><br><span class="line">  <span class="comment">#22 = Utf8               java/lang/Object</span></span><br><span class="line">  <span class="comment">#23 = Utf8               java/lang/System</span></span><br><span class="line">  <span class="comment">#24 = Utf8               out</span></span><br><span class="line">  <span class="comment">#25 = Utf8               Ljava/io/PrintStream;</span></span><br><span class="line">  <span class="comment">#26 = Utf8               java/io/PrintStream</span></span><br><span class="line">  <span class="comment">#27 = Utf8               println</span></span><br><span class="line">  <span class="comment">#28 = Utf8               (Ljava/lang/String;)V</span></span><br><span class="line">&#123;</span><br><span class="line">  public com.jasper.ji.maven.test.HelloWorld();</span><br><span class="line">    descriptor: ()V</span><br><span class="line">    flags: ACC_PUBLIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=1, locals=1, args_size=1</span><br><span class="line">         0: aload_0</span><br><span class="line">         1: invokespecial <span class="comment">#1                  // Method java/lang/Object.&quot;&lt;init&gt;&quot;:()V</span></span><br><span class="line">         4: <span class="built_in">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 3: 0</span><br><span class="line"></span><br><span class="line">  public static void main(java.lang.String[]);</span><br><span class="line">    descriptor: ([Ljava/lang/String;)V</span><br><span class="line">    flags: ACC_PUBLIC, ACC_STATIC</span><br><span class="line">    Code:</span><br><span class="line">      stack=2, locals=1, args_size=1</span><br><span class="line">         0: getstatic     <span class="comment">#2                  // Field java/lang/System.out:Ljava/io/PrintStream;</span></span><br><span class="line">         3: ldc           <span class="comment">#3                  // String Hello, World!</span></span><br><span class="line">         5: invokevirtual <span class="comment">#4                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V</span></span><br><span class="line">         8: <span class="built_in">return</span></span><br><span class="line">      LineNumberTable:</span><br><span class="line">        line 5: 0</span><br><span class="line">        line 6: 8</span><br><span class="line">&#125;</span><br><span class="line">SourceFile: <span class="string">&quot;HelloWorld.java&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>另外也可以直接查看二进制，这里使用hexdump。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexdump HelloWorld.class</span><br></pre></td></tr></table></figure>
-
-<p>不过感觉还是javap提供的这个比较人性化，更好的阅读。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>字节码作为一种中间形式，Java可以编译成字节码，Scala也可以编译成字节码，但是从语言层面他们又是不一样的。这个也让我重新再读了下《Java程序员修炼之道》这本书，原来对于书中第三部分JVM上的多语言编程，不是很感冒。但字节码并不是机器码，所以在理解某些问题时最终还是要落到汇编语言级别的。</p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://tech.meituan.com/2019/09/05/java-bytecode-enhancement.html">字节码增强技术探索</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/09/07/2021-09-07-learn-jni/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/07/2021-09-07-learn-jni/" class="post-title-link" itemprop="url">学习JNI的使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-09-07 13:40:35 / 修改时间：15:56:18" itemprop="dateCreated datePublished" datetime="2021-09-07T13:40:35+08:00">2021-09-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>JNI（Java Native Interface）意为Java本地接口，虽然使用Java有段时间了，但对这个并不太了解。这个是基于网上老外的一篇文章的总结，环境是<strong>Mac OS</strong>。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">HelloWorldJNI</span> &#123;</span><br><span class="line">	<span class="keyword">static</span> &#123;</span><br><span class="line">        System.loadLibrary(<span class="string">&quot;native&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">HelloWorldJNI</span>().sayHello();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Declare a native method sayHello() that receives no arguments and returns void</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">native</span> <span class="keyword">void</span> <span class="title function_">sayHello</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>使用命令生成头文件</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">javac -h . HelloWorldJNI.java</span><br></pre></td></tr></table></figure>
-
-<p>生成如下的<code>com_jasper_ji_maven_test_HelloWorldJNI.h</code></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* DO NOT EDIT THIS FILE - it is machine generated */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;jni.h&gt;</span></span></span><br><span class="line"><span class="comment">/* Header for class com_jasper_ji_maven_test_HelloWorldJNI */</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> _Included_com_jasper_ji_maven_test_HelloWorldJNI</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _Included_com_jasper_ji_maven_test_HelloWorldJNI</span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> __cplusplus</span></span><br><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> &#123;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Class:     com_jasper_ji_maven_test_HelloWorldJNI</span></span><br><span class="line"><span class="comment"> * Method:    sayHello</span></span><br><span class="line"><span class="comment"> * Signature: ()V</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">JNIEXPORT <span class="type">void</span> JNICALL <span class="title">Java_com_jasper_ji_maven_test_HelloWorldJNI_sayHello</span></span></span><br><span class="line"><span class="function">  <span class="params">(JNIEnv *, jobject)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> __cplusplus</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-
-<p>我们再创建一个同名cpp文件</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* DO NOT EDIT THIS FILE - it is machine generated */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;com_jasper_ji_maven_test_HelloWorldJNI.h&quot;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Class:     com_jasper_ji_maven_test_HelloWorldJNI</span></span><br><span class="line"><span class="comment"> * Method:    sayHello</span></span><br><span class="line"><span class="comment"> * Signature: ()V</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="type">void</span> JNICALL <span class="title">Java_com_jasper_ji_maven_test_HelloWorldJNI_sayHello</span> <span class="params">(JNIEnv *env, jobject obj)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Hello from C++ !!&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>编译文件，生成<code>com_jasper_ji_maven_test_HelloWorldJNI.o</code>的文件</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ -c -fPIC -I<span class="variable">$&#123;JAVA_HOME&#125;</span>/include -I<span class="variable">$&#123;JAVA_HOME&#125;</span>/include/darwin com_jasper_ji_maven_test_HelloWorldJNI.cpp -o com_jasper_ji_maven_test_HelloWorldJNI.o</span><br></pre></td></tr></table></figure>
-
-<p>生成动态库</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ -dynamiclib -o libnative.dylib com_jasper_ji_maven_test_HelloWorldJNI.o -lc</span><br></pre></td></tr></table></figure>
-
-<p>运行Java，这里需要注意的是<code>-Djava.library.path</code>路径我是把<code>libnative.dylib</code>这个文件路径放在com的根目录下的，也就是当前目录。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -<span class="built_in">cp</span> . -Djava.library.path=. com.jasper.ji.maven.test.HelloWorldJNI</span><br></pre></td></tr></table></figure>
-
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>平时不太写C&#x2F;C++的代码，所以有点生，不过之前对C的研究还是起了不少的帮助。JNI虽然提供了调用其他语言的功能，但是这是比较麻烦的，不同的平台需要编译对应的库。早前在做安卓的时候，倒是有简单的运行过NDK的例子，不过那会并没有专门研究下JNI。</p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://www.baeldung.com/jni">Guide to JNI (Java Native Interface)</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -973,7 +946,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
