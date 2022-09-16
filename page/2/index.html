@@ -151,6 +151,151 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/23/rust-writing-front-end/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/23/rust-writing-front-end/" class="post-title-link" itemprop="url">Rust写前端</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-04-23 18:36:07 / 修改时间：20:24:05" itemprop="dateCreated datePublished" datetime="2022-04-23T18:36:07+08:00">2022-04-23</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>尝试用Rust已经有点时间了，之前主要的问题是卡在IndexedDB的使用上，最后的代码是这样。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">spawn_local</span>(<span class="keyword">async</span> <span class="keyword">move</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> (tx, rx) = oneshot::channel::&lt;IdbDatabase&gt;();</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">window</span> = web_sys::<span class="title function_ invoke__">window</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">idb_factory</span> = window.<span class="title function_ invoke__">indexed_db</span>().<span class="title function_ invoke__">unwrap</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">open_request</span> = idb_factory</span><br><span class="line">            .<span class="title function_ invoke__">open_with_u32</span>(String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;todo&quot;</span>).<span class="title function_ invoke__">as_str</span>(), <span class="number">1</span>)</span><br><span class="line">            .<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">on_upgradeneeded</span> = Closure::<span class="title function_ invoke__">once</span>(<span class="keyword">move</span> |event: &amp;Event| &#123;</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">target</span> = event.<span class="title function_ invoke__">target</span>().<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Event should have a target; qed&quot;</span>);</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">req</span> = target</span><br><span class="line">                .dyn_ref::&lt;IdbRequest&gt;()</span><br><span class="line">                .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Event target is IdbRequest; qed&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> <span class="variable">result</span> = req</span><br><span class="line">                .<span class="title function_ invoke__">result</span>()</span><br><span class="line">                .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;IndexedDB.onsuccess should have a valid result; qed&quot;</span>);</span><br><span class="line">            <span class="built_in">assert!</span>(result.is_instance_of::&lt;IdbDatabase&gt;());</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">db</span> = IdbDatabase::<span class="title function_ invoke__">from</span>(result);</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">store</span>:IdbObjectStore = db.<span class="title function_ invoke__">create_object_store</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;user&quot;</span>)).<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">_index</span> = store.<span class="title function_ invoke__">create_index_with_str</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;name&quot;</span>), &amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;name&quot;</span>)).<span class="title function_ invoke__">expect</span>(<span class="string">&quot;create_index_with_str error&quot;</span>);</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line">        open_request.<span class="title function_ invoke__">set_onupgradeneeded</span>(<span class="title function_ invoke__">Some</span>(on_upgradeneeded.<span class="title function_ invoke__">as_ref</span>().<span class="title function_ invoke__">unchecked_ref</span>()));</span><br><span class="line">        on_upgradeneeded.<span class="title function_ invoke__">forget</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">on_success</span> = Closure::<span class="title function_ invoke__">once</span>(<span class="keyword">move</span> |event: &amp;Event| &#123;</span><br><span class="line">            <span class="comment">// Extract database handle from the event</span></span><br><span class="line">            <span class="keyword">let</span> <span class="variable">target</span> = event.<span class="title function_ invoke__">target</span>().<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Event should have a target; qed&quot;</span>);</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">req</span> = target</span><br><span class="line">                .dyn_ref::&lt;IdbRequest&gt;()</span><br><span class="line">                .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Event target is IdbRequest; qed&quot;</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> <span class="variable">result</span> = req</span><br><span class="line">                .<span class="title function_ invoke__">result</span>()</span><br><span class="line">                .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;IndexedDB.onsuccess should have a valid result; qed&quot;</span>);</span><br><span class="line">            <span class="built_in">assert!</span>(result.is_instance_of::&lt;IdbDatabase&gt;());</span><br><span class="line"></span><br><span class="line">            <span class="keyword">let</span> <span class="variable">db</span> = IdbDatabase::<span class="title function_ invoke__">from</span>(result);</span><br><span class="line">            <span class="keyword">let</span> <span class="variable">_</span> = tx.<span class="title function_ invoke__">send</span>(db);</span><br><span class="line">        &#125;);</span><br><span class="line">        open_request.<span class="title function_ invoke__">set_onsuccess</span>(<span class="title function_ invoke__">Some</span>(on_success.<span class="title function_ invoke__">as_ref</span>().<span class="title function_ invoke__">unchecked_ref</span>()));</span><br><span class="line">        on_success.<span class="title function_ invoke__">forget</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">db</span> = rx.<span class="keyword">await</span>.<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">transaction</span> = db.<span class="title function_ invoke__">transaction_with_str_and_mode</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;user&quot;</span>), IdbTransactionMode::Readwrite).<span class="title function_ invoke__">expect</span>(<span class="string">&quot;transaction_with_str error&quot;</span>);</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">store</span> = transaction.<span class="title function_ invoke__">object_store</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;user&quot;</span>)).<span class="title function_ invoke__">expect</span>(<span class="string">&quot;store error&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">name</span> = JsValue::<span class="title function_ invoke__">from_str</span>(_content_element.<span class="title function_ invoke__">value</span>().<span class="title function_ invoke__">as_str</span>());</span><br><span class="line">        <span class="keyword">let</span> <span class="variable">add_request</span> = store.<span class="title function_ invoke__">add_with_key</span>(&amp;name, &amp;JsValue::<span class="title function_ invoke__">from</span>(<span class="string">&quot;name&quot;</span>)).<span class="title function_ invoke__">expect</span>(<span class="string">&quot;add error&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">on_add_error</span> = Closure::<span class="title function_ invoke__">once</span>(<span class="keyword">move</span> |event: &amp;Event| &#123;</span><br><span class="line">            console::<span class="title function_ invoke__">log_1</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;写入数据失败&quot;</span>).<span class="title function_ invoke__">into</span>());</span><br><span class="line">            console::<span class="title function_ invoke__">log_1</span>(&amp;event.<span class="title function_ invoke__">into</span>());</span><br><span class="line">        &#125;);</span><br><span class="line">        add_request.<span class="title function_ invoke__">set_onerror</span>(<span class="title function_ invoke__">Some</span>(on_add_error.<span class="title function_ invoke__">as_ref</span>().<span class="title function_ invoke__">unchecked_ref</span>()));</span><br><span class="line">        on_add_error.<span class="title function_ invoke__">forget</span>();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">let</span> <span class="variable">on_add_success</span> = Closure::<span class="title function_ invoke__">once</span>(<span class="keyword">move</span> |event: &amp;Event| &#123;</span><br><span class="line">            console::<span class="title function_ invoke__">log_1</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;写入数据成功&quot;</span>).<span class="title function_ invoke__">into</span>());</span><br><span class="line">        &#125;);</span><br><span class="line">        add_request.<span class="title function_ invoke__">set_onsuccess</span>(<span class="title function_ invoke__">Some</span>(on_add_success.<span class="title function_ invoke__">as_ref</span>().<span class="title function_ invoke__">unchecked_ref</span>()));</span><br><span class="line">        on_add_success.<span class="title function_ invoke__">forget</span>();</span><br><span class="line"></span><br><span class="line">        console::<span class="title function_ invoke__">log_1</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;do&quot;</span>).<span class="title function_ invoke__">into</span>());</span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
+<p>因为IndexedDB连接成功是个异步事件，<code>db</code>    只能在成功事件中才能拿到，最初因为对IndexedDB的使用不熟悉，这玩意在很早以前看HTML5的时候就看到过，不过一直没有用过。我在成功事件中调用<code>create_object_store</code>，结果给报错了，实际上创建数据库只能在<code>onupgradeneeded</code>事件中处理。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">myDatabase</span> = MyDatabase::<span class="title function_ invoke__">new</span>();</span><br><span class="line">myDatabase.<span class="title function_ invoke__">add</span>(String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;jasper&quot;</span>, String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;name&quot;</span>)));</span><br></pre></td></tr></table></figure>
+
+<p>早期的想法是把数据库的操作封装起来，但是连接是异步的，上面的<code>add</code>操作时数据库可能还没有连接成功，<code>db</code>等于为空。可能是之前做iOS的缘故，我一直想着数据库的操作应该是个单例，不过Rust的单例好像不那么简单，一直报错，所以这个想法就先放放了。</p>
+<p>早期的时候甚至不知道如何用Rust设置回调，最后发现了这个库<a target="_blank" rel="noopener" href="https://docs.rs/kvdb-web/latest/src/kvdb_web/indexed_db.rs.html">kvdb_web</a>，代码也是参考了<code>indexed_db.rs</code>中的方法。这个库并没有演示的例子，所以只是参考了他打开数据库的方法。里面有用到<code>futures::channel</code>，但是实际使用老是报错。后来我忘了Rust写前端，实际上是运行在Wasm虚拟机的环境下，Rust的多线程则是一般的操作系统的环境下了。实际上要在Wasm使用多线程，得用另外一种方式。实际上是用Rust的代码调用JS了，JS是单线程运行的。所以整个思路虽然是用Rust在写，但实际思想的话得跟着JS来走。我想在后面的代码中拿到<code>db</code>，有点类似JS中使用<code>await</code>的方式。最后用了两个库，<code>wasm-bindgen-futures</code>主要使用了<code>spawn_local</code>这个东西，另外还有<code>futures-channel</code>这个库。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="title function_ invoke__">spawn_local</span>(<span class="keyword">async</span> &#123;</span><br><span class="line">	<span class="keyword">let</span> (tx, rx) = oneshot::channel::&lt;<span class="type">i32</span>&gt;();</span><br><span class="line">	<span class="comment">// 省略中间代码</span></span><br><span class="line">	<span class="keyword">let</span> <span class="variable">on_success</span> = Closure::<span class="title function_ invoke__">once</span>(<span class="keyword">move</span> |event: &amp;Event| &#123;</span><br><span class="line">                <span class="comment">// Extract database handle from the event</span></span><br><span class="line">                <span class="keyword">let</span> <span class="variable">target</span> = event.<span class="title function_ invoke__">target</span>().<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Event should have a target; qed&quot;</span>);</span><br><span class="line">                <span class="keyword">let</span> <span class="variable">req</span> = target</span><br><span class="line">                    .dyn_ref::&lt;IdbRequest&gt;()</span><br><span class="line">                    .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Event target is IdbRequest; qed&quot;</span>);</span><br><span class="line"></span><br><span class="line">                <span class="keyword">let</span> <span class="variable">result</span> = req</span><br><span class="line">                    .<span class="title function_ invoke__">result</span>()</span><br><span class="line">                    .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;IndexedDB.onsuccess should have a valid result; qed&quot;</span>);</span><br><span class="line">                <span class="built_in">assert!</span>(result.is_instance_of::&lt;IdbDatabase&gt;());</span><br><span class="line"></span><br><span class="line">                <span class="keyword">let</span> <span class="variable">db</span> = IdbDatabase::<span class="title function_ invoke__">from</span>(result);</span><br><span class="line">                <span class="keyword">let</span> <span class="variable">_</span> = tx.<span class="title function_ invoke__">send</span>(db);</span><br><span class="line">        &#125;);</span><br><span class="line">    open_request.<span class="title function_ invoke__">set_onsuccess</span>(<span class="title function_ invoke__">Some</span>(on_success.<span class="title function_ invoke__">as_ref</span>().<span class="title function_ invoke__">unchecked_ref</span>()));</span><br><span class="line">    on_success.<span class="title function_ invoke__">forget</span>();</span><br><span class="line">   </span><br><span class="line">    <span class="comment">// 等于这块回一直阻塞，直到拿个值。</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">db</span> = rx.<span class="keyword">await</span>.<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="comment">// 省略剩余代码</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><code>futures-channel</code>这个库的用法跟Rust自带那个有点类似，不过只用这个是可以工作的。后面的问题基本上是<code>IndexedDB</code>的用法问题，最后终于可以把数据成功插入了，虽然再次插入数据时会有写入失败的问题，不过这个已经是后面的事了。</p>
+<p>当我费了很多周折，成功写入时，也就是写这篇文章时候，突然间发现可以直接用下面的方式写，如果只是要写入数据的话。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable">window</span> = web_sys::<span class="title function_ invoke__">window</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line"><span class="keyword">let</span> <span class="variable">idb_factory</span> = window.<span class="title function_ invoke__">indexed_db</span>().<span class="title function_ invoke__">unwrap</span>().<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="variable">open_request</span> = idb_factory</span><br><span class="line">    .<span class="title function_ invoke__">open_with_u32</span>(String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;todo&quot;</span>).<span class="title function_ invoke__">as_str</span>(), <span class="number">1</span>)</span><br><span class="line">    .<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="variable">on_upgradeneeded</span> = Closure::<span class="title function_ invoke__">once</span>(<span class="keyword">move</span> |event: &amp;Event| &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">target</span> = event.<span class="title function_ invoke__">target</span>().<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Event should have a target; qed&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">req</span> = target</span><br><span class="line">        .dyn_ref::&lt;IdbRequest&gt;()</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Event target is IdbRequest; qed&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">result</span> = req</span><br><span class="line">        .<span class="title function_ invoke__">result</span>()</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;IndexedDB.onsuccess should have a valid result; qed&quot;</span>);</span><br><span class="line">    <span class="built_in">assert!</span>(result.is_instance_of::&lt;IdbDatabase&gt;());</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">db</span> = IdbDatabase::<span class="title function_ invoke__">from</span>(result);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">store</span>: IdbObjectStore = db.<span class="title function_ invoke__">create_object_store</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;user&quot;</span>)).<span class="title function_ invoke__">unwrap</span>();</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">_index</span> = store</span><br><span class="line">        .<span class="title function_ invoke__">create_index_with_str</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;name&quot;</span>), &amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;name&quot;</span>))</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;create_index_with_str error&quot;</span>);</span><br><span class="line">&#125;);</span><br><span class="line">open_request.<span class="title function_ invoke__">set_onupgradeneeded</span>(<span class="title function_ invoke__">Some</span>(on_upgradeneeded.<span class="title function_ invoke__">as_ref</span>().<span class="title function_ invoke__">unchecked_ref</span>()));</span><br><span class="line">on_upgradeneeded.<span class="title function_ invoke__">forget</span>();</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="variable">on_success</span> = Closure::<span class="title function_ invoke__">once</span>(<span class="keyword">move</span> |event: &amp;Event| &#123;</span><br><span class="line">    <span class="comment">// Extract database handle from the event</span></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">target</span> = event.<span class="title function_ invoke__">target</span>().<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Event should have a target; qed&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">req</span> = target</span><br><span class="line">        .dyn_ref::&lt;IdbRequest&gt;()</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;Event target is IdbRequest; qed&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">result</span> = req</span><br><span class="line">        .<span class="title function_ invoke__">result</span>()</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;IndexedDB.onsuccess should have a valid result; qed&quot;</span>);</span><br><span class="line">    <span class="built_in">assert!</span>(result.is_instance_of::&lt;IdbDatabase&gt;());</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">db</span> = IdbDatabase::<span class="title function_ invoke__">from</span>(result);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">transaction</span> = db</span><br><span class="line">        .<span class="title function_ invoke__">transaction_with_str_and_mode</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;user&quot;</span>), IdbTransactionMode::Readwrite)</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;transaction_with_str error&quot;</span>);</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">store</span> = transaction</span><br><span class="line">        .<span class="title function_ invoke__">object_store</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;user&quot;</span>))</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;store error&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">name</span> = JsValue::<span class="title function_ invoke__">from_str</span>(_content_element.<span class="title function_ invoke__">value</span>().<span class="title function_ invoke__">as_str</span>());</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">add_request</span> = store</span><br><span class="line">        .<span class="title function_ invoke__">add_with_key</span>(&amp;name, &amp;JsValue::<span class="title function_ invoke__">from</span>(<span class="string">&quot;name&quot;</span>))</span><br><span class="line">        .<span class="title function_ invoke__">expect</span>(<span class="string">&quot;add error&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">on_add_error</span> = Closure::<span class="title function_ invoke__">once</span>(<span class="keyword">move</span> |event: &amp;Event| &#123;</span><br><span class="line">        console::<span class="title function_ invoke__">log_1</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;写入数据失败&quot;</span>).<span class="title function_ invoke__">into</span>());</span><br><span class="line">        console::<span class="title function_ invoke__">log_1</span>(&amp;event.<span class="title function_ invoke__">into</span>());</span><br><span class="line">    &#125;);</span><br><span class="line">    add_request.<span class="title function_ invoke__">set_onerror</span>(<span class="title function_ invoke__">Some</span>(on_add_error.<span class="title function_ invoke__">as_ref</span>().<span class="title function_ invoke__">unchecked_ref</span>()));</span><br><span class="line">    on_add_error.<span class="title function_ invoke__">forget</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="variable">on_add_success</span> = Closure::<span class="title function_ invoke__">once</span>(<span class="keyword">move</span> |event: &amp;Event| &#123;</span><br><span class="line">        console::<span class="title function_ invoke__">log_1</span>(&amp;String::<span class="title function_ invoke__">from</span>(<span class="string">&quot;写入数据成功&quot;</span>).<span class="title function_ invoke__">into</span>());</span><br><span class="line">    &#125;);</span><br><span class="line">    add_request.<span class="title function_ invoke__">set_onsuccess</span>(<span class="title function_ invoke__">Some</span>(on_add_success.<span class="title function_ invoke__">as_ref</span>().<span class="title function_ invoke__">unchecked_ref</span>()));</span><br><span class="line">    on_add_success.<span class="title function_ invoke__">forget</span>();</span><br><span class="line">&#125;);</span><br><span class="line">open_request.<span class="title function_ invoke__">set_onsuccess</span>(<span class="title function_ invoke__">Some</span>(on_success.<span class="title function_ invoke__">as_ref</span>().<span class="title function_ invoke__">unchecked_ref</span>()));</span><br><span class="line">on_success.<span class="title function_ invoke__">forget</span>();</span><br></pre></td></tr></table></figure>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>至此算是把<code>IndexedDB</code>的问题解决了，如果想把操作封装起来，那么可以用前面的方式。只是简单的操作的话，后面的代码也是可以的。到目前为止，基本上还没有写网页的东西，<code>Yew</code>的东西，也就只是搭了个架子时有用到，并没有深入的使用。后面得需要好好的深入下，<code>Yew</code>这个框架跟传统的还不太一样，用<code>trunk serve</code>启动后，实际会有一个<code>WebSocket</code>在前后端之间通讯。</p>
+<p>再谈谈Rust学习的东西，实际上《Rust权威指南》这本书我只是看了个大概，而目前的实验项目中并没有使用Rust去写很多逻辑的代码，更多的是调用。用Rust写前端这个方式，起步会比一般的难点，主要还是牵涉的东西不只是Rust的问题，还有Wasm以及JS相关的东西，最重要的还是要明白他的运行环境是浏览器中Wasm虚拟机。不过后续如果有大量成熟的库，可以解决这些基础问题的话，只写网页的话，难度会小些。</p>
+<p>虽然项目整体进展不大，也走了一些弯路，不过却也让我思考到了更多的东西。现在感觉Rust是未来全栈程序员必备的语言，这门语言是非常考验你是不是一个合格的程序员，因为他既有很底层的东西，比如内存概念，也有很现代的语法，但前提是你需要都懂，对于那些不是科班出身又没有好好学习计算机相关的东西人来说，这个确实有难度。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/19/python-package-exe/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/04/19/python-package-exe/" class="post-title-link" itemprop="url">Python打包exe</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-04-19 16:08:41 / 修改时间：17:05:24" itemprop="dateCreated datePublished" datetime="2022-04-19T16:08:41+08:00">2022-04-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Python平时主要是处理数据用，在Mac上使用很方便，最近想把一个程序让下面人用，他们是Window环境，Python他们并不熟悉，所以直接把源文件丢过去，他们又得折腾一番。我就想到打包成exe，其实很早就有这样的想法，但一直没有做过。用的是PyInstaller这个库，还想着这么简单，结果一打包，发现并不是Window下的exe，原来是我理解的错误，以为可以直接打包成Window上执行的exe了，实际上PyInstaller只是在不同平台上将python打包成对应平台的应用了。难道我又得找台Windows，环境弄好，再打包一个？真麻烦，想着可以交叉编译吗？查了下PyInstaller以前好像可以，后来就去掉了。之前用过点Go语言，就是可以交叉编译的，一时间我尽有想用Go重写那个功能的想法，但是一对比还是Python方便。最后找了一个通过docker进行打包的方案<a target="_blank" rel="noopener" href="https://github.com/cdrx/docker-pyinstaller">docker-pyinstaller</a></p>
+<p>直接这个命令就可以打包了，具体可以参考文档。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v <span class="string">&quot;<span class="subst">$(pwd)</span>:/src/&quot;</span> cdrx/pyinstaller-windows</span><br></pre></td></tr></table></figure>
+
+<p>但是有个问题，打包出来的应用一执行，提示一个依赖的库，没有找到。不对啊，文档中明明说把依赖写在<code>requirements.txt</code>文件里，我也写了的。</p>
+<p>文档中的这段话，看着没有其他的操作，也没有相关的示例代码。</p>
+<blockquote>
+<p>If the src folder has a requirements.txt file, the packages will be installed into the environment before PyInstaller runs.</p>
+</blockquote>
+<p>折腾了好几个小时，最后找到了一篇日文的文章，看完后豁然开朗，原来是写法的问题，我对docker的一些东西不够熟吧。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run --<span class="built_in">rm</span> -v <span class="string">&quot;<span class="subst">$(pwd)</span>:/src/&quot;</span> cdrx/pyinstaller-windows -c \</span><br><span class="line">  <span class="string">&quot;pip install -r requirements.txt &amp;&amp; \</span></span><br><span class="line"><span class="string">  pyinstaller main.py --onedir --onefile --clean &amp;&amp; \</span></span><br><span class="line"><span class="string">  mv dist/main.exe main.exe &amp;&amp; \</span></span><br><span class="line"><span class="string">  rm -rf __pycache__/ build/ dist/ main.spec&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>最后打包后的exe就没有依赖缺失的问题了。不过打包成exe后，我最终还是改了下python的代码，比如<code>os.path.dirname(__file__)</code>是无法使用了，另外打开文件时提示<code>UnicodeDecodeError: &#39;gbk&#39; codec can&#39;t decode byte</code>的错误，需要加<code>encoding=&#39;utf-8&#39;</code>。</p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://qiita.com/ryoheiszk/items/2ea26594d24304c721e2">Docker環境のPyInstallerでキレイにExe化する</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/10/try-rust/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -704,179 +849,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/10/01/2021-10-01-cat-diary/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/10/01/2021-10-01-cat-diary/" class="post-title-link" itemprop="url">养猫日记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-10-01 22:20:02" itemprop="dateCreated datePublished" datetime="2021-10-01T22:20:02+08:00">2021-10-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-06-05 14:51:48" itemprop="dateModified" datetime="2022-06-05T14:51:48+08:00">2022-06-05</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>最近养了只NY11的金渐层妹妹，大概已经半个多月了，谈谈一些感受。</p>
-<h4 id="猫毛和灰尘，戴森吸尘器"><a href="#猫毛和灰尘，戴森吸尘器" class="headerlink" title="猫毛和灰尘，戴森吸尘器"></a>猫毛和灰尘，戴森吸尘器</h4><p>猫毛无处不在，关键会有一些比较小的绒毛很容易飞在空气中，搞不好就回吸进去，所以也能理解有些人猫过敏。灰尘弥漫，猫经常会发疯似得满屋子狂奔，床底平时不太打扫得到，很容易被猫带出来，养猫后灰尘感觉弥漫在空气一样。面对这两个问题，我狠心买了个戴森吸尘器V10，首先这个确实可以把地板上散落的猫毛和灰尘以及一些杂质给收集起来，另外对于椅子上的猫毛也能清理，但还是有照顾不到的地方，总的来说解决一些问题。</p>
-<h4 id="危险"><a href="#危险" class="headerlink" title="危险"></a>危险</h4><p>防止猫触发水龙头，一般的水龙不太会有问题，不过类似面盆之类的水龙头只需要简单的抬起和按下，这类水龙头会有隐患。</p>
-<p>对于猫咪感兴趣但有危险的行为，一定要在发现的第一时间采取行动，猫是属于好奇心很重的那种。</p>
-<h4 id="寄养"><a href="#寄养" class="headerlink" title="寄养"></a>寄养</h4><p>短暂的几天其实倒还好，但是如果出差之类的，在这个疫情大背景下，确实有万一被隔离的潜在风险，所以作为单身人士而言最好把猫寄养了。寄养确实也贵，有些是全包，有些要求自带猫粮或者猫粮和猫砂都需要带，另外有些会要求必须是打了疫苗的、绝育的等。所以找一家合适的家养猫的确实也不容易。</p>
-<h4 id="公猫还是母猫？"><a href="#公猫还是母猫？" class="headerlink" title="公猫还是母猫？"></a>公猫还是母猫？</h4><p>我一开始以为公猫发情后会乱尿，所以选择了母猫。但实际上母猫也会乱尿，这是一位养母猫的朋友亲身经历。公猫会发腮，这会给颜值加分，如果比较看重颜值的话，还是要先考虑公猫。有人说母猫可以繁殖，所以价格会更贵一点，我没有发现，更多的是看颜值了。如果真的要繁育猫，首先也得找好的种公也是要花钱的，另外生下来能不能卖出去并卖上一个价也是一个问题，母猫绝育也比较麻烦，更有风险。</p>
-<h4 id="病"><a href="#病" class="headerlink" title="病"></a>病</h4><p>猫不在多，而在于健康。最近发现猫开始呕吐，那天还蛮严重的，因为一直喂罐头的缘故，可能加了诱食剂，后来自己好了。</p>
-<p>过年的时候，送去寄养结果就又呕吐了，最后专门到医院打针，后来想想环境的变动也会猫有一定的影响。</p>
-<h4 id="疫苗"><a href="#疫苗" class="headerlink" title="疫苗"></a>疫苗</h4><p>关于疫苗，买猫的时候，老板说打了一针的疫苗，但也没有疫苗本，所以又重新从第一针开打。就像现在每天要扫码一样，疫苗也是你的猫咪在社会上流通的通行证，寄养也好、做绝育都需要有疫苗本。</p>
-<p>目前我的猫已经打了三针了以及狂犬疫苗。</p>
-<h4 id="配种"><a href="#配种" class="headerlink" title="配种"></a>配种</h4><p>去年底的时候，猫突然开始发情了，不过就是每隔2周会发情一次，刚开始还能接受，后来确实有点烦，今年4月底的时候差不多猫也有一岁了，于是我就考虑给配种下，一来至少2个月不会再发情了，而来也能收获下一窝可爱的小猫。借配的公猫在闲鱼上物色了好几个，最后选中了一个，第二天就把母猫送了过去，那边承诺配三次。可能我送过去的时候已经是发情第三天的时候，接回猫后没有多久猫又开始发情了，应该是没有配上。于是第一时间联系借配的，把猫又送了过去，直接放了一周，那人以为我不要猫了，这次似乎成功了，他也给我发了好几配猫的视频。后面的日子，猫咩确实没有再发情了，渐渐的开始没有之前那么好动，现在已经距离接回有一个多月了，猫的肚子明显变大了，也更加的不愿意动，饭量也比原来的大了很多，而且相当的能睡。预计6月底应该会生，期待一下。</p>
-<p>我找的这个是专门配猫的，养了好几只公猫，其中有两只金渐层，一只是11色的，另一只是12色，11色的便宜800块钱，因为我的本身是11色，如果再配11色，大概率出的猫会有黑的可能性，所以选的12色，12色的1500，最后搞价到1400。因为小猫还没有出生，不能完全的判断这次的效果。另外配猫的时间点，不能过急，第一次完全是因为假期，而猫也开始发情了，急匆匆的找了一个，又急匆匆的送了过去，而那会已经是发情的第三天了，加上猫过去需要适应，所以第一次没有配成功也算合理，第二次就成功了，所以时间点上一定不能急，如果母猫已经快发情完了，那就等下一次。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/09/26/2021-09-26-virtualbox-centos-8-expansio/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/09/26/2021-09-26-virtualbox-centos-8-expansio/" class="post-title-link" itemprop="url">Virtualbox CentOS 8扩容</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-09-26 15:28:43" itemprop="dateCreated datePublished" datetime="2021-09-26T15:28:43+08:00">2021-09-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-10-09 11:08:09" itemprop="dateModified" datetime="2021-10-09T11:08:09+08:00">2021-10-09</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本来想在虚拟机上安装TDengine试试，经过一番折腾后发现磁盘容量不足，当时创建虚拟机时选择的是8G，这就尴尬了，最后还是一番折腾后终于扩容成功。</p>
-<h3 id="VirtualBox"><a href="#VirtualBox" class="headerlink" title="VirtualBox"></a>VirtualBox</h3><p>先关闭虚拟机，在虚拟机运行目录下执行。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VBoxManage modifyhd /Users/jasperji/VirtualBox\ VMs/centos8/centos8.vdi --resize 15360 </span><br></pre></td></tr></table></figure>
-
-<p>这里我把容量扩展为15G，记住路径中空格的问题。</p>
-<h3 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS</h3><p>查看磁盘容量情况</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">df</span> -h</span><br></pre></td></tr></table></figure>
-
-<p>操作分区，选项n，创建新分区。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk /dev/sda</span><br></pre></td></tr></table></figure>
-
-<p>创建PV（物理卷）</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pvcreate /dev/sda3</span><br></pre></td></tr></table></figure>
-
-<p>扩展到卷组，我们vgdisplay命令查看一下自己所在的卷组：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pvdisplay</span><br></pre></td></tr></table></figure>
-
-<p>看到VG Name是cl，所以进一步扩展到卷组：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vgextend cl /dev/sda3</span><br></pre></td></tr></table></figure>
-
-<p>扩展到逻辑分区，使用lvextend（logical volume extend逻辑卷扩展）</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lvextend /dev/cl/root /dev/sda3</span><br></pre></td></tr></table></figure>
-
-<p>我们df -h查看一下文件系统的磁盘空间占用情况：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">df</span> -h</span><br></pre></td></tr></table></figure>
-
-<p><em>这里我们发现磁盘没有按照预期的扩容，因为我们没有刷新逻辑分区的容量。</em></p>
-<p>于是，刷新逻辑分区的容量，使用xfs_growfs（同步文件系统）命令，注意上面的Mounted on是挂载点，这里我们的挂载点就是根目录：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xfs_growfs /</span><br></pre></td></tr></table></figure>
-
-<p>最后就扩容成功了。</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实之前阿里云正式服务器的时候，也记得有挂载过当时购买的云硬盘。不过时间久了，当时也没有记录一些东西，也就忘了。</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Luylic/article/details/107366701">CentOS8扩容</a><br><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904003067707399">VirtualBox虚拟机硬盘扩容及LVM命令介绍</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cthon/p/9334828.html">VirtualBox文件系统已满–磁盘扩容</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -946,7 +918,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

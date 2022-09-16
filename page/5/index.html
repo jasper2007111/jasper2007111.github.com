@@ -151,6 +151,174 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/04/14/2021-04-14-eclipse-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/14/2021-04-14-eclipse-notes/" class="post-title-link" itemprop="url">Eclipse笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-14 06:43:52" itemprop="dateCreated datePublished" datetime="2021-04-14T06:43:52+08:00">2021-04-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-21 10:49:29" itemprop="dateModified" datetime="2021-04-21T10:49:29+08:00">2021-04-21</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="为什么是Eclispe"><a href="#为什么是Eclispe" class="headerlink" title="为什么是Eclispe"></a>为什么是Eclispe</h4><p>最早接触Eclispe主要是用来开发Android应用，早期Android开发没有Android Studio，只能通过安装插件来开发。后来开发iOS后，Eclispe就用的少了，偶尔用来跑些简单的例子。后来做Java web，Eclispe又开始用了起来。</p>
+<p>虽然很多人推荐IntelliJ IDEA，下载的试用了下，某些功能确实比Eclispe强大，但是Eclispe+Spring Tools，对目前的开发来说确实已经够用了，另外还是有点用不习惯，也没有Spring tools 这样的插件，所以干嘛花钱买个自己用不惯的东西呢？</p>
+<h4 id="自动补全"><a href="#自动补全" class="headerlink" title="自动补全"></a>自动补全</h4><p>默认出现点号时才会出现自动补全的提示，不过可以设置，这里以Mac环境为例。</p>
+<p>选择菜单<code>Perferences-&gt;Java-&gt;Content Assist-&gt;Auto activation triggers for Java</code>，默认为***.***，使用<code>.abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWSYZ_</code>替换，点击Ok。</p>
+<h4 id="常用插件"><a href="#常用插件" class="headerlink" title="常用插件"></a>常用插件</h4><p><strong>EasyShell</strong>，这个工具主要是可以快速在当前目录打开Shell以及打开当前的文件夹。</p>
+<h4 id="Maven-配置文件报错"><a href="#Maven-配置文件报错" class="headerlink" title="Maven 配置文件报错"></a>Maven 配置文件报错</h4><p>Maven使用本地Jar包后pom.xml显示错误，实际上本地Jar包是可以加载的，但总是提示错误。</p>
+<blockquote>
+<p>dependencies.dependency.systemPath’ for com.test:test:jar must specify an absolute path but is ${pom.basedir}&#x2F;libs&#x2F;test.jar</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.test<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>test<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">scope</span>&gt;</span>system<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">systemPath</span>&gt;</span>$&#123;pom.basedir&#125;/libs/test.jar<span class="tag">&lt;/<span class="name">systemPath</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个问题虽然不影响使用，但是老显示红叉，总感觉像去掉的。我原来使用Eclispe版本是2020-03 (4.15.0)，没有这个问题。但是使用最新的Eclipse版本2021-03 (4.19.0)有这个问题，包括Spring ToolSuite 4也有这个问题，我把4.15.0到4.19.0版本下载几个对比后，终于发现4.16.0开始都有问题，最后发现4.16.0版本Preferences多了一个XMl（Wide Web Developer）项，把子项Validation &amp; Resolution，Enable validation 禁用就没有了。</p>
+<h4 id="升级与不升级"><a href="#升级与不升级" class="headerlink" title="升级与不升级"></a>升级与不升级</h4><p>如果现有环境稳定，那就最好不要升级。Eclispe好处是可以支持多个语言的开发，可以装一堆插件支持，但感觉只把它当作Java IDE就可以了，现在VS Code完全可以做其他语言的IDE。</p>
+<p>之前的Eclispe很稳定，但一次插件的安装后，弹出需要更高版本的Eclispe，然后就无法启动了。一气之下，直接删除Eclispe，重新安装那些插件，结果发现2020-03 (4.15.0)下载的Spring Tools插件不能使用，发现Spring Tools 4已经出了，但是我当前这个版本无法使用。最后下载了Spring Tools官方出品的Eclispe整合版本Spring ToolSuite 4，就结果就出现了上面提到的Maven配置报错的问题，虽然问题解决了，但是还是提示插件安装也是要谨慎，可能升级不对就的折腾半天了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/04/02/2021-04-02-performance-comparison-between-programming-languages/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/02/2021-04-02-performance-comparison-between-programming-languages/" class="post-title-link" itemprop="url">一次语言间的性能对比</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-02 05:53:47 / 修改时间：10:30:59" itemprop="dateCreated datePublished" datetime="2021-04-02T05:53:47+08:00">2021-04-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近突然间想对比下几个语言间的性能，日常使用的是Java，但平时也会用Python，JavaScript，C，Go之类的语言。Java写项目真的也没有什么问题，成熟的生态圈，遇到问题很容易解决。不过写点小东西的时候，还是觉得Python比较好用，不过就是速度慢了点，很早之前写过一个游戏的移植，脚本语言重构真的是个大问题。Go在上家公司的时候也使用过，不过也都是小的测试了，并没有拿来写过完整点的项目。不过语言的简洁性和C的这种传承，还是很有好感，不过在当时重写公司系统时，最后还是用了Java，主要是大部分的对接都有Java的实现。C一直是我研究的语言，虽然实际写东西不多，但是却看了很多相关的书籍，另外最近研究操作系统和学习汇编语言后，对C的认识又有了新的认识，C的厉害地方就是简洁的设计，性能强大，他的诞生就是为写Unix，缺点是实用性不强，另外内存管理，实际上成熟的项目在内存管理上都有自己的框架，所以对于C&#x2F;C++之类的语言光学习了语言其实并不能做什么，离应用的距离还很远。</p>
+<p>回到正题，我实际上想把Go作为业务研究的语言了，虽然脑海中一直印象他的性能不错，但具体表现怎样能，好像我也并不清楚。最后选择对比的语言是Java、Go、C、Rust四个语言，程序都是运行100000000循环，循环内执行冒泡排序。</p>
+<h4 id="Java-代码"><a href="#Java-代码" class="headerlink" title="Java 代码"></a>Java 代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		<span class="comment">// 记录开始时间</span></span><br><span class="line">		<span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">		<span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> <span class="number">100000000</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; num; i++) &#123;</span><br><span class="line">			<span class="type">int</span> arr[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line">			bubbleSort(arr);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 打印耗时时间</span></span><br><span class="line">		System.out.println(System.nanoTime() - start);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 排序</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">bubbleSort</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">		<span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> arr.length - <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; length - i; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (arr[j] &lt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">					<span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> arr[j];</span><br><span class="line">					arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">					arr[j + <span class="number">1</span>] = temp;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行时间</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3052757121</span><br></pre></td></tr></table></figure>
+
+<h4 id="Go-代码"><a href="#Go-代码" class="headerlink" title="Go 代码"></a>Go 代码</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	start := time.Now().UnixNano()</span><br><span class="line">	<span class="keyword">const</span> NUM <span class="type">int</span> = <span class="number">100000000</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; NUM; i++ &#123;</span><br><span class="line">		arr := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;</span><br><span class="line">		bubbleSort(arr)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 打印消耗时间</span></span><br><span class="line">	fmt.Println(time.Now().UnixNano() - start)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 排序</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">bubbleSort</span><span class="params">(arr []<span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> j := <span class="number">0</span>; j &lt; <span class="built_in">len</span>(arr)<span class="number">-1</span>; j++ &#123;</span><br><span class="line">		<span class="keyword">for</span> k := <span class="number">0</span>; k &lt; <span class="built_in">len</span>(arr)<span class="number">-1</span>-j; k++ &#123;</span><br><span class="line">			<span class="keyword">if</span> arr[k] &lt; arr[k+<span class="number">1</span>] &#123;</span><br><span class="line">				arr[k], arr[k+<span class="number">1</span>] = arr[k+<span class="number">1</span>], arr[k]</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行时间</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3804215000 <span class="comment"># 纳秒</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="C-代码"><a href="#C-代码" class="headerlink" title="C 代码"></a>C 代码</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">bubbleSort</span><span class="params">(<span class="type">int</span>* <span class="built_in">array</span>, <span class="type">int</span> length)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; length <span class="number">-1</span> ; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>; j &lt; length <span class="number">-1</span> -i; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">array</span>[j] &lt; <span class="built_in">array</span>[j+<span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="type">int</span> temp = <span class="built_in">array</span>[j];</span><br><span class="line">                <span class="built_in">array</span>[j] = <span class="built_in">array</span>[j + <span class="number">1</span>];</span><br><span class="line">                <span class="built_in">array</span>[j + <span class="number">1</span>] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">t_val</span>;</span></span><br><span class="line">    gettimeofday(&amp;t_val, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;start, now, sec=%ld m_sec=%d \n&quot;</span>, t_val.tv_sec, t_val.tv_usec);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100000000</span>; i++) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="built_in">array</span>[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line">        <span class="type">int</span> length = <span class="keyword">sizeof</span>(<span class="built_in">array</span>)/<span class="keyword">sizeof</span>(<span class="type">int</span>);</span><br><span class="line">        bubbleSort(<span class="built_in">array</span>, length);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">t_val_end</span>;</span></span><br><span class="line">    gettimeofday(&amp;t_val_end, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">t_result</span>;</span></span><br><span class="line">    timersub(&amp;t_val_end, &amp;t_val, &amp;t_result);</span><br><span class="line"></span><br><span class="line">    <span class="type">double</span> consume = t_result.tv_sec + (<span class="number">1.0</span> * t_result.tv_usec)/<span class="number">1000000</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;end.elapsed time= %fs \n&quot;</span>, consume);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行时间</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">start, now, sec=1617327646 m_sec=57219 </span><br><span class="line">end.elapsed time= 1.746955s </span><br></pre></td></tr></table></figure>
+
+<h4 id="Rust代码"><a href="#Rust代码" class="headerlink" title="Rust代码"></a>Rust代码</h4><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::time::Instant;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">bubble_sort</span>&lt;T: <span class="built_in">Ord</span>&gt;(arr: &amp;<span class="keyword">mut</span> [T]) &#123;</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">i</span> <span class="keyword">in</span> <span class="number">0</span>..arr.<span class="title function_ invoke__">len</span>() &#123;</span><br><span class="line">        <span class="keyword">for</span> <span class="variable">j</span> <span class="keyword">in</span> <span class="number">0</span>..arr.<span class="title function_ invoke__">len</span>() - <span class="number">1</span> - i &#123;</span><br><span class="line">            <span class="keyword">if</span> arr[j] &lt; arr[j + <span class="number">1</span>] &#123;</span><br><span class="line">                arr.<span class="title function_ invoke__">swap</span>(j, j + <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">start</span> = Instant::<span class="title function_ invoke__">now</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">_i</span> <span class="keyword">in</span> <span class="number">0</span>..<span class="number">100000000</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">numbers</span> = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>];</span><br><span class="line">        <span class="title function_ invoke__">bubble_sort</span>(&amp;<span class="keyword">mut</span> numbers);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;time cost: &#123;:?&#125; ms&quot;</span>, start.<span class="title function_ invoke__">elapsed</span>().<span class="title function_ invoke__">as_millis</span>()); <span class="comment">// ms</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;time cost: &#123;:?&#125; us&quot;</span>, start.<span class="title function_ invoke__">elapsed</span>().<span class="title function_ invoke__">as_micros</span>()); <span class="comment">// us</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;time cost: &#123;:?&#125; ns&quot;</span>, start.<span class="title function_ invoke__">elapsed</span>().<span class="title function_ invoke__">as_nanos</span>()); <span class="comment">// us</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行时间</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">time cost: 1763 ms</span><br><span class="line">time cost: 1763298 us</span><br><span class="line">time cost: 1763300912 ns</span><br></pre></td></tr></table></figure>
+
+<h4 id="Swift-代码"><a href="#Swift-代码" class="headerlink" title="Swift 代码"></a>Swift 代码</h4><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">bubbleSort</span>&lt;<span class="type">T</span>: <span class="type">Comparable</span>&gt;(<span class="params">with</span> <span class="params">array</span>: <span class="keyword">inout</span> [<span class="type">T</span>]) -&gt; [<span class="type">T</span>] &#123;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span><span class="operator">..&lt;</span>array.count &#123;</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="number">0</span><span class="operator">..&lt;</span>array.count<span class="operator">-</span>i <span class="keyword">where</span> array[j] <span class="operator">&lt;</span> array[j<span class="operator">+</span><span class="number">1</span>] &#123;</span><br><span class="line">            array.swapAt(j, j<span class="operator">+</span><span class="number">1</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> start <span class="operator">=</span> <span class="type">DispatchTime</span>.now()</span><br><span class="line"><span class="keyword">for</span> <span class="keyword">_</span> <span class="keyword">in</span> <span class="number">0</span><span class="operator">..&lt;</span><span class="number">10000000</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> intArray <span class="operator">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line">    bubbleSort(with: <span class="operator">&amp;</span>intArray)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> end <span class="operator">=</span> <span class="type">DispatchTime</span>.now()</span><br><span class="line"><span class="keyword">let</span> nanoTime <span class="operator">=</span> end.uptimeNanoseconds <span class="operator">-</span> start.uptimeNanoseconds</span><br><span class="line"><span class="keyword">let</span> timeInterval <span class="operator">=</span> <span class="type">Double</span>(nanoTime) <span class="operator">/</span> <span class="number">1_000_000_000</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Time: <span class="subst">\(timeInterval)</span> seconds&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>运行时间</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Time: 2.391004642 seconds</span><br></pre></td></tr></table></figure>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>最早我对比的是Java和C，因为C是在Debug模式下跑的，反而比Java的慢，这个让我无法接受，不应该啊，后来让朋友跑了下，说应该用Release模式，这才反应过来，Release + O3优化后速度一下子就上来了，明显比Java快。Rust和C基本上都有Debug和Release的区分，现在看来Rust和C是一个级别，Java和Go是另一个档次上的同一级别。现在的Java运行默认是解释和编译的混合模式，所以速度上自然也不错，和Java对标的Go数据上来看略微差点，不过考虑到Java的运行时开销，Go其实还是很有诱惑的，后续有可能赶超Java。</p>
+<p>企业开发的话用Java依旧最好的选择，个人创业项目的话用Go其实不错。对于Rust和C，不好选择C语法上比较简洁，很多语言特性跟底层更靠近，需要一定底层知识，写操作系统的话，C依旧是首选。Rust呢？个人觉得语法上比较复杂，混杂的语言特性过于多了，既想兼容底层有想高级别的抽象上靠近现代语言，不过这样的情况下依然保持高性能，还是很令人惊讶的。这个不好选，但Rust更充满诱惑，但复杂的语法让人畏惧。</p>
+<p>Go语言虽然有C的传承，不过在类型定义上使用后缀的形式跟C语言正好相反，有时还是比较抵触的，另外因为GC的缘故，性能毕竟还是处于应用语言的级别。Rust太复杂，Swift没有用GC是引用计数，速度上比Rust差些，语法上其实跟Rust也差不多，不过作为一个曾经的iOS开发者，虽然Swift在一段时间大家都非常看好，不过最近几年过去了，其实Swift更多还是Oc的一种替代品，并没有突破苹果的范围，服务端也没有掀起什么风浪，Swift终究是Oc的替代品，也正因为此，他也跟苹果生态深度的绑定，成了某种无法脱颖而出的枷锁。</p>
+<p>我心中语言其实就是C语言的改良版，内存管理上希望在语言层面上解决，比如用引用计数。语法上不要太加很多的特性，有Go的那样就可以了，但不是Go。不过目前来看是没有的，要不就是自己写一个，也不是没有可能。但实在要是也没有的Go和Rust总还是不错的选择。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/03/29/2021-03-29-go-notes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -682,234 +850,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2020/10/06/2020-10-06-travelogue-of-tiantong-temple/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/06/2020-10-06-travelogue-of-tiantong-temple/" class="post-title-link" itemprop="url">天童寺游记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-06 13:48:16" itemprop="dateCreated datePublished" datetime="2020-10-06T13:48:16+08:00">2020-10-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-06-05 14:06:30" itemprop="dateModified" datetime="2022-06-05T14:06:30+08:00">2022-06-05</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h3><p>今年十一长假因为跟中秋重叠，放八天假，趁着时间长决定去一趟宁波的天童寺去看一下。天童寺位于浙江省宁波市鄞州区太白山麓，为什么要去这座寺庙呢？说到这里要追述到《乔布斯传》这本书，大都数人因为这本书也会知道另一本书《禅者的初心》，作者是铃木俊隆，当然再深挖一点，就会知道一位与乔布斯关系密切的禅师乙川弘文。铃木俊隆与乙川弘文都是日本曹洞宗的僧侣。说到日本曹洞宗，不得不提他的开山祖师道元禅师，时间大概可以追述到南宋时期，道元禅师跨海来寻觅佛法，最后在天童寺遇到了如净禅师，得到如净禅师的认可后，回到日本后创建了日本曹洞宗。</p>
-<p>关于天童寺的记载文献还是很多的，而关于如净禅师的记载则比较少，很多都是从道元禅师的记述中得知。这点类似李小龙跟叶问一样，因为道元禅师在日本的成功以及后世日本曹洞宗僧侣在海外弘法的成功，使得如净禅师逐渐为人们所知。不少关于乔布斯跟禅的文中没有切中要点，往往泛泛而谈，说是禅宗。准确的说乔布斯接触的是禅宗曹洞宗一脉的教法，更准确的是日本曹洞宗，但往上追述一点则到了南宋时期如净禅师传承的曹洞宗的一脉。</p>
-<p>如净禅师，浙江宁波人，十九岁时出家，拜在雪窦智鉴禅师的门下，晚年入住天童寺，圆寂后葬在了西湖边的净慈禅寺，净慈禅寺曾经也是禅师入住过的道场。所以本次行程一条线就是围绕着如净禅师来走的，宁波奉化的雪窦山、天童寺、杭州西湖旁的净慈禅寺，这三个地方大略勾勒出了禅师的一生。</p>
-<p>另一条线是围绕着道元禅师来走的，主要是天童寺、阿育王寺。二者在天童寺相会，另外我也带着道元禅师《正法眼藏》中文翻译版一书，在我看来一个人能留下来的无非是他的思想，而带着他的著作犹如带着这位禅师，在700多年后重走这条路。道元禅师在归国后第二年如净禅师圆寂，从此师徒再无相见的可能，所以带着道元的《正法眼藏》专程去杭州净慈禅寺拜祭如净禅师的塔墓，也算另一种相见吧。</p>
-<h3 id="行程"><a href="#行程" class="headerlink" title="行程"></a>行程</h3><h4 id="天童寺"><a href="#天童寺" class="headerlink" title="天童寺"></a>天童寺</h4><p>确定好行程后，十一一大早就坐高铁去了宁波，大概在下午的五点半左右到了宁波。宁波确实跟西安这样的北方城市不一样，矮山、多水洼地。第二天一大早，乘坐地铁一号线直接到达宝幢站，下站后再乘坐育王站的162公交，终点站是公交天童站。不知道是跟疫情有关系还是其他，总之没有门票。穿过一段松柏的路，逐渐看到了天童寺，放生池，旁边山头的塔，再往里面走，隔着一个池子，东南佛国的照壁映入眼帘。照壁后面就是天王殿，穿过天王殿就是佛殿，寺院最上面有罗汉堂。基本的寺院结构跟大多数的寺庙差不多，但建筑上有着天童寺独有的特点。寺里的师父都非常友好，尤其跟寺图书馆的一位师父相谈甚欢，得知寺图书馆没有道元的《正法眼藏》这本书时，当即在原来购买书的那个商家那里下了10本的订单给禅寺，算尽点薄力。禅寺非常好的一点是提供15块一份的素餐，像我这种每次去寺庙不知道如何解决午餐的问题的人来说提供一种方便。天童寺历代都是出高僧的地方，近代有八指头陀、圆瑛法师（中国佛教协会第一任会长），有幸请到一本《八指头陀诗文集》，也算此行的一种意收获。寺里有不少处都有立牌，主要是关于道元禅师的，其中有个殿专门立有《日本道元禅师得法灵迹碑》，可见天童寺与日本曹洞宗的渊源，更被日本曹洞宗尊为祖庭。寺里的师父对于道元禅师也不陌生，都还充满敬意。当天刚好赶上面向在家人的禅七活动即将要开始，因为来的匆忙，不然真想去参加下。天童寺可能是国内仅有的几处仍在传承曹洞宗禅法的寺院，所以对于我们这些修行上更倾向于曹洞宗的人来说，弥足珍贵。</p>
-<h4 id="阿育王寺"><a href="#阿育王寺" class="headerlink" title="阿育王寺"></a>阿育王寺</h4><p>阿育王寺有两座，一座叫阿育王寺，在公路旁边，另一座叫阿育王古寺，在山上。来之前只知道阿育王寺，不知道还有古寺一说。查了下大概阿育王寺有东塔院、西塔院，东塔院即阿育王古寺，也是最初建寺的地方，当年开山祖师惠达（俗名刘萨诃）在这里发现了佛舍利，因此而建寺。唐先天二年时，修建了西塔寺，即现在的阿育王寺，东塔寺的香火逐渐衰落，后来被毁逐渐废弃，现在的阿育王古寺是在原来的遗址上盖了一座崭新的寺庙。古寺因为在山上，知道的人不多，去的人也不多。在大略逛完阿育王寺后，我就打车前往了古寺那边看了下，那边虽然有公交但是发车间隔太长，只好打车了。顺便说下曹操专车，这个在西安也有，与传统的出租相比价格透明，因为我当时有问过一个出租车司机，结果报价明显比我后来坐曹操专车贵不少。古寺山后有阿育王寺开山祖师的塔墓，另外发现佛舍利的地方正在盖舍利大殿，寺里现在好像传承的是天台宗。</p>
-<p>阿育王寺总体更加的古朴一点，也可能是一直没有断过的缘故。古寺虽然历史悠久，但因为是新建的，那份与古代的链接需要脑补。阿育王寺也是当年鉴真大师东渡日本失败时入住过的寺庙，里面也供奉着鉴真大师的像。</p>
-<h4 id="雪窦山、雪窦寺、弥勒道场"><a href="#雪窦山、雪窦寺、弥勒道场" class="headerlink" title="雪窦山、雪窦寺、弥勒道场"></a>雪窦山、雪窦寺、弥勒道场</h4><p>单说雪窦山，其实也算是一座风景秀丽的名山，再加上雪窦寺以及弥勒道场，使之更加有名。不过这里似乎商业味有点过浓，另外说到雪窦山就不得不说老蒋，因为山下就是老蒋故居，我买的是联票210，包括蒋氏故居和雪窦山风景区。</p>
-<p>要到雪窦寺确实比较难，风景区的专用车顺着蜿蜒的道路，过了许久才到达雪窦寺。雪窦寺位于一个山顶的洼地，依山而建。整个寺庙几乎都是新建的，最引人关注的就是寺庙半山腰上巨大的弥勒菩萨像，如果你要登临菩萨像的上面需要门票20元。站在菩萨像的上方俯瞰整个寺庙，一览无余。寺庙因为是弥勒道场的缘故，整个寺庙分为两部分，一部分是围绕巨大弥勒像的主轴线相关建筑，包括大殿供奉的也是弥勒菩萨的像。另一部分则是老寺部分，就是传统大雄宝殿的建筑群。里面有些旧的东西，比如有张学良被幽静时手植的树，不过大部分建筑还是新建的。</p>
-<p>提到雪窦山，总会想到雪窦禅师，当然我此行的目的是因为当年如净禅师学道于雪窦智鉴禅师。不过我们并没有找到相关的东西，浓郁的弥勒道场道场味，几乎将禅宗寺院的本来面目都冲淡，虽然也号称曹洞宗的祖庭之一，但实无其名。甚至连太虚大师，这位当年极力倡导雪窦山为佛教五大名山，弥勒道场的发起人的塔院都隐匿在一个不起眼的山坳里。除此以外就是跟张学良幽静有关的景点，雪窦山更多像是老蒋的私人景区一般。山依旧是那个山，只是一切变了。</p>
-<h4 id="净慈禅寺"><a href="#净慈禅寺" class="headerlink" title="净慈禅寺"></a>净慈禅寺</h4><p>本以为去天童寺也就顺便把如净禅师的塔给拜一下，不过网上一查发现如净禅师圆寂后并没有葬在天童寺，而是葬在了他曾经主持过的杭州西湖边的净慈禅寺。于是行程的最后一站有了杭州这一站，不过也许都是因缘，实际上如果葬在天童寺的话，我去的这会也看不了，因为那边现在正在建设维修中，并不对外开放。</p>
-<p>前两日的天气都不错，不过当我要去杭州的时候，天气预报显示那边下雨，而宁波这边也是有雨，为此我专门改签了去杭州的车次，推后了一点，主要害怕过去下雨，行程不便了。不过也许是上天的某种眷顾吧，从宁波出发的时候，天气显示下雨，但实际不下雨。经过一个小时到杭州后，发现天气虽阴，但也没有下雨。花了点时间终于坐上了数字旅游2号线，在净寺站下，靠西湖的一边是雷峰塔，雷峰塔隔着公路的对面则是净慈禅寺，与雷峰塔的游客蜂拥而至相比，净慈禅寺禅寺显得比较清净。如果不是如净禅师的塔墓在这里，我好像也只知道灵隐寺了，禅寺的门票是10块钱，也算是一种象征性的收费，也合理。我也不免俗的去敲了一下南屏晚钟，一次10元。</p>
-<p>一心想要去塔墓拜祭，老居士说在后山，中途遇到一位师父，给我说那边不开放，心里瞬间有点凉。不过我依旧往释迦殿的方向走，发现殿的一侧有个亭子，跟网上看到塔墓照片差不多了，本想直接沿着山坡往上爬，发现释迦殿上去后可以直接到塔墓那边。果然是对的，穿过一个亭子，旁边有济公像一尊，塔墓这边没有人，还好并没有像那位师父说的不开放，也不知道他出于什么样心里。塔墓被后建的石亭笼罩，旁边还立有如净禅师简介的石碑。在塔墓旁待了许久后，下山把整个寺庙大概转了下，净慈禅寺另一个出名的地方是这里是济公修行的地方，不过济公似乎如同神话人物一般，也没有留下塔墓之类的。大雄宝殿主供的是毗卢遮那佛，跟一般寺庙好像不太一样，但又跟原来看过日本曹洞宗的一些书里有提到毗卢遮那佛，这块不是很懂。</p>
-<p>寺庙也是正在重建中，我也尽了点微薄之力。不过寺里的师父看似并不友好，倒是居士们很友好。身处西湖景区，能这样已经不错了，后来发现禅寺也有开展面对普通人的禅修，愿他们能珍惜这个道场。</p>
-<h3 id="归途"><a href="#归途" class="headerlink" title="归途"></a>归途</h3><p>原来还打算去灵隐寺去看下，不过发现时间不够，沿着西湖略转了下。就朝火车站走了，骑着共享单车走了一段，离火车站不远的地方逐渐下起了下雨，而我也要开始返程了。</p>
-<p>这次行程总体上非常的圆满，作为去年就想前往的地方，今年终于得以成行。打坐七年时间，曹洞宗似乎离自己有点远，只是在书里，在日本，而这次行程，终于让这一切变的真实起来。其实他并遥远，如果想去总能去的。行程结束了，我也把道元禅师的《正法眼藏》的书籍认真的看了一部分，此时这书才似乎能够看的进去，一切有点特别但又没有什么特别，唯一能想到的就是苏轼的那首《庐山烟雨浙江潮》</p>
-<blockquote>
-<p>庐山烟雨浙江潮，<br>未至千般恨不消。<br>到得还来别无事，<br>庐山烟雨浙江潮。</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2020/09/30/2020-09-30-centos-users-guide/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/30/2020-09-30-centos-users-guide/" class="post-title-link" itemprop="url">CentOS 使用指南</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-30 13:46:06" itemprop="dateCreated datePublished" datetime="2020-09-30T13:46:06+08:00">2020-09-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-29 00:05:50" itemprop="dateModified" datetime="2022-03-29T00:05:50+08:00">2022-03-29</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>服务器一直使用的是CentOS，所以特做一下使用备注。基于的版本是<code>CentOS 8.0</code></p>
-<h4 id="AppStream下载元数据失败"><a href="#AppStream下载元数据失败" class="headerlink" title="AppStream下载元数据失败"></a>AppStream下载元数据失败</h4><p>主要参考阿里云的<a target="_blank" rel="noopener" href="https://developer.aliyun.com/mirror/centos?spm=a2c6h.13651102.0.0.521f1b115QnBld&accounttraceid=c111d6bbda4248d09e149ccc2637ff58pajx">CentOS 镜像</a>，设置完成后还会提示<code>AppStream下载元数据失败</code>的问题，需要把整个<code>/etc/yum.repos.d </code>整个目录备份，重新创建一个，再执行就好了。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mv</span> /etc/yum.repos.d /etc/yum.repos.d.backup</span><br><span class="line"><span class="built_in">mkdir</span> /etc/yum.repos.d</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="VirtualBox安装"><a href="#VirtualBox安装" class="headerlink" title="VirtualBox安装"></a>VirtualBox安装</h4><p>使用VirtualBox安装会存在兼容问题，6.1的版本无法运行<code>CentOS-8.1.1911</code>，主要这个版本移除VBoxVGA的支持，所以只能使用6.0版本。</p>
-<h5 id="查看-CentOS-版本"><a href="#查看-CentOS-版本" class="headerlink" title="查看 CentOS 版本"></a>查看 CentOS 版本</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/centos-release</span><br><span class="line">CentOS Linux release 8.1.1911 (Core) </span><br></pre></td></tr></table></figure>
-
-<h4 id="查看网络配置"><a href="#查看网络配置" class="headerlink" title="查看网络配置"></a>查看网络配置</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip addr</span><br></pre></td></tr></table></figure>
-
-<h4 id="防火墙"><a href="#防火墙" class="headerlink" title="防火墙"></a>防火墙</h4><p>CentOS 8 使用firewall管理防火墙</p>
-<h5 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">systemctl start firewalld <span class="comment"># 启动</span></span><br><span class="line">systemctl stop firewalld  <span class="comment"># 关闭</span></span><br><span class="line">systemctl status firewalld <span class="comment"># 查看状态</span></span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld <span class="comment"># 开机禁用</span></span><br><span class="line">systemctl <span class="built_in">enable</span> firewalld <span class="comment"># 开机启用</span></span><br></pre></td></tr></table></figure>
-
-<h5 id="配置firewalld-cmd"><a href="#配置firewalld-cmd" class="headerlink" title="配置firewalld-cmd"></a>配置firewalld-cmd</h5><p>查看版本</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --version</span><br></pre></td></tr></table></figure>
-
-<p>查看运行状态 </p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --state</span><br></pre></td></tr></table></figure>
-
-<p>添加端口</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone=public --add-port=80/tcp --permanent</span><br></pre></td></tr></table></figure>
-
-<p>重新载入设置（添加端口后一定要重载设置）</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
-
-<p>查看所有端口</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --list-ports</span><br></pre></td></tr></table></figure>
-
-<p>删除某一端口</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone= public --remove-port=80/tcp --permanent</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="安装Mysql-8-0"><a href="#安装Mysql-8-0" class="headerlink" title="安装Mysql 8.0"></a>安装Mysql 8.0</h4><p>试了几种安装方式只有如下的可以安装</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install @mysql:8.0 -y</span><br></pre></td></tr></table></figure>
-
-<p>启动服务以及开机启动</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mysqld</span><br><span class="line">systemctl <span class="built_in">enable</span> mysqld</span><br></pre></td></tr></table></figure>
-
-<p>密码设置</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql_secure_installation</span><br></pre></td></tr></table></figure>
-
-<p>远程访问，8.0跟旧版不太一样。</p>
-<p>创建用户</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create user <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;172.16.10.203&#x27;</span> identified by  <span class="string">&#x27;password&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>赋予权限，with grant option这个选项表示该用户可以将自己拥有的权限授权给别人</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on *.* to <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;172.16.10.203&#x27;</span> with grant option</span><br></pre></td></tr></table></figure>
-
-<p>改密码&amp;授权超用户，flush privileges 命令本质上的作用是将当前user和privilige表中的用户信息&#x2F;权限设置从mysql库(MySQL数据库的内置库)中提取到内存里</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-
-<p>创建账户::create user ‘用户名’@‘访问主机’ identified by ‘密码’;<br>赋予权限:grant 权限列表 on 数据库 to ‘用户名’@‘访问主机’ ;<br>with grant option这个选项表示该用户可以将自己拥有的权限授权给别人</p>
-<h5 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h5><p>提示密码设置简单错误</p>
-<p>1 查看当前安全变量值</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; SHOW VARIABLES LIKE <span class="string">&#x27;validate_password%&#x27;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>2 修改变量</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; <span class="built_in">set</span> global validate_password.policy=0;</span><br><span class="line">mysql&gt; <span class="built_in">set</span> global validate_password.length=4;</span><br></pre></td></tr></table></figure>
-
-<p>3 然后退出后再执行</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql_secure_installation</span><br></pre></td></tr></table></figure>
-
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="http://www.jeepxie.net/article/590454.html">mysql版本:’for the right syntax to use near ‘identified by ‘password’ with grant option’</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.mf8.biz/rhel8-centos8-install-mysql-8-0/">RHEL8 CentOS8 下安装 MySQL 8.0</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b437566ccf98">mysql8.0 设置简单密码报错ERROR 1819 (HY000): Your password does not satisfy the current policy requirements</a></p>
-<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i: 端口号 <span class="comment"># 查看某个端口的进程</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="网络管理"><a href="#网络管理" class="headerlink" title="网络管理"></a>网络管理</h4><p>主要记录虚拟机桥接模式无法连接外网的问题，主要是CentOS 8使用nmcli来管理网卡。</p>
-<ol>
-<li>编辑文件<code>vim /etc/sysconfig/network-scripts/ifcfg-ens33</code></li>
-<li>使用<code>nmcli d connect ens33</code>激活</li>
-<li>最后使用<code>nmcli c reload</code>重启网卡服务，稍等片刻，就可以Ping通网络了。</li>
-</ol>
-<h4 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h4><p>目前使用Let’s Encrypt SSL的证书，这个是免费的，唯一的缺点是只有三个月期限，到期后重新申请就可以。  </p>
-<h5 id="certbot-auto"><a href="#certbot-auto" class="headerlink" title="certbot-auto"></a>certbot-auto</h5><p>主要用来<code>certbot-auto</code>申请。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取certbot-auto</span></span><br><span class="line">wget https://dl.eff.org/certbot-auto</span><br><span class="line"><span class="built_in">chmod</span> a+x certbot-auto</span><br></pre></td></tr></table></figure>
-
-<p>申请通配符域名的证书，这个涉及域名验证，需要在DNS解析增加<code>_acme-challenge</code>的<code>TXT</code>记录。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./certbot-auto certonly  -d *.xxxx.com --manual --preferred-challenges dns --server https://acme-v02.api.letsencrypt.org/directory</span><br></pre></td></tr></table></figure>
-
-<p>到期后的，需要删除原有证书<code>certbot delete</code>，重启Ngnix服务<code>sudo systemctl restart nginx</code>。不删除的话，会生成新的证书目录，这样的话还需要修改Ngnix的配置文件。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">certbot certificates <span class="comment"># 查看所有证书，主要是看证书是否快要过期</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -979,7 +919,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">61</span>
+          <span class="site-state-item-count">63</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

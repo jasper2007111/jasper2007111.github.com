@@ -1,3 +1,6 @@
+https://c2lang.com/2022/09/16/study-of-zen-master-tiantong-rujing/
+https://c2lang.com/2021/05/27/2021-05-27-monk-rujing-quotes/
+https://c2lang.com/2022/08/20/empowered-ordinary-people-extraordinary-products/
 https://c2lang.com/2022/07/19/docker-install-gitlab/
 https://c2lang.com/2022/07/14/spring-boot-rabbitmq/
 https://c2lang.com/2021/06/17/2021-06-17-talk-in-detail-zuohui/
@@ -22,7 +25,6 @@ https://c2lang.com/2022/03/24/2022-03-24-gitlab-upgrade/
 https://c2lang.com/2021/11/12/2021-11-12-remembering-a-gitlab-failure/
 https://c2lang.com/2022/03/17/2022-03-17-clean-up-linux-viru/
 https://c2lang.com/2022/02/23/2022-02-23-spring-cloud-stream-practices/
-https://c2lang.com/2021/05/27/2021-05-27-tiantong-rujing/
 https://c2lang.com/2021/09/26/2021-09-26-virtualbox-centos-8-expansio/
 https://c2lang.com/2021/09/08/2021-09-08-learning-java-bytecode/
 https://c2lang.com/2021/09/07/2021-09-07-learn-jni/
