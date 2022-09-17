@@ -151,78 +151,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/19/python-package-exe/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/19/python-package-exe/" class="post-title-link" itemprop="url">Python打包exe</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-04-19 16:08:41 / 修改时间：17:05:24" itemprop="dateCreated datePublished" datetime="2022-04-19T16:08:41+08:00">2022-04-19</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Python平时主要是处理数据用，在Mac上使用很方便，最近想把一个程序让下面人用，他们是Window环境，Python他们并不熟悉，所以直接把源文件丢过去，他们又得折腾一番。我就想到打包成exe，其实很早就有这样的想法，但一直没有做过。用的是PyInstaller这个库，还想着这么简单，结果一打包，发现并不是Window下的exe，原来是我理解的错误，以为可以直接打包成Window上执行的exe了，实际上PyInstaller只是在不同平台上将python打包成对应平台的应用了。难道我又得找台Windows，环境弄好，再打包一个？真麻烦，想着可以交叉编译吗？查了下PyInstaller以前好像可以，后来就去掉了。之前用过点Go语言，就是可以交叉编译的，一时间我尽有想用Go重写那个功能的想法，但是一对比还是Python方便。最后找了一个通过docker进行打包的方案<a target="_blank" rel="noopener" href="https://github.com/cdrx/docker-pyinstaller">docker-pyinstaller</a></p>
-<p>直接这个命令就可以打包了，具体可以参考文档。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v <span class="string">&quot;<span class="subst">$(pwd)</span>:/src/&quot;</span> cdrx/pyinstaller-windows</span><br></pre></td></tr></table></figure>
-
-<p>但是有个问题，打包出来的应用一执行，提示一个依赖的库，没有找到。不对啊，文档中明明说把依赖写在<code>requirements.txt</code>文件里，我也写了的。</p>
-<p>文档中的这段话，看着没有其他的操作，也没有相关的示例代码。</p>
-<blockquote>
-<p>If the src folder has a requirements.txt file, the packages will be installed into the environment before PyInstaller runs.</p>
-</blockquote>
-<p>折腾了好几个小时，最后找到了一篇日文的文章，看完后豁然开朗，原来是写法的问题，我对docker的一些东西不够熟吧。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run --<span class="built_in">rm</span> -v <span class="string">&quot;<span class="subst">$(pwd)</span>:/src/&quot;</span> cdrx/pyinstaller-windows -c \</span><br><span class="line">  <span class="string">&quot;pip install -r requirements.txt &amp;&amp; \</span></span><br><span class="line"><span class="string">  pyinstaller main.py --onedir --onefile --clean &amp;&amp; \</span></span><br><span class="line"><span class="string">  mv dist/main.exe main.exe &amp;&amp; \</span></span><br><span class="line"><span class="string">  rm -rf __pycache__/ build/ dist/ main.spec&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>最后打包后的exe就没有依赖缺失的问题了。不过打包成exe后，我最终还是改了下python的代码，比如<code>os.path.dirname(__file__)</code>是无法使用了，另外打开文件时提示<code>UnicodeDecodeError: &#39;gbk&#39; codec can&#39;t decode byte</code>的错误，需要加<code>encoding=&#39;utf-8&#39;</code>。</p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://qiita.com/ryoheiszk/items/2ea26594d24304c721e2">Docker環境のPyInstallerでキレイにExe化する</a></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/10/try-rust/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -852,6 +780,103 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/09/26/2021-09-26-virtualbox-centos-8-expansio/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/09/26/2021-09-26-virtualbox-centos-8-expansio/" class="post-title-link" itemprop="url">Virtualbox CentOS 8扩容</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-09-26 15:28:43" itemprop="dateCreated datePublished" datetime="2021-09-26T15:28:43+08:00">2021-09-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-10-09 11:08:09" itemprop="dateModified" datetime="2021-10-09T11:08:09+08:00">2021-10-09</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本来想在虚拟机上安装TDengine试试，经过一番折腾后发现磁盘容量不足，当时创建虚拟机时选择的是8G，这就尴尬了，最后还是一番折腾后终于扩容成功。</p>
+<h3 id="VirtualBox"><a href="#VirtualBox" class="headerlink" title="VirtualBox"></a>VirtualBox</h3><p>先关闭虚拟机，在虚拟机运行目录下执行。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VBoxManage modifyhd /Users/jasperji/VirtualBox\ VMs/centos8/centos8.vdi --resize 15360 </span><br></pre></td></tr></table></figure>
+
+<p>这里我把容量扩展为15G，记住路径中空格的问题。</p>
+<h3 id="CentOS"><a href="#CentOS" class="headerlink" title="CentOS"></a>CentOS</h3><p>查看磁盘容量情况</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">df</span> -h</span><br></pre></td></tr></table></figure>
+
+<p>操作分区，选项n，创建新分区。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk /dev/sda</span><br></pre></td></tr></table></figure>
+
+<p>创建PV（物理卷）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pvcreate /dev/sda3</span><br></pre></td></tr></table></figure>
+
+<p>扩展到卷组，我们vgdisplay命令查看一下自己所在的卷组：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pvdisplay</span><br></pre></td></tr></table></figure>
+
+<p>看到VG Name是cl，所以进一步扩展到卷组：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vgextend cl /dev/sda3</span><br></pre></td></tr></table></figure>
+
+<p>扩展到逻辑分区，使用lvextend（logical volume extend逻辑卷扩展）</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lvextend /dev/cl/root /dev/sda3</span><br></pre></td></tr></table></figure>
+
+<p>我们df -h查看一下文件系统的磁盘空间占用情况：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">df</span> -h</span><br></pre></td></tr></table></figure>
+
+<p><em>这里我们发现磁盘没有按照预期的扩容，因为我们没有刷新逻辑分区的容量。</em></p>
+<p>于是，刷新逻辑分区的容量，使用xfs_growfs（同步文件系统）命令，注意上面的Mounted on是挂载点，这里我们的挂载点就是根目录：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xfs_growfs /</span><br></pre></td></tr></table></figure>
+
+<p>最后就扩容成功了。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实之前阿里云正式服务器的时候，也记得有挂载过当时购买的云硬盘。不过时间久了，当时也没有记录一些东西，也就忘了。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/Luylic/article/details/107366701">CentOS8扩容</a><br><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904003067707399">VirtualBox虚拟机硬盘扩容及LVM命令介绍</a><br><a target="_blank" rel="noopener" href="https://www.cnblogs.com/cthon/p/9334828.html">VirtualBox文件系统已满–磁盘扩容</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -921,7 +946,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

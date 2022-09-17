@@ -2,7 +2,6 @@ https://c2lang.com/2022/09/16/study-of-zen-master-tiantong-rujing/
 https://c2lang.com/2021/05/27/2021-05-27-monk-rujing-quotes/
 https://c2lang.com/2022/08/20/empowered-ordinary-people-extraordinary-products/
 https://c2lang.com/2022/07/19/docker-install-gitlab/
-https://c2lang.com/2022/07/14/spring-boot-rabbitmq/
 https://c2lang.com/2021/06/17/2021-06-17-talk-in-detail-zuohui/
 https://c2lang.com/2022/06/09/the-bite-in-the-apple-reading-notes/
 https://c2lang.com/2022/07/01/study-code-push-server/

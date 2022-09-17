@@ -151,76 +151,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/05/04/2021-05-04-thinking-about-rss/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/04/2021-05-04-thinking-about-rss/" class="post-title-link" itemprop="url">关于RSS的思考</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-04 13:55:13" itemprop="dateCreated datePublished" datetime="2021-05-04T13:55:13+08:00">2021-05-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-05 11:38:20" itemprop="dateModified" datetime="2021-05-05T11:38:20+08:00">2021-05-05</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h4><p>17年的时候为了练习Swift，也想验证下自己对于产品方面的想法，当时流行的应用都是通过爬虫抓取内容网站的数据，清洗数据后再通过推荐引擎展示给用户，当时我们公司也做的是这类应用，只不过后来没有成功。作为练手的业余项目，我并没有打算也做类似的项目，那会我主要做iOS客户端，对于服务端也不是很在行，而且当时这类应用有个问题是，你需要搜集大量的内容网站，可这一定是用户喜欢的吗？当时想关于用户喜欢什么样的内容让用户自己去找吧，而我只提供一个工具，最后选定了RSS阅读器。在App Store上找了一些RSS应用调研，很多应用是国外人开发的，交互上不太符合国人的习惯，另外不少应用需要注册后才能使用，当然有些还是付费的。觉得还是有改进的空间的，目标是开发一款简单的应用，首先不需要登录注册之类的，用户添加自己的RSS源，然后拉取数据，展示详情，最后这是一款免费的应用。很快这款应用就被开发出来上线了，过了段时间我看了下数据，有不少用户评价，之前的应用用户很少评价，我一直觉得用户能评价应用很难，至少我自己都很少评价了。用户多半是通过搜索下载的，这让我想到了长尾效应，即使如此小众的应用，总有它的用户群体。</p>
-<h4 id="瓶颈"><a href="#瓶颈" class="headerlink" title="瓶颈"></a>瓶颈</h4><p>经过一年多的更新，应用基本上算是稳定了，18年底后就没有再更新过了，一方面工作有些变化，之前公司的新闻类应用已经不再运营了。而我也做了一年多的Unity游戏应用，iOS开发实际上很少了，之后离开了原来的公司。短暂的停留后，开始到现在的公司做服务器方面的开发，iOS的开发者账号也在到期后没有再续，一方面我想试下，如果账号不续费，应用还在商店吗？当然最主要的是，工作太忙iOS已经很久都不弄了，对于RSS阅读器应用，也没有更好的想法。最后每年花着钱，却没有一分的收入，这可能对于做一款免费应用者或多或少的有点失落吧，毕竟需要生活。苹果账号没有续费后，应用结果就被下架了。大概一年的时间，我没有再想关于苹果开发的事。</p>
-<h4 id="重启"><a href="#重启" class="headerlink" title="重启"></a>重启</h4><p>21年四月份的时候，我又把苹果账号给续费了，在做企业应用的一年里，发现相比行业的复杂性，个人应用似乎更能好把握些吧。另外作为一个软件开发者，很大程度是依赖于工作的，工作上我们可以沉迷于技术的细节，但从宏观上来看，至少这么些年做的应用都是商业上的不成功吧，当然作为开发者很难去左右这个结果。而作为App Store的独立开发者可以很大程度上让自己在整个从产品的构想到设计，开发，到最后的营销及运营，都能有很大的锻炼。对于开发人员而言，App Store依旧施展自己创意和想法的最好平台。</p>
-<p>于是我决定继续RSS阅读器的开发，iOS 13启用夜间模式后，之前的应用确实一些问题，新版本主要是适配夜间模式，之前有用户也提到是否可以开发夜间模式的显示，不过一直没有启动。因为界面比较少很快也就适配完了，内容显示那块我也学习到了如何使用CSS适配夜间模式。</p>
-<p>另外做了一个决定新版本将只支持iOS 13以上的版本，夜间模式和Swift UI都只能在iOS 13以上的版本使用，只想专注在功能的开发上，而不是兼容上。我自己的iPhone 6s都已经升级到iOS 14了，所以这个决定也是有一定的依据的。</p>
-<h4 id="未来"><a href="#未来" class="headerlink" title="未来"></a>未来</h4><p>关于RSS阅读器，我依旧没有更好的想法，实际上在新版本中我又去掉了几个已经失效的RSS源，而有些RSS源已经很久没有更新了。我一度想再找一些不错的源，可发现真的很难，很多都是好几年前的帖子，所以RSS阅读器的前景并不乐观，这是一块正在极速萎缩的市场，而很多开发者估计会放弃，更不可能成为一款公司的产品存在。难怪早在2012的时候谷歌就关闭了RSS阅读应用Google Reader。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/05/02/2021-05-02-octopress-upgrade/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -929,6 +859,96 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/04/02/2021-04-02-performance-comparison-between-programming-languages/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/04/02/2021-04-02-performance-comparison-between-programming-languages/" class="post-title-link" itemprop="url">一次语言间的性能对比</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-04-02 05:53:47 / 修改时间：10:30:59" itemprop="dateCreated datePublished" datetime="2021-04-02T05:53:47+08:00">2021-04-02</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近突然间想对比下几个语言间的性能，日常使用的是Java，但平时也会用Python，JavaScript，C，Go之类的语言。Java写项目真的也没有什么问题，成熟的生态圈，遇到问题很容易解决。不过写点小东西的时候，还是觉得Python比较好用，不过就是速度慢了点，很早之前写过一个游戏的移植，脚本语言重构真的是个大问题。Go在上家公司的时候也使用过，不过也都是小的测试了，并没有拿来写过完整点的项目。不过语言的简洁性和C的这种传承，还是很有好感，不过在当时重写公司系统时，最后还是用了Java，主要是大部分的对接都有Java的实现。C一直是我研究的语言，虽然实际写东西不多，但是却看了很多相关的书籍，另外最近研究操作系统和学习汇编语言后，对C的认识又有了新的认识，C的厉害地方就是简洁的设计，性能强大，他的诞生就是为写Unix，缺点是实用性不强，另外内存管理，实际上成熟的项目在内存管理上都有自己的框架，所以对于C&#x2F;C++之类的语言光学习了语言其实并不能做什么，离应用的距离还很远。</p>
+<p>回到正题，我实际上想把Go作为业务研究的语言了，虽然脑海中一直印象他的性能不错，但具体表现怎样能，好像我也并不清楚。最后选择对比的语言是Java、Go、C、Rust四个语言，程序都是运行100000000循环，循环内执行冒泡排序。</p>
+<h4 id="Java-代码"><a href="#Java-代码" class="headerlink" title="Java 代码"></a>Java 代码</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Test</span> &#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">		<span class="comment">// 记录开始时间</span></span><br><span class="line">		<span class="type">long</span> <span class="variable">start</span> <span class="operator">=</span> System.nanoTime();</span><br><span class="line">		<span class="type">int</span> <span class="variable">num</span> <span class="operator">=</span> <span class="number">100000000</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; num; i++) &#123;</span><br><span class="line">			<span class="type">int</span> arr[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line">			bubbleSort(arr);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 打印耗时时间</span></span><br><span class="line">		System.out.println(System.nanoTime() - start);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 排序</span></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">bubbleSort</span><span class="params">(<span class="type">int</span>[] arr)</span> &#123;</span><br><span class="line">		<span class="type">int</span> <span class="variable">length</span> <span class="operator">=</span> arr.length - <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; length; i++) &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">0</span>; j &lt; length - i; j++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (arr[j] &lt; arr[j + <span class="number">1</span>]) &#123;</span><br><span class="line">					<span class="type">int</span> <span class="variable">temp</span> <span class="operator">=</span> arr[j];</span><br><span class="line">					arr[j] = arr[j + <span class="number">1</span>];</span><br><span class="line">					arr[j + <span class="number">1</span>] = temp;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行时间</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3052757121</span><br></pre></td></tr></table></figure>
+
+<h4 id="Go-代码"><a href="#Go-代码" class="headerlink" title="Go 代码"></a>Go 代码</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	start := time.Now().UnixNano()</span><br><span class="line">	<span class="keyword">const</span> NUM <span class="type">int</span> = <span class="number">100000000</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; NUM; i++ &#123;</span><br><span class="line">		arr := []<span class="type">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;</span><br><span class="line">		bubbleSort(arr)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 打印消耗时间</span></span><br><span class="line">	fmt.Println(time.Now().UnixNano() - start)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 排序</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">bubbleSort</span><span class="params">(arr []<span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	<span class="keyword">for</span> j := <span class="number">0</span>; j &lt; <span class="built_in">len</span>(arr)<span class="number">-1</span>; j++ &#123;</span><br><span class="line">		<span class="keyword">for</span> k := <span class="number">0</span>; k &lt; <span class="built_in">len</span>(arr)<span class="number">-1</span>-j; k++ &#123;</span><br><span class="line">			<span class="keyword">if</span> arr[k] &lt; arr[k+<span class="number">1</span>] &#123;</span><br><span class="line">				arr[k], arr[k+<span class="number">1</span>] = arr[k+<span class="number">1</span>], arr[k]</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行时间</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3804215000 <span class="comment"># 纳秒</span></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="C-代码"><a href="#C-代码" class="headerlink" title="C 代码"></a>C 代码</h4><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;time.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">bubbleSort</span><span class="params">(<span class="type">int</span>* <span class="built_in">array</span>, <span class="type">int</span> length)</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; length <span class="number">-1</span> ; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>; j &lt; length <span class="number">-1</span> -i; j++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">array</span>[j] &lt; <span class="built_in">array</span>[j+<span class="number">1</span>]) &#123;</span><br><span class="line">                <span class="type">int</span> temp = <span class="built_in">array</span>[j];</span><br><span class="line">                <span class="built_in">array</span>[j] = <span class="built_in">array</span>[j + <span class="number">1</span>];</span><br><span class="line">                <span class="built_in">array</span>[j + <span class="number">1</span>] = temp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">t_val</span>;</span></span><br><span class="line">    gettimeofday(&amp;t_val, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;start, now, sec=%ld m_sec=%d \n&quot;</span>, t_val.tv_sec, t_val.tv_usec);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">100000000</span>; i++) &#123;</span><br><span class="line">        <span class="type">int</span> <span class="built_in">array</span>[] = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>&#125;;</span><br><span class="line">        <span class="type">int</span> length = <span class="keyword">sizeof</span>(<span class="built_in">array</span>)/<span class="keyword">sizeof</span>(<span class="type">int</span>);</span><br><span class="line">        bubbleSort(<span class="built_in">array</span>, length);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">t_val_end</span>;</span></span><br><span class="line">    gettimeofday(&amp;t_val_end, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">t_result</span>;</span></span><br><span class="line">    timersub(&amp;t_val_end, &amp;t_val, &amp;t_result);</span><br><span class="line"></span><br><span class="line">    <span class="type">double</span> consume = t_result.tv_sec + (<span class="number">1.0</span> * t_result.tv_usec)/<span class="number">1000000</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;end.elapsed time= %fs \n&quot;</span>, consume);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行时间</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">start, now, sec=1617327646 m_sec=57219 </span><br><span class="line">end.elapsed time= 1.746955s </span><br></pre></td></tr></table></figure>
+
+<h4 id="Rust代码"><a href="#Rust代码" class="headerlink" title="Rust代码"></a>Rust代码</h4><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::time::Instant;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pub</span> <span class="keyword">fn</span> <span class="title function_">bubble_sort</span>&lt;T: <span class="built_in">Ord</span>&gt;(arr: &amp;<span class="keyword">mut</span> [T]) &#123;</span><br><span class="line">    <span class="keyword">for</span> <span class="variable">i</span> <span class="keyword">in</span> <span class="number">0</span>..arr.<span class="title function_ invoke__">len</span>() &#123;</span><br><span class="line">        <span class="keyword">for</span> <span class="variable">j</span> <span class="keyword">in</span> <span class="number">0</span>..arr.<span class="title function_ invoke__">len</span>() - <span class="number">1</span> - i &#123;</span><br><span class="line">            <span class="keyword">if</span> arr[j] &lt; arr[j + <span class="number">1</span>] &#123;</span><br><span class="line">                arr.<span class="title function_ invoke__">swap</span>(j, j + <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">fn</span> <span class="title function_">main</span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> <span class="variable">start</span> = Instant::<span class="title function_ invoke__">now</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> <span class="variable">_i</span> <span class="keyword">in</span> <span class="number">0</span>..<span class="number">100000000</span> &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">mut </span><span class="variable">numbers</span> = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>];</span><br><span class="line">        <span class="title function_ invoke__">bubble_sort</span>(&amp;<span class="keyword">mut</span> numbers);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;time cost: &#123;:?&#125; ms&quot;</span>, start.<span class="title function_ invoke__">elapsed</span>().<span class="title function_ invoke__">as_millis</span>()); <span class="comment">// ms</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;time cost: &#123;:?&#125; us&quot;</span>, start.<span class="title function_ invoke__">elapsed</span>().<span class="title function_ invoke__">as_micros</span>()); <span class="comment">// us</span></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">&quot;time cost: &#123;:?&#125; ns&quot;</span>, start.<span class="title function_ invoke__">elapsed</span>().<span class="title function_ invoke__">as_nanos</span>()); <span class="comment">// us</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>运行时间</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">time cost: 1763 ms</span><br><span class="line">time cost: 1763298 us</span><br><span class="line">time cost: 1763300912 ns</span><br></pre></td></tr></table></figure>
+
+<h4 id="Swift-代码"><a href="#Swift-代码" class="headerlink" title="Swift 代码"></a>Swift 代码</h4><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">bubbleSort</span>&lt;<span class="type">T</span>: <span class="type">Comparable</span>&gt;(<span class="params">with</span> <span class="params">array</span>: <span class="keyword">inout</span> [<span class="type">T</span>]) -&gt; [<span class="type">T</span>] &#123;</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">1</span><span class="operator">..&lt;</span>array.count &#123;</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> <span class="number">0</span><span class="operator">..&lt;</span>array.count<span class="operator">-</span>i <span class="keyword">where</span> array[j] <span class="operator">&lt;</span> array[j<span class="operator">+</span><span class="number">1</span>] &#123;</span><br><span class="line">            array.swapAt(j, j<span class="operator">+</span><span class="number">1</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> array</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> start <span class="operator">=</span> <span class="type">DispatchTime</span>.now()</span><br><span class="line"><span class="keyword">for</span> <span class="keyword">_</span> <span class="keyword">in</span> <span class="number">0</span><span class="operator">..&lt;</span><span class="number">10000000</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> intArray <span class="operator">=</span> [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line">    bubbleSort(with: <span class="operator">&amp;</span>intArray)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> end <span class="operator">=</span> <span class="type">DispatchTime</span>.now()</span><br><span class="line"><span class="keyword">let</span> nanoTime <span class="operator">=</span> end.uptimeNanoseconds <span class="operator">-</span> start.uptimeNanoseconds</span><br><span class="line"><span class="keyword">let</span> timeInterval <span class="operator">=</span> <span class="type">Double</span>(nanoTime) <span class="operator">/</span> <span class="number">1_000_000_000</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Time: <span class="subst">\(timeInterval)</span> seconds&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>运行时间</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Time: 2.391004642 seconds</span><br></pre></td></tr></table></figure>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>最早我对比的是Java和C，因为C是在Debug模式下跑的，反而比Java的慢，这个让我无法接受，不应该啊，后来让朋友跑了下，说应该用Release模式，这才反应过来，Release + O3优化后速度一下子就上来了，明显比Java快。Rust和C基本上都有Debug和Release的区分，现在看来Rust和C是一个级别，Java和Go是另一个档次上的同一级别。现在的Java运行默认是解释和编译的混合模式，所以速度上自然也不错，和Java对标的Go数据上来看略微差点，不过考虑到Java的运行时开销，Go其实还是很有诱惑的，后续有可能赶超Java。</p>
+<p>企业开发的话用Java依旧最好的选择，个人创业项目的话用Go其实不错。对于Rust和C，不好选择C语法上比较简洁，很多语言特性跟底层更靠近，需要一定底层知识，写操作系统的话，C依旧是首选。Rust呢？个人觉得语法上比较复杂，混杂的语言特性过于多了，既想兼容底层有想高级别的抽象上靠近现代语言，不过这样的情况下依然保持高性能，还是很令人惊讶的。这个不好选，但Rust更充满诱惑，但复杂的语法让人畏惧。</p>
+<p>Go语言虽然有C的传承，不过在类型定义上使用后缀的形式跟C语言正好相反，有时还是比较抵触的，另外因为GC的缘故，性能毕竟还是处于应用语言的级别。Rust太复杂，Swift没有用GC是引用计数，速度上比Rust差些，语法上其实跟Rust也差不多，不过作为一个曾经的iOS开发者，虽然Swift在一段时间大家都非常看好，不过最近几年过去了，其实Swift更多还是Oc的一种替代品，并没有突破苹果的范围，服务端也没有掀起什么风浪，Swift终究是Oc的替代品，也正因为此，他也跟苹果生态深度的绑定，成了某种无法脱颖而出的枷锁。</p>
+<p>我心中语言其实就是C语言的改良版，内存管理上希望在语言层面上解决，比如用引用计数。语法上不要太加很多的特性，有Go的那样就可以了，但不是Go。不过目前来看是没有的，要不就是自己写一个，也不是没有可能。但实在要是也没有的Go和Rust总还是不错的选择。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -998,7 +1018,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">61</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
