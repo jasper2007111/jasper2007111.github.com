@@ -10,7 +10,6 @@ https://c2lang.com/2022/06/30/adb-cannot-connect/
 https://c2lang.com/2021/10/01/2021-10-01-cat-diary/
 https://c2lang.com/2021/10/06/2021-10-06-tenth-anniversary-of-steve-jobs-death/
 https://c2lang.com/2020/10/06/2020-10-06-travelogue-of-tiantong-temple/
-https://c2lang.com/2022/05/17/flutter-background-fetch/
 https://c2lang.com/2022/05/13/lg-nexus-5x-settings/
 https://c2lang.com/2022/05/02/write-a-notepad-with-rust-and-yew/
 https://c2lang.com/2022/04/23/rust-writing-front-end/

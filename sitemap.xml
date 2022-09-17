@@ -110,15 +110,6 @@
   </url>
   
   <url>
-    <loc>https://c2lang.com/2022/05/17/flutter-background-fetch/</loc>
-    
-    <lastmod>2022-05-17</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://c2lang.com/2022/05/13/lg-nexus-5x-settings/</loc>
     
     <lastmod>2022-05-13</lastmod>
@@ -580,7 +571,7 @@
 
   <url>
     <loc>https://c2lang.com/</loc>
-    <lastmod>2022-09-16</lastmod>
+    <lastmod>2022-09-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
