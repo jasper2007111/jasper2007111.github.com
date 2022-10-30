@@ -179,6 +179,293 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/02/04/2021-02-04-how-to-write-an-os/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/02/04/2021-02-04-how-to-write-an-os/" class="post-title-link" itemprop="url">如何写一个操作系统</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-04 22:21:27" itemprop="dateCreated datePublished" datetime="2021-02-04T22:21:27+08:00">2021-02-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-09 15:05:35" itemprop="dateModified" datetime="2021-07-09T15:05:35+08:00">2021-07-09</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h3><p>做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。</p>
+<p>大概7、8年前买过一本《Orange’S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太难了，中间需要跨越的东西太多了。渐渐就放弃了，后来直接把这两本书给卖掉了。</p>
+<p>今年突然间又想，我应该尝试写一个简单的操作系统，多年的工作以及自学，使得我对编程有了一个相对完整的认识，这个想法似乎不像当年那么不靠谱。但该如何下手呢？刚开始我只想能跑一个<code>Hello wrold</code>的例子也可以，网上找了下最多的居然是我当年卖掉的那本《Orange’S 一个操作系统实现》书中的例子，可惜当年我也没怎么看懂，只是买了本书而已。</p>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>最简单的例子，来自《Orange’S 一个操作系统实现》一书。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">	org 07c00h			; 告诉编译器程序加载到7c00处</span><br><span class="line">	mov ax, cs</span><br><span class="line">	mov ds, ax</span><br><span class="line">	mov es, ax</span><br><span class="line">	call DispStr			; 调用显示字符串例程</span><br><span class="line">	jmp $			; 无限循环</span><br><span class="line">DispStr:</span><br><span class="line">	mov ax, BootMessage</span><br><span class="line">	mov bp, ax			; ES:BP = 串地址</span><br><span class="line">	mov cx, 16			; CX = 串长度</span><br><span class="line">	mov ax, 01301h		; AH = 13,  AL = 01h</span><br><span class="line">	mov bx, 000ch		; 页号为0(BH = 0) 黑底红字(BL = 0Ch,高亮)</span><br><span class="line">	mov dl, 0</span><br><span class="line">	int 10h			; 10h 号中断</span><br><span class="line">	ret</span><br><span class="line">BootMessage:		db	&quot;Hello, OS world!&quot;</span><br><span class="line">times 	510-($-$$)	db	0	; 填充剩下的空间，使生成的二进制代码恰好为512字节</span><br><span class="line">dw 	0xaa55				; 结束标志</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这就是一个直接运行到硬件上的一段程序，而不是我们平时在操作系统写应用代码那样。对于一个实践者而言，我很想把这段程序跑起来，这很关键，只要能跑起来，我们就可以试图修改下，再跑起来，这样认识上才能有提高。其实跑这个例子也是费了点功夫，首先在虚拟机上安装了一个的Linux发行版Ubuntu系统，书中用到的汇编是跟MASM很相似的NASM，首先NASM的教程不多，不过还好可以参考MASM汇编的书籍。另外就是软盘的制作相关的东西，最后是安装Bochs虚拟机，这个虚拟机跟平时用的有些特别，不过还是了解如何操作，最后成功的把这个例子跑了起来。</p>
+<h3 id="汇编和CPU"><a href="#汇编和CPU" class="headerlink" title="汇编和CPU"></a>汇编和CPU</h3><p>似乎可以继续一路向前了，可惜看了头三章后，我发现了些问题。首先我对NASM汇编的东西几乎是一片空白，书的前几章几乎离不开汇编语言了，而看的非常吃力。另一个是我对PC的体系缺乏细节的了解，虽然之前也有了解但实操的过程中遇到的问题更具体。</p>
+<p>NASM的书籍不多，《汇编语言.基于Linux环境.第三版》是一本从体系的角度来讲解NASM的书籍，一方面学习了NASM，也让我重新思考从8086到80386的一些变化，好几个点很有启发。王爽老师的《汇编语言》，也是一本非常不错的参考书，汇编语言在形式上与高级语言还是有着巨大差异，一开始我把心思放在那些寄存器之类上了，而忽略了一个编程语言应该是能够写点东西出来这事上。《汇编语言》这书很好的带我进入如何写点东西的正轨上。</p>
+<p>8086方面的书籍，8086总设计师莫尔斯写的《8086初阶-体系结构、系统设计和程序设计入门》。王爽老师《汇编语言》也主要是讲8086的汇编的。80386的书籍不多，80386的设计师写的《Programing the 80386》一书，非常不错。中文版是93年出版的《保护方式下80386及其编程》一书，虽然没有备注是翻译，但我跟英文版对照后，确认就是翻译自《Programing the 80386》，主要是学习保护模式。</p>
+<p>这里需要注意的是实模式与保护模式的差别，很多时候一开始如果研究的是8086的，往往需要转换下思维，最好的书籍依旧是《保护方式下80386及其编程》一书，于渊的《Orange’S 一个操作系统实现》细节上还是有点模糊。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>最终操作系统并没有完整的实验下去，主要是因为最难的部分也是最容易忽略的如何在特定架构上如何开始，把这一步迈过去后，基本上跟大多操作系统讲的差不多了，主要部分就是使用C语言来实现。</p>
+<p>虽然实验已经过去了几个月了，最近一直在看Java并发的东西，发现实际写过点操作系统还是很有帮助的，比如更能从CPU的角度来思考。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/01/05/2021-01-05-how-to-configure-mysql-8-master-slave-replication-on-centos-8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/05/2021-01-05-how-to-configure-mysql-8-master-slave-replication-on-centos-8/" class="post-title-link" itemprop="url">在CentOS 8上Mysql 8.0的主从配置实践</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-01-05 10:47:17 / 修改时间：11:09:07" itemprop="dateCreated datePublished" datetime="2021-01-05T10:47:17+08:00">2021-01-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>主要试了下基于二进制日志文件的方法</p>
+<h4 id="主库设置"><a href="#主库设置" class="headerlink" title="主库设置"></a>主库设置</h4><p>主要的坑，一般教程上写的是编辑<code>/etc/my.cnf</code>。安装的Mysql 8的配置略微有些问题，<code>my.cnf</code>文件导入的是另一配置<code>!includedir /etc/my.cnf.d</code>，所以以下配置我是写在了<code>/etc/my.cnf.d/mysql-server.cnf</code>里面。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">###主从数据库配置核心部分</span></span><br><span class="line"><span class="comment"># 设置同步的binary log二进制日志文件名前缀，默认为binlog</span></span><br><span class="line">log-bin=mysql-bin</span><br><span class="line"><span class="comment"># 服务器唯一id，默认为1  主数据库和从数据库的server-id不能重复</span></span><br><span class="line">server-id=1          </span><br><span class="line"></span><br><span class="line"><span class="comment">###可选配置</span></span><br><span class="line"><span class="comment"># 需要主从复制的数据库</span></span><br><span class="line">binlog-do-db=<span class="built_in">test</span></span><br><span class="line"><span class="comment"># 复制过滤：也就是指定哪个数据库不用同步（mysql库一般不同步）</span></span><br><span class="line">binlog-ignore-db=mysql</span><br><span class="line"><span class="comment"># 为每个session分配的内存，在事务过程中用来存储二进制日志的缓存</span></span><br><span class="line">binlog_cache_size=1M</span><br><span class="line"><span class="comment"># 主从复制的格式（mixed,statement,row，默认格式是statement。建议是设置为row，主从复制时数据更加能够统一）</span></span><br><span class="line">binlog_format=row</span><br><span class="line"><span class="comment"># 设置二进制日志自动删除/过期的天数，避免占用磁盘空间。默认值为0，表示不自动删除。</span></span><br><span class="line">expire_logs_days=7</span><br><span class="line"><span class="comment"># 跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制中断。</span></span><br><span class="line"><span class="comment"># 如：1062错误是指一些主键重复，1032错误是因为主从数据库数据不一致</span></span><br><span class="line">slave_skip_errors=1062</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2020/11/12/2020-11-12-try-iphone-12-pro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/11/12/2020-11-12-try-iphone-12-pro/" class="post-title-link" itemprop="url">iPhone 12 pro试用感受</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-11-12 13:54:26" itemprop="dateCreated datePublished" datetime="2020-11-12T13:54:26+08:00">2020-11-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-12-09 10:07:05" itemprop="dateModified" datetime="2020-12-09T10:07:05+08:00">2020-12-09</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>iPhone 6s已经用5年了，待电确实比较差，外出的话离不开充电宝。iPhone 12出来后，我就下单iPhone 12 pro了。这次的iPhone 吸引我的是新外观以及对5G的支持，当然pro系列有激光雷达的功能。外观回归到iPhone 4时的设计，因为宽度比原来宽，所以拿着还是有点割手，套上外壳能好点。大小上来说，对于我这种小手还是觉得iPhone 6s的尺寸刚好，iPhone 12 pro的单手操作还是有担心机子摔在地上的风险。自从iPhone出了刘海屏后，我一直比较难以接受这样的设计，更钟情于iPhone 6s 这样的设计，其实在我看来苹果可以把手机的上下部分变短，比刘海这样的设计好。iPhone 12 pro的相机确实牛，这点是值得升级的，另外拍立得这个功能也非常不错。</p>
+<p>谈谈我最后为什么退货呢，作为一个曾经的iOS开发者，对这几年的iPhone已经失去了升级的想法，一方面新iPhone价位比以前贵，功能其实没有太大的突破，从生产力角度来看，我更愿意在macbook pro上投资，而不是iPhone。另外iPhone 6s本身不怎么卡，只是电池不行了，这个完全可以换一个就可以了。升级最大的动力是支持5G，但是目前运营商的5G有点贵，而且5G设施也还在陆续建设中，另外平时用的更多是Wi-Fi，移动网络下也很少看视频之类的，所以并没有高速网络的需求。目前iPhone 12是支持5G的初代产品，所以有提升的空间。最后一点，刘海设计依旧是心里吐槽的对象，如果他出一个iPhone 6s的设计，但支持5G的手机，我可能更愿意接受。</p>
+<h4 id="退货流程"><a href="#退货流程" class="headerlink" title="退货流程"></a>退货流程</h4><p>这是头一次退货，在订单中确认退货，会显示取货。取货的时间都没有问题，来了一个邮政的人员把机子简单的验证后，然后就把机子拿走了，没有留下快递单号。因为是头一次，取货后的第二天我看来下订单状态，依旧显示取货中，过了两天我发现还是这个状态。心里有点嘀咕，不会被骗吧，一般的寄送快递，当天晚上基本上状态都改变了。后来我直接给苹果客服打电话确认了，说一切都正常，机子也确实被取走了，因为会寄送到工厂，工厂收到后还要验货后才会更新订单的状态。大概是一周后，订单状态终于变了，钱也退了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2020/10/06/2020-10-06-travelogue-of-tiantong-temple/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/06/2020-10-06-travelogue-of-tiantong-temple/" class="post-title-link" itemprop="url">天童寺游记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-06 13:48:16" itemprop="dateCreated datePublished" datetime="2020-10-06T13:48:16+08:00">2020-10-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-06-05 14:06:30" itemprop="dateModified" datetime="2022-06-05T14:06:30+08:00">2022-06-05</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h3><p>今年十一长假因为跟中秋重叠，放八天假，趁着时间长决定去一趟宁波的天童寺去看一下。天童寺位于浙江省宁波市鄞州区太白山麓，为什么要去这座寺庙呢？说到这里要追述到《乔布斯传》这本书，大都数人因为这本书也会知道另一本书《禅者的初心》，作者是铃木俊隆，当然再深挖一点，就会知道一位与乔布斯关系密切的禅师乙川弘文。铃木俊隆与乙川弘文都是日本曹洞宗的僧侣。说到日本曹洞宗，不得不提他的开山祖师道元禅师，时间大概可以追述到南宋时期，道元禅师跨海来寻觅佛法，最后在天童寺遇到了如净禅师，得到如净禅师的认可后，回到日本后创建了日本曹洞宗。</p>
+<p>关于天童寺的记载文献还是很多的，而关于如净禅师的记载则比较少，很多都是从道元禅师的记述中得知。这点类似李小龙跟叶问一样，因为道元禅师在日本的成功以及后世日本曹洞宗僧侣在海外弘法的成功，使得如净禅师逐渐为人们所知。不少关于乔布斯跟禅的文中没有切中要点，往往泛泛而谈，说是禅宗。准确的说乔布斯接触的是禅宗曹洞宗一脉的教法，更准确的是日本曹洞宗，但往上追述一点则到了南宋时期如净禅师传承的曹洞宗的一脉。</p>
+<p>如净禅师，浙江宁波人，十九岁时出家，拜在雪窦智鉴禅师的门下，晚年入住天童寺，圆寂后葬在了西湖边的净慈禅寺，净慈禅寺曾经也是禅师入住过的道场。所以本次行程一条线就是围绕着如净禅师来走的，宁波奉化的雪窦山、天童寺、杭州西湖旁的净慈禅寺，这三个地方大略勾勒出了禅师的一生。</p>
+<p>另一条线是围绕着道元禅师来走的，主要是天童寺、阿育王寺。二者在天童寺相会，另外我也带着道元禅师《正法眼藏》中文翻译版一书，在我看来一个人能留下来的无非是他的思想，而带着他的著作犹如带着这位禅师，在700多年后重走这条路。道元禅师在归国后第二年如净禅师圆寂，从此师徒再无相见的可能，所以带着道元的《正法眼藏》专程去杭州净慈禅寺拜祭如净禅师的塔墓，也算另一种相见吧。</p>
+<h3 id="行程"><a href="#行程" class="headerlink" title="行程"></a>行程</h3><h4 id="天童寺"><a href="#天童寺" class="headerlink" title="天童寺"></a>天童寺</h4><p>确定好行程后，十一一大早就坐高铁去了宁波，大概在下午的五点半左右到了宁波。宁波确实跟西安这样的北方城市不一样，矮山、多水洼地。第二天一大早，乘坐地铁一号线直接到达宝幢站，下站后再乘坐育王站的162公交，终点站是公交天童站。不知道是跟疫情有关系还是其他，总之没有门票。穿过一段松柏的路，逐渐看到了天童寺，放生池，旁边山头的塔，再往里面走，隔着一个池子，东南佛国的照壁映入眼帘。照壁后面就是天王殿，穿过天王殿就是佛殿，寺院最上面有罗汉堂。基本的寺院结构跟大多数的寺庙差不多，但建筑上有着天童寺独有的特点。寺里的师父都非常友好，尤其跟寺图书馆的一位师父相谈甚欢，得知寺图书馆没有道元的《正法眼藏》这本书时，当即在原来购买书的那个商家那里下了10本的订单给禅寺，算尽点薄力。禅寺非常好的一点是提供15块一份的素餐，像我这种每次去寺庙不知道如何解决午餐的问题的人来说提供一种方便。天童寺历代都是出高僧的地方，近代有八指头陀、圆瑛法师（中国佛教协会第一任会长），有幸请到一本《八指头陀诗文集》，也算此行的一种意收获。寺里有不少处都有立牌，主要是关于道元禅师的，其中有个殿专门立有《日本道元禅师得法灵迹碑》，可见天童寺与日本曹洞宗的渊源，更被日本曹洞宗尊为祖庭。寺里的师父对于道元禅师也不陌生，都还充满敬意。当天刚好赶上面向在家人的禅七活动即将要开始，因为来的匆忙，不然真想去参加下。天童寺可能是国内仅有的几处仍在传承曹洞宗禅法的寺院，所以对于我们这些修行上更倾向于曹洞宗的人来说，弥足珍贵。</p>
+<h4 id="阿育王寺"><a href="#阿育王寺" class="headerlink" title="阿育王寺"></a>阿育王寺</h4><p>阿育王寺有两座，一座叫阿育王寺，在公路旁边，另一座叫阿育王古寺，在山上。来之前只知道阿育王寺，不知道还有古寺一说。查了下大概阿育王寺有东塔院、西塔院，东塔院即阿育王古寺，也是最初建寺的地方，当年开山祖师惠达（俗名刘萨诃）在这里发现了佛舍利，因此而建寺。唐先天二年时，修建了西塔寺，即现在的阿育王寺，东塔寺的香火逐渐衰落，后来被毁逐渐废弃，现在的阿育王古寺是在原来的遗址上盖了一座崭新的寺庙。古寺因为在山上，知道的人不多，去的人也不多。在大略逛完阿育王寺后，我就打车前往了古寺那边看了下，那边虽然有公交但是发车间隔太长，只好打车了。顺便说下曹操专车，这个在西安也有，与传统的出租相比价格透明，因为我当时有问过一个出租车司机，结果报价明显比我后来坐曹操专车贵不少。古寺山后有阿育王寺开山祖师的塔墓，另外发现佛舍利的地方正在盖舍利大殿，寺里现在好像传承的是天台宗。</p>
+<p>阿育王寺总体更加的古朴一点，也可能是一直没有断过的缘故。古寺虽然历史悠久，但因为是新建的，那份与古代的链接需要脑补。阿育王寺也是当年鉴真大师东渡日本失败时入住过的寺庙，里面也供奉着鉴真大师的像。</p>
+<h4 id="雪窦山、雪窦寺、弥勒道场"><a href="#雪窦山、雪窦寺、弥勒道场" class="headerlink" title="雪窦山、雪窦寺、弥勒道场"></a>雪窦山、雪窦寺、弥勒道场</h4><p>单说雪窦山，其实也算是一座风景秀丽的名山，再加上雪窦寺以及弥勒道场，使之更加有名。不过这里似乎商业味有点过浓，另外说到雪窦山就不得不说老蒋，因为山下就是老蒋故居，我买的是联票210，包括蒋氏故居和雪窦山风景区。</p>
+<p>要到雪窦寺确实比较难，风景区的专用车顺着蜿蜒的道路，过了许久才到达雪窦寺。雪窦寺位于一个山顶的洼地，依山而建。整个寺庙几乎都是新建的，最引人关注的就是寺庙半山腰上巨大的弥勒菩萨像，如果你要登临菩萨像的上面需要门票20元。站在菩萨像的上方俯瞰整个寺庙，一览无余。寺庙因为是弥勒道场的缘故，整个寺庙分为两部分，一部分是围绕巨大弥勒像的主轴线相关建筑，包括大殿供奉的也是弥勒菩萨的像。另一部分则是老寺部分，就是传统大雄宝殿的建筑群。里面有些旧的东西，比如有张学良被幽静时手植的树，不过大部分建筑还是新建的。</p>
+<p>提到雪窦山，总会想到雪窦禅师，当然我此行的目的是因为当年如净禅师学道于雪窦智鉴禅师。不过我们并没有找到相关的东西，浓郁的弥勒道场道场味，几乎将禅宗寺院的本来面目都冲淡，虽然也号称曹洞宗的祖庭之一，但实无其名。甚至连太虚大师，这位当年极力倡导雪窦山为佛教五大名山，弥勒道场的发起人的塔院都隐匿在一个不起眼的山坳里。除此以外就是跟张学良幽静有关的景点，雪窦山更多像是老蒋的私人景区一般。山依旧是那个山，只是一切变了。</p>
+<h4 id="净慈禅寺"><a href="#净慈禅寺" class="headerlink" title="净慈禅寺"></a>净慈禅寺</h4><p>本以为去天童寺也就顺便把如净禅师的塔给拜一下，不过网上一查发现如净禅师圆寂后并没有葬在天童寺，而是葬在了他曾经主持过的杭州西湖边的净慈禅寺。于是行程的最后一站有了杭州这一站，不过也许都是因缘，实际上如果葬在天童寺的话，我去的这会也看不了，因为那边现在正在建设维修中，并不对外开放。</p>
+<p>前两日的天气都不错，不过当我要去杭州的时候，天气预报显示那边下雨，而宁波这边也是有雨，为此我专门改签了去杭州的车次，推后了一点，主要害怕过去下雨，行程不便了。不过也许是上天的某种眷顾吧，从宁波出发的时候，天气显示下雨，但实际不下雨。经过一个小时到杭州后，发现天气虽阴，但也没有下雨。花了点时间终于坐上了数字旅游2号线，在净寺站下，靠西湖的一边是雷峰塔，雷峰塔隔着公路的对面则是净慈禅寺，与雷峰塔的游客蜂拥而至相比，净慈禅寺禅寺显得比较清净。如果不是如净禅师的塔墓在这里，我好像也只知道灵隐寺了，禅寺的门票是10块钱，也算是一种象征性的收费，也合理。我也不免俗的去敲了一下南屏晚钟，一次10元。</p>
+<p>一心想要去塔墓拜祭，老居士说在后山，中途遇到一位师父，给我说那边不开放，心里瞬间有点凉。不过我依旧往释迦殿的方向走，发现殿的一侧有个亭子，跟网上看到塔墓照片差不多了，本想直接沿着山坡往上爬，发现释迦殿上去后可以直接到塔墓那边。果然是对的，穿过一个亭子，旁边有济公像一尊，塔墓这边没有人，还好并没有像那位师父说的不开放，也不知道他出于什么样心里。塔墓被后建的石亭笼罩，旁边还立有如净禅师简介的石碑。在塔墓旁待了许久后，下山把整个寺庙大概转了下，净慈禅寺另一个出名的地方是这里是济公修行的地方，不过济公似乎如同神话人物一般，也没有留下塔墓之类的。大雄宝殿主供的是毗卢遮那佛，跟一般寺庙好像不太一样，但又跟原来看过日本曹洞宗的一些书里有提到毗卢遮那佛，这块不是很懂。</p>
+<p>寺庙也是正在重建中，我也尽了点微薄之力。不过寺里的师父看似并不友好，倒是居士们很友好。身处西湖景区，能这样已经不错了，后来发现禅寺也有开展面对普通人的禅修，愿他们能珍惜这个道场。</p>
+<h3 id="归途"><a href="#归途" class="headerlink" title="归途"></a>归途</h3><p>原来还打算去灵隐寺去看下，不过发现时间不够，沿着西湖略转了下。就朝火车站走了，骑着共享单车走了一段，离火车站不远的地方逐渐下起了下雨，而我也要开始返程了。</p>
+<p>这次行程总体上非常的圆满，作为去年就想前往的地方，今年终于得以成行。打坐七年时间，曹洞宗似乎离自己有点远，只是在书里，在日本，而这次行程，终于让这一切变的真实起来。其实他并遥远，如果想去总能去的。行程结束了，我也把道元禅师的《正法眼藏》的书籍认真的看了一部分，此时这书才似乎能够看的进去，一切有点特别但又没有什么特别，唯一能想到的就是苏轼的那首《庐山烟雨浙江潮》</p>
+<blockquote>
+<p>庐山烟雨浙江潮，<br>未至千般恨不消。<br>到得还来别无事，<br>庐山烟雨浙江潮。</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2020/09/30/2020-09-30-centos-users-guide/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -677,270 +964,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2020/07/22/2020-07-22-octopress-users-guide/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/22/2020-07-22-octopress-users-guide/" class="post-title-link" itemprop="url">Octopress使用指南</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-22 15:14:59" itemprop="dateCreated datePublished" datetime="2020-07-22T15:14:59+08:00">2020-07-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-28 11:50:47" itemprop="dateModified" datetime="2020-07-28T11:50:47+08:00">2020-07-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rake <span class="string">&#x27;new_post[&quot;title&quot;]&#x27;</span> <span class="comment"># 创建文章</span></span><br><span class="line">rake generate <span class="comment"># 生成文章</span></span><br><span class="line">rake preview <span class="comment"># 本地预览博客</span></span><br><span class="line">rake deploy <span class="comment"># 发布博客</span></span><br></pre></td></tr></table></figure>
-
-<p>修改文章创建的日期格式，我比较喜欢类似<code>2020-01-01 00:00:00</code>这样的格式，修改<code>_config.yml</code>。</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">date_format:</span> <span class="string">&quot;%Y-%m-%d&quot;</span></span><br><span class="line"><span class="attr">time_format:</span> <span class="string">&quot;%H:%M:%S&quot;</span> <span class="comment"># 这个新增的，默认配置文件没有的</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2020/07/22/2020-07-22-mysql-notes/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/22/2020-07-22-mysql-notes/" class="post-title-link" itemprop="url">MySQL 笔记</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-22 14:53:15" itemprop="dateCreated datePublished" datetime="2020-07-22T14:53:15+08:00">2020-07-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-23 09:43:08" itemprop="dateModified" datetime="2020-07-23T09:43:08+08:00">2020-07-23</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>持续记录在工作中一些MySQL使用心得。</p>
-<h3 id="二进制日志"><a href="#二进制日志" class="headerlink" title="二进制日志"></a>二进制日志</h3><p>二进制日志文件默认会存放在<code> /var/lib/mysql</code>目录下，配合<code>mysqlbinlog</code>可以查看数据的变更，<code>--base64-output=decode-rows -v</code>加上这个可以使日志可读。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqlbinlog --start-datetime=<span class="string">&quot;2020-07-14 10:00:00&quot;</span> --stop-datetime=<span class="string">&quot;2020-07-14 10:05:00&quot;</span> binlog.000001 --base64-output=decode-rows -v</span><br></pre></td></tr></table></figure>
-
-<h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3><p>访问远程数据库时，创建相应的用户。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">create user <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;本机IP&#x27;</span> identified by <span class="string">&#x27;数据库密码&#x27;</span>;</span><br><span class="line">grant all privileges on *.* to <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;本机IP&#x27;</span> with grant option;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2019/10/20/2019-10-20-macbook-pro-accessories/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/10/20/2019-10-20-macbook-pro-accessories/" class="post-title-link" itemprop="url">Macbook Pro 配件</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2019-10-20 16:48:54 / 修改时间：17:51:26" itemprop="dateCreated datePublished" datetime="2019-10-20T16:48:54+08:00">2019-10-20</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>使用Macbook Pro已经有6、7年了，总结下用到的一些不错的配件。</p>
-<h3 id="键盘"><a href="#键盘" class="headerlink" title="键盘"></a>键盘</h3><p>首推HHKB了，整体设计很复古，键位布局很紧凑，很轻非常适合携带。尤其是新版的本使用虚拟操作栏和蝶式键盘后，基本上写程序都是用的HHKB。键盘没有方向键，一般使用FN组合建。没有大小写按键，可以使用Shift+字母键来代替。价位确实比较高，也不是机械轴，质量当然没得说，几年过去依旧完好，最主要其实就是感觉跟苹果一样都是追求极致的那种，一句话很搭。</p>
-<p>另外菲尔可的78键的也不错，我买的是青轴，这个键盘听说是有加钢板，所以敲着声音更清脆。关于机械轴，很多刚开始玩机械需要注意的一定要买青轴，实际上青轴真的也没有传说中的多吵，而这个也是最能体现机械件轴的地方，所以推荐买青轴了。这个键盘比较重，不合适携带。</p>
-<h3 id="鼠标"><a href="#鼠标" class="headerlink" title="鼠标"></a>鼠标</h3><p>原装的鼠标当然好，不过也是真贵。推荐一款淘宝上只需不到20元的ACTME的蓝牙充电鼠标。虽然廉价但鼠标移动很顺畅，从来没有卡顿过。比一些大牌的好，至少在mac系统下。</p>
-<h3 id="扩展坞"><a href="#扩展坞" class="headerlink" title="扩展坞"></a>扩展坞</h3><p>新版的Macbook Pro确实轻了不少，换来的是一堆的Type-C的接口。扩展坞这种东西也成必须要买的配件，目前用的是绿联的，除了有些发烫外，其他的转接功能都正常使用，不过用扩展坞给手机充电确实不快，应该用慢来形容。</p>
-<h3 id="键盘膜"><a href="#键盘膜" class="headerlink" title="键盘膜"></a>键盘膜</h3><p>之前的本和现在的都用的Moshi的这个牌子，主要是做工好，跟键盘的贴合度都没有问题。虽然有点小贵，上个本的依旧完好无缺，一个可以把本淘汰掉，依旧完好的膜，也算值得。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2019/10/03/2019-10-03-still-using-octopress/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/10/03/2019-10-03-still-using-octopress/" class="post-title-link" itemprop="url">还是选择Octopress</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2019-10-03 15:16:17 / 修改时间：15:52:41" itemprop="dateCreated datePublished" datetime="2019-10-03T15:16:17+08:00">2019-10-03</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Octopress 这东西放在5年前那会是多那么的流行，不过后来好像被Hexo超越了。打开大部分的博客都是Hexo的，Octopress的已经很少见了。15年的时候用Github Page建立Octopress的博客，写一篇iOS的文章后就再也没有更新了。虽然也有使用Hexo替换Octopress的想法，不过想想还是算了。</p>
-<p>网上吐槽Octopress意思是生成文章比较慢，不过我这种写文章的速度话，也不会有多少文章，所以没有设么好担心的。也许过几年后文章多了，Hexo的也不流行了。</p>
-<p>修改Octopress对于我来说也不是什么问题，本身我现在也在做Web开发，所以看看一些文档也能修改。Octopress中因为使用谷歌提供的服务缘故，在国内访问很慢，基本上把jQuery的引用改成国内可以访问的就好，另外屏蔽掉插件中关于推特的项，插件里面还有Google +这样的东西，也都一并屏蔽。Google +都已经被关掉了，这就是长时间不更新的问题，确实会有一些已经老旧的东西。不过这些都是小问题，核心的东西是生成静态的html的网页，所以对于一个懂Web开发的人来说，自己动手改改都不是问题。</p>
-<p>Octopress默认的风格比起Hexo的要好看，属于耐看型，我也懒得去折腾主题插件，最主要的能展示文章就好，另外也适配了手机屏幕。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1010,7 +1033,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">62</span>
+          <span class="site-state-item-count">66</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

@@ -1,3 +1,7 @@
+https://c2lang.com/2022/10/30/flex-and-bison/
+https://c2lang.com/2022/10/20/Vim-Practices/
+https://c2lang.com/2022/10/17/vsftpd-practices/
+https://c2lang.com/2022/10/12/rabbitmq-practices/
 https://c2lang.com/2022/09/16/study-of-zen-master-tiantong-rujing/
 https://c2lang.com/2020/09/30/2020-09-30-centos-users-guide/
 https://c2lang.com/2022/09/20/python-http-server/
