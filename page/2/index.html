@@ -95,7 +95,7 @@
       <h1 class="site-title">Jasper Ji</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">始以竹篦子久知痛痒，后因一滴水渐至澎冲。</p>
+      <p class="site-subtitle" itemprop="description">死猫头活眼方明，三十年来共此情，路远夜长休把火，大家吹灭暗中行。</p>
   </div>
 
   <div class="site-nav-right">
@@ -175,6 +175,73 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/06/30/adb-cannot-connect/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/06/30/adb-cannot-connect/" class="post-title-link" itemprop="url">记一次adb无法连接的问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-06-30 10:51:25" itemprop="dateCreated datePublished" datetime="2022-06-30T10:51:25+08:00">2022-06-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-07-01 11:54:23" itemprop="dateModified" datetime="2022-07-01T11:54:23+08:00">2022-07-01</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>同事的之前是用Mac本开发的，后来换成了小米的本，发现无法用真机和模拟器调试，执行<code>adb devices</code> 命令后直接卡死。网上搜索很多，多是说端口被占用的问题，但是试了好多次，发现端口没有被占用。当时也没有细想，后来冷静下来发现还是得从原理上来寻找问题的根源，于是一大早就把谷歌官网关于adb的文档重新看了下，原来只是使用，并没有深入的去理解原理。adb分为服务端和客户端，端口一般是5037，连接不上的问题实际上网络连接的问题。第一个想到的是防火墙，结果发现不是，后来觉得是不是代理软件的问题，于是就把代理软件关闭了，发现也没有解决问题。后来搜索发现了这篇文章<a target="_blank" rel="noopener" href="https://www.cnblogs.com/russinovich/p/12250168.html">如何解决adb卡死，命令不返回的问题</a>，于是从微软官网下载了<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/sysinternals/downloads/process-explorer">Process Explorer</a>，发现果然是代理软件的问题，虽然之前虽然有关闭代理软件，因为adb连接的时候会默认加入代理，因为代理无法连接，所有adb的连接就一直不响应。</p>
+<p>其实过去几年因为代理而产生的问题也是不少，但每次的还是会中招。另外发现现在的网络确实很厉害，很多问题只要一搜索大都能解决问题，而面对的这个问题的时候，我也陷入了这样的思维，不停的搜索，完全丧失了自己思考的能力。实际上当一个问题搜索很多遍后，依旧没有解，那么多半是一些只有在自己电脑上遇到的特殊问题。</p>
+<p>Process Explorer，这个软件真的非常棒，主要还是免费提供的，直接从微软官网下载，我第一次从其他地方下载，没有发现问题而且显示患有问题，应该是一个老版本，后来从官网下载的就没有问题。因为一直使用Mac对于Win的使用经验还是停留在很多年前，发现要深度玩转Win。<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/sysinternals/">Sysinternals 套件</a>真是宝藏库。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -786,71 +853,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/03/17/2022-03-17-clean-up-linux-viru/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/17/2022-03-17-clean-up-linux-viru/" class="post-title-link" itemprop="url">清理Linux病毒</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-03-17 10:08:48 / 修改时间：10:46:54" itemprop="dateCreated datePublished" datetime="2022-03-17T10:08:48+08:00">2022-03-17</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h4><p>Windows上中毒已经习以为常，但是Linux中毒，之前没有遇到过。之前写过一篇<a href="https://c2lang.com/blog/2021/11/12/remembering-a-gitlab-failure/">《记Gitlab一次故障》</a>，当时以为Gitlab服务器就好了，后来发现还是会时不时的就访问不了，CPU还是占的满满的，想着是不是要降低Gitlab的配置，最后把配置降低后，CPU还是满满的，我一度想换个Gitlab类似的东西，直到我发现即使把Gitlab停止后，依旧有两个Git的用户的程序把CPU占的满满的。其中一个叫kthreaddk的，隐约的感觉到好像中毒了，一搜发现这是一个挖矿的木马程序。</p>
-<p>把进程Kill掉后，发现过一会又启动了。看来还是要深度清理了，参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/wzysz117/article/details/122662915">《挖矿木马kthreaddk清理》</a>这篇文章后，终于把这个木马清理了。主要是安装Gitlab时会创建一个git的用户，而木马程序就是这个用户下运行的，定时任务也是在这个用户下。遇到的主要问题是我不知道git用户的密码，不过这个可以用root账号来修改。</p>
-<h4 id="修改Git用户密码"><a href="#修改Git用户密码" class="headerlink" title="修改Git用户密码"></a>修改Git用户密码</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd git <span class="comment"># 这个是修改用户密码，用户密码密码无法查看，即使你是管理员。</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="清理木马"><a href="#清理木马" class="headerlink" title="清理木马"></a>清理木马</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">su git <span class="comment"># 切换到git用户</span></span><br><span class="line"></span><br><span class="line">crontab -l <span class="comment"># 查看定时任务</span></span><br><span class="line"></span><br><span class="line">sudo /etc/init.d/cron stop <span class="comment"># 停掉定时程序</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">kill</span> -9 进程ID 进程ID <span class="comment"># 这个木马会有两个进程</span></span><br><span class="line"></span><br><span class="line">crontab -r <span class="comment"># 移除定时任务</span></span><br><span class="line"></span><br><span class="line">sudo /etc/init.d/cron start <span class="comment"># 重启定时任务</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>整个Gillab的故障中我一直没有想到中毒的问题，而上次出现故障时，我发现Gitlab账户多了一个管理员的用户，遂即就把这个用户给禁用了，这就已经是一个预兆了。通过这次事件，也算是给上了一课，之前也有使用top这个命令，但从来没有过深入的理解。另外开源的这些软件的漏洞的问题，也是值得关注的，搞不好就有被利用的可能性。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -920,7 +922,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -952,7 +954,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

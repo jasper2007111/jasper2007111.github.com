@@ -99,7 +99,7 @@
       <h1 class="site-title">Jasper Ji</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">始以竹篦子久知痛痒，后因一滴水渐至澎冲。</p>
+      <p class="site-subtitle" itemprop="description">死猫头活眼方明，三十年来共此情，路远夜长休把火，大家吹灭暗中行。</p>
   </div>
 
   <div class="site-nav-right">
@@ -225,26 +225,110 @@
         <p>最早是读了《Unix编程环境》，在书中有展示如何用Lex和Yacc制作一门编程语言，后来就买了《Lex与Yacc》，Flex、Bison分别是Lex、Yacc的现代版本，于是又买了《Flex与Bison》，《Flex与Bison》实际上是《Lex与Yacc》的续作，都是同样的作者。书虽然简单读了下，但里面的例子一直没有尝试的运行下。</p>
 <h3 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h3><p>电脑：macOS Monterey，12.5</p>
 <p>Flex版本2.6.4，Bison版本3.8.2。Mac下直接使用brew安装，安装完成后记得根据提示把环境配置下。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">brew install flex </span><br><span class="line">brew install bison</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">brew install flex 
+brew install bison<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>GCC版本，我使用<code>gcc -v</code>命令后，实际出现的是clang的版本。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">gcc -v</span><br><span class="line">Apple clang version 14.0.0 (clang-1400.0.29.102)</span><br><span class="line">Target: x86_64-apple-darwin21.6.0</span><br><span class="line">Thread model: posix</span><br><span class="line">InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">gcc -v
+Apple clang version 14.0.0 (clang-1400.0.29.102)
+Target: x86_64-apple-darwin21.6.0
+Thread model: posix
+InstalledDir: &#x2F;Applications&#x2F;Xcode.app&#x2F;Contents&#x2F;Developer&#x2F;Toolchains&#x2F;XcodeDefault.xctoolchain&#x2F;usr&#x2F;bin<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="WC例子"><a href="#WC例子" class="headerlink" title="WC例子"></a>WC例子</h3><p>书中第一个例子类似unix下wc的例子。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"> %&#123;</span><br><span class="line"> <span class="type">int</span> chars = <span class="number">0</span>;</span><br><span class="line"> <span class="type">int</span> words = <span class="number">0</span>;</span><br><span class="line"> <span class="type">int</span> lines = <span class="number">0</span>;</span><br><span class="line"> %&#125;</span><br><span class="line"> </span><br><span class="line">%%</span><br><span class="line"> [a-zA-Z]+   &#123; words++; chars += <span class="built_in">strlen</span>(yytext);&#125;</span><br><span class="line"> \n          &#123; chars++; lines++; &#125;</span><br><span class="line"> .           &#123; chars++; &#125;</span><br><span class="line">%%</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span>** aggv)</span> &#123;</span><br><span class="line">     yylex();</span><br><span class="line">     <span class="built_in">printf</span>(<span class="string">&quot;%8d%8d%8d\n&quot;</span>, lines, words, chars);</span><br><span class="line">     <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"> <span class="token operator">%</span><span class="token punctuation">&#123;</span>
+ <span class="token keyword">int</span> chars <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+ <span class="token keyword">int</span> words <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+ <span class="token keyword">int</span> lines <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+ <span class="token operator">%</span><span class="token punctuation">&#125;</span>
+ 
+<span class="token operator">%</span><span class="token operator">%</span>
+ <span class="token punctuation">[</span>a<span class="token operator">-</span>zA<span class="token operator">-</span>Z<span class="token punctuation">]</span><span class="token operator">+</span>   <span class="token punctuation">&#123;</span> words<span class="token operator">++</span><span class="token punctuation">;</span> chars <span class="token operator">+=</span> <span class="token function">strlen</span><span class="token punctuation">(</span>yytext<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span>
+ \n          <span class="token punctuation">&#123;</span> chars<span class="token operator">++</span><span class="token punctuation">;</span> lines<span class="token operator">++</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+ <span class="token punctuation">.</span>           <span class="token punctuation">&#123;</span> chars<span class="token operator">++</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token operator">%</span><span class="token operator">%</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token operator">*</span><span class="token operator">*</span> aggv<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+     <span class="token function">yylex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%8d%8d%8d\n"</span><span class="token punctuation">,</span> lines<span class="token punctuation">,</span> words<span class="token punctuation">,</span> chars<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>书中的例子main函数都没有写返回值，编译的时候回报warn了，我都加了返回参数。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">flex fb1-1.l <span class="comment"># 上面的例子保存为l后缀的文件</span></span><br><span class="line">gcc lex.yy.c -ll <span class="comment"># 这一步会升a.out文件</span></span><br><span class="line">./a.out <span class="comment"># 执行文件，输入一些字符，以control+d结束后，便会输出结果</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">flex fb1-1.l # 上面的例子保存为l后缀的文件
+gcc lex.yy.c -ll # 这一步会升a.out文件
+.&#x2F;a.out # 执行文件，输入一些字符，以control+d结束后，便会输出结果<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p>这里需要注意的是原书中<code>gcc lex.yy.cc -lfl</code>，结果一直报错。后来找到Mac应该使用<code>-ll</code>替代<code>-lfl</code>，参考Reddit上的这个问答：<a target="_blank" rel="noopener" href="https://www.reddit.com/r/C_Programming/comments/wk914f/does_anyone_know_how_to_resolve_this_error_when/">Does anyone know how to resolve this error when compiling Flex and Bison?</a></p>
 <h3 id="计算器例子"><a href="#计算器例子" class="headerlink" title="计算器例子"></a>计算器例子</h3><p>第二例子是一个计算器例子，结合了Flex和Bison</p>
 <p><code>fb1-5.l</code>文件代码</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">%&#123;</span><br><span class="line"><span class="meta"># <span class="keyword">include</span> <span class="string">&quot;fb1-5.tab.h&quot;</span></span></span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line">%%</span><br><span class="line"><span class="string">&quot;+&quot;</span>	&#123; <span class="keyword">return</span> ADD; &#125;</span><br><span class="line"><span class="string">&quot;-&quot;</span>	&#123; <span class="keyword">return</span> SUB; &#125;</span><br><span class="line"><span class="string">&quot;*&quot;</span>	&#123; <span class="keyword">return</span> MUL; &#125;</span><br><span class="line"><span class="string">&quot;/&quot;</span>	&#123; <span class="keyword">return</span> DIV; &#125;</span><br><span class="line"><span class="string">&quot;|&quot;</span>     &#123; <span class="keyword">return</span> ABS; &#125;</span><br><span class="line"><span class="string">&quot;(&quot;</span>     &#123; <span class="keyword">return</span> OP; &#125;</span><br><span class="line"><span class="string">&quot;)&quot;</span>     &#123; <span class="keyword">return</span> CP; &#125;</span><br><span class="line">[<span class="number">0</span><span class="number">-9</span>]+	&#123; yylval = atoll(yytext); <span class="keyword">return</span> NUMBER; &#125;</span><br><span class="line"></span><br><span class="line">\n      &#123; <span class="keyword">return</span> EOL; &#125;</span><br><span class="line"><span class="string">&quot;//&quot;</span>.*  </span><br><span class="line">[ \t]   &#123; <span class="comment">/* ignore white space */</span> &#125;</span><br><span class="line">%%</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token operator">%</span><span class="token punctuation">&#123;</span>
+<span class="token macro property"><span class="token directive-hash">#</span> <span class="token directive keyword">include</span> <span class="token string">"fb1-5.tab.h"</span></span>
+<span class="token operator">%</span><span class="token punctuation">&#125;</span>
+
+<span class="token operator">%</span><span class="token operator">%</span>
+<span class="token string">"+"</span>	<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> ADD<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token string">"-"</span>	<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> SUB<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token string">"*"</span>	<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> MUL<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token string">"/"</span>	<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> DIV<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token string">"|"</span>     <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> ABS<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token string">"("</span>     <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> OP<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token string">")"</span>     <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> CP<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token punctuation">[</span><span class="token number">0</span><span class="token operator">-</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token operator">+</span>	<span class="token punctuation">&#123;</span> yylval <span class="token operator">=</span> <span class="token function">atoll</span><span class="token punctuation">(</span>yytext<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token keyword">return</span> NUMBER<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+
+\n      <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> EOL<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token string">"//"</span><span class="token punctuation">.</span><span class="token operator">*</span>  
+<span class="token punctuation">[</span> \t<span class="token punctuation">]</span>   <span class="token punctuation">&#123;</span> <span class="token comment">/* ignore white space */</span> <span class="token punctuation">&#125;</span>
+<span class="token operator">%</span><span class="token operator">%</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><code>fb1-5.y</code>文件代码，需要注意的是书中的例子类似<code>factor default $$ = $1</code>，实际运行报错修改为<code>factor &#123; $$ = $1; &#125;</code>格式。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**/</span></span><br><span class="line">%&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> <span class="title function_">yyerror</span><span class="params">()</span>; <span class="comment">// 新加</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>; <span class="comment">// 新加</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">yylex</span><span class="params">()</span>; <span class="comment">// 新加</span></span><br><span class="line">%&#125;</span><br><span class="line"></span><br><span class="line">%token NUMBER</span><br><span class="line">%token ADD SUB MUL DIV ABS</span><br><span class="line">%token OP CP</span><br><span class="line">%token EOL</span><br><span class="line"></span><br><span class="line">%%</span><br><span class="line"></span><br><span class="line">calclist: <span class="comment">/* 空规则 */</span></span><br><span class="line">   | calclist <span class="built_in">exp</span> EOL &#123; <span class="built_in">printf</span>(<span class="string">&quot;= %d\n&quot;</span>, $<span class="number">2</span>); &#125;</span><br><span class="line">   ;</span><br><span class="line"></span><br><span class="line"><span class="built_in">exp</span>: factor &#123; $$ = $<span class="number">1</span>; &#125;</span><br><span class="line">   | <span class="built_in">exp</span> ADD factor &#123; $$ = $<span class="number">1</span> + $<span class="number">3</span>; &#125;</span><br><span class="line">   | <span class="built_in">exp</span> SUB factor &#123; $$ = $<span class="number">1</span> - $<span class="number">3</span>; &#125;</span><br><span class="line">   ;</span><br><span class="line"></span><br><span class="line">factor: term &#123; $$ = $<span class="number">1</span>; &#125;</span><br><span class="line">   | factor MUL term &#123; $$ = $<span class="number">1</span> * $<span class="number">3</span>; &#125;</span><br><span class="line">   | factor DIV term &#123; $$ = $<span class="number">1</span> / $<span class="number">3</span>; &#125;</span><br><span class="line">   ;</span><br><span class="line"></span><br><span class="line">term: NUMBER &#123; $$ = $<span class="number">1</span>; &#125;</span><br><span class="line">   | ABS term &#123; $$ = $<span class="number">2</span> &gt;= <span class="number">0</span>? $<span class="number">2</span> : -$<span class="number">2</span>; &#125;</span><br><span class="line">   ;</span><br><span class="line">%%</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">yyerror</span><span class="params">(<span class="type">char</span> *s)</span> &#123;</span><br><span class="line">    <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>, <span class="string">&quot;error: %s\n&quot;</span>, s);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> **argv)</span> &#123;</span><br><span class="line">	yyparse();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/**/</span>
+<span class="token operator">%</span><span class="token punctuation">&#123;</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+<span class="token keyword">void</span> <span class="token function">yyerror</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 新加</span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 新加</span>
+<span class="token keyword">int</span> <span class="token function">yylex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 新加</span>
+<span class="token operator">%</span><span class="token punctuation">&#125;</span>
+
+<span class="token operator">%</span>token NUMBER
+<span class="token operator">%</span>token ADD SUB MUL DIV ABS
+<span class="token operator">%</span>token OP CP
+<span class="token operator">%</span>token EOL
+
+<span class="token operator">%</span><span class="token operator">%</span>
+
+calclist<span class="token operator">:</span> <span class="token comment">/* 空规则 */</span>
+   <span class="token operator">|</span> calclist exp EOL <span class="token punctuation">&#123;</span> <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"= %d\n"</span><span class="token punctuation">,</span> $<span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">;</span>
+
+exp<span class="token operator">:</span> factor <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token operator">|</span> exp ADD factor <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span> <span class="token operator">+</span> $<span class="token number">3</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token operator">|</span> exp SUB factor <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span> <span class="token operator">-</span> $<span class="token number">3</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">;</span>
+
+factor<span class="token operator">:</span> term <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token operator">|</span> factor MUL term <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span> <span class="token operator">*</span> $<span class="token number">3</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token operator">|</span> factor DIV term <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span> <span class="token operator">/</span> $<span class="token number">3</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">;</span>
+
+term<span class="token operator">:</span> NUMBER <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token operator">|</span> ABS term <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">2</span> <span class="token operator">>=</span> <span class="token number">0</span><span class="token operator">?</span> $<span class="token number">2</span> <span class="token operator">:</span> <span class="token operator">-</span>$<span class="token number">2</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">;</span>
+<span class="token operator">%</span><span class="token operator">%</span>
+
+<span class="token keyword">void</span> <span class="token function">yyerror</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">fprintf</span><span class="token punctuation">(</span><span class="token constant">stderr</span><span class="token punctuation">,</span> <span class="token string">"error: %s\n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>argv<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token function">yyparse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>按一下顺序运行</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bison -d fb1-5.y <span class="comment"># 一定要加-d，加了以后会生成fb1-5.tab.h文件</span></span><br><span class="line">flex fb1-5.l  <span class="comment"># 生成lex.yy.c文件</span></span><br><span class="line">gcc fb1-5.tab.c lex.yy.c -ll <span class="comment"># 这个也跟原书的命令不太一样，生成a.out文件</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">bison -d fb1-5.y # 一定要加-d，加了以后会生成fb1-5.tab.h文件
+flex fb1-5.l  # 生成lex.yy.c文件
+gcc fb1-5.tab.c lex.yy.c -ll # 这个也跟原书的命令不太一样，生成a.out文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实还遇到一些跟c有关系的编译问题，比如<code>atoi</code>在<code>c99</code>下不可用，需要使用<code>atoll</code>。总的来说，问题不大，算是都运行起来了，毕竟原书是2009年出版的。最后难能可贵的是书中例子的ftp下载地址居然还可以用，<a href="ftp://ftp.iecc.com/pub/file/flexbison.zip">代码下载</a>。</p>
 <p>书中也提到使用Flex和Bison，当然也可以手写。其实对于我这样的多年写代码的人，很多时候太关注实现了，往往失去了高层次的思考，使用Flex和Bison这样的工具是让你直接关注问题本身，比如语言的一些问题。</p>
@@ -263,10 +347,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/10/20/Vim-Practices/" rel="prev" title="Vim实践">
-      <i class="fa fa-chevron-left"></i> Vim实践
+    <a href="/2022/10/17/vsftpd-practices/" rel="prev" title="Vsftpd实践">
+      <i class="fa fa-chevron-left"></i> Vsftpd实践
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2023/03/02/masm-assembly-language-study-notes/" rel="next" title="MASM汇编语言学习笔记">
+      MASM汇编语言学习笔记 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -339,7 +426,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -371,7 +458,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

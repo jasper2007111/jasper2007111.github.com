@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"c2lang.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="前言去年的时候我就尝试用Yew写了一个记事本的应用，当时可以说是刚接触Yew，Rust也没写什么代码，好在那个应用在UI方面也比较简单。一年过去了，最近又开始折腾Yew这个框架，一开始只是想把网络请求以及图片显示等测试一下，后来觉得是不是可以写一个UI库试下，虽然也有几个在Yew推荐的UI库，但感觉审美不在一个线上。之前写系统后台管理端时，使用的是vue-element-admin这个框架，想着也">
+<meta property="og:type" content="article">
+<meta property="og:title" content="写一个Yew版的UI库">
+<meta property="og:url" content="https://c2lang.com/2023/07/10/write-a-yew-ui-library/index.html">
+<meta property="og:site_name" content="Jasper Ji">
+<meta property="og:description" content="前言去年的时候我就尝试用Yew写了一个记事本的应用，当时可以说是刚接触Yew，Rust也没写什么代码，好在那个应用在UI方面也比较简单。一年过去了，最近又开始折腾Yew这个框架，一开始只是想把网络请求以及图片显示等测试一下，后来觉得是不是可以写一个UI库试下，虽然也有几个在Yew推荐的UI库，但感觉审美不在一个线上。之前写系统后台管理端时，使用的是vue-element-admin这个框架，想着也">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-10T11:00:51.000Z">
+<meta property="article:modified_time" content="2023-07-10T13:11:46.219Z">
+<meta property="article:author" content="Jasper Ji">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://c2lang.com/2023/07/10/write-a-yew-ui-library/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>写一个Yew版的UI库 | Jasper Ji</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jasper Ji</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">死猫头活眼方明，三十年来共此情，路远夜长休把火，大家吹灭暗中行。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2023/07/10/write-a-yew-ui-library/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          写一个Yew版的UI库
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-07-10 19:00:51 / 修改时间：21:11:46" itemprop="dateCreated datePublished" datetime="2023-07-10T19:00:51+08:00">2023-07-10</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>去年的时候我就尝试用Yew写了一个记事本的应用，当时可以说是刚接触Yew，Rust也没写什么代码，好在那个应用在UI方面也比较简单。一年过去了，最近又开始折腾Yew这个框架，一开始只是想把网络请求以及图片显示等测试一下，后来觉得是不是可以写一个UI库试下，虽然也有几个在Yew推荐的UI库，但感觉审美不在一个线上。之前写系统后台管理端时，使用的是<strong>vue-element-admin</strong>这个框架，想着也写一个Yew版的吧，不过首先得把Element UI库给写出来，实际上Yew能不能大范围的使用还是跟类似Element UI这样的企业级库有关系。另一方面对于Yew，我也想通过写这个UI库，来进一步学习Yew这个框架，同时也可以练习Rust的使用。</p>
+<h3 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h3><p>这些组件的实现都是参考了<a target="_blank" rel="noopener" href="https://github.com/ElemeFE/element">Element UI的源码</a>，样式部分基本原封不动的使用了Element UI的样式，Element UI是基于Vue的，现在等于把Vue换成了Yew，Javascript换成了Rust，实现逻辑上依旧使用Element UI的，但在具体实现上则是根据Yew框架和Rust的特点有所不同，尽可能在功能上保持跟Element UI一致。</p>
+<h4 id="Button-按钮"><a href="#Button-按钮" class="headerlink" title="Button 按钮"></a>Button 按钮</h4><p>一开始我选择了Button这个最常用的组件，这个组件相对来说比较简单。</p>
+<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust">
+<span class="token keyword">use</span> <span class="token namespace">yew<span class="token punctuation">::</span>prelude<span class="token punctuation">::</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">enum</span> <span class="token type-definition class-name">Msg</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> <span class="token type-definition class-name">YewButton</span> <span class="token punctuation">&#123;</span>
+    props<span class="token punctuation">:</span><span class="token class-name">YewButtonProps</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token attribute attr-name">#[derive(Clone, PartialEq, Properties)]</span>
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> <span class="token type-definition class-name">YewButtonProps</span> <span class="token punctuation">&#123;</span>
+    <span class="token attribute attr-name">#[prop_or_default]</span>
+    <span class="token keyword">pub</span> disabled<span class="token punctuation">:</span> <span class="token keyword">bool</span><span class="token punctuation">,</span>
+    <span class="token attribute attr-name">#[prop_or_default]</span>
+    <span class="token keyword">pub</span> style<span class="token punctuation">:</span> <span class="token class-name">String</span><span class="token punctuation">,</span>
+    <span class="token keyword">pub</span> title<span class="token punctuation">:</span> <span class="token class-name">AttrValue</span><span class="token punctuation">,</span>
+    <span class="token keyword">pub</span> on_clicked<span class="token punctuation">:</span> <span class="token class-name">Callback</span><span class="token operator">&lt;</span><span class="token class-name">MouseEvent</span><span class="token operator">></span><span class="token punctuation">,</span>
+    <span class="token attribute attr-name">#[prop_or_default]</span>
+    <span class="token keyword">pub</span> loading<span class="token punctuation">:</span><span class="token keyword">bool</span><span class="token punctuation">,</span>
+
+    <span class="token attribute attr-name">#[prop_or_default]</span>
+    <span class="token keyword">pub</span> plain<span class="token punctuation">:</span><span class="token keyword">bool</span><span class="token punctuation">,</span>
+    
+    <span class="token comment">// medium / small / mini</span>
+    <span class="token attribute attr-name">#[prop_or_default]</span>
+    <span class="token keyword">pub</span> size<span class="token punctuation">:</span><span class="token class-name">String</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">impl</span> <span class="token class-name">Component</span> <span class="token keyword">for</span> <span class="token class-name">YewButton</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">type</span> <span class="token type-definition class-name">Message</span> <span class="token operator">=</span> <span class="token class-name">Msg</span><span class="token punctuation">;</span>
+    <span class="token keyword">type</span> <span class="token type-definition class-name">Properties</span> <span class="token operator">=</span> <span class="token class-name">YewButtonProps</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">fn</span> <span class="token function-definition function">create</span><span class="token punctuation">(</span>ctx<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Context</span><span class="token operator">&lt;</span><span class="token keyword">Self</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token keyword">Self</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">Self</span> <span class="token punctuation">&#123;</span>
+            props<span class="token punctuation">:</span>ctx<span class="token punctuation">.</span><span class="token function">props</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">fn</span> <span class="token function-definition function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> ctx<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Context</span><span class="token operator">&lt;</span><span class="token keyword">Self</span><span class="token operator">></span><span class="token punctuation">,</span> msg<span class="token punctuation">:</span> <span class="token keyword">Self</span><span class="token punctuation">::</span><span class="token class-name">Message</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token keyword">bool</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">match</span> msg <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">fn</span> <span class="token function-definition function">view</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">,</span> ctx<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Context</span><span class="token operator">&lt;</span><span class="token keyword">Self</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Html</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">let</span> title <span class="token operator">=</span> ctx<span class="token punctuation">.</span><span class="token function">props</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>title<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">let</span> disabled <span class="token operator">=</span> ctx<span class="token punctuation">.</span><span class="token function">props</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>disabled<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">let</span> style <span class="token operator">=</span> ctx<span class="token punctuation">.</span><span class="token function">props</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>style<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">let</span> loading <span class="token operator">=</span> ctx<span class="token punctuation">.</span><span class="token function">props</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>loading<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
+        <span class="token keyword">let</span> onclick <span class="token operator">=</span> ctx<span class="token punctuation">.</span><span class="token function">props</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>on_clicked<span class="token punctuation">.</span><span class="token function">reform</span><span class="token punctuation">(</span><span class="token keyword">move</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>event<span class="token punctuation">:</span> <span class="token class-name">MouseEvent</span><span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
+            event<span class="token punctuation">.</span><span class="token function">stop_propagation</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            event<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    
+        <span class="token keyword">let</span> <span class="token keyword">mut</span> classes <span class="token operator">=</span> <span class="token class-name">Vec</span><span class="token punctuation">::</span><span class="token function">new</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        classes<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"el-button"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token operator">!</span>style<span class="token punctuation">.</span><span class="token function">is_empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">let</span> ss <span class="token operator">=</span> <span class="token macro property">format!</span><span class="token punctuation">(</span><span class="token string">"el-button--&#123;&#125;"</span><span class="token punctuation">,</span> style<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            classes<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>ss<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> disabled <span class="token punctuation">&#123;</span>
+            classes<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"is-disabled"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token keyword">if</span> <span class="token keyword">self</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>plain <span class="token punctuation">&#123;</span>
+            classes<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"is-plain"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token comment">// TODO 需要对字符串进行检查</span>
+        <span class="token keyword">if</span> <span class="token operator">!</span><span class="token keyword">self</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>size<span class="token punctuation">.</span><span class="token function">is_empty</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            classes<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token macro property">format!</span><span class="token punctuation">(</span><span class="token string">"el-button--&#123;&#125;"</span><span class="token punctuation">,</span> <span class="token keyword">self</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>size<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token macro property">html!</span> <span class="token punctuation">&#123;</span>
+            <span class="token operator">&lt;</span>button class<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token macro property">classes!</span><span class="token punctuation">(</span>classes<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span> <span class="token punctuation">&#123;</span>onclick<span class="token punctuation">&#125;</span> disabled<span class="token operator">=</span><span class="token punctuation">&#123;</span>disabled<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span> <span class="token operator">></span>
+            <span class="token punctuation">&#123;</span>title<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span>
+            <span class="token keyword">if</span> loading <span class="token punctuation">&#123;</span>
+                <span class="token operator">&lt;</span>i class<span class="token operator">=</span><span class="token string">"el-icon-loading"</span><span class="token operator">></span><span class="token operator">&lt;</span><span class="token operator">/</span>i<span class="token operator">></span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这个里面代码目前没有优化，基本上时当时写的样子，应该是没有完全实现所有Element UI版的按钮功能，但核心功能是可以用的。</p>
+<h4 id="Rate-评分"><a href="#Rate-评分" class="headerlink" title="Rate 评分"></a>Rate 评分</h4><p>评分组件在以前iOS的时候也是自己写过，相对按钮组件，这个就相对复杂些了。主要问题是实现半星效果的功能时，发现Yew的鼠标事件不能穿透，一开始按照原版的实现来写，结果老是出错，后来才发现是这个不能穿透的问题。</p>
+<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">if</span> <span class="token keyword">self</span><span class="token punctuation">.</span><span class="token function">is_rate_disabled</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">if</span> <span class="token keyword">self</span><span class="token punctuation">.</span>props<span class="token punctuation">.</span>allow_half <span class="token punctuation">&#123;</span>
+    <span class="token keyword">let</span> element<span class="token punctuation">:</span> <span class="token class-name">Element</span> <span class="token operator">=</span> e<span class="token punctuation">.</span><span class="token function">target_unchecked_into</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> <span class="token keyword">mut</span> target <span class="token operator">=</span> <span class="token class-name">None</span><span class="token punctuation">;</span>
+    <span class="token comment">// 这段代码原本是Element UI的实现，但是Yew的鼠标移动事件并不能穿透，所以这段代码弃用</span>
+    <span class="token comment">// if element.class_list().contains("el-rate__item") &#123;</span>
+    <span class="token comment">//     target = element.query_selector(".el-rate__icon").unwrap();</span>
+    <span class="token comment">// &#125;</span>
+    <span class="token comment">// if target.is_some()&amp;&amp; target.clone().unwrap().class_list().contains("el-rate__decimal") &#123;</span>
+    <span class="token comment">//     target = target.clone().unwrap().parent_element();</span>
+    <span class="token comment">// &#125; else if element.class_list().contains("el-rate__decimal") &#123;</span>
+    <span class="token comment">//     target = element.parent_element();</span>
+    <span class="token comment">// &#125;</span>
+    <span class="token keyword">if</span> target<span class="token punctuation">.</span><span class="token function">is_none</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        target <span class="token operator">=</span> <span class="token class-name">Some</span><span class="token punctuation">(</span>element<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">if</span> target<span class="token punctuation">.</span><span class="token function">is_some</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">let</span> offset_x <span class="token operator">=</span> e<span class="token punctuation">.</span><span class="token function">offset_x</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">;</span>
+        <span class="token keyword">let</span> client_width <span class="token operator">=</span> target<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">client_width</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">self</span><span class="token punctuation">.</span>pointer_at_left_half <span class="token operator">=</span> offset_x <span class="token operator">&lt;=</span> client_width<span class="token punctuation">;</span>
+        <span class="token keyword">self</span><span class="token punctuation">.</span>current_value <span class="token operator">=</span> <span class="token keyword">if</span> <span class="token keyword">self</span><span class="token punctuation">.</span>pointer_at_left_half <span class="token punctuation">&#123;</span>
+            <span class="token punctuation">(</span>index<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">f64</span> <span class="token operator">-</span> <span class="token number">0.5</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+            <span class="token punctuation">(</span>index<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">f64</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> 
+<span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">self</span><span class="token punctuation">.</span>current_value <span class="token operator">=</span> <span class="token punctuation">(</span>index<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">f64</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">self</span><span class="token punctuation">.</span>hover_index <span class="token operator">=</span> index<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token boolean">true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>原版的实现专门对穿透做了处理，既然不支持穿透实现反而简单了，这个应该是Yew自己的设置了。</p>
+<h4 id="ColorPicker-颜色选择器"><a href="#ColorPicker-颜色选择器" class="headerlink" title="ColorPicker 颜色选择器"></a>ColorPicker 颜色选择器</h4><p>完成了评分组件后，想到找个再复杂一点的，于是选中了颜色选择器这个组件，一看这个组件是由好几子组件组成的，就是他了。颜色是个比较专业的东西，原版专门有个Color模块来处理，一开始我打算用Rust重写Color模块，不过鉴于Javascript的动态类型，一开始写一个Hsv转RGB的时候就卡住了，于是就找了一些第三方的库，先把功能拼凑出来，这也是颜色选择器中没有使用原版的实现的一部分。另一个遇到的问题是一些参数面板原版是支持滑动来操作的，但是我试了一下还是有问题。于是只支持了点击设置值的操作。</p>
+<p>另一个遇到的大问题是原版支持输入颜色的操作，但是我的输入组件还没有写好，看了写源码，这个组件还需要单独去写。于是目前的功能不支持输入。</p>
+<p>颜色处理，最后使用了csscolorparser这个库，把原来零散的库给替换了。</p>
+<p>最后这个组件功能我觉得能用，支持十六进制颜色以及RGB和RGBA的形式，实际上csscolorparser这个库支持的很全。目前存在的问题，原版使用了Vue特有的transition标签，我一开始以为这是HTML的，后来才发现。原版弹框时会有动画，而且也会把弹出框定位到颜色按钮的下方适当位置。目前这本版本暂时没有这样的效果。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Yew这个框架，我也尝试的看了下源码，这非常有帮助，因为这是文档有时无法学习到的。基本的运行原理以及生命周期之类的都有了一定的认识。另外通过这三个组件的练习，跟Vue的实现一对比，发现Vue还是包装的更深，更对开发者友好。Yew基本的功能实现是没有问题的，只是有些类似上面提到的transition这样的，可能就需要自己实现。</p>
+<p>Rust方面，一方面我看了一些源码，这些源码使用了更深层次的Rust功能，比如宏、范型。另一方面，Rust写前端，毕竟运行环境不是操作系统，所以有些库也是特定平台的。比如数学模块，我一开始想着使用Rust自带之类的标准库，但最后还是使用js-sys的Math模块，实际证明这个很好用。</p>
+<p>下一步，目前只写了三组件，总共有90个组件，完全是冰山一角，工作量之巨大，只能慢慢来。目前来看用Rust写前端，只是一种实验性的东西，毕竟Javascript的应用面很广，小程序，移动端，Rust更广阔的应该还是在系统应用这个层级，但面对C&#x2F;C++这类系统级别的语言也是挑战，另外服务端又有各种语言占据。Rust的使用场景看似很广，但却不得不名对先占市场的问题，所以这也是我为什么要用Rust来写前端这个初衷，就是想用Rust。</p>
+<p>最后有对Yew这个框架感兴趣的，可以关注下<a target="_blank" rel="noopener" href="https://github.com/jasper2007111/yew-lab">yew-lab</a>这个项目，组件相关的代码都在里面。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/03/02/masm-assembly-language-study-notes/" rel="prev" title="MASM汇编语言学习笔记">
+      <i class="fa fa-chevron-left"></i> MASM汇编语言学习笔记
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">组件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Button-%E6%8C%89%E9%92%AE"><span class="nav-number">2.1.</span> <span class="nav-text">Button 按钮</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Rate-%E8%AF%84%E5%88%86"><span class="nav-number">2.2.</span> <span class="nav-text">Rate 评分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ColorPicker-%E9%A2%9C%E8%89%B2%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-number">2.3.</span> <span class="nav-text">ColorPicker 颜色选择器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jasper Ji</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jasper Ji</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

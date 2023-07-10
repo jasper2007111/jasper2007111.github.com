@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"c2lang.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="缘起做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。 大概7、8年前买过一本《Orange’S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一">
+  <meta name="description" content="缘起如何写一个操作系统，大概刚开始写程序一年多，我就思考这个问题，其实那些年很多想法都不错，至少感想，可惜能力跟不上想法。当时也不知道什么渠道看到的，2010年末的时候从亚马逊中国买了一本《Orange’S 一个操作系统实现》，那会主要应该是汇编语言的问题，没有跨过第三章，为此买了本王爽的《汇编语言·第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何写一个操作系统">
 <meta property="og:url" content="https://c2lang.com/2021/02/04/2021-02-04-how-to-write-an-os/index.html">
 <meta property="og:site_name" content="Jasper Ji">
-<meta property="og:description" content="缘起做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。 大概7、8年前买过一本《Orange’S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一">
+<meta property="og:description" content="缘起如何写一个操作系统，大概刚开始写程序一年多，我就思考这个问题，其实那些年很多想法都不错，至少感想，可惜能力跟不上想法。当时也不知道什么渠道看到的，2010年末的时候从亚马逊中国买了一本《Orange’S 一个操作系统实现》，那会主要应该是汇编语言的问题，没有跨过第三章，为此买了本王爽的《汇编语言·第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-04T14:21:27.000Z">
-<meta property="article:modified_time" content="2021-07-09T07:05:35.470Z">
+<meta property="article:modified_time" content="2023-05-18T08:32:50.765Z">
 <meta property="article:author" content="Jasper Ji">
 <meta name="twitter:card" content="summary">
 
@@ -99,7 +99,7 @@
       <h1 class="site-title">Jasper Ji</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">始以竹篦子久知痛痒，后因一滴水渐至澎冲。</p>
+      <p class="site-subtitle" itemprop="description">死猫头活眼方明，三十年来共此情，路远夜长休把火，大家吹灭暗中行。</p>
   </div>
 
   <div class="site-nav-right">
@@ -214,7 +214,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-07-09 15:05:35" itemprop="dateModified" datetime="2021-07-09T15:05:35+08:00">2021-07-09</time>
+                <time title="修改时间：2023-05-18 16:32:50" itemprop="dateModified" datetime="2023-05-18T16:32:50+08:00">2023-05-18</time>
               </span>
 
           
@@ -228,13 +228,67 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h3><p>做程序员也有些年头了，做过的项目各式各样，但都不是什么成功项目，所以到底如何证明自己呢？于是想到了尝试写个操作系统试试，也算通用了。</p>
-<p>大概7、8年前买过一本《Orange’S 一个操作系统实现》，主题很吸引我，可惜没读过三章就停滞不前了，汇编以及体系方面的东西让我这个半路出家的程序员看的一脸苦相，但我还是试图试试，于是就买了另一本关于汇编的书籍，王爽老师的《汇编语言.第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太难了，中间需要跨越的东西太多了。渐渐就放弃了，后来直接把这两本书给卖掉了。</p>
-<p>今年突然间又想，我应该尝试写一个简单的操作系统，多年的工作以及自学，使得我对编程有了一个相对完整的认识，这个想法似乎不像当年那么不靠谱。但该如何下手呢？刚开始我只想能跑一个<code>Hello wrold</code>的例子也可以，网上找了下最多的居然是我当年卖掉的那本《Orange’S 一个操作系统实现》书中的例子，可惜当年我也没怎么看懂，只是买了本书而已。</p>
-<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><p>最简单的例子，来自《Orange’S 一个操作系统实现》一书。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">	org 07c00h			; 告诉编译器程序加载到7c00处</span><br><span class="line">	mov ax, cs</span><br><span class="line">	mov ds, ax</span><br><span class="line">	mov es, ax</span><br><span class="line">	call DispStr			; 调用显示字符串例程</span><br><span class="line">	jmp $			; 无限循环</span><br><span class="line">DispStr:</span><br><span class="line">	mov ax, BootMessage</span><br><span class="line">	mov bp, ax			; ES:BP = 串地址</span><br><span class="line">	mov cx, 16			; CX = 串长度</span><br><span class="line">	mov ax, 01301h		; AH = 13,  AL = 01h</span><br><span class="line">	mov bx, 000ch		; 页号为0(BH = 0) 黑底红字(BL = 0Ch,高亮)</span><br><span class="line">	mov dl, 0</span><br><span class="line">	int 10h			; 10h 号中断</span><br><span class="line">	ret</span><br><span class="line">BootMessage:		db	&quot;Hello, OS world!&quot;</span><br><span class="line">times 	510-($-$$)	db	0	; 填充剩下的空间，使生成的二进制代码恰好为512字节</span><br><span class="line">dw 	0xaa55				; 结束标志</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        <h3 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h3><p>如何写一个操作系统，大概刚开始写程序一年多，我就思考这个问题，其实那些年很多想法都不错，至少感想，可惜能力跟不上想法。当时也不知道什么渠道看到的，2010年末的时候从亚马逊中国买了一本《Orange’S 一个操作系统实现》，那会主要应该是汇编语言的问题，没有跨过第三章，为此买了本王爽的《汇编语言·第三版》，依旧记得去乾陵一日游大巴上，我努力的读着，可惜作为一个刚接触脚本语言的人来说，汇编语言太难了，中间需要跨越的东西太多了。后来工作瞎忙之类，也就没有再继续，也不知道什么时候，我居然把这两本书都给卖了。</p>
+<p>今年突然间又想，我应该尝试写一个简单的操作系统，多年的工作以及自学，使得我对编程有了一个相对完整的认识（后来证实实际我根本不懂真的如何用汇编编程，只是文字上的一知半解），这个想法似乎不像当年那么不靠谱。但该如何下手呢？刚开始我只想能跑一个<code>Hello wrold</code>的例子也可以，网上找了下最多的居然是我当年卖掉的那本《Orange’S 一个操作系统实现》书中的例子，书已经绝版了，于是就从孔夫子旧书网上买了一本，又买了王爽的《汇编语言》，现在已经升级到第四版了。</p>
+<h3 id="最简单的OS"><a href="#最简单的OS" class="headerlink" title="最简单的OS"></a>最简单的OS</h3><p>来自《Orange’S 一个操作系统实现》一书。</p>
+<p>运行环境：Ubuntu 20.04.2 LTS</p>
+<p><code>boot.asm</code>代码</p>
+<pre class="line-numbers language-nasm" data-language="nasm"><code class="language-nasm">	org <span class="token number">07c00h</span>			<span class="token comment">; 告诉编译器程序加载到7c00处</span>
+	mov <span class="token register variable">ax</span>, <span class="token register variable">cs</span>
+	mov <span class="token register variable">ds</span>, <span class="token register variable">ax</span>
+	mov <span class="token register variable">es</span>, <span class="token register variable">ax</span>
+	call DispStr			<span class="token comment">; 调用显示字符串例程</span>
+	jmp <span class="token operator">$</span>			<span class="token comment">; 无限循环</span>
+<span class="token label function">DispStr:</span>
+	mov <span class="token register variable">ax</span>, BootMessage
+	mov <span class="token register variable">bp</span>, <span class="token register variable">ax</span>			<span class="token comment">; ES:BP = 串地址</span>
+	mov <span class="token register variable">cx</span>, <span class="token number">16</span>			<span class="token comment">; CX = 串长度</span>
+	mov <span class="token register variable">ax</span>, <span class="token number">01301h</span>		<span class="token comment">; AH = 13,  AL = 01h</span>
+	mov <span class="token register variable">bx</span>, <span class="token number">000ch</span>		<span class="token comment">; 页号为0(BH = 0) 黑底红字(BL = 0Ch,高亮)</span>
+	mov <span class="token register variable">dl</span>, <span class="token number">0</span>
+	int <span class="token number">10h</span>			<span class="token comment">; 10h 号中断</span>
+	ret
+<span class="token label function">BootMessage:</span>		db	<span class="token string">"Hello, OS world!"</span>
+times 	<span class="token number">510</span><span class="token operator">-</span>(<span class="token operator">$</span><span class="token operator">-</span><span class="token operator">$</span><span class="token operator">$</span>)	db	<span class="token number">0</span>	<span class="token comment">; 填充剩下的空间，使生成的二进制代码恰好为512字节</span>
+dw 	<span class="token number">0xaa55</span>				<span class="token comment">; 结束标志</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>《Orange’S 一个操作系统实现》一书使用NASM汇编，王爽老师的《汇编语言》是MASM，但二者差别不大。专门讲NASM，有一本2003年中国铁道出版社出版的《汇编语言程序设计》，作者是林邦杰、陈明，此书是引进的台湾版，不过因为时间久远，已经买不到纸质书籍了，网上电子版，但找不到光盘内容，书中有些作者封装的调用都在光盘里面，所以不是很推荐。</p>
+<p>NSAM版本：2.14.02</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">nasm boot.asm -o boot.bin # 编译<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<p>这就是一个直接运行到硬件上的一段程序，而不是我们平时在操作系统写应用代码那样。对于一个实践者而言，我很想把这段程序跑起来，这很关键，只要能跑起来，我们就可以试图修改下，再跑起来，这样认识上才能有提高。其实跑这个例子也是费了点功夫，首先在虚拟机上安装了一个的Linux发行版Ubuntu系统，书中用到的汇编是跟MASM很相似的NASM，首先NASM的教程不多，不过还好可以参考MASM汇编的书籍。另外就是软盘的制作相关的东西，最后是安装Bochs虚拟机，这个虚拟机跟平时用的有些特别，不过还是了解如何操作，最后成功的把这个例子跑了起来。</p>
+<p>编译完成后，我们需要将<code>boot.bin</code>拷贝到软盘里面。书中使用的<code>bximage</code>来创建软盘。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">bximage # 执行完成后会生成一个a.img的文件<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>拷贝文件到软盘</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">dd if&#x3D;boot.bin of&#x3D;a.img bs&#x3D;512 count&#x3D;1 conv&#x3D;notrunc
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>书中使用Bochs模拟器，需要在当前目录下创建<code>bochsrc</code>文本文件，内容如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">megs:32
+
+romimage:file&#x3D;$BXSHARE&#x2F;BIOS-bochs-latest
+vgaromimage:file&#x3D;$BXSHARE&#x2F;VGABIOS-lgpl-latest
+
+floppya: 1_44&#x3D;a.img, status&#x3D;inserted
+
+
+boot:floppy
+
+log:bochsout.txt
+
+mouse:enabled&#x3D;0
+
+#keyboard: keymap&#x3D;$BXSHARE&#x2F;keymaps&#x2F;x11-pc-de.map
+
+display_library:sdl2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>网上书中光盘里面的bochsrc配置文件运行有问题，我这个是修改过的，启动Bochs</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">bochs -f bochsrc # 或者bochs，会直接在当前目录下寻找配置<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里需要注意的是启动后，需要按<code>c</code>后才在屏幕上显示<code>Hello, OS world!</code>的界面。 关于<code>Bochs</code>本身确实有很多需要学习的地方。</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><pre class="line-numbers language-nasm" data-language="nasm"><code class="language-nasm">times 	<span class="token number">510</span><span class="token operator">-</span>(<span class="token operator">$</span><span class="token operator">-</span><span class="token operator">$</span><span class="token operator">$</span>)	db	<span class="token number">0</span>	<span class="token comment">; 填充剩下的空间，使生成的二进制代码恰好为512字节</span>
+dw 	<span class="token number">0xaa55</span>				<span class="token comment">; 结束标志</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>特意说下这段代码，代码结尾必须为<code>aa55</code>，这个是结束标志。另外代码必须小于512kb的大小，后来我因为代码的问题，填充剩余空间出现了问题，导致大小超过了512，Bochs运行时提示<code>Message: No bootable device. bochs</code>，因为只会在第一扇区寻找数据，而结束标志实际上已经不在第一扇区了。</p>
 <h3 id="汇编和CPU"><a href="#汇编和CPU" class="headerlink" title="汇编和CPU"></a>汇编和CPU</h3><p>似乎可以继续一路向前了，可惜看了头三章后，我发现了些问题。首先我对NASM汇编的东西几乎是一片空白，书的前几章几乎离不开汇编语言了，而看的非常吃力。另一个是我对PC的体系缺乏细节的了解，虽然之前也有了解但实操的过程中遇到的问题更具体。</p>
 <p>NASM的书籍不多，《汇编语言.基于Linux环境.第三版》是一本从体系的角度来讲解NASM的书籍，一方面学习了NASM，也让我重新思考从8086到80386的一些变化，好几个点很有启发。王爽老师的《汇编语言》，也是一本非常不错的参考书，汇编语言在形式上与高级语言还是有着巨大差异，一开始我把心思放在那些寄存器之类上了，而忽略了一个编程语言应该是能够写点东西出来这事上。《汇编语言》这书很好的带我进入如何写点东西的正轨上。</p>
 <p>8086方面的书籍，8086总设计师莫尔斯写的《8086初阶-体系结构、系统设计和程序设计入门》。王爽老师《汇编语言》也主要是讲8086的汇编的。80386的书籍不多，80386的设计师写的《Programing the 80386》一书，非常不错。中文版是93年出版的《保护方式下80386及其编程》一书，虽然没有备注是翻译，但我跟英文版对照后，确认就是翻译自《Programing the 80386》，主要是学习保护模式。</p>
@@ -321,7 +375,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%98%E8%B5%B7"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">2.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B1%87%E7%BC%96%E5%92%8CCPU"><span class="nav-number">3.</span> <span class="nav-text">汇编和CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%98%E8%B5%B7"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E7%AE%80%E5%8D%95%E7%9A%84OS"><span class="nav-number">2.</span> <span class="nav-text">最简单的OS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text">注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B1%87%E7%BC%96%E5%92%8CCPU"><span class="nav-number">4.</span> <span class="nav-text">汇编和CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -335,7 +389,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -367,7 +421,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

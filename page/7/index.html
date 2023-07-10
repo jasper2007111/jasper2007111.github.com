@@ -95,7 +95,7 @@
       <h1 class="site-title">Jasper Ji</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">始以竹篦子久知痛痒，后因一滴水渐至澎冲。</p>
+      <p class="site-subtitle" itemprop="description">死猫头活眼方明，三十年来共此情，路远夜长休把火，大家吹灭暗中行。</p>
   </div>
 
   <div class="site-nav-right">
@@ -175,6 +175,68 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2020/07/22/2020-07-22-write-a-lottery-program-with-common-lisp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/22/2020-07-22-write-a-lottery-program-with-common-lisp/" class="post-title-link" itemprop="url">用Common Lisp写一个双色球程序</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-07-22 23:12:10 / 修改时间：23:29:21" itemprop="dateCreated datePublished" datetime="2020-07-22T23:12:10+08:00">2020-07-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>断断续续的看了些Common Lisp的东西，主要是田春冰河翻译的那本《实用Common Lisp编程》，另外网上有人翻译了《ANSI Common Lisp》也有看，另一本《Common Lisp： A Gentle Introduction to Symbolic Computation》。总得写点东西，于是就写了这个双色球的小程序。</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">(<span class="name">defconstant</span> total-red-ball <span class="number">33</span>)</span><br><span class="line">(<span class="name">defconstant</span> total-blue-ball <span class="number">16</span>)</span><br><span class="line"></span><br><span class="line">(<span class="name">defun</span> select-red-ball (<span class="name">red-balls</span> double-balls)</span><br><span class="line">  (<span class="name">let</span> (<span class="name">x</span>)</span><br><span class="line">    (<span class="name">setq</span> x (<span class="name">elt</span> red-balls (<span class="name">random</span> (<span class="name">length</span> red-balls))))</span><br><span class="line">    (<span class="name">vector-push</span> x double-balls)</span><br><span class="line">    (<span class="name">delete</span> x red-balls)))</span><br><span class="line"></span><br><span class="line">(<span class="name">defun</span> create-double-balls()</span><br><span class="line">  (<span class="name">let</span> ((<span class="name">red-balls</span> (<span class="name">make-array</span> total-red-ball <span class="symbol">:fill-pointer</span> <span class="number">0</span>))</span><br><span class="line">	(<span class="name">blue-balls</span> (<span class="name">make-array</span> total-blue-ball <span class="symbol">:fill-pointer</span> <span class="number">0</span>))</span><br><span class="line">	(<span class="name">double-balls</span> (<span class="name">make-array</span> <span class="number">7</span> <span class="symbol">:fill-pointer</span> <span class="number">0</span>)))</span><br><span class="line">    (<span class="name">loop</span> for i from <span class="number">1</span> to total-red-ball do (<span class="name">vector-push</span> i red-balls))</span><br><span class="line">    (<span class="name">loop</span> for i from <span class="number">1</span> to total-blue-ball do (<span class="name">vector-push</span> i blue-balls))</span><br><span class="line">    (<span class="name">dotimes</span> (<span class="name">n</span> <span class="number">6</span>)</span><br><span class="line">      (<span class="name">select-red-ball</span> red-balls double-balls))</span><br><span class="line">    (<span class="name">setq</span> double-balls (<span class="name">sort</span> double-balls #&#x27;&lt;))</span><br><span class="line">    (<span class="name">vector-push</span> (<span class="name">elt</span> blue-balls (<span class="name">random</span> <span class="number">16</span>)) double-balls)</span><br><span class="line">    (<span class="name">print</span> double-balls)))</span><br><span class="line">    </span><br><span class="line">(<span class="name">defun</span> gen(<span class="name">n</span>)</span><br><span class="line">  (<span class="name">dotimes</span> (<span class="name">i</span> n)</span><br><span class="line">    (<span class="name">create-double-balls</span>)))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>Lisp特殊的语法风格确实与C体系的语言有很大不同，不过如果有编程经验的话，还是比较容易上手，比如函数的传参，传个数组的话，实际上传指针了。定义局部变量的方式比如用<code>LET</code>。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -650,7 +712,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -682,7 +744,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

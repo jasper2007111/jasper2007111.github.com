@@ -95,7 +95,7 @@
       <h1 class="site-title">Jasper Ji</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">始以竹篦子久知痛痒，后因一滴水渐至澎冲。</p>
+      <p class="site-subtitle" itemprop="description">死猫头活眼方明，三十年来共此情，路远夜长休把火，大家吹灭暗中行。</p>
   </div>
 
   <div class="site-nav-right">
@@ -175,6 +175,71 @@
 
           <div class="content index posts-expand">
             
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/03/17/2022-03-17-clean-up-linux-viru/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/17/2022-03-17-clean-up-linux-viru/" class="post-title-link" itemprop="url">清理Linux病毒</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-17 10:08:48 / 修改时间：10:46:54" itemprop="dateCreated datePublished" datetime="2022-03-17T10:08:48+08:00">2022-03-17</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="起因"><a href="#起因" class="headerlink" title="起因"></a>起因</h4><p>Windows上中毒已经习以为常，但是Linux中毒，之前没有遇到过。之前写过一篇<a href="https://c2lang.com/blog/2021/11/12/remembering-a-gitlab-failure/">《记Gitlab一次故障》</a>，当时以为Gitlab服务器就好了，后来发现还是会时不时的就访问不了，CPU还是占的满满的，想着是不是要降低Gitlab的配置，最后把配置降低后，CPU还是满满的，我一度想换个Gitlab类似的东西，直到我发现即使把Gitlab停止后，依旧有两个Git的用户的程序把CPU占的满满的。其中一个叫kthreaddk的，隐约的感觉到好像中毒了，一搜发现这是一个挖矿的木马程序。</p>
+<p>把进程Kill掉后，发现过一会又启动了。看来还是要深度清理了，参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/wzysz117/article/details/122662915">《挖矿木马kthreaddk清理》</a>这篇文章后，终于把这个木马清理了。主要是安装Gitlab时会创建一个git的用户，而木马程序就是这个用户下运行的，定时任务也是在这个用户下。遇到的主要问题是我不知道git用户的密码，不过这个可以用root账号来修改。</p>
+<h4 id="修改Git用户密码"><a href="#修改Git用户密码" class="headerlink" title="修改Git用户密码"></a>修改Git用户密码</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd git <span class="comment"># 这个是修改用户密码，用户密码密码无法查看，即使你是管理员。</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="清理木马"><a href="#清理木马" class="headerlink" title="清理木马"></a>清理木马</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">su git <span class="comment"># 切换到git用户</span></span><br><span class="line"></span><br><span class="line">crontab -l <span class="comment"># 查看定时任务</span></span><br><span class="line"></span><br><span class="line">sudo /etc/init.d/cron stop <span class="comment"># 停掉定时程序</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">kill</span> -9 进程ID 进程ID <span class="comment"># 这个木马会有两个进程</span></span><br><span class="line"></span><br><span class="line">crontab -r <span class="comment"># 移除定时任务</span></span><br><span class="line"></span><br><span class="line">sudo /etc/init.d/cron start <span class="comment"># 重启定时任务</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>整个Gillab的故障中我一直没有想到中毒的问题，而上次出现故障时，我发现Gitlab账户多了一个管理员的用户，遂即就把这个用户给禁用了，这就已经是一个预兆了。通过这次事件，也算是给上了一课，之前也有使用top这个命令，但从来没有过深入的理解。另外开源的这些软件的漏洞的问题，也是值得关注的，搞不好就有被利用的可能性。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
       
   
   
@@ -864,83 +929,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/06/22/2021-06-22-learn-zookeeper/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/06/22/2021-06-22-learn-zookeeper/" class="post-title-link" itemprop="url">学习Zookeeper的使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-06-22 15:03:35" itemprop="dateCreated datePublished" datetime="2021-06-22T15:03:35+08:00">2021-06-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-06-23 16:51:42" itemprop="dateModified" datetime="2021-06-23T16:51:42+08:00">2021-06-23</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>ZooKeeper没有直接用过，所以想研究下，本来读《ZooKeeper：分布式过程协同技术详解》，感觉还是很模糊，虽然大概明白分布式会需要这样一个东西，现在使用的Spring微服务中Eureka跟ZooKeeper有相似的地方。纸上得来终归浅，所以觉得跑一些实际的例子。</p>
-<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>我的环境是Mac，使用Brew安装。</p>
-<h4 id="可视化界面"><a href="#可视化界面" class="headerlink" title="可视化界面"></a>可视化界面</h4><p>ZooKeeper自带的zkCli命令行工具，其实也能用。也有可视化的界面工具<a target="_blank" rel="noopener" href="https://github.com/DeemOpen/zkui">ZKUI</a>，最后使用的ZKUI。</p>
-<h4 id="客户端"><a href="#客户端" class="headerlink" title="客户端"></a>客户端</h4><p>使用的Java跑的例子，有点类似数据的增删改查了，当然也有监听。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Main</span> &#123;</span><br><span class="line">	<span class="comment">// 连接地址及端口号</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">SERVER_HOST</span> <span class="operator">=</span> <span class="string">&quot;127.0.0.1:2181&quot;</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 会话超时时间</span></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">SESSION_TIME_OUT</span> <span class="operator">=</span> <span class="number">2000</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">		<span class="comment">// 参数一：服务端地址及端口号</span></span><br><span class="line">		<span class="comment">// 参数二：超时时间</span></span><br><span class="line">		<span class="comment">// 参数三：监听器</span></span><br><span class="line">		<span class="type">ZooKeeper</span> <span class="variable">zooKeeper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ZooKeeper</span>(SERVER_HOST, SESSION_TIME_OUT, <span class="keyword">new</span> <span class="title class_">Watcher</span>() &#123;</span><br><span class="line">			<span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">process</span><span class="params">(WatchedEvent event)</span> &#123;</span><br><span class="line">				<span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">				<span class="comment">// 获取事件的状态</span></span><br><span class="line">				Event.<span class="type">KeeperState</span> <span class="variable">state</span> <span class="operator">=</span> event.getState();</span><br><span class="line">				<span class="comment">// 判断是否是连接事件</span></span><br><span class="line">				<span class="keyword">if</span> (Event.KeeperState.SyncConnected == state) &#123;</span><br><span class="line">					Event.<span class="type">EventType</span> <span class="variable">type</span> <span class="operator">=</span> event.getType();</span><br><span class="line">					<span class="keyword">if</span> (Event.EventType.None == type) &#123;</span><br><span class="line">						System.out.println(<span class="string">&quot;zk客户端已连接...&quot;</span>);</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">		zooKeeper.create(<span class="string">&quot;/go&quot;</span>, <span class="string">&quot;Hello World&quot;</span>.getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);</span><br><span class="line">		System.out.println(<span class="string">&quot;新增ZNode成功&quot;</span>);</span><br><span class="line">		zooKeeper.close();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>更高级的可以使用Curator，出了基本的客户端功能外，还提供了锁、选举、屏障、缓存、持久化节点、队列这样的功能。</p>
-<p>参考：<br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/158986527">ZooKeeper入门，看这篇就够了！</a></p>
-<h4 id="书籍"><a href="#书籍" class="headerlink" title="书籍"></a>书籍</h4><p>目前的书籍不多，在省图找到了这本《ZooKeeper：分布式过程协同技术详解》，此书不太适合一点经验都没有的人阅读，<br>相对来说偏实战了。此书还在读，目前来看结构清晰，推荐。吐槽下《ZooKeeper：Distributed Process Coordination》的中文版翻译为《ZooKeeper：分布式过程协同技术详解》，把“Process”翻译为“过程”确实没有“进程”或者“程序”好。ZooKeeper官方的说明是一种协调分布式服务的应用程序，这个其实很贴合意思。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>我还是习惯了从代码理解原理，这么跑下来，至少从代码的角度是理解了。初看有点简单，不就是一些节点数据么，但这样也很容易陷入技术细节，所以还是要看几个应用场景的实际例子，从整体上理解。</p>
-<p>参考：</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/liyiming2017/article/details/83035157?spm=1001.2014.3001.5501">原创ZooKeeper入门实战教程</a>，这个博主系列文章非常不错，浅显明了。</p>
-<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/centos2017/p/8119190.html">Zookeeper 应用实例</a>，入门级的例子。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1010,7 +998,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">67</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1042,7 +1030,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
