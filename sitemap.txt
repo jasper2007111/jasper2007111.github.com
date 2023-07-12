@@ -1,9 +1,9 @@
+https://c2lang.com/2022/09/16/study-of-zen-master-tiantong-rujing/
 https://c2lang.com/2023/07/10/write-a-yew-ui-library/
 https://c2lang.com/2021/02/04/2021-02-04-how-to-write-an-os/
 https://c2lang.com/2023/03/02/masm-assembly-language-study-notes/
 https://c2lang.com/about/index.html
 https://c2lang.com/2021/03/24/2021-03-24-notes-on-oranges-an-operating-system-implementation/
-https://c2lang.com/2022/09/16/study-of-zen-master-tiantong-rujing/
 https://c2lang.com/2020/09/30/2020-09-30-centos-users-guide/
 https://c2lang.com/2022/10/30/flex-and-bison/
 https://c2lang.com/2022/10/17/vsftpd-practices/
