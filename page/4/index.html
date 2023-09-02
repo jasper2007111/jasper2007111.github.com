@@ -179,6 +179,78 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/07/02/2021-07-02-jeewms-user-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/07/02/2021-07-02-jeewms-user-guide/" class="post-title-link" itemprop="url">开源仓储系统Jeewms使用指南</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-02 13:08:11" itemprop="dateCreated datePublished" datetime="2021-07-02T13:08:11+08:00">2021-07-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-07-10 14:58:08" itemprop="dateModified" datetime="2021-07-10T14:58:08+08:00">2021-07-10</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近找一款开源仓储系统，最好使用Java开发，发现<a target="_blank" rel="noopener" href="https://gitee.com/erzhongxmu/jeewms">Jeewms</a>还不错，也有演示Demo。Gitee上大概有3.2K的Star，Github虽然也放了一个，但我看好像没有什么人关注。</p>
+<h3 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h3><p>主要遇到的坑是JDK版本一定要是Java 8，我本地因为安装最新的Eclispe时安装了Java 11，结果编译后报各种错，一直没有跑起来，主要是Java 11去掉了某些库。最后设置JAVA_HOME为Java 8后就好了。</p>
+<h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><p>这个项目在数据库的设计上字段名称上有些使用英文命名，业务部分的字段是拼音命名，好在不是简写的，另外也有个数据库设计文件可以参考，字段上也有注释，对于习惯了使用英文命名的人来说可能会想着修改，但是还是有难度的，不建议重构。</p>
+<p>也使了用视图，知道这个东西，但实际项目中并没有使用过，如果没有用过的需要注意下。</p>
+<p>也使用了触发器的东西，也需要注意下，如果是直接拿项目里面的sql文件还原的话问题不大，但如果是重新导出sql的时候一定要注意，触发器这些设置也要一并导出，像我使用的MySQL Workbench默认是没有勾选的，而我也没有太注意是否使用了触发器，结果本地好着了，正式服务器却发现有问题，一查看是一个字段没有更新的缘故，习惯性的在代码里面查找哪里有修改，结果没有发现，查看二进制日志后，想到应该是触发器的问题，果然是通过触发器更新的，而服务器上的问题是因为导出的sql没有勾选触发器的缘故。</p>
+<h3 id="架构方面"><a href="#架构方面" class="headerlink" title="架构方面"></a>架构方面</h3><p>这个使用Tomcat+Spring MVC，并不是现在流行的SpringBoot，所以对于只接触过SpringBoot的人需要注意下。操作数据方面使用的是Hibernat，反正没有用过，只使用过Mybatis，感觉还是需要学习下的。视图方面使用的是JSP，之前只使用Thymeleaf。</p>
+<h3 id="业务规则"><a href="#业务规则" class="headerlink" title="业务规则"></a>业务规则</h3><p>这块并没有详细的文档说明，如果没有做个仓储系统的，需要修改一些东西还是会有点摸不着头绪，需要好好的厘清下。最好还是找一些仓储方面的资料对照着理解项目。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>整个项目时可用的，但要重构架构的话可能比较有难度，因为并不是最新的技术，不是很适合拿来学习，如果不了解之前的这类项目的开发技术的话，倒也是一种参考。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/06/22/2021-06-22-learn-zookeeper/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -817,104 +889,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/04/23/2021-04-23-springboot-elk/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/23/2021-04-23-springboot-elk/" class="post-title-link" itemprop="url">Spring Boot使用ELK</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-23 08:31:23" itemprop="dateCreated datePublished" datetime="2021-04-23T08:31:23+08:00">2021-04-23</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-01 01:04:21" itemprop="dateModified" datetime="2021-05-01T01:04:21+08:00">2021-05-01</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>是在Mac环境下跑的例子。</p>
-<h4 id="安装ELK相关软件"><a href="#安装ELK相关软件" class="headerlink" title="安装ELK相关软件"></a>安装ELK相关软件</h4><p>ELK主要指Elasticsearch、Logstash、Kibana，使用<code>elastic.co</code>提供的安装指南，使用Brew安装。</p>
-<p>切换Tab</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew tap elastic/tap</span><br></pre></td></tr></table></figure>
-
-<p>安装软件</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew install elastic/tap/elasticsearch-full  <span class="comment"># 安装Elasticsearch</span></span><br><span class="line">brew install elastic/tap/logstash-full <span class="comment"># Logstash</span></span><br><span class="line">brew install elastic/tap/kibana-full <span class="comment"># Kibana</span></span><br></pre></td></tr></table></figure>
-
-<p>可以在前台或者后台启动软件</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">brew services start elastic/tap/elasticsearch-full <span class="comment"># 后台启动</span></span><br><span class="line">elasticsearch <span class="comment"># 前台启动</span></span><br><span class="line"></span><br><span class="line">brew services start elastic/tap/logstash-full</span><br><span class="line">logstash</span><br><span class="line"></span><br><span class="line">brew services start elastic/tap/kibana-full</span><br><span class="line">kibana</span><br></pre></td></tr></table></figure>
-
-<h4 id="Spring-Boot配置"><a href="#Spring-Boot配置" class="headerlink" title="Spring Boot配置"></a>Spring Boot配置</h4><p>Maven添加Logstash依赖</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">groupId</span>&gt;</span>net.logstash.logback<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>logstash-logback-encoder<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">version</span>&gt;</span>5.3<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>在Resources目录下添加<code>logback-spring.xml</code>配置文件</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;include resource=<span class="string">&quot;org/springframework/boot/logging/logback/base.xml&quot;</span> /&gt;</span><br><span class="line">    &lt;appender name=<span class="string">&quot;LOGSTASH&quot;</span> class=<span class="string">&quot;net.logstash.logback.appender.LogstashTcpSocketAppender&quot;</span>&gt;</span><br><span class="line">    	&lt;!-- 配置输出地址 --&gt;</span><br><span class="line">        &lt;destination&gt;127.0.0.1:4560&lt;/destination&gt;</span><br><span class="line">        &lt;!-- 日志输出编码 --&gt;</span><br><span class="line">        &lt;encoder charset=<span class="string">&quot;UTF-8&quot;</span></span><br><span class="line">                class=<span class="string">&quot;net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder&quot;</span>&gt;</span><br><span class="line">            &lt;providers&gt;</span><br><span class="line">                &lt;timestamp&gt;</span><br><span class="line">                    &lt;timeZone&gt;UTC&lt;/timeZone&gt;</span><br><span class="line">                &lt;/timestamp&gt;</span><br><span class="line">                &lt;pattern&gt;</span><br><span class="line">                    &lt;pattern&gt;</span><br><span class="line">                        &#123;</span><br><span class="line">                        <span class="string">&quot;logLevel&quot;</span>: <span class="string">&quot;%level&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;serviceName&quot;</span>: <span class="string">&quot;<span class="variable">$&#123;springAppName:-&#125;</span>&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;pid&quot;</span>: <span class="string">&quot;<span class="variable">$&#123;PID:-&#125;</span>&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;thread&quot;</span>: <span class="string">&quot;%thread&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;class&quot;</span>: <span class="string">&quot;%logger&#123;40&#125;&quot;</span>,</span><br><span class="line">                        <span class="string">&quot;rest&quot;</span>: <span class="string">&quot;%message&quot;</span></span><br><span class="line">                        &#125;</span><br><span class="line">                    &lt;/pattern&gt;</span><br><span class="line">                &lt;/pattern&gt;</span><br><span class="line">            &lt;/providers&gt;</span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line">    &lt;root level=<span class="string">&quot;INFO&quot;</span>&gt;</span><br><span class="line">        &lt;appender-ref ref=<span class="string">&quot;LOGSTASH&quot;</span> /&gt;</span><br><span class="line">        &lt;appender-ref ref=<span class="string">&quot;CONSOLE&quot;</span> /&gt;</span><br><span class="line">    &lt;/root&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure>
-<p>配置Logstash，创建一个<code>logstash-sample.conf</code>文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">  tcp &#123;</span><br><span class="line">    mode =&gt; &quot;server&quot;</span><br><span class="line">    host =&gt; &quot;0.0.0.0&quot;</span><br><span class="line">    port =&gt; 4560</span><br><span class="line">    codec =&gt; json</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">output&#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">     hosts =&gt; [&quot;http://localhost:9200&quot;] # Elasticsearch 地址</span><br><span class="line">     index =&gt; &quot;spring_cms-%&#123;+YYYY.MM.dd&#125;&quot; # 这里我用spring_cms，可以替换为自己的。需要注意ES关于索引的命名规范</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>使用配置文件重启Logstash服务</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logstash  -f logstash-sample.conf</span><br></pre></td></tr></table></figure>
-
-<p>最后在项目中输出一段测试日志</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.info(<span class="string">&quot;Hello，ELK&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<p>最后在Kibana创建索引就应该能看到日志了。</p>
-<h4 id="额外工具"><a href="#额外工具" class="headerlink" title="额外工具"></a>额外工具</h4><p>一开始发现Kibana中没有数据，猜测Elasticsearch没有收到数据，最后用到了<a target="_blank" rel="noopener" href="https://github.com/mobz/elasticsearch-head">ElasticSearch head</a>这个可以查看Elasticsearch存储的工具，具体安装可以参考Github的说明。</p>
-<p>运行这个工具遇到问题，发现ElasticSearch连接不上，原来是跨域访问的问题，使用brew安装ElasticSearch后会有如下目录</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Data:    /usr/local/var/lib/elasticsearch/elasticsearch_xxxx/ # xxxx此处是你自己的电脑名</span><br><span class="line">Logs:    /usr/local/var/log/elasticsearch/elasticsearch_xxxx.log # xxxx此处是你自己的电脑名</span><br><span class="line">Plugins: /usr/local/var/elasticsearch/plugins/</span><br><span class="line">Config:  /usr/local/etc/elasticsearch/</span><br></pre></td></tr></table></figure>
-
-<p>编辑配置文件<code>nano /usr/local/etc/elasticsearch/elasticsearch.yml</code>，添加如下配置。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http.cors.enabled: true</span><br><span class="line">http.cors.allow-origin: &quot;*&quot;</span><br></pre></td></tr></table></figure>
-<p>最后就可以正常访问了。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>使用ELK访问日志确实很方便，实际开发中可能会使用云服务商提供ELK服务。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -984,13 +958,17 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-count">68</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
         <span class="site-state-item-count">1</span>
         <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>

@@ -1225,9 +1225,10 @@ brew install i386-elf-binutils i386-elf-gcc<span aria-hidden="true" class="line-
 <p>如净禅师大概什么时间跟随的雪窦足庵呢？宋人楼钥的《攻愧集》有一篇《雪窦足庵禅师塔铭》，根据塔铭的记载足庵禅师是绍熙二年圆寂的，在雪窦山八年时间，即淳熙十一年至绍熙二年，淳熙十一年的时候如净禅师是二十三岁，到绍熙二年如净禅师是三十岁，所以如净禅师跟随足庵禅师的大致时间段也在这个范围。大致推算从三十岁开始到四十九岁，十八年间应该是在各大丛林参学时间。</p>
 <p>通过研究当时禅师的语录，发现围绕着当时南宋首都临安的这些有名的寺院大都是临济宗在主持，而且各个主持之间还有着密切的联系，比如无准师范和石田法薰，都是破庵的门人，无准师范系在后面的日子基本上占据丛林大部。如净禅师在离开足庵禅师后的十八年间，在各大丛林的参学，也让他结识如临济宗的如松原、高原等禅师，这是这段时间的参学，使得禅师的禅风有了兼容五家之风，禅师生前一直不说自己的师承，不太清楚具体的原因，或许也有难言之隐，毕竟在当时的五山中都是临济宗的。另外或许在参学了不同宗派后，禅师本身并不认可宗派的做法，所谓自成一体，八面受敌。</p>
 <blockquote>
-<p>后于太白山感疾。退席。下涅槃堂。始大哭为鉴足庵烧香。入寂时。侍者告以法堂宝盖镜堕于座上。曰。镜枯禅至矣。如其言。</p>
+<p>颀然豪爽。丛林号曰淨长。礼真歇塔偈云。歇尽真空透活机。儿孙相继命如丝。而今倒指空肠断。杜宇血啼花上枝。示众云。心念纷飞。如何措手。赵州狗子佛性无。只今无字铁扫帚。扫处纷飞多。纷飞多处扫。转扫转多。扫不得处𢬵命扫。昼夜竪起嵴梁。勇勐切莫放倒。忽然扫破太虗空。千差尽豁通。宗趣可知矣。有问。瑞世嗣谁。曰。如淨。问。道号谓何。曰。淨长。后于太白山感疾。退席。下涅槃堂。始大哭为鑑足庵烧香。入寂时。侍者告以法堂宝盖镜堕于座上。曰。镜枯禅至矣。如其言。</p>
+<p>《枯崖漫录·庆元府天童如净禅师》</p>
 </blockquote>
-<p>以上出自宋代的《枯崖漫录·庆元府天童如净禅师》，临终大哭，这在一般禅师中很少见，作为足庵门下，足庵的老师大休宗珏也曾入住过天童寺，而大休宗珏的师父<strong>真歇清了</strong>和<strong>宏智正觉</strong>禅师同出<strong>丹霞子淳</strong>门下，所以对于当时的曹洞宗而言天童寺有着不一样的情节，再加上禅师“颀然豪爽”的性格，本可以在天童有所作为，可惜因病而止。</p>
+<p>临终大哭，这在一般禅师中很少见，作为足庵门下，足庵的老师大休宗珏也曾入住过天童寺，而大休宗珏的师父<strong>真歇清了</strong>和<strong>宏智正觉</strong>禅师同出<strong>丹霞子淳</strong>门下，所以对于当时的曹洞宗而言天童寺有着不一样的情节，再加上禅师“颀然豪爽”的性格，本可以在天童有所作为，可惜因病而止。</p>
 <h4 id="如净禅师圆寂后的天童寺主持"><a href="#如净禅师圆寂后的天童寺主持" class="headerlink" title="如净禅师圆寂后的天童寺主持"></a>如净禅师圆寂后的天童寺主持</h4><p>如净禅师之后是的天童寺的主持，但是都不太准确，但都是临济宗的，以下是后面几年的主持：  </p>
 <p><strong>枯禅镜</strong>，这个是根据《枯崖漫录》关于如净禅师的记载得出的。  </p>
 <p><strong>痴绝道冲</strong>，嘉熈三年己亥十月初三日入驻，於淳祐甲辰即淳祐四年七月十四日去灵隐禅寺入驻。四年多时间。<br>淳祐五年至淳祐十二年，七年多时间主持未知。  </p>
@@ -1637,5 +1638,206 @@ end start<span aria-hidden="true" class="line-numbers-rows"><span></span><span><
 <p>下一步，目前只写了三组件，总共有90个组件，完全是冰山一角，工作量之巨大，只能慢慢来。目前来看用Rust写前端，只是一种实验性的东西，毕竟Javascript的应用面很广，小程序，移动端，Rust更广阔的应该还是在系统应用这个层级，但面对C&#x2F;C++这类系统级别的语言也是挑战，另外服务端又有各种语言占据。Rust的使用场景看似很广，但却不得不名对先占市场的问题，所以这也是我为什么要用Rust来写前端这个初衷，就是想用Rust。</p>
 <p>最后有对Yew这个框架感兴趣的，可以关注下<a href="https://github.com/jasper2007111/yew-lab">yew-lab</a>这个项目，组件相关的代码都在里面。</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>谈一谈Yew</title>
+    <url>/2023/08/27/talk-about-yew/</url>
+    <content><![CDATA[<p>距离上一篇<a href="https://c2lang.com/2023/07/10/write-a-yew-ui-library/">写一个Yew版的UI库</a>，已经一个多月了。一直在写Yew，有些认知已经变化了，总结一下。</p>
+<h3 id="类组件"><a href="#类组件" class="headerlink" title="类组件"></a>类组件</h3><p>结构式组件（Struct components），我更喜欢叫它类组件，以下是一个计数器的例子。</p>
+<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">use</span> <span class="token namespace">yew<span class="token punctuation">::</span>prelude<span class="token punctuation">::</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">enum</span> <span class="token type-definition class-name">Msg</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">Add</span><span class="token punctuation">,</span>
+    <span class="token class-name">Sub</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">pub</span> <span class="token keyword">struct</span> <span class="token type-definition class-name">CounterPage</span> <span class="token punctuation">&#123;</span>
+    counter<span class="token punctuation">:</span> <span class="token keyword">i32</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">impl</span> <span class="token class-name">Component</span> <span class="token keyword">for</span> <span class="token class-name">CounterPage</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">type</span> <span class="token type-definition class-name">Message</span> <span class="token operator">=</span> <span class="token class-name">Msg</span><span class="token punctuation">;</span>
+    <span class="token keyword">type</span> <span class="token type-definition class-name">Properties</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">fn</span> <span class="token function-definition function">create</span><span class="token punctuation">(</span>_ctx<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Context</span><span class="token operator">&lt;</span><span class="token keyword">Self</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token keyword">Self</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">Self</span> <span class="token punctuation">&#123;</span>
+            counter<span class="token punctuation">:</span><span class="token number">0</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">fn</span> <span class="token function-definition function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> ctx<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Context</span><span class="token operator">&lt;</span><span class="token keyword">Self</span><span class="token operator">></span><span class="token punctuation">,</span> msg<span class="token punctuation">:</span> <span class="token keyword">Self</span><span class="token punctuation">::</span><span class="token class-name">Message</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token keyword">bool</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">match</span> msg <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Msg</span><span class="token punctuation">::</span><span class="token class-name">Add</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+                <span class="token keyword">self</span><span class="token punctuation">.</span>counter <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+                <span class="token boolean">true</span>
+            <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+            <span class="token class-name">Msg</span><span class="token punctuation">::</span><span class="token class-name">Sub</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+                <span class="token keyword">self</span><span class="token punctuation">.</span>counter <span class="token operator">-=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+                <span class="token boolean">true</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">fn</span> <span class="token function-definition function">view</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">,</span> ctx<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Context</span><span class="token operator">&lt;</span><span class="token keyword">Self</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Html</span> <span class="token punctuation">&#123;</span>
+        <span class="token macro property">html!</span> <span class="token punctuation">&#123;</span>
+            <span class="token operator">&lt;</span>div<span class="token operator">></span>
+                <span class="token operator">&lt;</span>h1<span class="token operator">></span><span class="token punctuation">&#123;</span> <span class="token string">"Counter测试"</span> <span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">></span>
+                <span class="token operator">&lt;</span>div<span class="token operator">></span><span class="token punctuation">&#123;</span><span class="token string">"counter: "</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span><span class="token keyword">self</span><span class="token punctuation">.</span>counter<span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+                <span class="token operator">&lt;</span>div<span class="token operator">></span>
+	                <span class="token operator">&lt;</span>button onclick<span class="token operator">=</span><span class="token punctuation">&#123;</span>ctx<span class="token punctuation">.</span><span class="token function">link</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">callback</span><span class="token punctuation">(</span><span class="token keyword">move</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>_<span class="token closure-punctuation punctuation">|</span></span><span class="token class-name">Msg</span><span class="token punctuation">::</span><span class="token class-name">Add</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token operator">></span><span class="token punctuation">&#123;</span> <span class="token string">"增加"</span> <span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+	                <span class="token operator">&lt;</span>button onclick<span class="token operator">=</span><span class="token punctuation">&#123;</span>ctx<span class="token punctuation">.</span><span class="token function">link</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">callback</span><span class="token punctuation">(</span><span class="token keyword">move</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>_<span class="token closure-punctuation punctuation">|</span></span><span class="token class-name">Msg</span><span class="token punctuation">::</span><span class="token class-name">Sub</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token operator">></span><span class="token punctuation">&#123;</span> <span class="token string">"减少"</span> <span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+                <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+            <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这种形式的重点是生命周期，上面的例子只使用了最常用的<code>create</code>、<code>update</code>、<code>view</code>这三个方法。下面是所有的生命周期的方法：</p>
+<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">pub</span> <span class="token keyword">trait</span> <span class="token type-definition class-name">BaseComponent</span><span class="token punctuation">:</span> <span class="token class-name">Sized</span> <span class="token operator">+</span> <span class="token lifetime-annotation symbol">'static</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">/// The Component's Message.</span>
+    <span class="token keyword">type</span> <span class="token type-definition class-name">Message</span><span class="token punctuation">:</span> <span class="token lifetime-annotation symbol">'static</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/// The Component's Properties.</span>
+    <span class="token keyword">type</span> <span class="token type-definition class-name">Properties</span><span class="token punctuation">:</span> <span class="token class-name">Properties</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/// Creates a component.</span>
+    <span class="token keyword">fn</span> <span class="token function-definition function">create</span><span class="token punctuation">(</span>ctx<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Context</span><span class="token operator">&lt;</span><span class="token keyword">Self</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token keyword">Self</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/// Updates component's internal state.</span>
+    <span class="token keyword">fn</span> <span class="token function-definition function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> ctx<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Context</span><span class="token operator">&lt;</span><span class="token keyword">Self</span><span class="token operator">></span><span class="token punctuation">,</span> msg<span class="token punctuation">:</span> <span class="token keyword">Self</span><span class="token punctuation">::</span><span class="token class-name">Message</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token keyword">bool</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/// React to changes of component properties.</span>
+    <span class="token keyword">fn</span> <span class="token function-definition function">changed</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> ctx<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Context</span><span class="token operator">&lt;</span><span class="token keyword">Self</span><span class="token operator">></span><span class="token punctuation">,</span> _old_props<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token keyword">Self</span><span class="token punctuation">::</span><span class="token class-name">Properties</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token keyword">bool</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/// Returns a component layout to be rendered.</span>
+    <span class="token keyword">fn</span> <span class="token function-definition function">view</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">,</span> ctx<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Context</span><span class="token operator">&lt;</span><span class="token keyword">Self</span><span class="token operator">></span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">HtmlResult</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/// Notified after a layout is rendered.</span>
+    <span class="token keyword">fn</span> <span class="token function-definition function">rendered</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> ctx<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Context</span><span class="token operator">&lt;</span><span class="token keyword">Self</span><span class="token operator">></span><span class="token punctuation">,</span> first_render<span class="token punctuation">:</span> <span class="token keyword">bool</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/// Notified before a component is destroyed.</span>
+    <span class="token keyword">fn</span> <span class="token function-definition function">destroy</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> ctx<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Context</span><span class="token operator">&lt;</span><span class="token keyword">Self</span><span class="token operator">></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">/// Prepares the server-side state.</span>
+    <span class="token keyword">fn</span> <span class="token function-definition function">prepare_state</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">self</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Option</span><span class="token operator">&lt;</span><span class="token class-name">String</span><span class="token operator">></span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>不过Yew的类组件在状态更新方面跟React不一样。比如React：</p>
+<pre class="line-numbers language-js" data-language="js"><code class="language-js"><span class="token comment">// 初始化状态</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span>state <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+	<span class="token literal-property property">counter</span><span class="token operator">:</span> <span class="token number">0</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">// 设置状态</span>
+<span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setSatate</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+	<span class="token literal-property property">counter</span><span class="token operator">:</span> <span class="token number">1</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>Yew主要依赖于消息，每次要更新状态先发送消息，然后在<code>update</code>方法里面处理消息并决定视图是否需要重新渲染。</p>
+<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">update</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token keyword">mut</span> <span class="token keyword">self</span><span class="token punctuation">,</span> ctx<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Context</span><span class="token operator">&lt;</span><span class="token keyword">Self</span><span class="token operator">></span><span class="token punctuation">,</span> msg<span class="token punctuation">:</span> <span class="token keyword">Self</span><span class="token punctuation">::</span><span class="token class-name">Message</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token keyword">bool</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">match</span> msg <span class="token punctuation">&#123;</span>
+            <span class="token class-name">Msg</span><span class="token punctuation">::</span><span class="token class-name">Add</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+                <span class="token keyword">self</span><span class="token punctuation">.</span>counter <span class="token operator">+=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+                <span class="token boolean">true</span>
+            <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+            <span class="token class-name">Msg</span><span class="token punctuation">::</span><span class="token class-name">Sub</span><span class="token operator">=></span><span class="token punctuation">&#123;</span>
+                <span class="token keyword">self</span><span class="token punctuation">.</span>counter <span class="token operator">-=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+                <span class="token boolean">true</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这种模式实际上是受到了<a href="https://elm-lang.org/">Elm</a>这个语言的影响。这个是Elm官网上的<a href="https://elm-lang.org/examples/buttons">Button例子</a>。</p>
+<pre class="line-numbers language-elm" data-language="elm"><code class="language-elm"><span class="token keyword">module</span> <span class="token constant">Main</span> <span class="token keyword">exposing</span> <span class="token punctuation">(</span><span class="token operator">..</span><span class="token punctuation">)</span>
+
+<span class="token comment">-- Press buttons to increment and decrement a counter.</span>
+<span class="token comment">--</span>
+<span class="token comment">-- Read how it works:</span>
+<span class="token comment">--   https://guide.elm-lang.org/architecture/buttons.html</span>
+<span class="token comment">--</span>
+
+<span class="token import-statement"><span class="token keyword">import</span> Browser</span>
+<span class="token import-statement"><span class="token keyword">import</span> Html <span class="token keyword">exposing</span> </span><span class="token punctuation">(</span><span class="token constant">Html</span><span class="token punctuation">,</span> <span class="token hvariable">button</span><span class="token punctuation">,</span> <span class="token hvariable">div</span><span class="token punctuation">,</span> <span class="token hvariable">text</span><span class="token punctuation">)</span>
+<span class="token import-statement"><span class="token keyword">import</span> Html.Events <span class="token keyword">exposing</span> </span><span class="token punctuation">(</span><span class="token hvariable">onClick</span><span class="token punctuation">)</span>
+
+<span class="token comment">-- MAIN</span>
+<span class="token hvariable">main</span> <span class="token operator">=</span>
+  <span class="token hvariable">Browser.sandbox</span> <span class="token punctuation">&#123;</span> <span class="token hvariable">init</span> <span class="token operator">=</span> <span class="token hvariable">init</span><span class="token punctuation">,</span> <span class="token hvariable">update</span> <span class="token operator">=</span> <span class="token hvariable">update</span><span class="token punctuation">,</span> <span class="token hvariable">view</span> <span class="token operator">=</span> <span class="token hvariable">view</span> <span class="token punctuation">&#125;</span>
+
+<span class="token comment">-- MODEL</span>
+<span class="token keyword">type</span> <span class="token keyword">alias</span> <span class="token constant">Model</span> <span class="token operator">=</span> <span class="token constant">Int</span>
+
+<span class="token hvariable">init</span> <span class="token operator">:</span> <span class="token constant">Model</span>
+<span class="token hvariable">init</span> <span class="token operator">=</span>
+  <span class="token number">0</span>
+
+<span class="token comment">-- UPDATE</span>
+<span class="token keyword">type</span> <span class="token constant">Msg</span>
+  <span class="token operator">=</span> <span class="token constant">Increment</span>
+  <span class="token operator">|</span> <span class="token constant">Decrement</span>
+
+<span class="token hvariable">update</span> <span class="token operator">:</span> <span class="token constant">Msg</span> <span class="token operator">-></span> <span class="token constant">Model</span> <span class="token operator">-></span> <span class="token constant">Model</span>
+<span class="token hvariable">update</span> <span class="token hvariable">msg</span> <span class="token hvariable">model</span> <span class="token operator">=</span>
+  <span class="token keyword">case</span> <span class="token hvariable">msg</span> <span class="token keyword">of</span>
+    <span class="token constant">Increment</span> <span class="token operator">-></span>
+      <span class="token hvariable">model</span> <span class="token operator">+</span> <span class="token number">1</span>
+
+    <span class="token constant">Decrement</span> <span class="token operator">-></span>
+      <span class="token hvariable">model</span> <span class="token operator">-</span> <span class="token number">1</span>
+
+<span class="token comment">-- VIEW</span>
+<span class="token hvariable">view</span> <span class="token operator">:</span> <span class="token constant">Model</span> <span class="token operator">-></span> <span class="token constant">Html</span> <span class="token constant">Msg</span>
+<span class="token hvariable">view</span> <span class="token hvariable">model</span> <span class="token operator">=</span>
+  <span class="token hvariable">div</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token punctuation">[</span> <span class="token hvariable">button</span> <span class="token punctuation">[</span> <span class="token hvariable">onClick</span> <span class="token constant">Decrement</span> <span class="token punctuation">]</span> <span class="token punctuation">[</span> <span class="token hvariable">text</span> <span class="token string">"-"</span> <span class="token punctuation">]</span>
+    <span class="token punctuation">,</span> <span class="token hvariable">div</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">[</span> <span class="token hvariable">text</span> <span class="token punctuation">(</span><span class="token hvariable">String.fromInt</span> <span class="token hvariable">model</span><span class="token punctuation">)</span> <span class="token punctuation">]</span>
+    <span class="token punctuation">,</span> <span class="token hvariable">button</span> <span class="token punctuation">[</span> <span class="token hvariable">onClick</span> <span class="token constant">Increment</span> <span class="token punctuation">]</span> <span class="token punctuation">[</span> <span class="token hvariable">text</span> <span class="token string">"+"</span> <span class="token punctuation">]</span>
+    <span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="函数式组件"><a href="#函数式组件" class="headerlink" title="函数式组件"></a>函数式组件</h3><p>这个受到React的函数式组件的启发，上面计数器的例子可以这样写：</p>
+<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token attribute attr-name">#[function_component]</span>
+<span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function-definition function">CounterPage</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Html</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">let</span> counter <span class="token operator">=</span> <span class="token function">use_state</span><span class="token punctuation">(</span><span class="token closure-params"><span class="token closure-punctuation punctuation">|</span><span class="token closure-punctuation punctuation">|</span></span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">let</span> add_callback <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">let</span> counter_clone <span class="token operator">=</span> counter<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Callback</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token keyword">move</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>_<span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
+            counter_clone<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token operator">*</span>counter_clone<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">let</span> sub_callback <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">let</span> counter_clone <span class="token operator">=</span> counter<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Callback</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token keyword">move</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>_<span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
+            counter_clone<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token operator">*</span>counter_clone<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+    <span class="token macro property">html!</span> <span class="token punctuation">&#123;</span>
+     <span class="token operator">&lt;</span>div<span class="token operator">></span>
+        <span class="token operator">&lt;</span>h1<span class="token operator">></span><span class="token punctuation">&#123;</span> <span class="token string">"Counter测试"</span> <span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>h1<span class="token operator">></span>
+        <span class="token operator">&lt;</span>div<span class="token operator">></span><span class="token punctuation">&#123;</span><span class="token string">"counter: "</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#123;</span><span class="token operator">*</span>counter<span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+        <span class="token operator">&lt;</span>div<span class="token operator">></span>
+            <span class="token operator">&lt;</span>button onclick<span class="token operator">=</span><span class="token punctuation">&#123;</span>add_callback<span class="token punctuation">&#125;</span><span class="token operator">></span><span class="token punctuation">&#123;</span> <span class="token string">"增加"</span> <span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+            <span class="token operator">&lt;</span>button onclick<span class="token operator">=</span><span class="token punctuation">&#123;</span>sub_callback<span class="token punctuation">&#125;</span><span class="token operator">></span><span class="token punctuation">&#123;</span> <span class="token string">"减少"</span> <span class="token punctuation">&#125;</span><span class="token operator">&lt;</span><span class="token operator">/</span>button<span class="token operator">></span>
+        <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+    <span class="token operator">&lt;</span><span class="token operator">/</span>div<span class="token operator">></span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>从形式上这个会比类组件更加的简洁。Yew函数式组件是一种完整构建组件的方法，主要是依赖Hooks，比如上面的<code>use_state</code>，还有很多比如<code>use_node_ref</code>、<code>use_effect_with_deps</code>。如果你用过React的函数式组件，那么只要适当的参考下Yew的相关文档，很容易上手。不熟悉函数式组件的，建议阅读最新的React函数式文档，或者读一本书，比如我读的是《React学习手册第二版》。</p>
+<h3 id="如何选择？"><a href="#如何选择？" class="headerlink" title="如何选择？"></a>如何选择？</h3><p>我一开始用的类组件，好几个UI组件都是以这种形式写的。主要我有这方面的经验。另外也有某种误导，比如Yew的官方文档这样描述：</p>
+<blockquote>
+<p>You are currently reading about function components - the recommended way to write components when starting with Yew and when writing simple presentation logic.<br>There is a more advanced, but less accessible, way to write components - Struct components. They allow very detailed control, though you will not need that level of detail most of the time.</p>
+<p><a href="https://yew.rs/docs/concepts/function-components">来源</a></p>
+</blockquote>
+<p>这给人感觉类组件更强大，实际上两种组件是完全不同的构建形式，都是完整的创建形式，不然React为什么现在主推函数式组件，类组件都已经快被遗弃了。我最近转而使用函数式组件了，主要是官方在某些功能上对于类组件支持不够，比如上下文的一个例子。发送消息的例子，只提供了函数式的例子，如果你想用类组件，根本不知道如何使用。更糟糕的是官网的很多例子都是函数式的，所以我怀疑在将来，类组件或许也会像React中的类组件那样被遗弃掉。</p>
+<h3 id="Vue-用户"><a href="#Vue-用户" class="headerlink" title="Vue 用户"></a>Vue 用户</h3><p>我就是Vue的用户，更准确的是应该Vue 2用户，Vue 3还没有来得及学习。Element UI 也是基于Vue2的组件库。一开始我觉得这只是JS和Rust的不同，很多时候我都是用Vue的思维在学习使用Yew这个框架，但渐渐发现Yew与Vue在设计思想上有很大不同，本质上这实际上是React与Vue的不同，尤其是React的函数式组件思想。</p>
+<h3 id="Rust-vs-JavaScript"><a href="#Rust-vs-JavaScript" class="headerlink" title="Rust vs JavaScript"></a>Rust vs JavaScript</h3><h4 id="动态性"><a href="#动态性" class="headerlink" title="动态性"></a>动态性</h4><p>在写Table这个组件时，JS版的Table中使用很多动态获取的东西，这种方式对于Rust而言就无法做到，首先是数组，一般都是固定类型，所以这里需要使用范型，范型问题不大。动态性，我想到了反射这样的东西，官方提供反射功能很有限，是一种编译时的反射。后来也找到了一些第三方的库，不过最后发现还是要结合范型，并不能动态的判断类型，进行值的转换。</p>
+<p>另外比如Element UI组件的属性有些同时支持Number、String、Function，我一开始想到用范型，但是在实际使用中还需要动态的判断类型，这个Rust无法做到，目前这类属性的实现还没有好的方法。</p>
+<h4 id="确定性"><a href="#确定性" class="headerlink" title="确定性"></a>确定性</h4><p>使用Rust好处就是类型确定性，比如还是组件的属性，JS版使用的是字符串，这个实际上就有个验证的问题。但是如果用Rust写的话，可以直接使用枚举类型。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>用Rust写前端，大部分问题实际上就跟你用C#或者Java写前端一样，只不过Rust对比后者而言少了更多的动态性，另外就是它的所有权法则，早期的时候，非常不习惯，顿不顿就被编译器暂停了。Rust项目编译慢，这个确实是个问题，我的电脑都是32G的8核的配置。</p>
+<p>题外话：从前端的角度，TypeScript确实弥补了JavaScript在类型上的问题，这也是很多大项目转向了TypeScript。</p>
+]]></content>
+      <tags>
+        <tag>yew</tag>
+      </tags>
   </entry>
 </search>

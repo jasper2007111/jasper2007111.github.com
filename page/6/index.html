@@ -179,6 +179,71 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/03/22/2021-03-22-nasm-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/22/2021-03-22-nasm-notes/" class="post-title-link" itemprop="url">NASM 笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2021-03-22 14:57:28 / 修改时间：16:10:42" itemprop="dateCreated datePublished" datetime="2021-03-22T14:57:28+08:00">2021-03-22</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>目前使用的是64位的Ubuntu环境，默认会编译成64位的，编译成32位的在参数上有些差异。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nasm -f elf32 foo.asm -o foo.o <span class="comment"># NASM编译成ELF32位目标文件</span></span><br><span class="line">gcc -m32 -g -c bar.c -o bar.o <span class="comment"># GCC编译成32的目标文件</span></span><br><span class="line">ld -m elf_i386 foo.o bar.o -o foobar <span class="comment"># 链接目标文件，生成执行文件</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="GDB"><a href="#GDB" class="headerlink" title="GDB"></a>GDB</h3><p>一些常用的GDB调试的命令</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> disassembly-flavor intel <span class="comment"># 默认AT&amp;T格式，可以设置为Intel格式</span></span><br><span class="line">disassemble _start <span class="comment"># 反汇编，这一步主要是为了后续设置断点用</span></span><br><span class="line"><span class="built_in">break</span> * _start + 10 <span class="comment"># 设置断点，此处是_start开始的第10行代码处</span></span><br><span class="line">run <span class="comment"># 执行程序，设置断点后会停在断点处</span></span><br><span class="line">step <span class="comment"># 单步调试，可以简写为s</span></span><br><span class="line">info registers <span class="comment"># 显示寄存器</span></span><br><span class="line">layout reg <span class="comment"># 一般我会使用这个</span></span><br><span class="line">q <span class="comment"># 退出程序</span></span><br><span class="line">x 0xffffd070 <span class="comment"># 查看0xffffd070地址处的内存</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://samsclass.info/127/proj/ASM110.htm">ASM 110: Gdb (30 pts)</a><br><a target="_blank" rel="noopener" href="https://deepzz.com/post/gdb-debug.html">GDB命令基础，让你的程序bug无处躲藏</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/03/11/2021-03-11-programming-the-80386-notes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -946,77 +1011,6 @@ dw 	<span class="token number">0xaa55</span>				<span class="token comment">; �
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2020/07/26/2020-07-26-anonymous-functions-and-closures/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/26/2020-07-26-anonymous-functions-and-closures/" class="post-title-link" itemprop="url">匿名函数和闭包</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-26 23:29:56" itemprop="dateCreated datePublished" datetime="2020-07-26T23:29:56+08:00">2020-07-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-27 23:48:24" itemprop="dateModified" datetime="2020-07-27T23:48:24+08:00">2020-07-27</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>匿名函数和闭包似乎成了现代语言必备的，因为自己接触的语言也多，所以特意做了下目前自己接触的这些语言不同。</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">adder</span><span class="params">()</span></span> <span class="function"><span class="keyword">func</span><span class="params">(<span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">	sum := <span class="number">0</span></span><br><span class="line">	<span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(x <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">		sum += x</span><br><span class="line">		<span class="keyword">return</span> sum</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	pos, neg := adder(), adder()</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		fmt.Println(</span><br><span class="line">			pos(i),</span><br><span class="line">			neg(<span class="number">-2</span>*i),</span><br><span class="line">		)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这是Go语言的原始版本，例子来源于<a target="_blank" rel="noopener" href="https://tour.golang.org/moretypes/25">tour.golang.org</a>，后面会用其他的语言来写相同的例子。</p>
-<p>JavaScript的版本</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">adder</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> sum = <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">function</span> (<span class="params">x</span>) &#123;</span><br><span class="line">        sum += x</span><br><span class="line">        <span class="keyword">return</span> sum</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> pos = <span class="title function_">adder</span>(), neg = <span class="title function_">adder</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">pos</span>(i) + <span class="string">&quot; &quot;</span> + <span class="title function_">neg</span>(-<span class="number">2</span> * i))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>Swift 版本</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"></span><br><span class="line"><span class="keyword">func</span> <span class="title function_">adder</span>()-&gt;(<span class="type">Int</span>)-&gt;<span class="type">Int</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> sum<span class="operator">=</span><span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> &#123;(x: <span class="type">Int</span>)-&gt;<span class="type">Int</span> <span class="keyword">in</span></span><br><span class="line">        sum <span class="operator">+=</span> x;</span><br><span class="line">        <span class="keyword">return</span> sum</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> pos <span class="operator">=</span> adder(), neg<span class="operator">=</span>adder();</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> (<span class="number">0</span><span class="operator">...</span><span class="number">9</span>) &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;<span class="subst">\(pos(i))</span>&quot;</span> <span class="operator">+</span> <span class="string">&quot; &quot;</span> <span class="operator">+</span> <span class="string">&quot;<span class="subst">\(neg(<span class="operator">-</span><span class="number">2</span><span class="operator">*</span>i))</span>&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1086,13 +1080,17 @@ dw 	<span class="token number">0xaa55</span>				<span class="token comment">; �
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">67</span>
+          <span class="site-state-item-count">68</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
         <span class="site-state-item-count">1</span>
         <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>

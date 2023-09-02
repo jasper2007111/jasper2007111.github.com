@@ -1,3 +1,4 @@
+https://c2lang.com/2023/08/27/talk-about-yew/
 https://c2lang.com/2022/09/16/study-of-zen-master-tiantong-rujing/
 https://c2lang.com/2023/07/10/write-a-yew-ui-library/
 https://c2lang.com/2021/02/04/2021-02-04-how-to-write-an-os/
@@ -67,4 +68,5 @@ https://c2lang.com/2014/10/30/2014-10-30-my-first-blog/
 https://c2lang.com/2019/10/20/2019-10-20-macbook-pro-accessories/
 https://c2lang.com/2019/10/03/2019-10-03-still-using-octopress/
 https://c2lang.com/
+https://c2lang.com/tags/yew/
 https://c2lang.com/categories/%E8%BF%90%E7%BB%B4/
