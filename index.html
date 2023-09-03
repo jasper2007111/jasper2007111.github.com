@@ -210,7 +210,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-03 16:53:22" itemprop="dateModified" datetime="2023-09-03T16:53:22+08:00">2023-09-03</time>
+                <time title="修改时间：2023-09-03 17:03:27" itemprop="dateModified" datetime="2023-09-03T17:03:27+08:00">2023-09-03</time>
               </span>
 
           
@@ -410,8 +410,8 @@
 <p>You are currently reading about function components - the recommended way to write components when starting with Yew and when writing simple presentation logic.<br>There is a more advanced, but less accessible, way to write components - Struct components. They allow very detailed control, though you will not need that level of detail most of the time.</p>
 <p><a target="_blank" rel="noopener" href="https://yew.rs/docs/concepts/function-components">来源</a></p>
 </blockquote>
-<p>这给人感觉类组件更强大，我一开始使用类组件，但是后来因为用到了上下文消息的监听的问题，见这个例子<a target="_blank" rel="noopener" href="https://github.com/yewstack/yew/tree/master/examples/contexts">contexts</a>，里面的发布消息，是用函数式组件写的，当时没有反应过来如何用类组件写发布消息，后来发现类组件也很简单，这是后话。后面我就有意开始使用函数式组件，后来发现函数式组件似乎实现起来也问题不大，所以后面的组件又都是函数式组件写的。</p>
-<p>函数式组件一开始我觉得，虽然也有跟类组件类似的生命周期的东西，但更多的是组织逻辑复杂的代码方面似乎，没有类组件方便，后来我慢慢的使用类似过程式的方式，把一些相似的逻辑拆分到方法里面。如下：</p>
+<p>这给人感觉类组件更强大，我一开始使用类组件，但是后来因为用到了上下文消息的监听的问题，见这个例子<a target="_blank" rel="noopener" href="https://github.com/yewstack/yew/tree/master/examples/contexts">contexts</a>，里面的发布消息，是用函数式组件写的，当时没有反应过来如何用类组件写发布消息，后来发现类组件也很简单，这是后话。后面我就有意开始使用函数式组件，发现用函数式组件似乎实现起来也问题不大，所以后面的组件又都是函数式组件写的。</p>
+<p>函数式组件一开始我觉得，也有跟类组件类似的生命周期的东西，虽然在组织逻辑复杂的代码方面似乎没有类组件方便，后来我慢慢的使用类似过程式的方式，把一些相似的逻辑拆分到方法里面。如下：</p>
 <pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token attribute attr-name">#[function_component]</span>
 <span class="token keyword">pub</span> <span class="token keyword">fn</span> <span class="token function-definition function">YELTag</span><span class="token punctuation">(</span>props<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">YELTagProps</span><span class="token punctuation">)</span> <span class="token punctuation">-></span> <span class="token class-name">Html</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">let</span> on_click <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
@@ -559,8 +559,8 @@
     <span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>这之前使用闭包都是复制了props的值，没想道这次因为使用了props引用本身却出错了。因为decrease这个方法会调用其他的方法，也需要props中的参数。这个错误似乎无法解决，props这个参数我无法修改成<code>&#39;Static</code>的，因为这个是Yew自己提供的。一种就是我彻底把所有后续用到的参数复制出来，通过decrease传给下面的调用，即使decrease本身不需要这些参数，但这样一来反而增加了复杂性。但如果改成类组件的话，就不存在上面的问题，每个类组件可以包含props属性，在实例方法中可以调用。</p>
-<p>通过以上这个问题，打破了我原来觉得函数式组件是一种完备方法的结论，即使我努力去尝试适应，但函数式组件在复杂逻辑代码中有它的缺陷，这终究是Rust本身的决定，也是框架的问题。我相信JS本会有这样的问题，所以React中函数式组件的可以大行其道有它的道理，但是在Yew中却受到语言特性的限制。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>类组件和函数式都可以使用，两者是不同思想，见上分析。虽然类组件看起来没有函数式组件酷，虽然Yew的函数式组件看起来跟React的函数式组件很像，但还是有限制的，所以如果遇到问题，那么回到类组件的方式，至少可以解决问题。</p>
+<p>通过以上这个问题，打破了我原来觉得函数式组件是一种完备方法的结论，即使我努力去尝试适应，但函数式组件在复杂逻辑代码中有它的缺陷，这终究是Rust本身的决定，也是框架的问题。我相信JS版本没有这样的问题，所以React中函数式组件的可以大行其道有它的道理，但是在Yew中却受到语言特性的限制。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>类组件和函数式都可以使用，两者是不同思想，见上分析。虽然Yew的函数式组件看起来跟React的函数式组件很像，但还是有限制的，所以如果遇到问题，那么回到类组件的方式，至少可以解决问题。但为什么不直接使用类组件就得了，所以Yew团队也不知道怎么想的，创造了两种方式，但又不是很完美，反而增加了困扰，或许我根本不需要了解React。</p>
 <h3 id="Vue-用户"><a href="#Vue-用户" class="headerlink" title="Vue 用户"></a>Vue 用户</h3><p>我就是Vue的用户，更准确的是应该Vue 2用户，Vue 3还没有来得及学习。Element UI 也是基于Vue2的组件库。一开始我觉得这只是JS和Rust的不同，很多时候我都是用Vue的思维在学习使用Yew这个框架，但渐渐发现Yew与Vue在设计思想上有很大不同，本质上这实际上是React与Vue的不同，尤其是React的函数式组件思想。</p>
 <h3 id="Rust-vs-JavaScript"><a href="#Rust-vs-JavaScript" class="headerlink" title="Rust vs JavaScript"></a>Rust vs JavaScript</h3><h4 id="动态性"><a href="#动态性" class="headerlink" title="动态性"></a>动态性</h4><p>在写Table这个组件时，JS版的Table中使用很多动态获取的东西，这种方式对于Rust而言就无法做到，首先是数组，一般都是固定类型，所以这里需要使用范型，范型问题不大。动态性，我想到了反射这样的东西，官方提供反射功能很有限，是一种编译时的反射。后来也找到了一些第三方的库，不过最后发现还是要结合范型，并不能动态的判断类型，进行值的转换。</p>
 <p>另外比如Element UI组件的属性有些同时支持Number、String、Function，我一开始想到用范型，但是在实际使用中还需要动态的判断类型，这个Rust无法做到，目前这类属性的实现还没有好的方法。</p>
