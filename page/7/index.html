@@ -179,6 +179,83 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2020/07/27/2020-07-27-installing-nginx-on-mac/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/27/2020-07-27-installing-nginx-on-mac/" class="post-title-link" itemprop="url">Mac上安装Nginx</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-27 17:07:55" itemprop="dateCreated datePublished" datetime="2020-07-27T17:07:55+08:00">2020-07-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-28 10:55:11" itemprop="dateModified" datetime="2020-07-28T10:55:11+08:00">2020-07-28</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">brew install nginx</span><br><span class="line"></span><br><span class="line"><span class="comment">## 安装成功后</span></span><br><span class="line">Docroot is: /usr/local/var/www</span><br><span class="line"></span><br><span class="line">The default port has been <span class="built_in">set</span> <span class="keyword">in</span> /usr/local/etc/nginx/nginx.conf to 8080 so that</span><br><span class="line">nginx can run without sudo.</span><br><span class="line"></span><br><span class="line">nginx will load all files <span class="keyword">in</span> /usr/local/etc/nginx/servers/.</span><br><span class="line"></span><br><span class="line">To have launchd start nginx now and restart at login:</span><br><span class="line">  brew services start nginx</span><br><span class="line">Or, <span class="keyword">if</span> you don<span class="string">&#x27;t want/need a background service you can just run:</span></span><br><span class="line"><span class="string">  nginx</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>默认根目录<code>/usr/local/var/www</code>，可以在配置文件<code>/usr/local/etc/nginx/nginx.conf</code>中修改。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"> server &#123;</span><br><span class="line">        listen       8080; # 端口可以自己修改</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        #charset koi8-r;</span><br><span class="line"></span><br><span class="line">        #access_log  logs/host.access.log  main;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            root   index # 自定义路径</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>图片服务器，需要配置images目录，在<em><strong>conf</strong></em>文件中增加如下，然后重启。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location /images &#123;</span><br><span class="line">	root /xxxx/xxxx; # 图片存放的目录</span><br><span class="line">	autoindex on; # 开启目录游览</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="管理"><a href="#管理" class="headerlink" title="管理"></a>管理</h4><p>使用<code>brew</code>来管理服务</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew services start nginx <span class="comment"># 启动Nginx后台服务</span></span><br><span class="line">brew services restart nginx <span class="comment"># 重启Nginx后台服务</span></span><br><span class="line">brew services stop nginx <span class="comment"># 停止Nginx服务</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="诊断"><a href="#诊断" class="headerlink" title="诊断"></a>诊断</h4><p>Nginx诊断，有遇到过Nginx已经启动，但是无法访问，可以使用<code>nginx -t</code>来诊断具体的错误。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2020/07/26/2020-07-26-anonymous-functions-and-closures/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -783,7 +860,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

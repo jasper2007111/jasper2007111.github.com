@@ -179,6 +179,78 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/07/19/docker-install-gitlab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/07/19/docker-install-gitlab/" class="post-title-link" itemprop="url">Docker安装Gitlab</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-07-19 11:38:48 / 修改时间：15:07:17" itemprop="dateCreated datePublished" datetime="2022-07-19T11:38:48+08:00">2022-07-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="无法启动问题"><a href="#无法启动问题" class="headerlink" title="无法启动问题"></a>无法启动问题</h4><p>安装的教程主要参考<a target="_blank" rel="noopener" href="https://docs.gitlab.com/ee/install/docker.html">官方文档</a>，主要记录下安装遇到的问题，首先因为域名没有下来，使用的是IP，另外端口也是自定义的。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run --detach \</span><br><span class="line">  --publish 47.xxx.xxx.xx:8929:80 \</span><br><span class="line">  --name gitlab \</span><br><span class="line">  --restart always \</span><br><span class="line">  --volume <span class="variable">$GITLAB_HOME</span>/config:/etc/gitlab \</span><br><span class="line">  --volume <span class="variable">$GITLAB_HOME</span>/logs:/var/log/gitlab \</span><br><span class="line">  --volume <span class="variable">$GITLAB_HOME</span>/data:/var/opt/gitlab \</span><br><span class="line">  --shm-size 256m \</span><br><span class="line">  gitlab/gitlab-ce:15.1.2-ce.0</span><br></pre></td></tr></table></figure>
+<p>这个命令会提示<code>bind: cannot assign requested address</code>，所以就只改端口。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run --detach \</span><br><span class="line">  --publish 8929:80 \</span><br><span class="line">  --name gitlab \</span><br><span class="line">  --restart always \</span><br><span class="line">  --volume <span class="variable">$GITLAB_HOME</span>/config:/etc/gitlab \</span><br><span class="line">  --volume <span class="variable">$GITLAB_HOME</span>/logs:/var/log/gitlab \</span><br><span class="line">  --volume <span class="variable">$GITLAB_HOME</span>/data:/var/opt/gitlab \</span><br><span class="line">  --shm-size 256m \</span><br><span class="line">  gitlab/gitlab-ce:15.1.2-ce.0</span><br></pre></td></tr></table></figure>
+<p>IP在gitlab.rb配置中修改</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">external_url <span class="string">&#x27;http://47.xxx.xxx.xx&#x27;</span> <span class="comment"># 注意不需要加端口</span></span><br></pre></td></tr></table></figure>
+
+<p>修改完毕后，我就直接执行Docker命令重启了，访问网页直接显示502的界面，然后CPU暴涨，直接卡死，只能控制台重启机器。我以为是机器配置的问题，毕竟是2核4G的，于是我又换了一个低一点的版本13，试了下，发现依旧卡死。最后参考这篇文章<a target="_blank" rel="noopener" href="https://blog.csdn.net/shylcok/article/details/117562635">docker 搭建gitlab后，出现502的处理方案之一</a>。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> gitlab gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure>
+
+<p>Dcoker启动后先不要访问网页，等一会CPU降下去后再执行这个命令。</p>
+<h4 id="初始化密码问题"><a href="#初始化密码问题" class="headerlink" title="初始化密码问题"></a>初始化密码问题</h4><p>之前安装的是13，密码在第一次访问时会显示重置密码的网页，但是安装的15，发现没有这个重置密码的，只有一个登录，原来从14开始初始密码放置在<code>/etc/gitlab/initial_root_password</code>，找到后直接登录后再重置。</p>
+<p>安装Gitlab也算有好多次了，之前主要是原生的安装并没有用过Docker，另外吐槽下这玩意，动不动就CPU爆满，真的不是很友好。</p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/timonium/article/details/119451755">Linux初装gitlab初始默认密码</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/07/01/study-code-push-server/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -793,73 +865,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/03/28/blog-migration-to-hexo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/28/blog-migration-to-hexo/" class="post-title-link" itemprop="url">博客迁移到Hexo</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-03-28 21:31:46" itemprop="dateCreated datePublished" datetime="2022-03-28T21:31:46+08:00">2022-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-02 13:44:22" itemprop="dateModified" datetime="2022-04-02T13:44:22+08:00">2022-04-02</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本站14年建立的，那会Octopress确实流行，好多的技术大拿都用，可惜当时只是建了个站，就没有写东西，后来想写东西了，发现大家都不用Octopress了，有人说慢，其实我的电脑上还行。一开始我也没有想着换，Octopress的问题是作者已经不更新了，所以就有一堆的升级的问题，总之对于程序员而言也无所谓，改改还是可以用的，就这样一直坚持到写这篇文章的晚上。</p>
-<p>我比较在意代码高亮，上次就把Octopress的代码高亮给改了，不过不完美。其实博客很大程度是我的一些技术的记录了，想想这个，就一时兴起尝试的迁移吧。虽然静态博客框架很多，不过自己最近3年一直有写JS，另外Hexo确实很多人用。这次的迁移可以说相当的顺利。Hexo的文档非常不错，基本上照着来网站就好了。原来想着在Github再建一个项目，后来发现不需要，直接把我旧的网站一覆盖就可以了。</p>
-<p>使用的主题是NexT，我比较喜欢简洁的，这个主题的文档也非常不错，很快就搞定了，看着焕然一新的博客，Octopress已成过去时了。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -929,7 +934,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

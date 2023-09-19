@@ -179,6 +179,165 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/03/24/2021-03-24-notes-on-oranges-an-operating-system-implementation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/24/2021-03-24-notes-on-oranges-an-operating-system-implementation/" class="post-title-link" itemprop="url">《Orange'S:一个操作系统的实现》笔记</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-24 15:18:30" itemprop="dateCreated datePublished" datetime="2021-03-24T15:18:30+08:00">2021-03-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-04-19 15:13:20" itemprop="dateModified" datetime="2023-04-19T15:13:20+08:00">2023-04-19</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h4 id="磁盘镜像"><a href="#磁盘镜像" class="headerlink" title="磁盘镜像"></a>磁盘镜像</h4><p>主要使用<code>bximage</code>这个工具。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">bximage # 选择1，其次fd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>使用<code>dd</code>工具将讲<code>boot.bin</code>写入到软盘的第一个扇区，作为引导用。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">dd if&#x3D;boot.bin of&#x3D;a.img bs&#x3D;512 count&#x3D;1 conv&#x3D;notrunc<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>将数据拷贝到镜像的方法</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">sudo mount -o loop xxx.img &#x2F;mnt&#x2F;floppy # 挂载，挂在失败的话在mnt目录下创建floppy文件夹
+sudo cp xxx.com &#x2F;mnt&#x2F;floppy&#x2F;  -v # 拷贝文件
+sudo umount &#x2F;mnt&#x2F;floppy # 卸载<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h4><p>我是在<code>Ubuntu 20.04.2 LTS</code>环境下编译</p>
+<p>64位的问题</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">nasm -f elf32 foo.asm -o foo.o # NASM编译成ELF32位目标文件
+gcc -m32 -g -c bar.c -o bar.o # GCC编译成32的目标文件
+ld -m elf_i386 foo.o bar.o -o foobar # 链接目标文件，生成执行文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>编译C问题：<code>undefined reference to &#39;__stack_chk_fail&#39;</code>，需要在编译时加上参数<code>-fno-stack-protector</code>。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">gcc -m32 -g -c -fno-stack-protector bar.c -o bar.o # 例子<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><p>编译第5章代码时，出现<code>disp_str</code>第二遍调用后报错的问题，网上找到的可以正常的代码。</p>
+<pre class="line-numbers language-nasm" data-language="nasm"><code class="language-nasm"><span class="token comment">; ========================================================================</span>
+<span class="token comment">;                  void disp_str(char * info);</span>
+<span class="token comment">; ========================================================================</span>
+<span class="token label function">disp_str:</span>
+	push <span class="token register variable">ebp</span>
+	push <span class="token register variable">esi</span>
+	push <span class="token register variable">edi</span>
+	push <span class="token register variable">eax</span>
+	push <span class="token register variable">ebx</span>
+	mov	<span class="token register variable">ebp</span>, <span class="token register variable">esp</span>
+
+	mov	<span class="token register variable">esi</span>, <span class="token operator">[</span><span class="token register variable">ebp</span> <span class="token operator">+</span> <span class="token number">24</span><span class="token operator">]</span>	<span class="token comment">; pszInfo</span>
+	mov	<span class="token register variable">edi</span>, <span class="token operator">[</span>disp_pos<span class="token operator">]</span>
+	mov	<span class="token register variable">ah</span>, <span class="token number">0Fh</span>
+<span class="token label function">.1:</span>
+	lodsb
+	test	<span class="token register variable">al</span>, <span class="token register variable">al</span>
+	jz	.<span class="token number">2</span>
+	cmp	<span class="token register variable">al</span>, <span class="token number">0Ah</span>	<span class="token comment">; 是回车吗?</span>
+	jnz	.<span class="token number">3</span>
+	push	<span class="token register variable">eax</span>
+	mov	<span class="token register variable">eax</span>, <span class="token register variable">edi</span>
+	mov	<span class="token register variable">bl</span>, <span class="token number">160</span>
+	div	<span class="token register variable">bl</span>
+	and	<span class="token register variable">eax</span>, <span class="token number">0FFh</span>
+	inc	<span class="token register variable">eax</span>
+	mov	<span class="token register variable">bl</span>, <span class="token number">160</span>
+	mul	<span class="token register variable">bl</span>
+	mov	<span class="token register variable">edi</span>, <span class="token register variable">eax</span>
+	pop	<span class="token register variable">eax</span>
+	jmp	.<span class="token number">1</span>
+<span class="token label function">.3:</span>
+	mov	<span class="token operator">[</span><span class="token register variable">gs</span>:<span class="token register variable">edi</span><span class="token operator">]</span>, <span class="token register variable">ax</span>
+	add	<span class="token register variable">edi</span>, <span class="token number">2</span>
+	jmp	.<span class="token number">1</span>
+
+<span class="token label function">.2:</span>
+	mov	<span class="token operator">[</span>disp_pos<span class="token operator">]</span>, <span class="token register variable">edi</span>
+
+	pop <span class="token register variable">ebx</span>
+	pop <span class="token register variable">eax</span>
+	pop <span class="token register variable">edi</span>
+	pop <span class="token register variable">esi</span>
+	pop <span class="token register variable">ebp</span>
+	ret<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h4 id="使用FreeDOS运行COM"><a href="#使用FreeDOS运行COM" class="headerlink" title="使用FreeDOS运行COM"></a>使用FreeDOS运行COM</h4><p>FreeDOS运行COM文件记录，主要是拷贝软盘里面，然后执行。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">sudo mount -o loop xxx.img &#x2F;mnt&#x2F;floppy # 挂载，挂在失败的话在mnt目录下创建floppy文件夹
+sudo cp xxx.com &#x2F;mnt&#x2F;floppy&#x2F; # 拷贝文件
+sudo umount &#x2F;mnt&#x2F;floppy # 卸载<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>网上书中的源码中的<code>freedos.img</code>并不包含<code>debug</code>这样的工具，不过<code>debug</code>并不能调试保护模式的代码。</p>
+<p>在<code>bochsrc</code>配置文件中添加</p>
+<pre class="line-numbers language-none"><code class="language-none">magic_break: enabled &#x3D; 1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>最后在汇编代码需要断点的地方添加</p>
+<pre class="line-numbers language-nasm" data-language="nasm"><code class="language-nasm">xchg <span class="token register variable">bx</span>, <span class="token register variable">bx</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>在FreeDOS执行COM文件后，就会进入到bochs调试。</p>
+<h3 id="Bochs"><a href="#Bochs" class="headerlink" title="Bochs"></a>Bochs</h3><p>需要注意的是执行<code>bochs</code>命令后，需要输入<code>c</code>，我第一次执行完毕后发现为什么没有画面呢？</p>
+<p>调试命令</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">sreg # 显示段寄存器的内容
+info gdt  # 显示GDTR寄存器的内容
+creg # 显示CR0寄存器的内容
+print-stack # 查看栈的内容<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="Mac-OS问题"><a href="#Mac-OS问题" class="headerlink" title="Mac OS问题"></a>Mac OS问题</h3><h4 id="编译-1"><a href="#编译-1" class="headerlink" title="编译"></a>编译</h4><p>当使用<code>make</code>编译代码时会报<code>ld: unknown option: -Ttext</code>的错误，查了下Mac下的ld没有这个功能选项，一种是在虚拟机下编译，另一种是使用brew安装<code>i386-elf-toolchain</code></p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">brew tap nativeos&#x2F;i386-elf-toolchain 
+brew install i386-elf-binutils i386-elf-gcc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>安装完后需要讲Makefile文件中对应gcc以及ld都添加<code>i386-elf-</code>前缀。</p>
+<h4 id="软盘操作问题"><a href="#软盘操作问题" class="headerlink" title="软盘操作问题"></a>软盘操作问题</h4><p>无法使用<code>mount</code>或<code>umount</code>之类的命令，好在可以使用Mac自带的磁盘工具打开软盘，将文件拷贝进去。</p>
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://techlog.cn/article/list/10183462">如何调试操作系统</a><br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/25634708/gnu-linker-equivalent-command-in-os-x">GNU Linker equivalent command in OS X</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/03/22/2021-03-22-nasm-notes/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -934,83 +1093,6 @@ dw 	<span class="token number">0xaa55</span>				<span class="token comment">; �
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2020/07/27/2020-07-27-installing-nginx-on-mac/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/27/2020-07-27-installing-nginx-on-mac/" class="post-title-link" itemprop="url">Mac上安装Nginx</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-07-27 17:07:55" itemprop="dateCreated datePublished" datetime="2020-07-27T17:07:55+08:00">2020-07-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-07-28 10:55:11" itemprop="dateModified" datetime="2020-07-28T10:55:11+08:00">2020-07-28</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">brew install nginx</span><br><span class="line"></span><br><span class="line"><span class="comment">## 安装成功后</span></span><br><span class="line">Docroot is: /usr/local/var/www</span><br><span class="line"></span><br><span class="line">The default port has been <span class="built_in">set</span> <span class="keyword">in</span> /usr/local/etc/nginx/nginx.conf to 8080 so that</span><br><span class="line">nginx can run without sudo.</span><br><span class="line"></span><br><span class="line">nginx will load all files <span class="keyword">in</span> /usr/local/etc/nginx/servers/.</span><br><span class="line"></span><br><span class="line">To have launchd start nginx now and restart at login:</span><br><span class="line">  brew services start nginx</span><br><span class="line">Or, <span class="keyword">if</span> you don<span class="string">&#x27;t want/need a background service you can just run:</span></span><br><span class="line"><span class="string">  nginx</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
-
-<h4 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h4><p>默认根目录<code>/usr/local/var/www</code>，可以在配置文件<code>/usr/local/etc/nginx/nginx.conf</code>中修改。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"> server &#123;</span><br><span class="line">        listen       8080; # 端口可以自己修改</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        #charset koi8-r;</span><br><span class="line"></span><br><span class="line">        #access_log  logs/host.access.log  main;</span><br><span class="line"></span><br><span class="line">        location / &#123;</span><br><span class="line">            root   index # 自定义路径</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>图片服务器，需要配置images目录，在<em><strong>conf</strong></em>文件中增加如下，然后重启。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">location /images &#123;</span><br><span class="line">	root /xxxx/xxxx; # 图片存放的目录</span><br><span class="line">	autoindex on; # 开启目录游览</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<h4 id="管理"><a href="#管理" class="headerlink" title="管理"></a>管理</h4><p>使用<code>brew</code>来管理服务</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew services start nginx <span class="comment"># 启动Nginx后台服务</span></span><br><span class="line">brew services restart nginx <span class="comment"># 重启Nginx后台服务</span></span><br><span class="line">brew services stop nginx <span class="comment"># 停止Nginx服务</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="诊断"><a href="#诊断" class="headerlink" title="诊断"></a>诊断</h4><p>Nginx诊断，有遇到过Nginx已经启动，但是无法访问，可以使用<code>nginx -t</code>来诊断具体的错误。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1080,7 +1162,7 @@ dw 	<span class="token number">0xaa55</span>				<span class="token comment">; �
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

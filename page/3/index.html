@@ -179,6 +179,73 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/03/28/blog-migration-to-hexo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/28/blog-migration-to-hexo/" class="post-title-link" itemprop="url">博客迁移到Hexo</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-28 21:31:46" itemprop="dateCreated datePublished" datetime="2022-03-28T21:31:46+08:00">2022-03-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-02 13:44:22" itemprop="dateModified" datetime="2022-04-02T13:44:22+08:00">2022-04-02</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本站14年建立的，那会Octopress确实流行，好多的技术大拿都用，可惜当时只是建了个站，就没有写东西，后来想写东西了，发现大家都不用Octopress了，有人说慢，其实我的电脑上还行。一开始我也没有想着换，Octopress的问题是作者已经不更新了，所以就有一堆的升级的问题，总之对于程序员而言也无所谓，改改还是可以用的，就这样一直坚持到写这篇文章的晚上。</p>
+<p>我比较在意代码高亮，上次就把Octopress的代码高亮给改了，不过不完美。其实博客很大程度是我的一些技术的记录了，想想这个，就一时兴起尝试的迁移吧。虽然静态博客框架很多，不过自己最近3年一直有写JS，另外Hexo确实很多人用。这次的迁移可以说相当的顺利。Hexo的文档非常不错，基本上照着来网站就好了。原来想着在Github再建一个项目，后来发现不需要，直接把我旧的网站一覆盖就可以了。</p>
+<p>使用的主题是NexT，我比较喜欢简洁的，这个主题的文档也非常不错，很快就搞定了，看着焕然一新的博客，Octopress已成过去时了。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/03/24/2022-03-24-gitlab-upgrade/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -865,66 +932,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2021/08/13/2021-08-13-mysql-practice/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/08/13/2021-08-13-mysql-practice/" class="post-title-link" itemprop="url">MySQL实践</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2021-08-13 13:18:52 / 修改时间：13:29:25" itemprop="dateCreated datePublished" datetime="2021-08-13T13:18:52+08:00">2021-08-13</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>记录一些实际工作中MySQL的使用问题和新的。</p>
-<h4 id="给新增字段设置为NULL的问题"><a href="#给新增字段设置为NULL的问题" class="headerlink" title="给新增字段设置为NULL的问题"></a>给新增字段设置为NULL的问题</h4><p>字段不为NULL，原来的表新增一个字段，但这个字段又是不能为空，如果设置字段不为NULL，因为之前的是空，所以会报错。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -994,7 +1001,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">68</span>
+          <span class="site-state-item-count">69</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

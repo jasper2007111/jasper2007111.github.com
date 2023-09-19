@@ -1990,4 +1990,74 @@ end start<span aria-hidden="true" class="line-numbers-rows"><span></span><span><
         <tag>yew</tag>
       </tags>
   </entry>
+  <entry>
+    <title>为Pinephone Pro交叉编译Rust应用程序</title>
+    <url>/2023/09/10/cross-compile-rust-applications-for-the-pinephone-pro/</url>
+    <content><![CDATA[<p>主要参考官方的这篇文章<a href="https://wiki.pine64.org/wiki/Cross-compiling#Installing_The_Toolchain">cross-compiling</a>，如果是没有动态库的简单Rust程序，基本没有问题。这里我主要使用GTK4的Rust绑定库<a href="https://github.com/gtk-rs/gtk4-rs">gtk4-rs</a>，来开发Pinephone Pro的应用程序，这有GTK相关的动态库依赖，所以导致问题比较麻烦。<strong>这里先说明一下我对GTK开发完全不熟，另外也对交叉编译不是很懂。</strong></p>
+<p>主要是在Linux发行版Manjaro系统上编译的，理论上Ubuntu这些也应该可以的。<strong>交叉编译GTK的最大问题，主要是GTK相关动态库的问题。</strong>这里面需要了解一些编译链接以及动态库方面的知识，笔者一开始以为自己了解，结果被狠狠的上了一课。建议读一下《<a href="https://book.douban.com/subject/26414485/">高级C&#x2F;C++编译技术</a>》这本书，补充相关的知识。</p>
+<h3 id="库的位置"><a href="#库的位置" class="headerlink" title="库的位置"></a>库的位置</h3><p>Pinephone Pro运行的程序属于ARM64的程序，交叉编译时需要安装<code>aarch64-linux-gnu</code>。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">sudo pacman -S aarch64-linux-gnu<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>安装完成后，会在系统usr目录下生成<code>aarch64-linux-gnu</code>的目录，在编译时遇到找不到库时，我们就需要将找到的库放置在<code>/usr/aarch64-linux-gnu/lib/</code>下。这里可以使用ld的命令验证是否找到了链接库。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">sudo &#x2F;aarch64-linux-gnu&#x2F;bin&#x2F;ld -lgtk-4 --verbose <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>添加<code>--verbose</code>参数后可以打印出详细的查找路径，便于Debug，另外这个加上<code>sudo</code>，是因为这边不加的话，即使有库也无法找到，但是加上后就可以。</p>
+<h3 id="如何查找库"><a href="#如何查找库" class="headerlink" title="如何查找库"></a>如何查找库</h3><p><strong>重点提示下缺失库，一定要找对应平台的库，比如这里我主要找aarch64的</strong>，一开始我使用<a href="https://archlinuxarm.org/packages">archlinuxarm</a>，查找我需要的库，但发现有些库也没有的，一种是自己编译对应版本的库。另一种就是从已安装的手机系统中找对应的库，因为我之前在PinePhone Pro上有编译成功过同样的程序，所以系统上自然也有了这些依赖库。可以使用ldd查看程序的依赖库。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">ldd gtk-rs 
+
+linux-vdso.so.1 (0x0000ffff806d8000)
+libgobject-2.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libgobject-2.0.so.0 (0x0000ffff80560000)
+libgtk-4.so.1 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libgtk-4.so.1 (0x0000ffff7fc00000)
+libpango-1.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libpango-1.0.so.0 (0x0000ffff7fb70000)
+libgdk_pixbuf-2.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libgdk_pixbuf-2.0.so.0 (0x0000ffff7fb10000)
+libcairo-gobject.so.2 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libcairo-gobject.so.2 (0x0000ffff7faf0000)
+libcairo.so.2 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libcairo.so.2 (0x0000ffff7f9a0000)
+libgraphene-1.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libgraphene-1.0.so.0 (0x0000ffff7f970000)
+libgio-2.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libgio-2.0.so.0 (0x0000ffff7f710000)
+libglib-2.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libglib-2.0.so.0 (0x0000ffff7f590000)
+libgcc_s.so.1 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libgcc_s.so.1 (0x0000ffff7f560000)
+libc.so.6 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libc.so.6 (0x0000ffff7f3a0000)
+libffi.so.8 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libffi.so.8 (0x0000ffff7f380000)
+&#x2F;lib&#x2F;ld-linux-aarch64.so.1 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;ld-linux-aarch64.so.1 (0x0000ffff8069f000)
+libgmodule-2.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libgmodule-2.0.so.0 (0x0000ffff7f360000)
+libpangocairo-1.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libpangocairo-1.0.so.0 (0x0000ffff7f340000)
+libharfbuzz.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libharfbuzz.so.0 (0x0000ffff7f210000)
+libfribidi.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libfribidi.so.0 (0x0000ffff7f1e0000)
+libfontconfig.so.1 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libfontconfig.so.1 (0x0000ffff7f180000)
+...
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里会显示详细的库以及库的位置，然后我们就可以使用scp工具把库从手机端拷贝到电脑上。<strong>记得换成你自己的IP</strong>，比如：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">scp manjaro@192.168.1.4:&#x2F;usr&#x2F;lib&#x2F;libicudata.so.72 .&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>解决了库的来源问题，还需要解决库的依赖问题，GTK库的依赖相当多，比如你找到了<code>lgtk-4</code>，结果接着给报另外一堆库找不到。这是因为<code>lgtk-4</code>本身又依赖了很多的动态库，这时我们可以使用readelf这个工具查看。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">sudo readelf -d libgtk-4.so
+
+ 标记        类型                         名称&#x2F;值
+ 0x0000000000000001 (NEEDED)             共享库：[libgmodule-2.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libglib-2.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libgobject-2.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libgio-2.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libpangocairo-1.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libpango-1.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libharfbuzz.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libcairo.so.2]
+ 0x0000000000000001 (NEEDED)             共享库：[libfribidi.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libcairo-gobject.so.2]
+ 0x0000000000000001 (NEEDED)             共享库：[libfontconfig.so.1]
+ 0x0000000000000001 (NEEDED)             共享库：[libgdk_pixbuf-2.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libepoxy.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libm.so.6]
+ 0x0000000000000001 (NEEDED)             共享库：[libgraphene-1.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libXi.so.6]
+ 0x0000000000000001 (NEEDED)             共享库：[libX11.so.6]
+ 0x0000000000000001 (NEEDED)             共享库：[libpangoft2-1.0.so.0]
+..
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后我们就从手机系统寻找对应的库，我的程序要主要依赖的是GTK，所以解决了库的问题后，程序就编译通过了，将编译好的成传输到手机后也可以顺利运行。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>目前看来交叉编译Pinephone Pro的程序的主要问题是动态库的问题，因为GTK库的庞大，导致问题也变得有点复杂。一开始我在Mac上编译，但因为没有经验的缘故，一时间把这个单一的动态库缺失的问题想的过于复杂了。甚至更换到Ubuntu上编译，但是也失败了，因为并没有认识到问题的根本，完全是瞎猫碰上死老鼠的心态。后来又换成在Manjaro上编译，这里说句题外话，Manjaro的桌面版也是头一次用，但是整个系统对于只是开发发需求的我而言比Ubuntu这种重型的要轻便很多，另外这个系统真的是开发者友好的系统，命令行是非常的人性化。因为库很多，在一次复制过程中直接把系统的依赖库给覆盖掉了，导致系统无法启动，只能重新安装Manjaro系统。</p>
+<p>依赖库太多，直接把折腾到临晨3点才搞定。现在看来应该整理使用脚本把所有的库依赖给处理下，比手动的要快吧。想到了之前开发iOS其实也是交叉编译，只不过苹果提供的工具完全让我们忽略了这些复杂性，另外当时记得很少使用动态库，一般是以静态库的形式。</p>
+]]></content>
+  </entry>
 </search>

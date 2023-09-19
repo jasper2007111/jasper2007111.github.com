@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"c2lang.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="主要参考官方的这篇文章cross-compiling，如果是没有动态库的简单Rust程序，基本没有问题。这里我主要使用GTK4的Rust绑定库gtk4-rs，来开发Pinephone Pro的应用程序，这有GTK相关的动态库依赖，所以导致问题比较麻烦。这里先说明一下我对GTK开发完全不熟，另外也对交叉编译不是很懂。 主要是在Linux发行版Manjaro系统上编译的，理论上Ubuntu这些也应该可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为Pinephone Pro交叉编译Rust应用程序">
+<meta property="og:url" content="https://c2lang.com/2023/09/10/cross-compile-rust-applications-for-the-pinephone-pro/index.html">
+<meta property="og:site_name" content="Jasper Ji">
+<meta property="og:description" content="主要参考官方的这篇文章cross-compiling，如果是没有动态库的简单Rust程序，基本没有问题。这里我主要使用GTK4的Rust绑定库gtk4-rs，来开发Pinephone Pro的应用程序，这有GTK相关的动态库依赖，所以导致问题比较麻烦。这里先说明一下我对GTK开发完全不熟，另外也对交叉编译不是很懂。 主要是在Linux发行版Manjaro系统上编译的，理论上Ubuntu这些也应该可">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-09-10T09:49:18.000Z">
+<meta property="article:modified_time" content="2023-09-17T13:49:48.951Z">
+<meta property="article:author" content="Jasper Ji">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://c2lang.com/2023/09/10/cross-compile-rust-applications-for-the-pinephone-pro/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>为Pinephone Pro交叉编译Rust应用程序 | Jasper Ji</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Jasper Ji</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">死猫头活眼方明，三十年来共此情，路远夜长休把火，大家吹灭暗中行。</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2023/09/10/cross-compile-rust-applications-for-the-pinephone-pro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          为Pinephone Pro交叉编译Rust应用程序
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-09-10 17:49:18" itemprop="dateCreated datePublished" datetime="2023-09-10T17:49:18+08:00">2023-09-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-09-17 21:49:48" itemprop="dateModified" datetime="2023-09-17T21:49:48+08:00">2023-09-17</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>主要参考官方的这篇文章<a target="_blank" rel="noopener" href="https://wiki.pine64.org/wiki/Cross-compiling#Installing_The_Toolchain">cross-compiling</a>，如果是没有动态库的简单Rust程序，基本没有问题。这里我主要使用GTK4的Rust绑定库<a target="_blank" rel="noopener" href="https://github.com/gtk-rs/gtk4-rs">gtk4-rs</a>，来开发Pinephone Pro的应用程序，这有GTK相关的动态库依赖，所以导致问题比较麻烦。<strong>这里先说明一下我对GTK开发完全不熟，另外也对交叉编译不是很懂。</strong></p>
+<p>主要是在Linux发行版Manjaro系统上编译的，理论上Ubuntu这些也应该可以的。<strong>交叉编译GTK的最大问题，主要是GTK相关动态库的问题。</strong>这里面需要了解一些编译链接以及动态库方面的知识，笔者一开始以为自己了解，结果被狠狠的上了一课。建议读一下《<a target="_blank" rel="noopener" href="https://book.douban.com/subject/26414485/">高级C&#x2F;C++编译技术</a>》这本书，补充相关的知识。</p>
+<h3 id="库的位置"><a href="#库的位置" class="headerlink" title="库的位置"></a>库的位置</h3><p>Pinephone Pro运行的程序属于ARM64的程序，交叉编译时需要安装<code>aarch64-linux-gnu</code>。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">sudo pacman -S aarch64-linux-gnu<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>安装完成后，会在系统usr目录下生成<code>aarch64-linux-gnu</code>的目录，在编译时遇到找不到库时，我们就需要将找到的库放置在<code>/usr/aarch64-linux-gnu/lib/</code>下。这里可以使用ld的命令验证是否找到了链接库。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">sudo &#x2F;aarch64-linux-gnu&#x2F;bin&#x2F;ld -lgtk-4 --verbose <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>添加<code>--verbose</code>参数后可以打印出详细的查找路径，便于Debug，另外这个加上<code>sudo</code>，是因为这边不加的话，即使有库也无法找到，但是加上后就可以。</p>
+<h3 id="如何查找库"><a href="#如何查找库" class="headerlink" title="如何查找库"></a>如何查找库</h3><p><strong>重点提示下缺失库，一定要找对应平台的库，比如这里我主要找aarch64的</strong>，一开始我使用<a target="_blank" rel="noopener" href="https://archlinuxarm.org/packages">archlinuxarm</a>，查找我需要的库，但发现有些库也没有的，一种是自己编译对应版本的库。另一种就是从已安装的手机系统中找对应的库，因为我之前在PinePhone Pro上有编译成功过同样的程序，所以系统上自然也有了这些依赖库。可以使用ldd查看程序的依赖库。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">ldd gtk-rs 
+
+linux-vdso.so.1 (0x0000ffff806d8000)
+libgobject-2.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libgobject-2.0.so.0 (0x0000ffff80560000)
+libgtk-4.so.1 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libgtk-4.so.1 (0x0000ffff7fc00000)
+libpango-1.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libpango-1.0.so.0 (0x0000ffff7fb70000)
+libgdk_pixbuf-2.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libgdk_pixbuf-2.0.so.0 (0x0000ffff7fb10000)
+libcairo-gobject.so.2 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libcairo-gobject.so.2 (0x0000ffff7faf0000)
+libcairo.so.2 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libcairo.so.2 (0x0000ffff7f9a0000)
+libgraphene-1.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libgraphene-1.0.so.0 (0x0000ffff7f970000)
+libgio-2.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libgio-2.0.so.0 (0x0000ffff7f710000)
+libglib-2.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libglib-2.0.so.0 (0x0000ffff7f590000)
+libgcc_s.so.1 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libgcc_s.so.1 (0x0000ffff7f560000)
+libc.so.6 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libc.so.6 (0x0000ffff7f3a0000)
+libffi.so.8 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libffi.so.8 (0x0000ffff7f380000)
+&#x2F;lib&#x2F;ld-linux-aarch64.so.1 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;ld-linux-aarch64.so.1 (0x0000ffff8069f000)
+libgmodule-2.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libgmodule-2.0.so.0 (0x0000ffff7f360000)
+libpangocairo-1.0.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libpangocairo-1.0.so.0 (0x0000ffff7f340000)
+libharfbuzz.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libharfbuzz.so.0 (0x0000ffff7f210000)
+libfribidi.so.0 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libfribidi.so.0 (0x0000ffff7f1e0000)
+libfontconfig.so.1 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libfontconfig.so.1 (0x0000ffff7f180000)
+...
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这里会显示详细的库以及库的位置，然后我们就可以使用scp工具把库从手机端拷贝到电脑上。<strong>记得换成你自己的IP</strong>，比如：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">scp manjaro@192.168.1.4:&#x2F;usr&#x2F;lib&#x2F;libicudata.so.72 .&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>解决了库的来源问题，还需要解决库的依赖问题，GTK库的依赖相当多，比如你找到了<code>lgtk-4</code>，结果接着给报另外一堆库找不到。这是因为<code>lgtk-4</code>本身又依赖了很多的动态库，这时我们可以使用readelf这个工具查看。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">sudo readelf -d libgtk-4.so
+
+ 标记        类型                         名称&#x2F;值
+ 0x0000000000000001 (NEEDED)             共享库：[libgmodule-2.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libglib-2.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libgobject-2.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libgio-2.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libpangocairo-1.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libpango-1.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libharfbuzz.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libcairo.so.2]
+ 0x0000000000000001 (NEEDED)             共享库：[libfribidi.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libcairo-gobject.so.2]
+ 0x0000000000000001 (NEEDED)             共享库：[libfontconfig.so.1]
+ 0x0000000000000001 (NEEDED)             共享库：[libgdk_pixbuf-2.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libepoxy.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libm.so.6]
+ 0x0000000000000001 (NEEDED)             共享库：[libgraphene-1.0.so.0]
+ 0x0000000000000001 (NEEDED)             共享库：[libXi.so.6]
+ 0x0000000000000001 (NEEDED)             共享库：[libX11.so.6]
+ 0x0000000000000001 (NEEDED)             共享库：[libpangoft2-1.0.so.0]
+..
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>然后我们就从手机系统寻找对应的库，我的程序要主要依赖的是GTK，所以解决了库的问题后，程序就编译通过了，将编译好的成传输到手机后也可以顺利运行。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>目前看来交叉编译Pinephone Pro的程序的主要问题是动态库的问题，因为GTK库的庞大，导致问题也变得有点复杂。一开始我在Mac上编译，但因为没有经验的缘故，一时间把这个单一的动态库缺失的问题想的过于复杂了。甚至更换到Ubuntu上编译，但是也失败了，因为并没有认识到问题的根本，完全是瞎猫碰上死老鼠的心态。后来又换成在Manjaro上编译，这里说句题外话，Manjaro的桌面版也是头一次用，但是整个系统对于只是开发发需求的我而言比Ubuntu这种重型的要轻便很多，另外这个系统真的是开发者友好的系统，命令行是非常的人性化。因为库很多，在一次复制过程中直接把系统的依赖库给覆盖掉了，导致系统无法启动，只能重新安装Manjaro系统。</p>
+<p>依赖库太多，直接把折腾到临晨3点才搞定。现在看来应该整理使用脚本把所有的库依赖给处理下，比手动的要快吧。想到了之前开发iOS其实也是交叉编译，只不过苹果提供的工具完全让我们忽略了这些复杂性，另外当时记得很少使用动态库，一般是以静态库的形式。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/08/27/talk-about-yew/" rel="prev" title="谈一谈Yew">
+      <i class="fa fa-chevron-left"></i> 谈一谈Yew
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%93%E7%9A%84%E4%BD%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">库的位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E6%9F%A5%E6%89%BE%E5%BA%93"><span class="nav-number">2.</span> <span class="nav-text">如何查找库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jasper Ji</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jasper Ji</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
