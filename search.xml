@@ -1992,7 +1992,7 @@ end start<span aria-hidden="true" class="line-numbers-rows"><span></span><span><
   </entry>
   <entry>
     <title>为Pinephone Pro交叉编译Rust应用程序</title>
-    <url>/2023/09/10/cross-compile-rust-applications-for-the-pinephone-pro/</url>
+    <url>/2023/11/12/cross-compile-rust-applications-for-the-pinephone-pro/</url>
     <content><![CDATA[<p>主要参考官方的这篇文章<a href="https://wiki.pine64.org/wiki/Cross-compiling#Installing_The_Toolchain">cross-compiling</a>，如果是没有动态库的简单Rust程序，基本没有问题。这里我主要使用GTK4的Rust绑定库<a href="https://github.com/gtk-rs/gtk4-rs">gtk4-rs</a>，来开发Pinephone Pro的应用程序，这有GTK相关的动态库依赖，所以导致问题比较麻烦。<strong>这里先说明一下我对GTK开发完全不熟，另外也对交叉编译不是很懂。</strong></p>
 <p>主要是在Linux发行版Manjaro系统上编译的，理论上Ubuntu这些也应该可以的。<strong>交叉编译GTK的最大问题，主要是GTK相关动态库的问题。</strong>这里面需要了解一些编译链接以及动态库方面的知识，笔者一开始以为自己了解，结果被狠狠的上了一课。建议读一下《<a href="https://book.douban.com/subject/26414485/">高级C&#x2F;C++编译技术</a>》这本书，补充相关的知识。</p>
 <h3 id="库的位置"><a href="#库的位置" class="headerlink" title="库的位置"></a>库的位置</h3><p>Pinephone Pro运行的程序属于ARM64的程序，交叉编译时需要安装<code>aarch64-linux-gnu</code>。</p>
@@ -2058,6 +2058,47 @@ libfontconfig.so.1 &#x3D;&gt; &#x2F;usr&#x2F;lib&#x2F;libfontconfig.so.1 (0x0000
 <p>然后我们就从手机系统寻找对应的库，我的程序要主要依赖的是GTK，所以解决了库的问题后，程序就编译通过了，将编译好的成传输到手机后也可以顺利运行。</p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>目前看来交叉编译Pinephone Pro的程序的主要问题是动态库的问题，因为GTK库的庞大，导致问题也变得有点复杂。一开始我在Mac上编译，但因为没有经验的缘故，一时间把这个单一的动态库缺失的问题想的过于复杂了。甚至更换到Ubuntu上编译，但是也失败了，因为并没有认识到问题的根本，完全是瞎猫碰上死老鼠的心态。后来又换成在Manjaro上编译，这里说句题外话，Manjaro的桌面版也是头一次用，但是整个系统对于只是开发发需求的我而言比Ubuntu这种重型的要轻便很多，另外这个系统真的是开发者友好的系统，命令行是非常的人性化。因为库很多，在一次复制过程中直接把系统的依赖库给覆盖掉了，导致系统无法启动，只能重新安装Manjaro系统。</p>
 <p>依赖库太多，直接把折腾到临晨3点才搞定。现在看来应该整理使用脚本把所有的库依赖给处理下，比手动的要快吧。想到了之前开发iOS其实也是交叉编译，只不过苹果提供的工具完全让我们忽略了这些复杂性，另外当时记得很少使用动态库，一般是以静态库的形式。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>PinePhone Pro 初体验</title>
+    <url>/2023/11/12/pinephone-pro-first-experience/</url>
+    <content><![CDATA[<p>为什么要购买一台Linux手机呢?安卓和iOS我都开发过，iOS稍微久一些。最早想到Linux手机是源于安卓和iOS这些平台都会限制开发语言，比如你想用Python开发个界面。很早的时候有在安卓手机上安装过Ubuntu，但那个界面完全是PC的桌面，体验比较差。最近直接触发我购买PinePhone Pro的理由是我想用GTK的Rust绑定来开发应用。</p>
+<h3 id="购买"><a href="#购买" class="headerlink" title="购买"></a>购买</h3><p>淘宝上可以购买，但是价格有点偏贵，需要4500左右。直接购买，官网目前不支持直接发内地，这家公司是从香港发货的，所以可以找家转运公司，发货到香港，再转运到内地。费用除了399美金的机子，还有官网发出的运费，因为是到香港，这个大概十几美金，再加上转运费近200，最后花费3000多些，比在淘宝购买要便宜不少。时间上，大概一周多点时间，就可以收到货。</p>
+<h3 id="包装"><a href="#包装" class="headerlink" title="包装"></a>包装</h3><p>手机的包装跟之前网上看的开箱视频一样，手机、贴膜、说明书（没有中文）、充电线（红色）。开机时需要将后盖打开，把电池接触膜给撕掉，这样就可以开机了。手机的外放音质感觉很干涩，确实不能iPhone之类的相比。因为没有多余手机卡，所以移动网络并没有测试。</p>
+<h3 id="刷机"><a href="#刷机" class="headerlink" title="刷机"></a>刷机</h3><p>这台手机最大的特点就是刷机友好，我一开始并没有打算刷机，应该是对Arch Linux不熟悉的缘故，所以预装系统下软件一直无法更新也无法安装新软件，比如我喜欢的Rust，甚至我都不知道如何进行远程连接，实际上现在认为都是不熟悉导致的。</p>
+<p>安装新系统主要参考官网的说明<a href="https://wiki.pine64.org/wiki/PinePhone_Pro#Installation_instructions">Installation instructions</a>，我选择使用内置卡安装系统，因为我的是Mac OS，所以在刷系统到eMMC有点不一样，主要参考<a href="https://build2be.com/content/install-image-pinephone.html">Install Image Pinephone</a>。系统刷到卡的速度有点慢，按照文档设置1M&#x2F;s，系统大概6G多，结果刷了1个多小时才结束。文档说如果使用外置卡的话，可以用另一种技术，那个能快很多，但是手头没有多余的卡，加上内置卡128G的容量，觉得暂时就这样。</p>
+<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><h3 id="Manjaro"><a href="#Manjaro" class="headerlink" title="Manjaro"></a>Manjaro</h3><h4 id="Plasma-Mobile"><a href="#Plasma-Mobile" class="headerlink" title="Plasma Mobile"></a>Plasma Mobile</h4><p>预装的Manjaro系统，桌面使用Plasma Mobile，可能是稍早些的系统版本，系统UI显示看起来不是很精细的感觉。Manjaro是基于Arch LInux构建的，使用Pacman来进行软件管理。因为平时只使用过CentOS和Ubuntu，所以一开始操作不是很顺利。系统自带的相机功能无法使用，系统支持横竖屏，但是也有小Bug，比如竖屏时有些应用会显示成横屏的，这时只需要把手机横过来，再竖屏就好了。</p>
+<h4 id="Phosh"><a href="#Phosh" class="headerlink" title="Phosh"></a>Phosh</h4><p>首先给我感觉界面很漂亮，不像Plasma Mobile这个界面会感觉有毛刺一般。但是我不太喜欢Phosh切入后台的操作，我更喜欢Plasma Mobile的方式。在虚拟键盘方面，虽然Phosh的更漂亮，但是Control等相关键设计过于小，使用时候很容易误点到下方的按键。刷机后，发现相机可用了，但是成像有问题。另外软件升级后发现整个系统的软件启动变慢了，暂未找到原因。系统预装的是火狐浏览器，但是网页似乎无法分辨屏幕大小，所以还是PC版的布局在显示。这点Plasma Mobile上的Angelfish浏览器更好一些。</p>
+<h3 id="Arch-Linux"><a href="#Arch-Linux" class="headerlink" title="Arch Linux"></a>Arch Linux</h3><p>Manjaro 虽然也是基于Arch Linux，但是Arch Linux还是跟Manjaro不太一样些，比入没有<code>pacman-mirrors</code>这个命令。</p>
+<h4 id="Phosh-1"><a href="#Phosh-1" class="headerlink" title="Phosh"></a>Phosh</h4><p>Manjaro Phosh版使用了一段一点时间，发现自带的Firefox在播放音乐的时候很卡，尝试安装chromium试下，但是启动不了，网上有人说Arch Linux版可以，于是我安装了，但是依旧不行，不知道是不是跟我用Phosh有关系没有。更新了Firefox发现老报配置错误，无法使用。即使在没有更新之前，虽然可以使用，但貌似没有安装中文字体的缘故，中文显示不了。我尝试整体更新软件，虽然也设置了国内的源，但是依旧很慢。选择单独升级Phosh，结果重启后就是死循环了。为了不把电池耗尽，只能选择刷机了。</p>
+<p>之前在网上转门调研<a href="https://www.reddit.com/r/PinePhoneOfficial/comments/t3wc53/best_distro_for_pinephone_pro/">Best distro for Pinephone Pro?</a>，里面Arch Linux不少人推荐。但目前来看，虽然感觉App启动比Manjaro Phosh版的快一些，但是不够完整，使用性太差了。</p>
+<h4 id="Barebone"><a href="#Barebone" class="headerlink" title="Barebone"></a>Barebone</h4><p>没有图形界面？一直处于命令行的登录状态。</p>
+<h3 id="Mobian"><a href="#Mobian" class="headerlink" title="Mobian"></a>Mobian</h3><p>Debian的移动版，整体感觉比较稳定，应用启动也比之前的快。</p>
+<ul>
+<li>Firefox，播放在线音乐不卡。</li>
+<li>Chromium，可以安装启动，但是不支持虚拟键盘，所以等于无法使用。</li>
+</ul>
+<h3 id="LuneOS"><a href="#LuneOS" class="headerlink" title="LuneOS"></a>LuneOS</h3><p>这个是原来的Open webOS，安装后可以启动，但是很快就会进入死循环，界面确实延续了WebOS的风格，但是也发现相机之类的界面出现界面乱的问题，不过因为很快就死机了，所以基本也没有来得及体验。手机电池耗尽对于初次刷机的一定要注意，会让你误以为手机成可砖块。建议先不要刷这个系统，熟悉了再考虑。</p>
+<h3 id="PostmarketOS"><a href="#PostmarketOS" class="headerlink" title="PostmarketOS"></a>PostmarketOS</h3><p>这个是基于Alpine Linux的，PS：有点头大，刷一次机学习一种新的发行版操纵。</p>
+<h4 id="Gnome-Shell-Mobile"><a href="#Gnome-Shell-Mobile" class="headerlink" title="Gnome Shell Mobile"></a>Gnome Shell Mobile</h4><p>我安装的是这个，不过感觉很卡，应该不是使用了Gnome的缘故，因为远程连接也很卡，说明还是系统适配的问题。</p>
+<h3 id="Ubuntu-Touch"><a href="#Ubuntu-Touch" class="headerlink" title="Ubuntu Touch"></a>Ubuntu Touch</h3><p>这个系统是目前最可用的系统，可能是早期是由Ubuntu主导的，而且还发过手机，后来他们放弃了，现在由社区在驱动。首先这个系统支持中文输入，另外整个交互也非常的流畅。</p>
+<h3 id="Nemo-Mobile"><a href="#Nemo-Mobile" class="headerlink" title="Nemo Mobile"></a>Nemo Mobile</h3><p>这个系统是基于Sailfish OS的，但是无法正常启动一直处于光标闪烁中。</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="虚拟键盘"><a href="#虚拟键盘" class="headerlink" title="虚拟键盘"></a>虚拟键盘</h3><h4 id="Phosh-2"><a href="#Phosh-2" class="headerlink" title="Phosh"></a>Phosh</h4><p>目前发现虚拟键盘不支持中文输入，键盘源上有一个Chinese选项，但打出来的依旧是英文。</p>
+<h3 id="电池问题"><a href="#电池问题" class="headerlink" title="电池问题"></a>电池问题</h3><p>电池管理这块似乎确实存在问题，耗电确实比一般的手机要快，放了一晚上就没有电了，所以后台可能有一些程序在运行，而对于iOS系统后台有严格管理的，所以我一般关机。</p>
+<p>一次系统升级后，我都关机了，第二天再启动时发现无法启动，充电也不行，然后我就准备刷机，试了几次都不行。以为成砖头了，网上看了半天，最后才发现原来是<a href="https://wiki.pine64.org/wiki/PinePhone_Pro#The_battery_is_fully_drained">电池耗尽问题(The battery is fully drained)</a>，一般手机电池耗尽了，重新充电就可以了，但是Pinephone Pro的好像有问题，稍微充电一开机，系统死循环，电量耗尽，然后就一直充不进去电，最后参考官方的文档终于启动了。</p>
+<p>上面关于关机后都没有电的问题，后来发现是手机在充电时我关机的，拔掉USB后系统莫名的自动开机，而当时因为升级后出现了问题，直接无法开机，我也没有注意到，所以才有了关机后会耗电的认知。</p>
+<h3 id="证书问题"><a href="#证书问题" class="headerlink" title="证书问题"></a>证书问题</h3><pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">signature from &quot;Arch Linux ARM Build System builder@archlinuxarm.org&quot; is unknown trust<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>安装软件时老是提示证书的问题，无法升级以及安装软件，最后<a href="https://github.com/manjaro-pinephone/phosh/issues/19">参考</a>了这篇文章，解决方式如下：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">sudo rm -r &#x2F;etc&#x2F;pacman.d&#x2F;gnupg
+sudo pacman-key --init
+sudo pacman-key --populate
+sudo pacman-key --refresh-keys
+sudo pacman -Sc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="应用适配"><a href="#应用适配" class="headerlink" title="应用适配"></a>应用适配</h2><p>我安装了VLC播放器，界面完全是桌面的，显示分辨率看起来很低。但是可以使用，只不过界面显示不全了。这点看起来也有好处，那就这些应用可能只需要修改界面就可以了。自从升级这个后，第二天手机就启动不了，软件升级也是有风险。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个台手机显然不是一台备用机，很多问题对于没有经验的新手来说是致命的，比如电池耗尽问题，让我差点以为手机成砖头了。Linux看似稳定，但是也是潜藏危机，每次升级很可能让系统无法正常运行，而我在如何恢复这块经验不足，每次都是重新安装，如果在生产环境这可能是灾难性的，意味着资料的丢失。</p>
 ]]></content>
   </entry>
 </search>

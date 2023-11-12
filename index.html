@@ -95,7 +95,7 @@
       <h1 class="site-title">Jasper Ji</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
-      <p class="site-subtitle" itemprop="description">死猫头活眼方明，三十年来共此情，路远夜长休把火，大家吹灭暗中行。</p>
+      <p class="site-subtitle" itemprop="description">开口不在舌头上</p>
   </div>
 
   <div class="site-nav-right">
@@ -179,7 +179,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2023/09/10/cross-compile-rust-applications-for-the-pinephone-pro/">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2023/11/12/pinephone-pro-first-experience/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -193,7 +193,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/09/10/cross-compile-rust-applications-for-the-pinephone-pro/" class="post-title-link" itemprop="url">为Pinephone Pro交叉编译Rust应用程序</a>
+            <a href="/2023/11/12/pinephone-pro-first-experience/" class="post-title-link" itemprop="url">PinePhone Pro 初体验</a>
         </h2>
 
         <div class="post-meta">
@@ -202,16 +202,104 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2023-09-10 17:49:18" itemprop="dateCreated datePublished" datetime="2023-09-10T17:49:18+08:00">2023-09-10</time>
+              <time title="创建时间：2023-11-12 21:29:17 / 修改时间：21:30:09" itemprop="dateCreated datePublished" datetime="2023-11-12T21:29:17+08:00">2023-11-12</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2023-09-17 21:49:48" itemprop="dateModified" datetime="2023-09-17T21:49:48+08:00">2023-09-17</time>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>为什么要购买一台Linux手机呢?安卓和iOS我都开发过，iOS稍微久一些。最早想到Linux手机是源于安卓和iOS这些平台都会限制开发语言，比如你想用Python开发个界面。很早的时候有在安卓手机上安装过Ubuntu，但那个界面完全是PC的桌面，体验比较差。最近直接触发我购买PinePhone Pro的理由是我想用GTK的Rust绑定来开发应用。</p>
+<h3 id="购买"><a href="#购买" class="headerlink" title="购买"></a>购买</h3><p>淘宝上可以购买，但是价格有点偏贵，需要4500左右。直接购买，官网目前不支持直接发内地，这家公司是从香港发货的，所以可以找家转运公司，发货到香港，再转运到内地。费用除了399美金的机子，还有官网发出的运费，因为是到香港，这个大概十几美金，再加上转运费近200，最后花费3000多些，比在淘宝购买要便宜不少。时间上，大概一周多点时间，就可以收到货。</p>
+<h3 id="包装"><a href="#包装" class="headerlink" title="包装"></a>包装</h3><p>手机的包装跟之前网上看的开箱视频一样，手机、贴膜、说明书（没有中文）、充电线（红色）。开机时需要将后盖打开，把电池接触膜给撕掉，这样就可以开机了。手机的外放音质感觉很干涩，确实不能iPhone之类的相比。因为没有多余手机卡，所以移动网络并没有测试。</p>
+<h3 id="刷机"><a href="#刷机" class="headerlink" title="刷机"></a>刷机</h3><p>这台手机最大的特点就是刷机友好，我一开始并没有打算刷机，应该是对Arch Linux不熟悉的缘故，所以预装系统下软件一直无法更新也无法安装新软件，比如我喜欢的Rust，甚至我都不知道如何进行远程连接，实际上现在认为都是不熟悉导致的。</p>
+<p>安装新系统主要参考官网的说明<a target="_blank" rel="noopener" href="https://wiki.pine64.org/wiki/PinePhone_Pro#Installation_instructions">Installation instructions</a>，我选择使用内置卡安装系统，因为我的是Mac OS，所以在刷系统到eMMC有点不一样，主要参考<a target="_blank" rel="noopener" href="https://build2be.com/content/install-image-pinephone.html">Install Image Pinephone</a>。系统刷到卡的速度有点慢，按照文档设置1M&#x2F;s，系统大概6G多，结果刷了1个多小时才结束。文档说如果使用外置卡的话，可以用另一种技术，那个能快很多，但是手头没有多余的卡，加上内置卡128G的容量，觉得暂时就这样。</p>
+<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><h3 id="Manjaro"><a href="#Manjaro" class="headerlink" title="Manjaro"></a>Manjaro</h3><h4 id="Plasma-Mobile"><a href="#Plasma-Mobile" class="headerlink" title="Plasma Mobile"></a>Plasma Mobile</h4><p>预装的Manjaro系统，桌面使用Plasma Mobile，可能是稍早些的系统版本，系统UI显示看起来不是很精细的感觉。Manjaro是基于Arch LInux构建的，使用Pacman来进行软件管理。因为平时只使用过CentOS和Ubuntu，所以一开始操作不是很顺利。系统自带的相机功能无法使用，系统支持横竖屏，但是也有小Bug，比如竖屏时有些应用会显示成横屏的，这时只需要把手机横过来，再竖屏就好了。</p>
+<h4 id="Phosh"><a href="#Phosh" class="headerlink" title="Phosh"></a>Phosh</h4><p>首先给我感觉界面很漂亮，不像Plasma Mobile这个界面会感觉有毛刺一般。但是我不太喜欢Phosh切入后台的操作，我更喜欢Plasma Mobile的方式。在虚拟键盘方面，虽然Phosh的更漂亮，但是Control等相关键设计过于小，使用时候很容易误点到下方的按键。刷机后，发现相机可用了，但是成像有问题。另外软件升级后发现整个系统的软件启动变慢了，暂未找到原因。系统预装的是火狐浏览器，但是网页似乎无法分辨屏幕大小，所以还是PC版的布局在显示。这点Plasma Mobile上的Angelfish浏览器更好一些。</p>
+<h3 id="Arch-Linux"><a href="#Arch-Linux" class="headerlink" title="Arch Linux"></a>Arch Linux</h3><p>Manjaro 虽然也是基于Arch Linux，但是Arch Linux还是跟Manjaro不太一样些，比入没有<code>pacman-mirrors</code>这个命令。</p>
+<h4 id="Phosh-1"><a href="#Phosh-1" class="headerlink" title="Phosh"></a>Phosh</h4><p>Manjaro Phosh版使用了一段一点时间，发现自带的Firefox在播放音乐的时候很卡，尝试安装chromium试下，但是启动不了，网上有人说Arch Linux版可以，于是我安装了，但是依旧不行，不知道是不是跟我用Phosh有关系没有。更新了Firefox发现老报配置错误，无法使用。即使在没有更新之前，虽然可以使用，但貌似没有安装中文字体的缘故，中文显示不了。我尝试整体更新软件，虽然也设置了国内的源，但是依旧很慢。选择单独升级Phosh，结果重启后就是死循环了。为了不把电池耗尽，只能选择刷机了。</p>
+<p>之前在网上转门调研<a target="_blank" rel="noopener" href="https://www.reddit.com/r/PinePhoneOfficial/comments/t3wc53/best_distro_for_pinephone_pro/">Best distro for Pinephone Pro?</a>，里面Arch Linux不少人推荐。但目前来看，虽然感觉App启动比Manjaro Phosh版的快一些，但是不够完整，使用性太差了。</p>
+<h4 id="Barebone"><a href="#Barebone" class="headerlink" title="Barebone"></a>Barebone</h4><p>没有图形界面？一直处于命令行的登录状态。</p>
+<h3 id="Mobian"><a href="#Mobian" class="headerlink" title="Mobian"></a>Mobian</h3><p>Debian的移动版，整体感觉比较稳定，应用启动也比之前的快。</p>
+<ul>
+<li>Firefox，播放在线音乐不卡。</li>
+<li>Chromium，可以安装启动，但是不支持虚拟键盘，所以等于无法使用。</li>
+</ul>
+<h3 id="LuneOS"><a href="#LuneOS" class="headerlink" title="LuneOS"></a>LuneOS</h3><p>这个是原来的Open webOS，安装后可以启动，但是很快就会进入死循环，界面确实延续了WebOS的风格，但是也发现相机之类的界面出现界面乱的问题，不过因为很快就死机了，所以基本也没有来得及体验。手机电池耗尽对于初次刷机的一定要注意，会让你误以为手机成可砖块。建议先不要刷这个系统，熟悉了再考虑。</p>
+<h3 id="PostmarketOS"><a href="#PostmarketOS" class="headerlink" title="PostmarketOS"></a>PostmarketOS</h3><p>这个是基于Alpine Linux的，PS：有点头大，刷一次机学习一种新的发行版操纵。</p>
+<h4 id="Gnome-Shell-Mobile"><a href="#Gnome-Shell-Mobile" class="headerlink" title="Gnome Shell Mobile"></a>Gnome Shell Mobile</h4><p>我安装的是这个，不过感觉很卡，应该不是使用了Gnome的缘故，因为远程连接也很卡，说明还是系统适配的问题。</p>
+<h3 id="Ubuntu-Touch"><a href="#Ubuntu-Touch" class="headerlink" title="Ubuntu Touch"></a>Ubuntu Touch</h3><p>这个系统是目前最可用的系统，可能是早期是由Ubuntu主导的，而且还发过手机，后来他们放弃了，现在由社区在驱动。首先这个系统支持中文输入，另外整个交互也非常的流畅。</p>
+<h3 id="Nemo-Mobile"><a href="#Nemo-Mobile" class="headerlink" title="Nemo Mobile"></a>Nemo Mobile</h3><p>这个系统是基于Sailfish OS的，但是无法正常启动一直处于光标闪烁中。</p>
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="虚拟键盘"><a href="#虚拟键盘" class="headerlink" title="虚拟键盘"></a>虚拟键盘</h3><h4 id="Phosh-2"><a href="#Phosh-2" class="headerlink" title="Phosh"></a>Phosh</h4><p>目前发现虚拟键盘不支持中文输入，键盘源上有一个Chinese选项，但打出来的依旧是英文。</p>
+<h3 id="电池问题"><a href="#电池问题" class="headerlink" title="电池问题"></a>电池问题</h3><p>电池管理这块似乎确实存在问题，耗电确实比一般的手机要快，放了一晚上就没有电了，所以后台可能有一些程序在运行，而对于iOS系统后台有严格管理的，所以我一般关机。</p>
+<p>一次系统升级后，我都关机了，第二天再启动时发现无法启动，充电也不行，然后我就准备刷机，试了几次都不行。以为成砖头了，网上看了半天，最后才发现原来是<a target="_blank" rel="noopener" href="https://wiki.pine64.org/wiki/PinePhone_Pro#The_battery_is_fully_drained">电池耗尽问题(The battery is fully drained)</a>，一般手机电池耗尽了，重新充电就可以了，但是Pinephone Pro的好像有问题，稍微充电一开机，系统死循环，电量耗尽，然后就一直充不进去电，最后参考官方的文档终于启动了。</p>
+<p>上面关于关机后都没有电的问题，后来发现是手机在充电时我关机的，拔掉USB后系统莫名的自动开机，而当时因为升级后出现了问题，直接无法开机，我也没有注意到，所以才有了关机后会耗电的认知。</p>
+<h3 id="证书问题"><a href="#证书问题" class="headerlink" title="证书问题"></a>证书问题</h3><pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">signature from &quot;Arch Linux ARM Build System builder@archlinuxarm.org&quot; is unknown trust<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>安装软件时老是提示证书的问题，无法升级以及安装软件，最后<a target="_blank" rel="noopener" href="https://github.com/manjaro-pinephone/phosh/issues/19">参考</a>了这篇文章，解决方式如下：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">sudo rm -r &#x2F;etc&#x2F;pacman.d&#x2F;gnupg
+sudo pacman-key --init
+sudo pacman-key --populate
+sudo pacman-key --refresh-keys
+sudo pacman -Sc<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="应用适配"><a href="#应用适配" class="headerlink" title="应用适配"></a>应用适配</h2><p>我安装了VLC播放器，界面完全是桌面的，显示分辨率看起来很低。但是可以使用，只不过界面显示不全了。这点看起来也有好处，那就这些应用可能只需要修改界面就可以了。自从升级这个后，第二天手机就启动不了，软件升级也是有风险。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这个台手机显然不是一台备用机，很多问题对于没有经验的新手来说是致命的，比如电池耗尽问题，让我差点以为手机成砖头了。Linux看似稳定，但是也是潜藏危机，每次升级很可能让系统无法正常运行，而我在如何恢复这块经验不足，每次都是重新安装，如果在生产环境这可能是灾难性的，意味着资料的丢失。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2023/11/12/cross-compile-rust-applications-for-the-pinephone-pro/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/11/12/cross-compile-rust-applications-for-the-pinephone-pro/" class="post-title-link" itemprop="url">为Pinephone Pro交叉编译Rust应用程序</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
               </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-11-12 21:24:18 / 修改时间：21:24:20" itemprop="dateCreated datePublished" datetime="2023-11-12T21:24:18+08:00">2023-11-12</time>
+            </span>
 
           
 
@@ -1604,76 +1692,6 @@ gcc fb1-5.tab.c lex.yy.c -ll # 这个也跟原书的命令不太一样，生成a
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/08/20/empowered-ordinary-people-extraordinary-products/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/08/20/empowered-ordinary-people-extraordinary-products/" class="post-title-link" itemprop="url">《启示录2：打造优秀的产品团队》读后感</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-08-20 22:09:23" itemprop="dateCreated datePublished" datetime="2022-08-20T22:09:23+08:00">2022-08-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-08-21 11:40:57" itemprop="dateModified" datetime="2022-08-21T11:40:57+08:00">2022-08-21</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>因为之前看过《启示录：打造用户喜爱的产品》，看到这本时，我当时想着是否要入手，看了下目录似乎跟《启示录》不一样，但当时并入手，后来看一些豆瓣的评价，与前作相比评分不高，主要是集中在章节多，内容不够深入，所以更不想入手了。最近的一些事让意识到产品的重要性，于是在京东的试读上，看了点开头，提到了坎贝尔这个人，这个其实硅谷很有名的被誉为硅谷教练的人物，之前在《乔布斯传》中有，但我没有想到坎贝尔对于谷歌、脸书这样的公司也是影响，这个是后话，总之我入手《启示录2：打造优秀的产品团队》这本书，不到300页的，大部分在上班路上的地铁上看到，最后这点在家看完了。</p>
-<h4 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h4><p>先说说这个书名吧，《启示录：打造用户喜爱的产品》，原书名是《Empowered:  Ordinary People, Extraordinary Products》，如果直译的应该是《赋能：普通人，非凡产品》，但可能是为了凑前作《启示录》的热度，起了这么一个名字。</p>
-<p>书中倡导自主型团队，我感觉的这是一种过于理想的团队，或许这应该是创业团队的理想状态。大家志同道合，相互贡献自己的知识，为一个共同的产品愿景努力。有书中的团队，也让想到过去或者现在所在团队的一些问题。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><h5 id="面向老板型团队"><a href="#面向老板型团队" class="headerlink" title="面向老板型团队"></a>面向老板型团队</h5><p>几年前我所在的一个公司就是这样现状，老板很有钱，决定超着互联网的方向玩一把，当时正值移动应用兴起的2014年，大家都在做APP，当时的开发团队其实比较全，客户端有iOS、安卓，服务端、前端、测试。我当时负责iOS，安卓的人当时比我们iOS多些。现在回想起来，那会技术团队人员配置最全，设计团队只是按项目配的人并没有设计负责人，所有人向当时的一位类似项目经理的人汇报。现在回想起来，当时是没有产品经理的，如果真的要找一位，那可能就是并不是常来但总是不断提需求的老板吧。后来的一些项目也设置过产品的岗位，但这名产品是项目经理转过来的，并不专业，完全是他们设计他们的，我们拿到了就得开发，而我们觉得这个功能有问题，那会总感觉我们想把产品做好，但总是做不好的怪圈。</p>
-<p>这样的现象，我把称为面向老板型团队，当时没有产品经理是一个最大问题，老板自己想着如何开发产品，然后将这种需求直接给开发团队，并没有转换成合理的产品需求，如果老板比较强势的话，即使大家觉得有问题，在一次次沟通无效后，最终在变成了妥协，而后的团队的一些人就转变成面向老板的倾向，不再关心产品本身，最终这样的团队注定成功不了，事实也是这样。</p>
-<h5 id="面向业务型团队"><a href="#面向业务型团队" class="headerlink" title="面向业务型团队"></a>面向业务型团队</h5><p>后来我去了一家传统公司，当时招技术，本想着技术可以对这个业务有一定的赋能。但慢慢的发现陷入了书里提到的功能性团队的境地，而我更愿意称为面向业务型团队。传统公司的问题可能更严重，尤其是中小型的，这类企业的大都是通过贷款来做业务，所以每一分钱都需要有产出，所以这类公司很难在产品上有预先的投入，所以我们技术这边往往是平时不太忙，一旦有新的业务来了，我们就得立马开发业务相对应的功能，这几乎注定每次都是草草开始，只能先做一些功能让业务先用。后来我渐渐发现除了技术团队的投入不足外，我们最大问题就是没有产品，没有产品愿景，有的只是不停变化的业务。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1743,7 +1761,7 @@ gcc fb1-5.tab.c lex.yy.c -ll # 这个也跟原书的命令不太一样，生成a
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-count">70</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
