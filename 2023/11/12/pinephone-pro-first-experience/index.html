@@ -2,9 +2,9 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.1.0">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -13,14 +13,13 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"c2lang.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
-  </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-  <meta name="description" content="为什么要购买一台Linux手机呢?安卓和iOS我都开发过，iOS稍微久一些。最早想到Linux手机是源于安卓和iOS这些平台都会限制开发语言，比如你想用Python开发个界面。很早的时候有在安卓手机上安装过Ubuntu，但那个界面完全是PC的桌面，体验比较差。最近直接触发我购买PinePhone Pro的理由是我想用GTK的Rust绑定来开发应用。 购买淘宝上可以购买，但是价格有点偏贵，需要450">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"c2lang.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":false,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="为什么要购买一台Linux手机呢?安卓和iOS我都开发过，iOS稍微久一些。最早想到Linux手机是源于安卓和iOS这些平台都会限制开发语言，比如你想用Python开发个界面。很早的时候有在安卓手机上安装过Ubuntu，但那个界面完全是PC的桌面，体验比较差。最近直接触发我购买PinePhone Pro的理由是我想用GTK的Rust绑定来开发应用。 购买淘宝上可以购买，但是价格有点偏贵，需要450">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PinePhone Pro 初体验">
 <meta property="og:url" content="https://c2lang.com/2023/11/12/pinephone-pro-first-experience/index.html">
@@ -32,20 +31,14 @@
 <meta property="article:author" content="Jasper Ji">
 <meta name="twitter:card" content="summary">
 
+
 <link rel="canonical" href="https://c2lang.com/2023/11/12/pinephone-pro-first-experience/">
 
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://c2lang.com/2023/11/12/pinephone-pro-first-experience/","path":"2023/11/12/pinephone-pro-first-experience/","title":"PinePhone Pro 初体验"}</script>
 
-  <title>PinePhone Pro 初体验 | Jasper Ji</title>
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>PinePhone Pro 初体验 | Jasper Ji</title>
   
 
 
@@ -53,57 +46,39 @@
 
 
 
+
+
   <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
   <div class="site-meta">
 
     <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Jasper Ji</h1>
-      <span class="logo-line-after"><i></i></span>
+      <i class="logo-line"></i>
+      <p class="site-title">Jasper Ji</p>
+      <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">平常心</p>
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
         <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
@@ -111,24 +86,8 @@
 
 
 
-
 <nav class="site-nav">
-  <ul id="menu" class="menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
-
-  </li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -140,78 +99,129 @@
 
   <div class="search-pop-overlay">
     <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
-</div>
-
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
     </div>
   </div>
 
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%AD%E4%B9%B0"><span class="nav-number">1.</span> <span class="nav-text">购买</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%85%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">包装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%B7%E6%9C%BA"><span class="nav-number">3.</span> <span class="nav-text">刷机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F"><span class="nav-number"></span> <span class="nav-text">系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Manjaro"><span class="nav-number">1.</span> <span class="nav-text">Manjaro</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Plasma-Mobile"><span class="nav-number">1.1.</span> <span class="nav-text">Plasma Mobile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Phosh"><span class="nav-number">1.2.</span> <span class="nav-text">Phosh</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arch-Linux"><span class="nav-number">2.</span> <span class="nav-text">Arch Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Phosh-1"><span class="nav-number">2.1.</span> <span class="nav-text">Phosh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Barebone"><span class="nav-number">2.2.</span> <span class="nav-text">Barebone</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mobian"><span class="nav-number">3.</span> <span class="nav-text">Mobian</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LuneOS"><span class="nav-number">4.</span> <span class="nav-text">LuneOS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PostmarketOS"><span class="nav-number">5.</span> <span class="nav-text">PostmarketOS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Gnome-Shell-Mobile"><span class="nav-number">5.1.</span> <span class="nav-text">Gnome Shell Mobile</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ubuntu-Touch"><span class="nav-number">6.</span> <span class="nav-text">Ubuntu Touch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nemo-Mobile"><span class="nav-number">7.</span> <span class="nav-text">Nemo Mobile</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number"></span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E9%94%AE%E7%9B%98"><span class="nav-number">1.</span> <span class="nav-text">虚拟键盘</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Phosh-2"><span class="nav-number">1.1.</span> <span class="nav-text">Phosh</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E6%B1%A0%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">电池问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%81%E4%B9%A6%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">证书问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E9%80%82%E9%85%8D"><span class="nav-number"></span> <span class="nav-text">应用适配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number"></span> <span class="nav-text">总结</span></a></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jasper Ji</p>
+  <div class="site-description" itemprop="description"></div>
 </div>
-    </header>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">70</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
 
     
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
+  </aside>
 
 
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
+    </div>
 
-          <div class="content post posts-expand">
-            
+    <div class="main-inner post posts-expand">
 
-    
+
+  
+
+
+<div class="post-block">
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://c2lang.com/2023/11/12/pinephone-pro-first-experience/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="PinePhone Pro 初体验 | Jasper Ji">
+      <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           PinePhone Pro 初体验
         </h1>
 
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
 
-              <time title="创建时间：2023-11-12 21:29:17 / 修改时间：21:30:09" itemprop="dateCreated datePublished" datetime="2023-11-12T21:29:17+08:00">2023-11-12</time>
-            </span>
+      <time title="创建时间：2023-11-12 21:29:17 / 修改时间：21:30:09" itemprop="dateCreated datePublished" datetime="2023-11-12T21:29:17+08:00">2023-11-12</time>
+    </span>
 
-          
+  
+</div>
 
         </div>
       </header>
@@ -219,10 +229,7 @@
     
     
     
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <p>为什么要购买一台Linux手机呢?安卓和iOS我都开发过，iOS稍微久一些。最早想到Linux手机是源于安卓和iOS这些平台都会限制开发语言，比如你想用Python开发个界面。很早的时候有在安卓手机上安装过Ubuntu，但那个界面完全是PC的桌面，体验比较差。最近直接触发我购买PinePhone Pro的理由是我想用GTK的Rust绑定来开发应用。</p>
+    <div class="post-body" itemprop="articleBody"><p>为什么要购买一台Linux手机呢?安卓和iOS我都开发过，iOS稍微久一些。最早想到Linux手机是源于安卓和iOS这些平台都会限制开发语言，比如你想用Python开发个界面。很早的时候有在安卓手机上安装过Ubuntu，但那个界面完全是PC的桌面，体验比较差。最近直接触发我购买PinePhone Pro的理由是我想用GTK的Rust绑定来开发应用。</p>
 <h3 id="购买"><a href="#购买" class="headerlink" title="购买"></a>购买</h3><p>淘宝上可以购买，但是价格有点偏贵，需要4500左右。直接购买，官网目前不支持直接发内地，这家公司是从香港发货的，所以可以找家转运公司，发货到香港，再转运到内地。费用除了399美金的机子，还有官网发出的运费，因为是到香港，这个大概十几美金，再加上转运费近200，最后花费3000多些，比在淘宝购买要便宜不少。时间上，大概一周多点时间，就可以收到货。</p>
 <h3 id="包装"><a href="#包装" class="headerlink" title="包装"></a>包装</h3><p>手机的包装跟之前网上看的开箱视频一样，手机、贴膜、说明书（没有中文）、充电线（红色）。开机时需要将后盖打开，把电池接触膜给撕掉，这样就可以开机了。手机的外放音质感觉很干涩，确实不能iPhone之类的相比。因为没有多余手机卡，所以移动网络并没有测试。</p>
 <h3 id="刷机"><a href="#刷机" class="headerlink" title="刷机"></a>刷机</h3><p>这台手机最大的特点就是刷机友好，我一开始并没有打算刷机，应该是对Arch Linux不熟悉的缘故，所以预装系统下软件一直无法更新也无法安装新软件，比如我喜欢的Rust，甚至我都不知道如何进行远程连接，实际上现在认为都是不熟悉导致的。</p>
@@ -265,189 +272,117 @@ sudo pacman -Sc<span aria-hidden="true" class="line-numbers-rows"><span></span><
     
     
 
-      <footer class="post-footer">
+    <footer class="post-footer">
 
         
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2023/11/12/cross-compile-rust-applications-for-the-pinephone-pro/" rel="prev" title="为Pinephone Pro交叉编译Rust应用程序">
-      <i class="fa fa-chevron-left"></i> 为Pinephone Pro交叉编译Rust应用程序
-    </a></div>
-      <div class="post-nav-item"></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-
-
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/11/12/cross-compile-rust-applications-for-the-pinephone-pro/" rel="prev" title="为Pinephone Pro交叉编译Rust应用程序">
+                  <i class="fa fa-angle-left"></i> 为Pinephone Pro交叉编译Rust应用程序
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
           </div>
-          
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Jasper Ji</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+
+
+  
+
+
+
+
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"jasper2007111/jasper2007111.github.com","repo_id":"MDEwOlJlcG9zaXRvcnkyNTkzMDA3Mg==","category":"Announcements","category_id":"DIC_kwDOAYupWM4Ck7oB","mapping":"pathname","strict":0,"reactions_enabled":1,"emit_metadata":1,"theme":"light","lang":"en","crossorigin":"anonymous","input_position":"bottom","loading":"lazy"}</script>
 
 <script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
 </script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%AD%E4%B9%B0"><span class="nav-number">1.</span> <span class="nav-text">购买</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%85%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">包装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%B7%E6%9C%BA"><span class="nav-number">3.</span> <span class="nav-text">刷机</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F"><span class="nav-number"></span> <span class="nav-text">系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Manjaro"><span class="nav-number">1.</span> <span class="nav-text">Manjaro</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Plasma-Mobile"><span class="nav-number">1.1.</span> <span class="nav-text">Plasma Mobile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Phosh"><span class="nav-number">1.2.</span> <span class="nav-text">Phosh</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Arch-Linux"><span class="nav-number">2.</span> <span class="nav-text">Arch Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Phosh-1"><span class="nav-number">2.1.</span> <span class="nav-text">Phosh</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Barebone"><span class="nav-number">2.2.</span> <span class="nav-text">Barebone</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mobian"><span class="nav-number">3.</span> <span class="nav-text">Mobian</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LuneOS"><span class="nav-number">4.</span> <span class="nav-text">LuneOS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PostmarketOS"><span class="nav-number">5.</span> <span class="nav-text">PostmarketOS</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Gnome-Shell-Mobile"><span class="nav-number">5.1.</span> <span class="nav-text">Gnome Shell Mobile</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ubuntu-Touch"><span class="nav-number">6.</span> <span class="nav-text">Ubuntu Touch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nemo-Mobile"><span class="nav-number">7.</span> <span class="nav-text">Nemo Mobile</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number"></span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E9%94%AE%E7%9B%98"><span class="nav-number">1.</span> <span class="nav-text">虚拟键盘</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Phosh-2"><span class="nav-number">1.1.</span> <span class="nav-text">Phosh</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%B5%E6%B1%A0%E9%97%AE%E9%A2%98"><span class="nav-number">2.</span> <span class="nav-text">电池问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%81%E4%B9%A6%E9%97%AE%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">证书问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E9%80%82%E9%85%8D"><span class="nav-number"></span> <span class="nav-text">应用适配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number"></span> <span class="nav-text">总结</span></a></div>
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">Jasper Ji</p>
-  <div class="site-description" itemprop="description"></div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">70</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">1</span>
-        <span class="site-state-item-name">分类</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">1</span>
-        <span class="site-state-item-name">标签</span>
-      </div>
-  </nav>
-</div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 
-  <span itemprop="copyrightYear">2024</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Jasper Ji</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
-  </div>
-
-        
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-
-
-
-
-  
-<script src="/js/local-search.js"></script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
 
 </body>
 </html>

@@ -2,9 +2,9 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 6.1.0">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.1.0">
+
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -13,14 +13,13 @@
 <link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"c2lang.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
-  </script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha256-5eIC48iZUHmSlSUz9XtjRyK2mzQkHScZY1WdMaoz74E=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-  <meta name="description" content="上次去省图偶然看到了《WebAssembly 实战》一书，之前就有关注到，于是就借了回来，刚好趁清明假期看看。之前有写过一篇《初试WebAssembly》，本身Rust语言不熟，虽然我买了本《Rust权威指南》，但一直没有什么项目可以练手，基本上没有进展。《WebAssembly 实战》一书是基于C&#x2F;C++的，相对来说读起来障碍不大。实际我也跑了一个例子试了下，当然如果真拿C&#x2F;">
+<script class="next-config" data-name="main" type="application/json">{"hostname":"c2lang.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":false,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="上次去省图偶然看到了《WebAssembly 实战》一书，之前就有关注到，于是就借了回来，刚好趁清明假期看看。之前有写过一篇《初试WebAssembly》，本身Rust语言不熟，虽然我买了本《Rust权威指南》，但一直没有什么项目可以练手，基本上没有进展。《WebAssembly 实战》一书是基于C&#x2F;C++的，相对来说读起来障碍不大。实际我也跑了一个例子试了下，当然如果真拿C&#x2F;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="WebAssembly 遐想">
 <meta property="og:url" content="https://c2lang.com/2022/04/05/webAssembly-reverie/index.html">
@@ -32,20 +31,14 @@
 <meta property="article:author" content="Jasper Ji">
 <meta name="twitter:card" content="summary">
 
+
 <link rel="canonical" href="https://c2lang.com/2022/04/05/webAssembly-reverie/">
 
 
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://c2lang.com/2022/04/05/webAssembly-reverie/","path":"2022/04/05/webAssembly-reverie/","title":"WebAssembly 遐想"}</script>
 
-  <title>WebAssembly 遐想 | Jasper Ji</title>
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>WebAssembly 遐想 | Jasper Ji</title>
   
 
 
@@ -53,57 +46,39 @@
 
 
 
+
+
   <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
   <div class="site-meta">
 
     <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Jasper Ji</h1>
-      <span class="logo-line-after"><i></i></span>
+      <i class="logo-line"></i>
+      <p class="site-title">Jasper Ji</p>
+      <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">平常心</p>
   </div>
 
   <div class="site-nav-right">
-    <div class="toggle popup-trigger">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
         <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
@@ -111,24 +86,8 @@
 
 
 
-
 <nav class="site-nav">
-  <ul id="menu" class="menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
-
-  </li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -140,162 +99,34 @@
 
   <div class="search-pop-overlay">
     <div class="popup search-popup">
-        <div class="search-header">
-  <span class="search-icon">
-    <i class="fa fa-search"></i>
-  </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocapitalize="off"
-           placeholder="搜索..." spellcheck="false"
-           type="search" class="search-input">
-  </div>
-  <span class="popup-btn-close">
-    <i class="fa fa-times-circle"></i>
-  </span>
-</div>
-<div id="search-result">
-  <div id="no-result">
-    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
-  </div>
-</div>
-
-    </div>
-  </div>
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/05/webAssembly-reverie/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          WebAssembly 遐想
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2022-04-05 21:06:10 / 修改时间：22:56:04" itemprop="dateCreated datePublished" datetime="2022-04-05T21:06:10+08:00">2022-04-05</time>
-            </span>
-
-          
-
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
         </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <p>上次去省图偶然看到了《WebAssembly 实战》一书，之前就有关注到，于是就借了回来，刚好趁清明假期看看。之前有写过一篇<a href="https://c2lang.com/2021/06/02/2021-06-02-first-try-webassembly/">《初试WebAssembly》</a>，本身Rust语言不熟，虽然我买了本《Rust权威指南》，但一直没有什么项目可以练手，基本上没有进展。《WebAssembly 实战》一书是基于C&#x2F;C++的，相对来说读起来障碍不大。实际我也跑了一个例子试了下，当然如果真拿C&#x2F;C++来写Web应用的话，估计会很奔溃了。接着我又看了好几个关于WebAssembly的视频演讲，发现有了新的想法。</p>
-<p>推出WebAssembly这个东西主要是因为现有的优化已经无法满足性能的进一步提升了，语言肯定不能大改了，JS这么用的广。记得早些年使用Flash的时候，那会是在嵌入式上跑AS2，性能的问题真的是让我当时无语。后来又推出了AS3性能又大幅的提升，但是很长一段时间，我们公司的引擎没有升级，所以我基本上还是用AS2。虽然现在的Web开发没有像当年那样，毕竟开放的环境还是不一样。回到正题，如果单纯的写WebAssembly的话，好像也没有这个必要，而且据说和JS的调用开销不小，所以到底什么时候用，是个问题。反过来想要是哪天整个的Web可以大部分都用WebAssembly来写的话，那就好了，不过目前还不能直接操作Dom，这是一个很大的问题，理论和JS是相互调用的，我看到Rust有个web_sys的库，可以操作dom，不过我想应该也是自己实现的吧。目前看到几个Rust的例子，是直接用WebAssembly来写整个的Web应用的，比如Yew这个Rust的框架允许你构建基于WebAssembly的应用。另外微软的Blazor，允许使用C#来编写基于WebAssembly的单页应用。还有Go的Vugu。</p>
-<p>所以如果和JS混着用，那么实际上是把WebAssembly作为一个计算密集型的一个解决方案吧，实际开发中大部分的Web应用都是些轻客户端，主要还是界面相关的操作了，其实大部分情况下很难想到用WebAssembly了，这也是我最早尝试时的感想。但是如果未来解决了类似调DOM的成本比较高的的问题，那么有没有可能Web语言变成Rust为主，为什么是Rust呢？首先WebAssembly本身没有垃圾回收，内存是手动处理了。Rust呢？标榜的是一个没有垃圾回收的安全语言，与C&#x2F;C++相比实际上是语言层面上处理内存管理的问题。这么一想Rust与WebAssembly真是绝配，当然其他的语言也可以编译成WebAssembly，但对于垃圾回收的语言，是比要实现一个垃圾回收的运行时环境，这样性能上就会有折扣。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>想来想去，最终落到Rust这个语言上了，或者说WebAssembly本身的设计这种在底层改变的东西无疑为未来提供了各种改变的可能性，即使不是Rust也许会是其他的语言。C&#x2F;C++用户可以让现有的库移植到Web上使用，另外Web应用一定是现在这样的轻客户端的类型吗？WebAssembly的引入确实提供另一种可能。另外一定要用JS来写Web应用吗？过去是没有办法，但是底层的改变让未来可以使用统一基于WebAssembly的语言来写Web成为了可能，而不像过去所有新的语言实际上都得编译成JS。基于WebAssembly的框架，有微软这样的大厂，也有基于Go的，某种程度这是一场大厂利好的事，但坏处是当有各种的语言可以写Web时，会不会有点分裂，毕竟只学一个JS，大家共用资源，而用不同的语言有学习成本。</p>
-
-    </div>
-
-    
-    
-    
-
-      <footer class="post-footer">
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2022/03/28/blog-migration-to-hexo/" rel="prev" title="博客迁移到Hexo">
-      <i class="fa fa-chevron-left"></i> 博客迁移到Hexo
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2022/04/10/try-rust/" rel="next" title="尝试Rust">
-      尝试Rust <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-
-
-          </div>
-          
-
-<script>
-  window.addEventListener('tabs:register', () => {
-    let { activeClass } = CONFIG.comments;
-    if (CONFIG.comments.storage) {
-      activeClass = localStorage.getItem('comments_active') || activeClass;
-    }
-    if (activeClass) {
-      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
-      if (activeTab) {
-        activeTab.click();
-      }
-    }
-  });
-  if (CONFIG.comments.storage) {
-    window.addEventListener('tabs:click', event => {
-      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
-      let commentClass = event.target.classList[1];
-      localStorage.setItem('comments_active', commentClass);
-    });
-  }
-</script>
-
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
         </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
+      </div>
+    </div>
   </div>
 
+</header>
+        
+  
   <aside class="sidebar">
-    <div class="sidebar-inner">
 
-      <ul class="sidebar-nav motion-element">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
         </li>
@@ -304,22 +135,22 @@
         </li>
       </ul>
 
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a></li></ol></div>
-      </div>
-      <!--/noindex-->
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
 
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name">Jasper Ji</p>
   <div class="site-description" itemprop="description"></div>
 </div>
-<div class="site-state-wrap motion-element">
+<div class="site-state-wrap animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
+        <a href="/archives/">
           <span class="site-state-item-count">70</span>
           <span class="site-state-item-name">日志</span>
         </a>
@@ -335,80 +166,154 @@
   </nav>
 </div>
 
-
-
+        </div>
       </div>
+    </div>
+
+    
+  </aside>
+
 
     </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
+
+    <div class="main-inner post posts-expand">
 
 
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
   
-  &copy; 
-  <span itemprop="copyrightYear">2024</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Jasper Ji</span>
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/05/webAssembly-reverie/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="WebAssembly 遐想 | Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WebAssembly 遐想
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-04-05 21:06:10 / 修改时间：22:56:04" itemprop="dateCreated datePublished" datetime="2022-04-05T21:06:10+08:00">2022-04-05</time>
+    </span>
+
+  
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
-  </div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>上次去省图偶然看到了《WebAssembly 实战》一书，之前就有关注到，于是就借了回来，刚好趁清明假期看看。之前有写过一篇<a href="https://c2lang.com/2021/06/02/2021-06-02-first-try-webassembly/">《初试WebAssembly》</a>，本身Rust语言不熟，虽然我买了本《Rust权威指南》，但一直没有什么项目可以练手，基本上没有进展。《WebAssembly 实战》一书是基于C&#x2F;C++的，相对来说读起来障碍不大。实际我也跑了一个例子试了下，当然如果真拿C&#x2F;C++来写Web应用的话，估计会很奔溃了。接着我又看了好几个关于WebAssembly的视频演讲，发现有了新的想法。</p>
+<p>推出WebAssembly这个东西主要是因为现有的优化已经无法满足性能的进一步提升了，语言肯定不能大改了，JS这么用的广。记得早些年使用Flash的时候，那会是在嵌入式上跑AS2，性能的问题真的是让我当时无语。后来又推出了AS3性能又大幅的提升，但是很长一段时间，我们公司的引擎没有升级，所以我基本上还是用AS2。虽然现在的Web开发没有像当年那样，毕竟开放的环境还是不一样。回到正题，如果单纯的写WebAssembly的话，好像也没有这个必要，而且据说和JS的调用开销不小，所以到底什么时候用，是个问题。反过来想要是哪天整个的Web可以大部分都用WebAssembly来写的话，那就好了，不过目前还不能直接操作Dom，这是一个很大的问题，理论和JS是相互调用的，我看到Rust有个web_sys的库，可以操作dom，不过我想应该也是自己实现的吧。目前看到几个Rust的例子，是直接用WebAssembly来写整个的Web应用的，比如Yew这个Rust的框架允许你构建基于WebAssembly的应用。另外微软的Blazor，允许使用C#来编写基于WebAssembly的单页应用。还有Go的Vugu。</p>
+<p>所以如果和JS混着用，那么实际上是把WebAssembly作为一个计算密集型的一个解决方案吧，实际开发中大部分的Web应用都是些轻客户端，主要还是界面相关的操作了，其实大部分情况下很难想到用WebAssembly了，这也是我最早尝试时的感想。但是如果未来解决了类似调DOM的成本比较高的的问题，那么有没有可能Web语言变成Rust为主，为什么是Rust呢？首先WebAssembly本身没有垃圾回收，内存是手动处理了。Rust呢？标榜的是一个没有垃圾回收的安全语言，与C&#x2F;C++相比实际上是语言层面上处理内存管理的问题。这么一想Rust与WebAssembly真是绝配，当然其他的语言也可以编译成WebAssembly，但对于垃圾回收的语言，是比要实现一个垃圾回收的运行时环境，这样性能上就会有折扣。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>想来想去，最终落到Rust这个语言上了，或者说WebAssembly本身的设计这种在底层改变的东西无疑为未来提供了各种改变的可能性，即使不是Rust也许会是其他的语言。C&#x2F;C++用户可以让现有的库移植到Web上使用，另外Web应用一定是现在这样的轻客户端的类型吗？WebAssembly的引入确实提供另一种可能。另外一定要用JS来写Web应用吗？过去是没有办法，但是底层的改变让未来可以使用统一基于WebAssembly的语言来写Web成为了可能，而不像过去所有新的语言实际上都得编译成JS。基于WebAssembly的框架，有微软这样的大厂，也有基于Go的，某种程度这是一场大厂利好的事，但坏处是当有各种的语言可以写Web时，会不会有点分裂，毕竟只学一个JS，大家共用资源，而用不同的语言有学习成本。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
 
         
 
-
-
-
-
-
-
-
-      </div>
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/03/28/blog-migration-to-hexo/" rel="prev" title="博客迁移到Hexo">
+                  <i class="fa fa-angle-left"></i> 博客迁移到Hexo
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/10/try-rust/" rel="next" title="尝试Rust">
+                  尝试Rust <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
     </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    
+  
+  <div class="comments giscus-container">
+  </div>
+  
+  
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2024</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Jasper Ji</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
   </div>
 
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/pisces.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
+    </div>
+  </footer>
 
   
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
 
-
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
 
   
-<script src="/js/local-search.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
 
-
-
-
-
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
 
 
 
@@ -418,7 +323,37 @@
 
   
 
-  
+
+
+
+<script class="next-config" data-name="giscus" type="application/json">{"enable":true,"repo":"jasper2007111/jasper2007111.github.com","repo_id":"MDEwOlJlcG9zaXRvcnkyNTkzMDA3Mg==","category":"Announcements","category_id":"DIC_kwDOAYupWM4Ck7oB","mapping":"pathname","strict":0,"reactions_enabled":1,"emit_metadata":1,"theme":"light","lang":"en","crossorigin":"anonymous","input_position":"bottom","loading":"lazy"}</script>
+
+<script>
+document.addEventListener('page:loaded', () => {
+  if (!CONFIG.page.comments) return;
+
+  NexT.utils.loadComments('.giscus-container')
+    .then(() => NexT.utils.getScript('https://giscus.app/client.js', {
+      attributes: {
+        async                   : true,
+        crossOrigin             : 'anonymous',
+        'data-repo'             : CONFIG.giscus.repo,
+        'data-repo-id'          : CONFIG.giscus.repo_id,
+        'data-category'         : CONFIG.giscus.category,
+        'data-category-id'      : CONFIG.giscus.category_id,
+        'data-mapping'          : CONFIG.giscus.mapping,
+        'data-strict'           : CONFIG.giscus.strict,
+        'data-reactions-enabled': CONFIG.giscus.reactions_enabled,
+        'data-emit-metadata'    : CONFIG.giscus.emit_metadata,
+        'data-theme'            : CONFIG.giscus.theme,
+        'data-lang'             : CONFIG.giscus.lang,
+        'data-input-position'   : CONFIG.giscus.input_position,
+        'data-loading'          : CONFIG.giscus.loading
+      },
+      parentNode: document.querySelector('.giscus-container')
+    }));
+});
+</script>
 
 </body>
 </html>
