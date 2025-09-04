@@ -47,6 +47,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
+<link rel="alternate" href="/atom.xml" title="Jasper Ji" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -146,13 +147,9 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">1</span>
-        <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
         <span class="site-state-item-count">1</span>
@@ -1447,20 +1444,25 @@ gcc fb1-5.tab.c lex.yy.c -ll # 这个也跟原书的命令不太一样，生成a
     
     <div class="post-body" itemprop="articleBody">
           <p>我用的是docker安装的，创建一个ftp的目录，使用命令。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -v 你自己的目录:/home/vsftpd \</span><br><span class="line">-p 20:20 -p 21:21 -p 21100-21110:21100-21110 \</span><br><span class="line">-e FTP_USER=用户名 -e FTP_PASS=密码 \</span><br><span class="line">-e PASV_ADDRESS=主机IP -e PASV_MIN_PORT=21100 -e PASV_MAX_PORT=21110 \</span><br><span class="line">--name vsftpd --restart=always fauria/vsftpd</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">docker run -d -v 你自己的目录:&#x2F;home&#x2F;vsftpd \
+-p 20:20 -p 21:21 -p 21100-21110:21100-21110 \
+-e FTP_USER&#x3D;用户名 -e FTP_PASS&#x3D;密码 \
+-e PASV_ADDRESS&#x3D;主机IP -e PASV_MIN_PORT&#x3D;21100 -e PASV_MAX_PORT&#x3D;21110 \
+--name vsftpd --restart&#x3D;always fauria&#x2F;vsftpd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="连接慢"><a href="#连接慢" class="headerlink" title="连接慢"></a>连接慢</h3><p>感觉登录很慢，需要做下配置。</p>
 <p>进入容器</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it 你自己的容器的ID bash </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">docker exec -it 你自己的容器的ID bash <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>使用vi编辑配置文件，修改<code>reverse_lookup_enable</code>字段为<code>NO</code></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/vsftpd/vsftpd.conf </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">vi &#x2F;etc&#x2F;vsftpd&#x2F;vsftpd.conf <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>保存配置</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/vsftpd/vsftpd.conf</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">source &#x2F;etc&#x2F;vsftpd&#x2F;vsftpd.conf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>删除里面全部的<code>nameserve</code>，同样保存。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/resolv.conf</span><br><span class="line"><span class="built_in">source</span> /etc/resolv.conf</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">vi &#x2F;etc&#x2F;resolv.conf
+source &#x2F;etc&#x2F;resolv.conf<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <h3 id="无法下载"><a href="#无法下载" class="headerlink" title="无法下载"></a>无法下载</h3><p>可以显示目录单是却无法下载文件，测试文件很小，只有一两次偶然的情况下载成功了，搜索了半天发现都没有遇到跟我一样问题的。最后发现原来是没有正确设置防火墙端口的问题，使用的是阿里云，在安全组我只开通了<code>21100</code>这个端口，实际上应该是一个范围<code>21100-21110</code>，安全组的配置应该是<code>21100/21110</code>。</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://hub.docker.com/r/fauria/vsftpd">fauria&#x2F;vsftpd</a></p>
@@ -1534,14 +1536,24 @@ gcc fb1-5.tab.c lex.yy.c -ll # 这个也跟原书的命令不太一样，生成a
     
     <div class="post-body" itemprop="articleBody">
           <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>目前使用Docker进行安装，<code>15672</code>是网页端访问口，<code>5672</code>是程序端访问接口。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name my-rabbit -p 15672:15672 -p 5672:5672 -e RABBITMQ_DEFAULT_USER=username -e RABBITMQ_DEFAULT_PASS=password rabbitmq:3.9-management</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">docker run -d --name my-rabbit -p 15672:15672 -p 5672:5672 -e RABBITMQ_DEFAULT_USER&#x3D;username -e RABBITMQ_DEFAULT_PASS&#x3D;password rabbitmq:3.9-management
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>这个命令是后台运行，<code>username</code>以及<code>password</code>需要替换成你自己的。</p>
 <h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><h4 id="自动连接"><a href="#自动连接" class="headerlink" title="自动连接"></a>自动连接</h4><p>Spring Boot启动后会自动连接RabbitMQ，这个在测试环境下可以设置不自动连接。</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">rabbitmq:</span></span><br><span class="line">    <span class="attr">listener:</span></span><br><span class="line">      <span class="attr">direct:</span></span><br><span class="line">        <span class="attr">auto-startup:</span> <span class="literal">false</span> <span class="comment"># 测试环境下屏蔽掉RabbitMQ的自动重连</span></span><br><span class="line">      <span class="attr">simple:</span></span><br><span class="line">        <span class="attr">auto-startup:</span> <span class="literal">false</span> <span class="comment"># 测试环境下屏蔽掉RabbitMQ的自动重连</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">spring</span><span class="token punctuation">:</span>
+  <span class="token key atrule">rabbitmq</span><span class="token punctuation">:</span>
+    <span class="token key atrule">listener</span><span class="token punctuation">:</span>
+      <span class="token key atrule">direct</span><span class="token punctuation">:</span>
+        <span class="token key atrule">auto-startup</span><span class="token punctuation">:</span> <span class="token boolean important">false</span> <span class="token comment"># 测试环境下屏蔽掉RabbitMQ的自动重连</span>
+      <span class="token key atrule">simple</span><span class="token punctuation">:</span>
+        <span class="token key atrule">auto-startup</span><span class="token punctuation">:</span> <span class="token boolean important">false</span> <span class="token comment"># 测试环境下屏蔽掉RabbitMQ的自动重连</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="自动创建队列"><a href="#自动创建队列" class="headerlink" title="自动创建队列"></a>自动创建队列</h4><p>如果监听了没有创建的队列会报异常错误，可以用注解的时候自动创建队列。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RabbitListener(queuesToDeclare = @Queue(&quot;some-queue&quot;))</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">someMethod</span><span class="params">()</span> &#123;</span><br><span class="line">  <span class="comment">// TODO Some Things</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@RabbitListener</span><span class="token punctuation">(</span>queuesToDeclare <span class="token operator">=</span> <span class="token annotation punctuation">@Queue</span><span class="token punctuation">(</span><span class="token string">"some-queue"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">someMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">// TODO Some Things</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="队列不消费"><a href="#队列不消费" class="headerlink" title="队列不消费"></a>队列不消费</h4><p>这个问题，偶然间我一不小心把RabbitMQ重启，当然没有消息，过了一会发现队列中的新数据并没有消费。最后重启了消费者的服务后，就正常了。所以这个问题，如果不及时发现的话，最终会导致队列出错的，在大项目的时候还是需要注意。</p>
 
@@ -1620,12 +1632,29 @@ gcc fb1-5.tab.c lex.yy.c -ll # 这个也跟原书的命令不太一样，生成a
     
     <div class="post-body" itemprop="articleBody">
           <p>Python自带Http服务器，我一般是在共享文件时使用，直接在需要共享的目录下运行命令即可启动服务，不过有时候传输不是很稳定，重启一下就好了。</p>
-<h3 id="Python2-版本"><a href="#Python2-版本" class="headerlink" title="Python2 版本"></a>Python2 版本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m SimpleHTTPServer <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+<h3 id="Python2-版本"><a href="#Python2-版本" class="headerlink" title="Python2 版本"></a>Python2 版本</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">python <span class="token operator">-</span>m SimpleHTTPServer <span class="token number">8080</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h3 id="Python3-版本"><a href="#Python3-版本" class="headerlink" title="Python3 版本"></a>Python3 版本</h3><p>之前主要用Python 2.7的版本，随着2.7的终结加上macOS 12.3已经彻底移除了python 2.x的版本，只能使用3的版本了，Python 3的这个Http服务器命令似乎更简单一些。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -m http.server <span class="number">8001</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">python3 <span class="token operator">-</span>m http<span class="token punctuation">.</span>server <span class="token number">8001</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="跨域配置"><a href="#跨域配置" class="headerlink" title="跨域配置"></a>跨域配置</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># Python 3</span></span><br><span class="line">    <span class="keyword">from</span> http.server <span class="keyword">import</span> HTTPServer, SimpleHTTPRequestHandler, test <span class="keyword">as</span> test_orig</span><br><span class="line">    <span class="keyword">import</span> sys</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test</span> (*args):</span><br><span class="line">        test_orig(*args, port=<span class="built_in">int</span>(sys.argv[<span class="number">1</span>]) <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) &gt; <span class="number">1</span> <span class="keyword">else</span> <span class="number">8000</span>)</span><br><span class="line"><span class="keyword">except</span> ImportError: <span class="comment"># Python 2</span></span><br><span class="line">    <span class="keyword">from</span> BaseHTTPServer <span class="keyword">import</span> HTTPServer, test</span><br><span class="line">    <span class="keyword">from</span> SimpleHTTPServer <span class="keyword">import</span> SimpleHTTPRequestHandler</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CORSRequestHandler</span> (<span class="title class_ inherited__">SimpleHTTPRequestHandler</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">end_headers</span> (self):</span><br><span class="line">        self.send_header(<span class="string">&#x27;Access-Control-Allow-Origin&#x27;</span>, <span class="string">&#x27;*&#x27;</span>)</span><br><span class="line">        SimpleHTTPRequestHandler.end_headers(self)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    test(CORSRequestHandler, HTTPServer)</span><br></pre></td></tr></table></figure>
+<h3 id="跨域配置"><a href="#跨域配置" class="headerlink" title="跨域配置"></a>跨域配置</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    <span class="token comment"># Python 3</span>
+    <span class="token keyword">from</span> http<span class="token punctuation">.</span>server <span class="token keyword">import</span> HTTPServer<span class="token punctuation">,</span> SimpleHTTPRequestHandler<span class="token punctuation">,</span> test <span class="token keyword">as</span> test_orig
+    <span class="token keyword">import</span> sys
+    <span class="token keyword">def</span> <span class="token function">test</span> <span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        test_orig<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> port<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">1</span> <span class="token keyword">else</span> <span class="token number">8000</span><span class="token punctuation">)</span>
+<span class="token keyword">except</span> ImportError<span class="token punctuation">:</span> <span class="token comment"># Python 2</span>
+    <span class="token keyword">from</span> BaseHTTPServer <span class="token keyword">import</span> HTTPServer<span class="token punctuation">,</span> test
+    <span class="token keyword">from</span> SimpleHTTPServer <span class="token keyword">import</span> SimpleHTTPRequestHandler
+
+<span class="token keyword">class</span> <span class="token class-name">CORSRequestHandler</span> <span class="token punctuation">(</span>SimpleHTTPRequestHandler<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">end_headers</span> <span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>send_header<span class="token punctuation">(</span><span class="token string">'Access-Control-Allow-Origin'</span><span class="token punctuation">,</span> <span class="token string">'*'</span><span class="token punctuation">)</span>
+        SimpleHTTPRequestHandler<span class="token punctuation">.</span>end_headers<span class="token punctuation">(</span>self<span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    test<span class="token punctuation">(</span>CORSRequestHandler<span class="token punctuation">,</span> HTTPServer<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
       
@@ -1646,7 +1675,7 @@ gcc fb1-5.tab.c lex.yy.c -ll # 这个也跟原书的命令不太一样，生成a
 
 
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

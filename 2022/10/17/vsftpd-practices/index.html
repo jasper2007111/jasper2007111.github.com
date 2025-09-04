@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"c2lang.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":false,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="我用的是docker安装的，创建一个ftp的目录，使用命令。 12345docker run -d -v 你自己的目录:&#x2F;home&#x2F;vsftpd \-p 20:20 -p 21:21 -p 21100-21110:21100-21110 \-e FTP_USER&#x3D;用户名 -e FTP_PASS&#x3D;密码 \-e PASV_ADDRESS&#x3D;主机IP -e PASV_MIN_PORT&#x3D;21100 -e P">
+    <meta name="description" content="我用的是docker安装的，创建一个ftp的目录，使用命令。 docker run -d -v 你自己的目录:&#x2F;home&#x2F;vsftpd \ -p 20:20 -p 21:21 -p 21100-21110:21100-21110 \ -e FTP_USER&#x3D;用户名 -e FTP_PASS&#x3D;密码 \ -e PASV_ADDRESS&#x3D;主机IP -e P">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vsftpd实践">
 <meta property="og:url" content="https://c2lang.com/2022/10/17/vsftpd-practices/index.html">
 <meta property="og:site_name" content="Jasper Ji">
-<meta property="og:description" content="我用的是docker安装的，创建一个ftp的目录，使用命令。 12345docker run -d -v 你自己的目录:&#x2F;home&#x2F;vsftpd \-p 20:20 -p 21:21 -p 21100-21110:21100-21110 \-e FTP_USER&#x3D;用户名 -e FTP_PASS&#x3D;密码 \-e PASV_ADDRESS&#x3D;主机IP -e PASV_MIN_PORT&#x3D;21100 -e P">
+<meta property="og:description" content="我用的是docker安装的，创建一个ftp的目录，使用命令。 docker run -d -v 你自己的目录:&#x2F;home&#x2F;vsftpd \ -p 20:20 -p 21:21 -p 21100-21110:21100-21110 \ -e FTP_USER&#x3D;用户名 -e FTP_PASS&#x3D;密码 \ -e PASV_ADDRESS&#x3D;主机IP -e P">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-10-17T06:37:47.000Z">
 <meta property="article:modified_time" content="2022-10-17T07:09:54.324Z">
@@ -51,6 +51,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
+<link rel="alternate" href="/atom.xml" title="Jasper Ji" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -151,13 +152,9 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">1</span>
-        <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
         <span class="site-state-item-count">1</span>
@@ -230,20 +227,25 @@
     
     
     <div class="post-body" itemprop="articleBody"><p>我用的是docker安装的，创建一个ftp的目录，使用命令。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -v 你自己的目录:/home/vsftpd \</span><br><span class="line">-p 20:20 -p 21:21 -p 21100-21110:21100-21110 \</span><br><span class="line">-e FTP_USER=用户名 -e FTP_PASS=密码 \</span><br><span class="line">-e PASV_ADDRESS=主机IP -e PASV_MIN_PORT=21100 -e PASV_MAX_PORT=21110 \</span><br><span class="line">--name vsftpd --restart=always fauria/vsftpd</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">docker run -d -v 你自己的目录:&#x2F;home&#x2F;vsftpd \
+-p 20:20 -p 21:21 -p 21100-21110:21100-21110 \
+-e FTP_USER&#x3D;用户名 -e FTP_PASS&#x3D;密码 \
+-e PASV_ADDRESS&#x3D;主机IP -e PASV_MIN_PORT&#x3D;21100 -e PASV_MAX_PORT&#x3D;21110 \
+--name vsftpd --restart&#x3D;always fauria&#x2F;vsftpd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="连接慢"><a href="#连接慢" class="headerlink" title="连接慢"></a>连接慢</h3><p>感觉登录很慢，需要做下配置。</p>
 <p>进入容器</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it 你自己的容器的ID bash </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">docker exec -it 你自己的容器的ID bash <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>使用vi编辑配置文件，修改<code>reverse_lookup_enable</code>字段为<code>NO</code></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/vsftpd/vsftpd.conf </span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">vi &#x2F;etc&#x2F;vsftpd&#x2F;vsftpd.conf <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>保存配置</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/vsftpd/vsftpd.conf</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">source &#x2F;etc&#x2F;vsftpd&#x2F;vsftpd.conf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p>删除里面全部的<code>nameserve</code>，同样保存。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/resolv.conf</span><br><span class="line"><span class="built_in">source</span> /etc/resolv.conf</span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">vi &#x2F;etc&#x2F;resolv.conf
+source &#x2F;etc&#x2F;resolv.conf<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <h3 id="无法下载"><a href="#无法下载" class="headerlink" title="无法下载"></a>无法下载</h3><p>可以显示目录单是却无法下载文件，测试文件很小，只有一两次偶然的情况下载成功了，搜索了半天发现都没有遇到跟我一样问题的。最后发现原来是没有正确设置防火墙端口的问题，使用的是阿里云，在安全组我只开通了<code>21100</code>这个端口，实际上应该是一个范围<code>21100-21110</code>，安全组的配置应该是<code>21100/21110</code>。</p>
 <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://hub.docker.com/r/fauria/vsftpd">fauria&#x2F;vsftpd</a></p>

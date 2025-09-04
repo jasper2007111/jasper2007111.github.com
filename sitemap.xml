@@ -56,15 +56,6 @@
   </url>
   
   <url>
-    <loc>https://c2lang.com/2021/02/04/2021-02-04-how-to-write-an-os/</loc>
-    
-    <lastmod>2023-05-18</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://c2lang.com/2023/03/02/masm-assembly-language-study-notes/</loc>
     
     <lastmod>2023-05-17</lastmod>
@@ -77,24 +68,6 @@
     <loc>https://c2lang.com/about/index.html</loc>
     
     <lastmod>2023-05-17</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/03/24/2021-03-24-notes-on-oranges-an-operating-system-implementation/</loc>
-    
-    <lastmod>2023-04-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2020/09/30/2020-09-30-centos-users-guide/</loc>
-    
-    <lastmod>2022-12-15</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -137,15 +110,6 @@
   </url>
   
   <url>
-    <loc>https://c2lang.com/2021/05/27/2021-05-27-monk-rujing-quotes/</loc>
-    
-    <lastmod>2022-09-16</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://c2lang.com/2022/08/20/empowered-ordinary-people-extraordinary-products/</loc>
     
     <lastmod>2022-08-21</lastmod>
@@ -164,9 +128,9 @@
   </url>
   
   <url>
-    <loc>https://c2lang.com/2021/06/17/2021-06-17-talk-in-detail-zuohui/</loc>
+    <loc>https://c2lang.com/2022/07/01/study-code-push-server/</loc>
     
-    <lastmod>2022-07-06</lastmod>
+    <lastmod>2022-07-02</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -182,45 +146,9 @@
   </url>
   
   <url>
-    <loc>https://c2lang.com/2022/07/01/study-code-push-server/</loc>
-    
-    <lastmod>2022-07-01</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://c2lang.com/2022/06/30/adb-cannot-connect/</loc>
     
     <lastmod>2022-07-01</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/10/01/2021-10-01-cat-diary/</loc>
-    
-    <lastmod>2022-06-05</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/10/06/2021-10-06-tenth-anniversary-of-steve-jobs-death/</loc>
-    
-    <lastmod>2022-06-05</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2020/10/06/2020-10-06-travelogue-of-tiantong-temple/</loc>
-    
-    <lastmod>2022-06-05</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -281,15 +209,6 @@
   </url>
   
   <url>
-    <loc>https://c2lang.com/2021/06/02/2021-06-02-first-try-webassembly/</loc>
-    
-    <lastmod>2022-04-05</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://c2lang.com/2022/03/28/blog-migration-to-hexo/</loc>
     
     <lastmod>2022-04-02</lastmod>
@@ -298,361 +217,10 @@
     <priority>0.6</priority>
   </url>
   
-  <url>
-    <loc>https://c2lang.com/2022/03/24/2022-03-24-gitlab-upgrade/</loc>
-    
-    <lastmod>2022-03-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/11/12/2021-11-12-remembering-a-gitlab-failure/</loc>
-    
-    <lastmod>2022-03-17</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2022/03/17/2022-03-17-clean-up-linux-viru/</loc>
-    
-    <lastmod>2022-03-17</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2022/02/23/2022-02-23-spring-cloud-stream-practices/</loc>
-    
-    <lastmod>2022-02-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/09/26/2021-09-26-virtualbox-centos-8-expansio/</loc>
-    
-    <lastmod>2021-10-09</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/09/08/2021-09-08-learning-java-bytecode/</loc>
-    
-    <lastmod>2021-09-08</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/09/07/2021-09-07-learn-jni/</loc>
-    
-    <lastmod>2021-09-07</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/08/13/2021-08-13-mysql-practice/</loc>
-    
-    <lastmod>2021-08-13</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/07/02/2021-07-02-jeewms-user-guide/</loc>
-    
-    <lastmod>2021-07-10</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/06/22/2021-06-22-learn-zookeeper/</loc>
-    
-    <lastmod>2021-06-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/04/16/2021-04-16-brew-practices/</loc>
-    
-    <lastmod>2021-06-22</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/06/02/2021-06-02-learning-gtk/</loc>
-    
-    <lastmod>2021-06-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/04/26/2021-04-26-talk-about-meditatio/</loc>
-    
-    <lastmod>2021-05-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2020/08/08/2020-08-08-the-innovators-dilemma/</loc>
-    
-    <lastmod>2021-05-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/05/04/2021-05-04-thinking-about-rss/</loc>
-    
-    <lastmod>2021-05-05</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/05/02/2021-05-02-octopress-upgrade/</loc>
-    
-    <lastmod>2021-05-01</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/04/23/2021-04-23-springboot-elk/</loc>
-    
-    <lastmod>2021-04-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/03/28/2021-03-28-thoughts-after-reading-the-biography-of-masayoshi-son/</loc>
-    
-    <lastmod>2021-04-30</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/04/26/2021-04-26-springboot-elasticsearch/</loc>
-    
-    <lastmod>2021-04-26</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/04/14/2021-04-14-eclipse-notes/</loc>
-    
-    <lastmod>2021-04-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/04/18/2021-04-18-learn-kubernetes/</loc>
-    
-    <lastmod>2021-04-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/04/16/2021-04-16-learn-docker/</loc>
-    
-    <lastmod>2021-04-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/04/19/2021-04-19-learn-docker-2/</loc>
-    
-    <lastmod>2021-04-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/04/02/2021-04-02-performance-comparison-between-programming-languages/</loc>
-    
-    <lastmod>2021-04-02</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/03/29/2021-03-29-go-notes/</loc>
-    
-    <lastmod>2021-03-29</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2015/11/15/2015-11-15-ios-development-tips/</loc>
-    
-    <lastmod>2021-03-25</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/03/22/2021-03-22-nasm-notes/</loc>
-    
-    <lastmod>2021-03-22</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/03/11/2021-03-11-programming-the-80386-notes/</loc>
-    
-    <lastmod>2021-03-11</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2020/09/13/2020-09-13-talk-about-fasting/</loc>
-    
-    <lastmod>2021-02-22</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2021/01/05/2021-01-05-how-to-configure-mysql-8-master-slave-replication-on-centos-8/</loc>
-    
-    <lastmod>2021-01-05</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2020/11/12/2020-11-12-try-iphone-12-pro/</loc>
-    
-    <lastmod>2020-12-09</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2020/07/22/2020-07-22-octopress-users-guide/</loc>
-    
-    <lastmod>2020-07-28</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2020/07/27/2020-07-27-installing-nginx-on-mac/</loc>
-    
-    <lastmod>2020-07-28</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2020/07/26/2020-07-26-anonymous-functions-and-closures/</loc>
-    
-    <lastmod>2020-07-27</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2020/07/22/2020-07-22-mysql-notes/</loc>
-    
-    <lastmod>2020-07-23</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2020/07/22/2020-07-22-write-a-lottery-program-with-common-lisp/</loc>
-    
-    <lastmod>2020-07-22</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2014/10/30/2014-10-30-my-first-blog/</loc>
-    
-    <lastmod>2020-05-10</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2019/10/20/2019-10-20-macbook-pro-accessories/</loc>
-    
-    <lastmod>2019-10-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2019/10/03/2019-10-03-still-using-octopress/</loc>
-    
-    <lastmod>2019-10-03</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
 
   <url>
     <loc>https://c2lang.com/</loc>
-    <lastmod>2025-09-01</lastmod>
+    <lastmod>2025-09-04</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -660,18 +228,11 @@
   
   <url>
     <loc>https://c2lang.com/tags/yew/</loc>
-    <lastmod>2025-09-01</lastmod>
+    <lastmod>2025-09-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
 
-  
-  <url>
-    <loc>https://c2lang.com/categories/%E8%BF%90%E7%BB%B4/</loc>
-    <lastmod>2025-09-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
   
 </urlset>

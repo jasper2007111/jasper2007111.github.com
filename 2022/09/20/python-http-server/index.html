@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"c2lang.com","root":"/","images":"/images","scheme":"Pisces","darkmode":false,"version":"8.21.1","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":false,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="Python自带Http服务器，我一般是在共享文件时使用，直接在需要共享的目录下运行命令即可启动服务，不过有时候传输不是很稳定，重启一下就好了。 Python2 版本1python -m SimpleHTTPServer 8080  Python3 版本之前主要用Python 2.7的版本，随着2.7的终结加上macOS 12.3已经彻底移除了python 2.x的版本，只能使用3的版本了，Pyt">
+    <meta name="description" content="Python自带Http服务器，我一般是在共享文件时使用，直接在需要共享的目录下运行命令即可启动服务，不过有时候传输不是很稳定，重启一下就好了。 Python2 版本python -m SimpleHTTPServer 8080  Python3 版本之前主要用Python 2.7的版本，随着2.7的终结加上macOS 12.3已经彻底移除了python 2.x的版本，只能使用3的版本了，Pyth">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Python简单Http服务器">
 <meta property="og:url" content="https://c2lang.com/2022/09/20/python-http-server/index.html">
 <meta property="og:site_name" content="Jasper Ji">
-<meta property="og:description" content="Python自带Http服务器，我一般是在共享文件时使用，直接在需要共享的目录下运行命令即可启动服务，不过有时候传输不是很稳定，重启一下就好了。 Python2 版本1python -m SimpleHTTPServer 8080  Python3 版本之前主要用Python 2.7的版本，随着2.7的终结加上macOS 12.3已经彻底移除了python 2.x的版本，只能使用3的版本了，Pyt">
+<meta property="og:description" content="Python自带Http服务器，我一般是在共享文件时使用，直接在需要共享的目录下运行命令即可启动服务，不过有时候传输不是很稳定，重启一下就好了。 Python2 版本python -m SimpleHTTPServer 8080  Python3 版本之前主要用Python 2.7的版本，随着2.7的终结加上macOS 12.3已经彻底移除了python 2.x的版本，只能使用3的版本了，Pyth">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-09-20T09:15:24.000Z">
 <meta property="article:modified_time" content="2022-09-21T01:38:50.474Z">
@@ -51,6 +51,7 @@
   <noscript>
     <link rel="stylesheet" href="/css/noscript.css">
   </noscript>
+<link rel="alternate" href="/atom.xml" title="Jasper Ji" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -151,13 +152,9 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">71</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">1</span>
-        <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
         <span class="site-state-item-count">1</span>
@@ -236,12 +233,29 @@
     
     
     <div class="post-body" itemprop="articleBody"><p>Python自带Http服务器，我一般是在共享文件时使用，直接在需要共享的目录下运行命令即可启动服务，不过有时候传输不是很稳定，重启一下就好了。</p>
-<h3 id="Python2-版本"><a href="#Python2-版本" class="headerlink" title="Python2 版本"></a>Python2 版本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python -m SimpleHTTPServer <span class="number">8080</span></span><br></pre></td></tr></table></figure>
+<h3 id="Python2-版本"><a href="#Python2-版本" class="headerlink" title="Python2 版本"></a>Python2 版本</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">python <span class="token operator">-</span>m SimpleHTTPServer <span class="token number">8080</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <h3 id="Python3-版本"><a href="#Python3-版本" class="headerlink" title="Python3 版本"></a>Python3 版本</h3><p>之前主要用Python 2.7的版本，随着2.7的终结加上macOS 12.3已经彻底移除了python 2.x的版本，只能使用3的版本了，Python 3的这个Http服务器命令似乎更简单一些。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -m http.server <span class="number">8001</span></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">python3 <span class="token operator">-</span>m http<span class="token punctuation">.</span>server <span class="token number">8001</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
-<h3 id="跨域配置"><a href="#跨域配置" class="headerlink" title="跨域配置"></a>跨域配置</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="comment"># Python 3</span></span><br><span class="line">    <span class="keyword">from</span> http.server <span class="keyword">import</span> HTTPServer, SimpleHTTPRequestHandler, test <span class="keyword">as</span> test_orig</span><br><span class="line">    <span class="keyword">import</span> sys</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">test</span> (*args):</span><br><span class="line">        test_orig(*args, port=<span class="built_in">int</span>(sys.argv[<span class="number">1</span>]) <span class="keyword">if</span> <span class="built_in">len</span>(sys.argv) &gt; <span class="number">1</span> <span class="keyword">else</span> <span class="number">8000</span>)</span><br><span class="line"><span class="keyword">except</span> ImportError: <span class="comment"># Python 2</span></span><br><span class="line">    <span class="keyword">from</span> BaseHTTPServer <span class="keyword">import</span> HTTPServer, test</span><br><span class="line">    <span class="keyword">from</span> SimpleHTTPServer <span class="keyword">import</span> SimpleHTTPRequestHandler</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CORSRequestHandler</span> (<span class="title class_ inherited__">SimpleHTTPRequestHandler</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">end_headers</span> (self):</span><br><span class="line">        self.send_header(<span class="string">&#x27;Access-Control-Allow-Origin&#x27;</span>, <span class="string">&#x27;*&#x27;</span>)</span><br><span class="line">        SimpleHTTPRequestHandler.end_headers(self)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    test(CORSRequestHandler, HTTPServer)</span><br></pre></td></tr></table></figure>
+<h3 id="跨域配置"><a href="#跨域配置" class="headerlink" title="跨域配置"></a>跨域配置</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    <span class="token comment"># Python 3</span>
+    <span class="token keyword">from</span> http<span class="token punctuation">.</span>server <span class="token keyword">import</span> HTTPServer<span class="token punctuation">,</span> SimpleHTTPRequestHandler<span class="token punctuation">,</span> test <span class="token keyword">as</span> test_orig
+    <span class="token keyword">import</span> sys
+    <span class="token keyword">def</span> <span class="token function">test</span> <span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        test_orig<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> port<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">1</span> <span class="token keyword">else</span> <span class="token number">8000</span><span class="token punctuation">)</span>
+<span class="token keyword">except</span> ImportError<span class="token punctuation">:</span> <span class="token comment"># Python 2</span>
+    <span class="token keyword">from</span> BaseHTTPServer <span class="token keyword">import</span> HTTPServer<span class="token punctuation">,</span> test
+    <span class="token keyword">from</span> SimpleHTTPServer <span class="token keyword">import</span> SimpleHTTPRequestHandler
+
+<span class="token keyword">class</span> <span class="token class-name">CORSRequestHandler</span> <span class="token punctuation">(</span>SimpleHTTPRequestHandler<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">end_headers</span> <span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>send_header<span class="token punctuation">(</span><span class="token string">'Access-Control-Allow-Origin'</span><span class="token punctuation">,</span> <span class="token string">'*'</span><span class="token punctuation">)</span>
+        SimpleHTTPRequestHandler<span class="token punctuation">.</span>end_headers<span class="token punctuation">(</span>self<span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    test<span class="token punctuation">(</span>CORSRequestHandler<span class="token punctuation">,</span> HTTPServer<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
     </div>
