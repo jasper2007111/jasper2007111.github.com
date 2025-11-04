@@ -147,7 +147,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -169,6 +169,106 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/09/20/python-http-server/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/09/20/python-http-server/" class="post-title-link" itemprop="url">Python简单Http服务器</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-09-20 17:15:24" itemprop="dateCreated datePublished" datetime="2022-09-20T17:15:24+08:00">2022-09-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-09-21 09:38:50" itemprop="dateModified" datetime="2022-09-21T09:38:50+08:00">2022-09-21</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Python自带Http服务器，我一般是在共享文件时使用，直接在需要共享的目录下运行命令即可启动服务，不过有时候传输不是很稳定，重启一下就好了。</p>
+<h3 id="Python2-版本"><a href="#Python2-版本" class="headerlink" title="Python2 版本"></a>Python2 版本</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">python <span class="token operator">-</span>m SimpleHTTPServer <span class="token number">8080</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="Python3-版本"><a href="#Python3-版本" class="headerlink" title="Python3 版本"></a>Python3 版本</h3><p>之前主要用Python 2.7的版本，随着2.7的终结加上macOS 12.3已经彻底移除了python 2.x的版本，只能使用3的版本了，Python 3的这个Http服务器命令似乎更简单一些。</p>
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">python3 <span class="token operator">-</span>m http<span class="token punctuation">.</span>server <span class="token number">8001</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="跨域配置"><a href="#跨域配置" class="headerlink" title="跨域配置"></a>跨域配置</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
+<span class="token keyword">try</span><span class="token punctuation">:</span>
+    <span class="token comment"># Python 3</span>
+    <span class="token keyword">from</span> http<span class="token punctuation">.</span>server <span class="token keyword">import</span> HTTPServer<span class="token punctuation">,</span> SimpleHTTPRequestHandler<span class="token punctuation">,</span> test <span class="token keyword">as</span> test_orig
+    <span class="token keyword">import</span> sys
+    <span class="token keyword">def</span> <span class="token function">test</span> <span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        test_orig<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> port<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">1</span> <span class="token keyword">else</span> <span class="token number">8000</span><span class="token punctuation">)</span>
+<span class="token keyword">except</span> ImportError<span class="token punctuation">:</span> <span class="token comment"># Python 2</span>
+    <span class="token keyword">from</span> BaseHTTPServer <span class="token keyword">import</span> HTTPServer<span class="token punctuation">,</span> test
+    <span class="token keyword">from</span> SimpleHTTPServer <span class="token keyword">import</span> SimpleHTTPRequestHandler
+
+<span class="token keyword">class</span> <span class="token class-name">CORSRequestHandler</span> <span class="token punctuation">(</span>SimpleHTTPRequestHandler<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">end_headers</span> <span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>send_header<span class="token punctuation">(</span><span class="token string">'Access-Control-Allow-Origin'</span><span class="token punctuation">,</span> <span class="token string">'*'</span><span class="token punctuation">)</span>
+        SimpleHTTPRequestHandler<span class="token punctuation">.</span>end_headers<span class="token punctuation">(</span>self<span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
+    test<span class="token punctuation">(</span>CORSRequestHandler<span class="token punctuation">,</span> HTTPServer<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1240,93 +1340,6 @@ on_success<span class="token punctuation">.</span><span class="token function">f
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>至此算是把<code>IndexedDB</code>的问题解决了，如果想把操作封装起来，那么可以用前面的方式。只是简单的操作的话，后面的代码也是可以的。到目前为止，基本上还没有写网页的东西，<code>Yew</code>的东西，也就只是搭了个架子时有用到，并没有深入的使用。后面得需要好好的深入下，<code>Yew</code>这个框架跟传统的还不太一样，用<code>trunk serve</code>启动后，实际会有一个<code>WebSocket</code>在前后端之间通讯。</p>
 <p>再谈谈Rust学习的东西，实际上《Rust权威指南》这本书我只是看了个大概，而目前的实验项目中并没有使用Rust去写很多逻辑的代码，更多的是调用。用Rust写前端这个方式，起步会比一般的难点，主要还是牵涉的东西不只是Rust的问题，还有Wasm以及JS相关的东西，最重要的还是要明白他的运行环境是浏览器中Wasm虚拟机。不过后续如果有大量成熟的库，可以解决这些基础问题的话，只写网页的话，难度会小些。</p>
 <p>虽然项目整体进展不大，也走了一些弯路，不过却也让我思考到了更多的东西。现在感觉Rust是未来全栈程序员必备的语言，这门语言是非常考验你是不是一个合格的程序员，因为他既有很底层的东西，比如内存概念，也有很现代的语法，但前提是你需要都懂，对于那些不是科班出身又没有好好学习计算机相关的东西人来说，这个确实有难度。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/19/python-package-exe/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/19/python-package-exe/" class="post-title-link" itemprop="url">Python打包exe</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-04-19 16:08:41 / 修改时间：17:05:24" itemprop="dateCreated datePublished" datetime="2022-04-19T16:08:41+08:00">2022-04-19</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Python平时主要是处理数据用，在Mac上使用很方便，最近想把一个程序让下面人用，他们是Window环境，Python他们并不熟悉，所以直接把源文件丢过去，他们又得折腾一番。我就想到打包成exe，其实很早就有这样的想法，但一直没有做过。用的是PyInstaller这个库，还想着这么简单，结果一打包，发现并不是Window下的exe，原来是我理解的错误，以为可以直接打包成Window上执行的exe了，实际上PyInstaller只是在不同平台上将python打包成对应平台的应用了。难道我又得找台Windows，环境弄好，再打包一个？真麻烦，想着可以交叉编译吗？查了下PyInstaller以前好像可以，后来就去掉了。之前用过点Go语言，就是可以交叉编译的，一时间我尽有想用Go重写那个功能的想法，但是一对比还是Python方便。最后找了一个通过docker进行打包的方案<a target="_blank" rel="noopener" href="https://github.com/cdrx/docker-pyinstaller">docker-pyinstaller</a></p>
-<p>直接这个命令就可以打包了，具体可以参考文档。</p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">docker run -v &quot;$(pwd):&#x2F;src&#x2F;&quot; cdrx&#x2F;pyinstaller-windows<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>但是有个问题，打包出来的应用一执行，提示一个依赖的库，没有找到。不对啊，文档中明明说把依赖写在<code>requirements.txt</code>文件里，我也写了的。</p>
-<p>文档中的这段话，看着没有其他的操作，也没有相关的示例代码。</p>
-<blockquote>
-<p>If the src folder has a requirements.txt file, the packages will be installed into the environment before PyInstaller runs.</p>
-</blockquote>
-<p>折腾了好几个小时，最后找到了一篇日文的文章，看完后豁然开朗，原来是写法的问题，我对docker的一些东西不够熟吧。</p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">docker run --rm -v &quot;$(pwd):&#x2F;src&#x2F;&quot; cdrx&#x2F;pyinstaller-windows -c \
-  &quot;pip install -r requirements.txt &amp;&amp; \
-  pyinstaller main.py --onedir --onefile --clean &amp;&amp; \
-  mv dist&#x2F;main.exe main.exe &amp;&amp; \
-  rm -rf __pycache__&#x2F; build&#x2F; dist&#x2F; main.spec&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>最后打包后的exe就没有依赖缺失的问题了。不过打包成exe后，我最终还是改了下python的代码，比如<code>os.path.dirname(__file__)</code>是无法使用了，另外打开文件时提示<code>UnicodeDecodeError: &#39;gbk&#39; codec can&#39;t decode byte</code>的错误，需要加<code>encoding=&#39;utf-8&#39;</code>。</p>
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://qiita.com/ryoheiszk/items/2ea26594d24304c721e2">Docker環境のPyInstallerでキレイにExe化する</a></p>
 
       
     </div>
