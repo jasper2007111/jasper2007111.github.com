@@ -147,7 +147,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -169,6 +169,96 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/10/12/rabbitmq-practices/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/12/rabbitmq-practices/" class="post-title-link" itemprop="url">RabbitMQ实践</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-12 13:34:53 / 修改时间：13:58:37" itemprop="dateCreated datePublished" datetime="2022-10-12T13:34:53+08:00">2022-10-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>目前使用Docker进行安装，<code>15672</code>是网页端访问口，<code>5672</code>是程序端访问接口。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">docker run -d --name my-rabbit -p 15672:15672 -p 5672:5672 -e RABBITMQ_DEFAULT_USER&#x3D;username -e RABBITMQ_DEFAULT_PASS&#x3D;password rabbitmq:3.9-management
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这个命令是后台运行，<code>username</code>以及<code>password</code>需要替换成你自己的。</p>
+<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><h4 id="自动连接"><a href="#自动连接" class="headerlink" title="自动连接"></a>自动连接</h4><p>Spring Boot启动后会自动连接RabbitMQ，这个在测试环境下可以设置不自动连接。</p>
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">spring</span><span class="token punctuation">:</span>
+  <span class="token key atrule">rabbitmq</span><span class="token punctuation">:</span>
+    <span class="token key atrule">listener</span><span class="token punctuation">:</span>
+      <span class="token key atrule">direct</span><span class="token punctuation">:</span>
+        <span class="token key atrule">auto-startup</span><span class="token punctuation">:</span> <span class="token boolean important">false</span> <span class="token comment"># 测试环境下屏蔽掉RabbitMQ的自动重连</span>
+      <span class="token key atrule">simple</span><span class="token punctuation">:</span>
+        <span class="token key atrule">auto-startup</span><span class="token punctuation">:</span> <span class="token boolean important">false</span> <span class="token comment"># 测试环境下屏蔽掉RabbitMQ的自动重连</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="自动创建队列"><a href="#自动创建队列" class="headerlink" title="自动创建队列"></a>自动创建队列</h4><p>如果监听了没有创建的队列会报异常错误，可以用注解的时候自动创建队列。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@RabbitListener</span><span class="token punctuation">(</span>queuesToDeclare <span class="token operator">=</span> <span class="token annotation punctuation">@Queue</span><span class="token punctuation">(</span><span class="token string">"some-queue"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">someMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">// TODO Some Things</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="队列不消费"><a href="#队列不消费" class="headerlink" title="队列不消费"></a>队列不消费</h4><p>这个问题，偶然间我一不小心把RabbitMQ重启，当然没有消息，过了一会发现队列中的新数据并没有消费。最后重启了消费者的服务后，就正常了。所以这个问题，如果不及时发现的话，最终会导致队列出错的，在大项目的时候还是需要注意。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -314,7 +404,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2025-11-20 10:30:43" itemprop="dateModified" datetime="2025-11-20T10:30:43+08:00">2025-11-20</time>
+      <time title="修改时间：2025-11-22 06:31:11" itemprop="dateModified" datetime="2025-11-22T06:31:11+08:00">2025-11-22</time>
     </span>
 
   
@@ -365,6 +455,7 @@
 <p>乃奏云(臣)僧(师范)。一介庸衲。生于西蜀。浪游湖海。今四十年。于道无闻。每切自愧。夙生何幸。两蒙睿旨。扫洒庆元育王。而至双径。自去年八月领职。与四方衲子朝夕禅诵。仰报圣恩。</p>
 </blockquote>
 <p>另据《后村先生大全集·径山佛鉴禅师》记载：“绍定壬辰秋，奉诏住径山”，结合二者可知无准师范是绍定五年秋离开时阿育王寺到径山寺住持。语录虽然没有明确的纪年，但是包含一系节日类的记载，有周期性。根据无准师范在阿育王山广利禅寺的语录反复推断发现，收到如净禅师遗书是宝庆三年，时间应该是宝庆三年七月十四到九月九日之间，大概可以推断如净禅师应该是这个时段圆寂的。</p>
+<p>另一个证据是“天基节”这个节日是宋理宗时才有的，是宋理宗的生日正月五日，这个是在宋宁宗嘉定十七年十一月设置的。无准师范住阿育王寺语录中刚好有三个跟此节日有关的记载，宋理宗的第一个年号是宝庆，宝庆只有三年，所以依次推算无准师范是在宝庆三年的上半年到的阿育王寺。</p>
 <h3 id="语录考证"><a href="#语录考证" class="headerlink" title="语录考证"></a>语录考证</h3><p>现存的两本语录《如净和尚语录》、《天童山景德寺如净禅师续语录》。《如净和尚语录》应该是刊行版本，在后世资料都引用的是这个版本里面的内容。《天童山景德寺如净禅师续语录》有人认为是后人伪造，所以暂且不论。这里主要研究下语录发行的几个时间点，按时间顺序排序。</p>
 <blockquote>
 <p>狮子吼无畏说。百兽闻之皆脑裂。天衣举似箇中人。迈古超今离途辙。</p>
@@ -388,7 +479,7 @@
 <blockquote>
 <p>我长翁净祖六坐道塲，有语录在大中老师处，时山翁和尚增修天童志，乃取以参入山乘，其稿付山僧订刻板藏。</p>
 </blockquote>
-<p>但是语录后来应该是遗失了。</p>
+<p>但是国内的语录后来应该是遗失了。发现国内引用语录的部分，主要是在天童寺住持期间的语录，没有其他寺庙的语录。</p>
 <h3 id="雪窦足庵"><a href="#雪窦足庵" class="headerlink" title="雪窦足庵"></a>雪窦足庵</h3><p>如净禅师圆寂前自认为是雪窦足庵的弟子，但他是何时参礼的？据《如净和尚语录·住建康府清凉寺语录》记载：</p>
 <blockquote>
 <p>师于嘉定三年十月初五日。于华藏褒忠禅寺。受请入寺。</p>
@@ -1080,246 +1171,6 @@ adb shell settings put global captive_portal_https_url https:&#x2F;&#x2F;connect
 <p>目前用Rust写前端的资料很少，Yew资料更少，遇到问题基本上是反复的看官方的文档以及例子为主，很多时候总想抛开这些去寻找，但最后发现还是得认真的看文档和例子。另外就是看书吧，程序类的书籍我一般喜欢看纸质书，之前买的《Rust权威指南》，结合项目中遇到的问题期间又翻了翻，蛮有收获的。昨天又去省图借了《Rust程序设计》（Programming Rust），英文书名跟前者很像，出版也早一些，所以《Rust权威指南》为什么不是《Rust 程序设计语言》，估计是害怕读者搞混乱吧。这两本书各有千秋吧，我是拿来互补的。《Programming Rust》貌似已经出了第二版，我估计会考虑买本。</p>
 <h4 id="在线书籍"><a href="#在线书籍" class="headerlink" title="在线书籍"></a>在线书籍</h4><p><a target="_blank" rel="noopener" href="https://rustwiki.org/zh-CN/book/">Rust 程序设计语言</a>，其实就是我买的那本《Rust权威指南》，我觉得在线版的译名更合适。</p>
 <p><a target="_blank" rel="noopener" href="https://rustwiki.org/zh-CN/rust-by-example/index.html">通过例子学 Rust 中文版</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/04/23/rust-writing-front-end/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/04/23/rust-writing-front-end/" class="post-title-link" itemprop="url">Rust写前端</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-04-23 18:36:07 / 修改时间：20:24:05" itemprop="dateCreated datePublished" datetime="2022-04-23T18:36:07+08:00">2022-04-23</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>尝试用Rust已经有点时间了，之前主要的问题是卡在IndexedDB的使用上，最后的代码是这样。</p>
-<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token function">spawn_local</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token keyword">move</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">let</span> <span class="token punctuation">(</span>tx<span class="token punctuation">,</span> rx<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token namespace">oneshot<span class="token punctuation">::</span></span><span class="token function">channel</span><span class="token punctuation">::</span><span class="token operator">&lt;</span><span class="token class-name">IdbDatabase</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">let</span> window <span class="token operator">=</span> <span class="token namespace">web_sys<span class="token punctuation">::</span></span><span class="token function">window</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">let</span> idb_factory <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">indexed_db</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token keyword">let</span> open_request <span class="token operator">=</span> idb_factory
-            <span class="token punctuation">.</span><span class="token function">open_with_u32</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"todo"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">as_str</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-            <span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token keyword">let</span> on_upgradeneeded <span class="token operator">=</span> <span class="token class-name">Closure</span><span class="token punctuation">::</span><span class="token function">once</span><span class="token punctuation">(</span><span class="token keyword">move</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>event<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Event</span><span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">let</span> target <span class="token operator">=</span> event<span class="token punctuation">.</span><span class="token function">target</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"Event should have a target; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">let</span> req <span class="token operator">=</span> target
-                <span class="token punctuation">.</span><span class="token function">dyn_ref</span><span class="token punctuation">::</span><span class="token operator">&lt;</span><span class="token class-name">IdbRequest</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"Event target is IdbRequest; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-            <span class="token keyword">let</span> result <span class="token operator">=</span> req
-                <span class="token punctuation">.</span><span class="token function">result</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"IndexedDB.onsuccess should have a valid result; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token macro property">assert!</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span><span class="token function">is_instance_of</span><span class="token punctuation">::</span><span class="token operator">&lt;</span><span class="token class-name">IdbDatabase</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">let</span> db <span class="token operator">=</span> <span class="token class-name">IdbDatabase</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">let</span> store<span class="token punctuation">:</span><span class="token class-name">IdbObjectStore</span> <span class="token operator">=</span> db<span class="token punctuation">.</span><span class="token function">create_object_store</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">let</span> _index <span class="token operator">=</span> store<span class="token punctuation">.</span><span class="token function">create_index_with_str</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"create_index_with_str error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        open_request<span class="token punctuation">.</span><span class="token function">set_onupgradeneeded</span><span class="token punctuation">(</span><span class="token class-name">Some</span><span class="token punctuation">(</span>on_upgradeneeded<span class="token punctuation">.</span><span class="token function">as_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unchecked_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        on_upgradeneeded<span class="token punctuation">.</span><span class="token function">forget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token keyword">let</span> on_success <span class="token operator">=</span> <span class="token class-name">Closure</span><span class="token punctuation">::</span><span class="token function">once</span><span class="token punctuation">(</span><span class="token keyword">move</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>event<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Event</span><span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
-            <span class="token comment">// Extract database handle from the event</span>
-            <span class="token keyword">let</span> target <span class="token operator">=</span> event<span class="token punctuation">.</span><span class="token function">target</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"Event should have a target; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">let</span> req <span class="token operator">=</span> target
-                <span class="token punctuation">.</span><span class="token function">dyn_ref</span><span class="token punctuation">::</span><span class="token operator">&lt;</span><span class="token class-name">IdbRequest</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"Event target is IdbRequest; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-            <span class="token keyword">let</span> result <span class="token operator">=</span> req
-                <span class="token punctuation">.</span><span class="token function">result</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"IndexedDB.onsuccess should have a valid result; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token macro property">assert!</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span><span class="token function">is_instance_of</span><span class="token punctuation">::</span><span class="token operator">&lt;</span><span class="token class-name">IdbDatabase</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-            <span class="token keyword">let</span> db <span class="token operator">=</span> <span class="token class-name">IdbDatabase</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">let</span> _ <span class="token operator">=</span> tx<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>db<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        open_request<span class="token punctuation">.</span><span class="token function">set_onsuccess</span><span class="token punctuation">(</span><span class="token class-name">Some</span><span class="token punctuation">(</span>on_success<span class="token punctuation">.</span><span class="token function">as_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unchecked_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        on_success<span class="token punctuation">.</span><span class="token function">forget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token keyword">let</span> db <span class="token operator">=</span> rx<span class="token punctuation">.</span><span class="token keyword">await</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">let</span> transaction <span class="token operator">=</span> db<span class="token punctuation">.</span><span class="token function">transaction_with_str_and_mode</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">IdbTransactionMode</span><span class="token punctuation">::</span><span class="token class-name">Readwrite</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"transaction_with_str error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">let</span> store <span class="token operator">=</span> transaction<span class="token punctuation">.</span><span class="token function">object_store</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"store error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token keyword">let</span> name <span class="token operator">=</span> <span class="token class-name">JsValue</span><span class="token punctuation">::</span><span class="token function">from_str</span><span class="token punctuation">(</span>_content_element<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">as_str</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">let</span> add_request <span class="token operator">=</span> store<span class="token punctuation">.</span><span class="token function">add_with_key</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>name<span class="token punctuation">,</span> <span class="token operator">&amp;</span><span class="token class-name">JsValue</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"add error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token keyword">let</span> on_add_error <span class="token operator">=</span> <span class="token class-name">Closure</span><span class="token punctuation">::</span><span class="token function">once</span><span class="token punctuation">(</span><span class="token keyword">move</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>event<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Event</span><span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
-            <span class="token namespace">console<span class="token punctuation">::</span></span><span class="token function">log_1</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"写入数据失败"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">into</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token namespace">console<span class="token punctuation">::</span></span><span class="token function">log_1</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>event<span class="token punctuation">.</span><span class="token function">into</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        add_request<span class="token punctuation">.</span><span class="token function">set_onerror</span><span class="token punctuation">(</span><span class="token class-name">Some</span><span class="token punctuation">(</span>on_add_error<span class="token punctuation">.</span><span class="token function">as_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unchecked_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        on_add_error<span class="token punctuation">.</span><span class="token function">forget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token keyword">let</span> on_add_success <span class="token operator">=</span> <span class="token class-name">Closure</span><span class="token punctuation">::</span><span class="token function">once</span><span class="token punctuation">(</span><span class="token keyword">move</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>event<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Event</span><span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
-            <span class="token namespace">console<span class="token punctuation">::</span></span><span class="token function">log_1</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"写入数据成功"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">into</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        add_request<span class="token punctuation">.</span><span class="token function">set_onsuccess</span><span class="token punctuation">(</span><span class="token class-name">Some</span><span class="token punctuation">(</span>on_add_success<span class="token punctuation">.</span><span class="token function">as_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unchecked_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        on_add_success<span class="token punctuation">.</span><span class="token function">forget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token namespace">console<span class="token punctuation">::</span></span><span class="token function">log_1</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"do"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">into</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>因为IndexedDB连接成功是个异步事件，<code>db</code>    只能在成功事件中才能拿到，最初因为对IndexedDB的使用不熟悉，这玩意在很早以前看HTML5的时候就看到过，不过一直没有用过。我在成功事件中调用<code>create_object_store</code>，结果给报错了，实际上创建数据库只能在<code>onupgradeneeded</code>事件中处理。</p>
-<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> myDatabase <span class="token operator">=</span> <span class="token class-name">MyDatabase</span><span class="token punctuation">::</span><span class="token function">new</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-myDatabase<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"jasper"</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<p>早期的想法是把数据库的操作封装起来，但是连接是异步的，上面的<code>add</code>操作时数据库可能还没有连接成功，<code>db</code>等于为空。可能是之前做iOS的缘故，我一直想着数据库的操作应该是个单例，不过Rust的单例好像不那么简单，一直报错，所以这个想法就先放放了。</p>
-<p>早期的时候甚至不知道如何用Rust设置回调，最后发现了这个库<a target="_blank" rel="noopener" href="https://docs.rs/kvdb-web/latest/src/kvdb_web/indexed_db.rs.html">kvdb_web</a>，代码也是参考了<code>indexed_db.rs</code>中的方法。这个库并没有演示的例子，所以只是参考了他打开数据库的方法。里面有用到<code>futures::channel</code>，但是实际使用老是报错。后来我忘了Rust写前端，实际上是运行在Wasm虚拟机的环境下，Rust的多线程则是一般的操作系统的环境下了。实际上要在Wasm使用多线程，得用另外一种方式。实际上是用Rust的代码调用JS了，JS是单线程运行的。所以整个思路虽然是用Rust在写，但实际思想的话得跟着JS来走。我想在后面的代码中拿到<code>db</code>，有点类似JS中使用<code>await</code>的方式。最后用了两个库，<code>wasm-bindgen-futures</code>主要使用了<code>spawn_local</code>这个东西，另外还有<code>futures-channel</code>这个库。</p>
-<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token function">spawn_local</span><span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">let</span> <span class="token punctuation">(</span>tx<span class="token punctuation">,</span> rx<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token namespace">oneshot<span class="token punctuation">::</span></span><span class="token function">channel</span><span class="token punctuation">::</span><span class="token operator">&lt;</span><span class="token keyword">i32</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token comment">// 省略中间代码</span>
-	<span class="token keyword">let</span> on_success <span class="token operator">=</span> <span class="token class-name">Closure</span><span class="token punctuation">::</span><span class="token function">once</span><span class="token punctuation">(</span><span class="token keyword">move</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>event<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Event</span><span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
-                <span class="token comment">// Extract database handle from the event</span>
-                <span class="token keyword">let</span> target <span class="token operator">=</span> event<span class="token punctuation">.</span><span class="token function">target</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"Event should have a target; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">let</span> req <span class="token operator">=</span> target
-                    <span class="token punctuation">.</span><span class="token function">dyn_ref</span><span class="token punctuation">::</span><span class="token operator">&lt;</span><span class="token class-name">IdbRequest</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-                    <span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"Event target is IdbRequest; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-                <span class="token keyword">let</span> result <span class="token operator">=</span> req
-                    <span class="token punctuation">.</span><span class="token function">result</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-                    <span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"IndexedDB.onsuccess should have a valid result; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token macro property">assert!</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span><span class="token function">is_instance_of</span><span class="token punctuation">::</span><span class="token operator">&lt;</span><span class="token class-name">IdbDatabase</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-                <span class="token keyword">let</span> db <span class="token operator">=</span> <span class="token class-name">IdbDatabase</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">let</span> _ <span class="token operator">=</span> tx<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>db<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    open_request<span class="token punctuation">.</span><span class="token function">set_onsuccess</span><span class="token punctuation">(</span><span class="token class-name">Some</span><span class="token punctuation">(</span>on_success<span class="token punctuation">.</span><span class="token function">as_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unchecked_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    on_success<span class="token punctuation">.</span><span class="token function">forget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-   
-    <span class="token comment">// 等于这块回一直阻塞，直到拿个值。</span>
-    <span class="token keyword">let</span> db <span class="token operator">=</span> rx<span class="token punctuation">.</span><span class="token keyword">await</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token comment">// 省略剩余代码</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>futures-channel</code>这个库的用法跟Rust自带那个有点类似，不过只用这个是可以工作的。后面的问题基本上是<code>IndexedDB</code>的用法问题，最后终于可以把数据成功插入了，虽然再次插入数据时会有写入失败的问题，不过这个已经是后面的事了。</p>
-<p>当我费了很多周折，成功写入时，也就是写这篇文章时候，突然间发现可以直接用下面的方式写，如果只是要写入数据的话。</p>
-<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> window <span class="token operator">=</span> <span class="token namespace">web_sys<span class="token punctuation">::</span></span><span class="token function">window</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">let</span> idb_factory <span class="token operator">=</span> window<span class="token punctuation">.</span><span class="token function">indexed_db</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> open_request <span class="token operator">=</span> idb_factory
-    <span class="token punctuation">.</span><span class="token function">open_with_u32</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"todo"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">as_str</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
-    <span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> on_upgradeneeded <span class="token operator">=</span> <span class="token class-name">Closure</span><span class="token punctuation">::</span><span class="token function">once</span><span class="token punctuation">(</span><span class="token keyword">move</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>event<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Event</span><span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">let</span> target <span class="token operator">=</span> event<span class="token punctuation">.</span><span class="token function">target</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"Event should have a target; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">let</span> req <span class="token operator">=</span> target
-        <span class="token punctuation">.</span><span class="token function">dyn_ref</span><span class="token punctuation">::</span><span class="token operator">&lt;</span><span class="token class-name">IdbRequest</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"Event target is IdbRequest; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">let</span> result <span class="token operator">=</span> req
-        <span class="token punctuation">.</span><span class="token function">result</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"IndexedDB.onsuccess should have a valid result; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token macro property">assert!</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span><span class="token function">is_instance_of</span><span class="token punctuation">::</span><span class="token operator">&lt;</span><span class="token class-name">IdbDatabase</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">let</span> db <span class="token operator">=</span> <span class="token class-name">IdbDatabase</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">let</span> store<span class="token punctuation">:</span> <span class="token class-name">IdbObjectStore</span> <span class="token operator">=</span> db<span class="token punctuation">.</span><span class="token function">create_object_store</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unwrap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">let</span> _index <span class="token operator">=</span> store
-        <span class="token punctuation">.</span><span class="token function">create_index_with_str</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"create_index_with_str error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-open_request<span class="token punctuation">.</span><span class="token function">set_onupgradeneeded</span><span class="token punctuation">(</span><span class="token class-name">Some</span><span class="token punctuation">(</span>on_upgradeneeded<span class="token punctuation">.</span><span class="token function">as_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unchecked_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-on_upgradeneeded<span class="token punctuation">.</span><span class="token function">forget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> on_success <span class="token operator">=</span> <span class="token class-name">Closure</span><span class="token punctuation">::</span><span class="token function">once</span><span class="token punctuation">(</span><span class="token keyword">move</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>event<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Event</span><span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// Extract database handle from the event</span>
-    <span class="token keyword">let</span> target <span class="token operator">=</span> event<span class="token punctuation">.</span><span class="token function">target</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"Event should have a target; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">let</span> req <span class="token operator">=</span> target
-        <span class="token punctuation">.</span><span class="token function">dyn_ref</span><span class="token punctuation">::</span><span class="token operator">&lt;</span><span class="token class-name">IdbRequest</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"Event target is IdbRequest; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">let</span> result <span class="token operator">=</span> req
-        <span class="token punctuation">.</span><span class="token function">result</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"IndexedDB.onsuccess should have a valid result; qed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token macro property">assert!</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span><span class="token function">is_instance_of</span><span class="token punctuation">::</span><span class="token operator">&lt;</span><span class="token class-name">IdbDatabase</span><span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">let</span> db <span class="token operator">=</span> <span class="token class-name">IdbDatabase</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">let</span> transaction <span class="token operator">=</span> db
-        <span class="token punctuation">.</span><span class="token function">transaction_with_str_and_mode</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">IdbTransactionMode</span><span class="token punctuation">::</span><span class="token class-name">Readwrite</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"transaction_with_str error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">let</span> store <span class="token operator">=</span> transaction
-        <span class="token punctuation">.</span><span class="token function">object_store</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"store error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">let</span> name <span class="token operator">=</span> <span class="token class-name">JsValue</span><span class="token punctuation">::</span><span class="token function">from_str</span><span class="token punctuation">(</span>_content_element<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">as_str</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">let</span> add_request <span class="token operator">=</span> store
-        <span class="token punctuation">.</span><span class="token function">add_with_key</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>name<span class="token punctuation">,</span> <span class="token operator">&amp;</span><span class="token class-name">JsValue</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">expect</span><span class="token punctuation">(</span><span class="token string">"add error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">let</span> on_add_error <span class="token operator">=</span> <span class="token class-name">Closure</span><span class="token punctuation">::</span><span class="token function">once</span><span class="token punctuation">(</span><span class="token keyword">move</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>event<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Event</span><span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
-        <span class="token namespace">console<span class="token punctuation">::</span></span><span class="token function">log_1</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"写入数据失败"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">into</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token namespace">console<span class="token punctuation">::</span></span><span class="token function">log_1</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>event<span class="token punctuation">.</span><span class="token function">into</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    add_request<span class="token punctuation">.</span><span class="token function">set_onerror</span><span class="token punctuation">(</span><span class="token class-name">Some</span><span class="token punctuation">(</span>on_add_error<span class="token punctuation">.</span><span class="token function">as_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unchecked_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    on_add_error<span class="token punctuation">.</span><span class="token function">forget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">let</span> on_add_success <span class="token operator">=</span> <span class="token class-name">Closure</span><span class="token punctuation">::</span><span class="token function">once</span><span class="token punctuation">(</span><span class="token keyword">move</span> <span class="token closure-params"><span class="token closure-punctuation punctuation">|</span>event<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">Event</span><span class="token closure-punctuation punctuation">|</span></span> <span class="token punctuation">&#123;</span>
-        <span class="token namespace">console<span class="token punctuation">::</span></span><span class="token function">log_1</span><span class="token punctuation">(</span><span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"写入数据成功"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">into</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    add_request<span class="token punctuation">.</span><span class="token function">set_onsuccess</span><span class="token punctuation">(</span><span class="token class-name">Some</span><span class="token punctuation">(</span>on_add_success<span class="token punctuation">.</span><span class="token function">as_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unchecked_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    on_add_success<span class="token punctuation">.</span><span class="token function">forget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-open_request<span class="token punctuation">.</span><span class="token function">set_onsuccess</span><span class="token punctuation">(</span><span class="token class-name">Some</span><span class="token punctuation">(</span>on_success<span class="token punctuation">.</span><span class="token function">as_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">unchecked_ref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-on_success<span class="token punctuation">.</span><span class="token function">forget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>至此算是把<code>IndexedDB</code>的问题解决了，如果想把操作封装起来，那么可以用前面的方式。只是简单的操作的话，后面的代码也是可以的。到目前为止，基本上还没有写网页的东西，<code>Yew</code>的东西，也就只是搭了个架子时有用到，并没有深入的使用。后面得需要好好的深入下，<code>Yew</code>这个框架跟传统的还不太一样，用<code>trunk serve</code>启动后，实际会有一个<code>WebSocket</code>在前后端之间通讯。</p>
-<p>再谈谈Rust学习的东西，实际上《Rust权威指南》这本书我只是看了个大概，而目前的实验项目中并没有使用Rust去写很多逻辑的代码，更多的是调用。用Rust写前端这个方式，起步会比一般的难点，主要还是牵涉的东西不只是Rust的问题，还有Wasm以及JS相关的东西，最重要的还是要明白他的运行环境是浏览器中Wasm虚拟机。不过后续如果有大量成熟的库，可以解决这些基础问题的话，只写网页的话，难度会小些。</p>
-<p>虽然项目整体进展不大，也走了一些弯路，不过却也让我思考到了更多的东西。现在感觉Rust是未来全栈程序员必备的语言，这门语言是非常考验你是不是一个合格的程序员，因为他既有很底层的东西，比如内存概念，也有很现代的语法，但前提是你需要都懂，对于那些不是科班出身又没有好好学习计算机相关的东西人来说，这个确实有难度。</p>
 
       
     </div>

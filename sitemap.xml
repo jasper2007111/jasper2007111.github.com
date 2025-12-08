@@ -2,9 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://c2lang.com/2025/12/05/wechat-writing-practice/</loc>
+    
+    <lastmod>2025-12-08</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://c2lang.com/2022/09/16/study-of-zen-master-tiantong-rujing/</loc>
     
-    <lastmod>2025-11-20</lastmod>
+    <lastmod>2025-11-21</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -229,7 +238,7 @@
 
   <url>
     <loc>https://c2lang.com/</loc>
-    <lastmod>2025-11-20</lastmod>
+    <lastmod>2025-12-08</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -237,7 +246,7 @@
   
   <url>
     <loc>https://c2lang.com/tags/yew/</loc>
-    <lastmod>2025-11-20</lastmod>
+    <lastmod>2025-12-08</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
