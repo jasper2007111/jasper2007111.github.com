@@ -147,7 +147,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -169,6 +169,277 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/10/30/flex-and-bison/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/30/flex-and-bison/" class="post-title-link" itemprop="url">Flex与Bison</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-30 17:08:09 / 修改时间：19:04:27" itemprop="dateCreated datePublished" datetime="2022-10-30T17:08:09+08:00">2022-10-30</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>最早是读了《Unix编程环境》，在书中有展示如何用Lex和Yacc制作一门编程语言，后来就买了《Lex与Yacc》，Flex、Bison分别是Lex、Yacc的现代版本，于是又买了《Flex与Bison》，《Flex与Bison》实际上是《Lex与Yacc》的续作，都是同样的作者。书虽然简单读了下，但里面的例子一直没有尝试的运行下。</p>
+<h3 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h3><p>电脑：macOS Monterey，12.5</p>
+<p>Flex版本2.6.4，Bison版本3.8.2。Mac下直接使用brew安装，安装完成后记得根据提示把环境配置下。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">brew install flex 
+brew install bison<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>GCC版本，我使用<code>gcc -v</code>命令后，实际出现的是clang的版本。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">gcc -v
+Apple clang version 14.0.0 (clang-1400.0.29.102)
+Target: x86_64-apple-darwin21.6.0
+Thread model: posix
+InstalledDir: &#x2F;Applications&#x2F;Xcode.app&#x2F;Contents&#x2F;Developer&#x2F;Toolchains&#x2F;XcodeDefault.xctoolchain&#x2F;usr&#x2F;bin<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="WC例子"><a href="#WC例子" class="headerlink" title="WC例子"></a>WC例子</h3><p>书中第一个例子类似unix下wc的例子。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"> <span class="token operator">%</span><span class="token punctuation">&#123;</span>
+ <span class="token keyword">int</span> chars <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+ <span class="token keyword">int</span> words <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+ <span class="token keyword">int</span> lines <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+ <span class="token operator">%</span><span class="token punctuation">&#125;</span>
+ 
+<span class="token operator">%</span><span class="token operator">%</span>
+ <span class="token punctuation">[</span>a<span class="token operator">-</span>zA<span class="token operator">-</span>Z<span class="token punctuation">]</span><span class="token operator">+</span>   <span class="token punctuation">&#123;</span> words<span class="token operator">++</span><span class="token punctuation">;</span> chars <span class="token operator">+=</span> <span class="token function">strlen</span><span class="token punctuation">(</span>yytext<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span>
+ \n          <span class="token punctuation">&#123;</span> chars<span class="token operator">++</span><span class="token punctuation">;</span> lines<span class="token operator">++</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+ <span class="token punctuation">.</span>           <span class="token punctuation">&#123;</span> chars<span class="token operator">++</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token operator">%</span><span class="token operator">%</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token operator">*</span><span class="token operator">*</span> aggv<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+     <span class="token function">yylex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%8d%8d%8d\n"</span><span class="token punctuation">,</span> lines<span class="token punctuation">,</span> words<span class="token punctuation">,</span> chars<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>书中的例子main函数都没有写返回值，编译的时候回报warn了，我都加了返回参数。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">flex fb1-1.l # 上面的例子保存为l后缀的文件
+gcc lex.yy.c -ll # 这一步会升a.out文件
+.&#x2F;a.out # 执行文件，输入一些字符，以control+d结束后，便会输出结果<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>这里需要注意的是原书中<code>gcc lex.yy.cc -lfl</code>，结果一直报错。后来找到Mac应该使用<code>-ll</code>替代<code>-lfl</code>，参考Reddit上的这个问答：<a target="_blank" rel="noopener" href="https://www.reddit.com/r/C_Programming/comments/wk914f/does_anyone_know_how_to_resolve_this_error_when/">Does anyone know how to resolve this error when compiling Flex and Bison?</a></p>
+<h3 id="计算器例子"><a href="#计算器例子" class="headerlink" title="计算器例子"></a>计算器例子</h3><p>第二例子是一个计算器例子，结合了Flex和Bison</p>
+<p><code>fb1-5.l</code>文件代码</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token operator">%</span><span class="token punctuation">&#123;</span>
+<span class="token macro property"><span class="token directive-hash">#</span> <span class="token directive keyword">include</span> <span class="token string">"fb1-5.tab.h"</span></span>
+<span class="token operator">%</span><span class="token punctuation">&#125;</span>
+
+<span class="token operator">%</span><span class="token operator">%</span>
+<span class="token string">"+"</span>	<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> ADD<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token string">"-"</span>	<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> SUB<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token string">"*"</span>	<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> MUL<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token string">"/"</span>	<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> DIV<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token string">"|"</span>     <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> ABS<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token string">"("</span>     <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> OP<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token string">")"</span>     <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> CP<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token punctuation">[</span><span class="token number">0</span><span class="token operator">-</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token operator">+</span>	<span class="token punctuation">&#123;</span> yylval <span class="token operator">=</span> <span class="token function">atoll</span><span class="token punctuation">(</span>yytext<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token keyword">return</span> NUMBER<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+
+\n      <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> EOL<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+<span class="token string">"//"</span><span class="token punctuation">.</span><span class="token operator">*</span>  
+<span class="token punctuation">[</span> \t<span class="token punctuation">]</span>   <span class="token punctuation">&#123;</span> <span class="token comment">/* ignore white space */</span> <span class="token punctuation">&#125;</span>
+<span class="token operator">%</span><span class="token operator">%</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>fb1-5.y</code>文件代码，需要注意的是书中的例子类似<code>factor default $$ = $1</code>，实际运行报错修改为<code>factor &#123; $$ = $1; &#125;</code>格式。</p>
+<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/**/</span>
+<span class="token operator">%</span><span class="token punctuation">&#123;</span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
+<span class="token keyword">void</span> <span class="token function">yyerror</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 新加</span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 新加</span>
+<span class="token keyword">int</span> <span class="token function">yylex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 新加</span>
+<span class="token operator">%</span><span class="token punctuation">&#125;</span>
+
+<span class="token operator">%</span>token NUMBER
+<span class="token operator">%</span>token ADD SUB MUL DIV ABS
+<span class="token operator">%</span>token OP CP
+<span class="token operator">%</span>token EOL
+
+<span class="token operator">%</span><span class="token operator">%</span>
+
+calclist<span class="token operator">:</span> <span class="token comment">/* 空规则 */</span>
+   <span class="token operator">|</span> calclist exp EOL <span class="token punctuation">&#123;</span> <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"= %d\n"</span><span class="token punctuation">,</span> $<span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">;</span>
+
+exp<span class="token operator">:</span> factor <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token operator">|</span> exp ADD factor <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span> <span class="token operator">+</span> $<span class="token number">3</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token operator">|</span> exp SUB factor <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span> <span class="token operator">-</span> $<span class="token number">3</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">;</span>
+
+factor<span class="token operator">:</span> term <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token operator">|</span> factor MUL term <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span> <span class="token operator">*</span> $<span class="token number">3</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token operator">|</span> factor DIV term <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span> <span class="token operator">/</span> $<span class="token number">3</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">;</span>
+
+term<span class="token operator">:</span> NUMBER <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token operator">|</span> ABS term <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">2</span> <span class="token operator">>=</span> <span class="token number">0</span><span class="token operator">?</span> $<span class="token number">2</span> <span class="token operator">:</span> <span class="token operator">-</span>$<span class="token number">2</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">;</span>
+<span class="token operator">%</span><span class="token operator">%</span>
+
+<span class="token keyword">void</span> <span class="token function">yyerror</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">fprintf</span><span class="token punctuation">(</span><span class="token constant">stderr</span><span class="token punctuation">,</span> <span class="token string">"error: %s\n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>argv<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token function">yyparse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>按一下顺序运行</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">bison -d fb1-5.y # 一定要加-d，加了以后会生成fb1-5.tab.h文件
+flex fb1-5.l  # 生成lex.yy.c文件
+gcc fb1-5.tab.c lex.yy.c -ll # 这个也跟原书的命令不太一样，生成a.out文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实还遇到一些跟c有关系的编译问题，比如<code>atoi</code>在<code>c99</code>下不可用，需要使用<code>atoll</code>。总的来说，问题不大，算是都运行起来了，毕竟原书是2009年出版的。最后难能可贵的是书中例子的ftp下载地址居然还可以用，<a href="ftp://ftp.iecc.com/pub/file/flexbison.zip">代码下载</a>。</p>
+<p>书中也提到使用Flex和Bison，当然也可以手写。其实对于我这样的多年写代码的人，很多时候太关注实现了，往往失去了高层次的思考，使用Flex和Bison这样的工具是让你直接关注问题本身，比如语言的一些问题。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/10/17/vsftpd-practices/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/10/17/vsftpd-practices/" class="post-title-link" itemprop="url">Vsftpd实践</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-10-17 14:37:47 / 修改时间：15:09:54" itemprop="dateCreated datePublished" datetime="2022-10-17T14:37:47+08:00">2022-10-17</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>我用的是docker安装的，创建一个ftp的目录，使用命令。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">docker run -d -v 你自己的目录:&#x2F;home&#x2F;vsftpd \
+-p 20:20 -p 21:21 -p 21100-21110:21100-21110 \
+-e FTP_USER&#x3D;用户名 -e FTP_PASS&#x3D;密码 \
+-e PASV_ADDRESS&#x3D;主机IP -e PASV_MIN_PORT&#x3D;21100 -e PASV_MAX_PORT&#x3D;21110 \
+--name vsftpd --restart&#x3D;always fauria&#x2F;vsftpd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="连接慢"><a href="#连接慢" class="headerlink" title="连接慢"></a>连接慢</h3><p>感觉登录很慢，需要做下配置。</p>
+<p>进入容器</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">docker exec -it 你自己的容器的ID bash <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>使用vi编辑配置文件，修改<code>reverse_lookup_enable</code>字段为<code>NO</code></p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">vi &#x2F;etc&#x2F;vsftpd&#x2F;vsftpd.conf <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>保存配置</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">source &#x2F;etc&#x2F;vsftpd&#x2F;vsftpd.conf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>删除里面全部的<code>nameserve</code>，同样保存。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">vi &#x2F;etc&#x2F;resolv.conf
+source &#x2F;etc&#x2F;resolv.conf<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="无法下载"><a href="#无法下载" class="headerlink" title="无法下载"></a>无法下载</h3><p>可以显示目录单是却无法下载文件，测试文件很小，只有一两次偶然的情况下载成功了，搜索了半天发现都没有遇到跟我一样问题的。最后发现原来是没有正确设置防火墙端口的问题，使用的是阿里云，在安全组我只开通了<code>21100</code>这个端口，实际上应该是一个范围<code>21100-21110</code>，安全组的配置应该是<code>21100/21110</code>。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://hub.docker.com/r/fauria/vsftpd">fauria&#x2F;vsftpd</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1027,168 +1298,6 @@ apply from<span class="token punctuation">:</span> <span class="token string gst
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/05/13/lg-nexus-5x-settings/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/13/lg-nexus-5x-settings/" class="post-title-link" itemprop="url">LG Nexus 5X 设置</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-05-13 14:15:06 / 修改时间：14:36:25" itemprop="dateCreated datePublished" datetime="2022-05-13T14:15:06+08:00">2022-05-13</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>18年的时候为了开发出海的应用，专门购买了一台二手的LG Nexus 5X，图的就是有谷歌服务，最近又有用到开发，发现一些问题，都是众所周知的原因了，好在都一一解决了，提前是要先安装<code>adb</code>，通过<code>adb</code>来设置。</p>
-<h4 id="连接WIFI成功后，提示无法访问互联网"><a href="#连接WIFI成功后，提示无法访问互联网" class="headerlink" title="连接WIFI成功后，提示无法访问互联网"></a>连接WIFI成功后，提示无法访问互联网</h4><p>实际上是可以访问网络，当然谷歌是访问不了的，网上搜索了下，主要是替换验证的网址了，以下方法亲测可用。</p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">adb shell settings put global captive_portal_detection_enabled 1
-adb shell settings put global captive_portal_mode 1
-adb shell settings put global captive_portal_use_https 0
-adb shell settings put global captive_portal_server connect.rom.miui.com
-adb shell settings put global captive_portal_http_url http:&#x2F;&#x2F;connect.rom.miui.com&#x2F;generate_204
-adb shell settings put global captive_portal_https_url https:&#x2F;&#x2F;connect.rom.miui.com&#x2F;generate_204<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h4 id="无法使用互联网时间"><a href="#无法使用互联网时间" class="headerlink" title="无法使用互联网时间"></a>无法使用互联网时间</h4><p>同样的也是无法谷歌提供的时间服务， 我用的阿里的NTP服务。</p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">adb shell settings put global ntp_server ntp.aliyun.com<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6984621205202403364">开发者必备手机nexus 5x 开发环境预备</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.v2ex.com/t/639339">Android 系统时间不对有遇到的吗？</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/05/02/write-a-notepad-with-rust-and-yew/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/05/02/write-a-notepad-with-rust-and-yew/" class="post-title-link" itemprop="url">用Rust和Yew写一个记事本</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-05-02 09:03:07" itemprop="dateCreated datePublished" datetime="2022-05-02T09:03:07+08:00">2022-05-02</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-05-08 15:07:00" itemprop="dateModified" datetime="2022-05-08T15:07:00+08:00">2022-05-08</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>记事本这个小应用完全是为了学习Rust而产生的应用，今年4月6号创建了这个项目，主要是用业余时间弄下，刚好五一假期，我也就加把劲，算是弄出一个基本功能的东西。本来想写那些遇到的问题，可一旦动笔却不知道如何写起来，问题已经都解决了，新的问题依旧在路上。于是直接把项目上传到Github了，<a target="_blank" rel="noopener" href="https://github.com/jasper2007111/yew-notepad">yew-notepad</a>，有兴趣的可以自己拉下来看看，或许有点用。</p>
-<p>目前用Rust写前端的资料很少，Yew资料更少，遇到问题基本上是反复的看官方的文档以及例子为主，很多时候总想抛开这些去寻找，但最后发现还是得认真的看文档和例子。另外就是看书吧，程序类的书籍我一般喜欢看纸质书，之前买的《Rust权威指南》，结合项目中遇到的问题期间又翻了翻，蛮有收获的。昨天又去省图借了《Rust程序设计》（Programming Rust），英文书名跟前者很像，出版也早一些，所以《Rust权威指南》为什么不是《Rust 程序设计语言》，估计是害怕读者搞混乱吧。这两本书各有千秋吧，我是拿来互补的。《Programming Rust》貌似已经出了第二版，我估计会考虑买本。</p>
-<h4 id="在线书籍"><a href="#在线书籍" class="headerlink" title="在线书籍"></a>在线书籍</h4><p><a target="_blank" rel="noopener" href="https://rustwiki.org/zh-CN/book/">Rust 程序设计语言</a>，其实就是我买的那本《Rust权威指南》，我觉得在线版的译名更合适。</p>
-<p><a target="_blank" rel="noopener" href="https://rustwiki.org/zh-CN/rust-by-example/index.html">通过例子学 Rust 中文版</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1201,7 +1310,7 @@ adb shell settings put global captive_portal_https_url https:&#x2F;&#x2F;connect
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>

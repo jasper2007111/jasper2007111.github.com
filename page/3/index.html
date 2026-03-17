@@ -147,7 +147,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -169,6 +169,168 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/05/13/lg-nexus-5x-settings/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/13/lg-nexus-5x-settings/" class="post-title-link" itemprop="url">LG Nexus 5X 设置</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-05-13 14:15:06 / 修改时间：14:36:25" itemprop="dateCreated datePublished" datetime="2022-05-13T14:15:06+08:00">2022-05-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>18年的时候为了开发出海的应用，专门购买了一台二手的LG Nexus 5X，图的就是有谷歌服务，最近又有用到开发，发现一些问题，都是众所周知的原因了，好在都一一解决了，提前是要先安装<code>adb</code>，通过<code>adb</code>来设置。</p>
+<h4 id="连接WIFI成功后，提示无法访问互联网"><a href="#连接WIFI成功后，提示无法访问互联网" class="headerlink" title="连接WIFI成功后，提示无法访问互联网"></a>连接WIFI成功后，提示无法访问互联网</h4><p>实际上是可以访问网络，当然谷歌是访问不了的，网上搜索了下，主要是替换验证的网址了，以下方法亲测可用。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">adb shell settings put global captive_portal_detection_enabled 1
+adb shell settings put global captive_portal_mode 1
+adb shell settings put global captive_portal_use_https 0
+adb shell settings put global captive_portal_server connect.rom.miui.com
+adb shell settings put global captive_portal_http_url http:&#x2F;&#x2F;connect.rom.miui.com&#x2F;generate_204
+adb shell settings put global captive_portal_https_url https:&#x2F;&#x2F;connect.rom.miui.com&#x2F;generate_204<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="无法使用互联网时间"><a href="#无法使用互联网时间" class="headerlink" title="无法使用互联网时间"></a>无法使用互联网时间</h4><p>同样的也是无法谷歌提供的时间服务， 我用的阿里的NTP服务。</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">adb shell settings put global ntp_server ntp.aliyun.com<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h4 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h4><p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6984621205202403364">开发者必备手机nexus 5x 开发环境预备</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.v2ex.com/t/639339">Android 系统时间不对有遇到的吗？</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/05/02/write-a-notepad-with-rust-and-yew/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/02/write-a-notepad-with-rust-and-yew/" class="post-title-link" itemprop="url">用Rust和Yew写一个记事本</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-02 09:03:07" itemprop="dateCreated datePublished" datetime="2022-05-02T09:03:07+08:00">2022-05-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-05-08 15:07:00" itemprop="dateModified" datetime="2022-05-08T15:07:00+08:00">2022-05-08</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>记事本这个小应用完全是为了学习Rust而产生的应用，今年4月6号创建了这个项目，主要是用业余时间弄下，刚好五一假期，我也就加把劲，算是弄出一个基本功能的东西。本来想写那些遇到的问题，可一旦动笔却不知道如何写起来，问题已经都解决了，新的问题依旧在路上。于是直接把项目上传到Github了，<a target="_blank" rel="noopener" href="https://github.com/jasper2007111/yew-notepad">yew-notepad</a>，有兴趣的可以自己拉下来看看，或许有点用。</p>
+<p>目前用Rust写前端的资料很少，Yew资料更少，遇到问题基本上是反复的看官方的文档以及例子为主，很多时候总想抛开这些去寻找，但最后发现还是得认真的看文档和例子。另外就是看书吧，程序类的书籍我一般喜欢看纸质书，之前买的《Rust权威指南》，结合项目中遇到的问题期间又翻了翻，蛮有收获的。昨天又去省图借了《Rust程序设计》（Programming Rust），英文书名跟前者很像，出版也早一些，所以《Rust权威指南》为什么不是《Rust 程序设计语言》，估计是害怕读者搞混乱吧。这两本书各有千秋吧，我是拿来互补的。《Programming Rust》貌似已经出了第二版，我估计会考虑买本。</p>
+<h4 id="在线书籍"><a href="#在线书籍" class="headerlink" title="在线书籍"></a>在线书籍</h4><p><a target="_blank" rel="noopener" href="https://rustwiki.org/zh-CN/book/">Rust 程序设计语言</a>，其实就是我买的那本《Rust权威指南》，我觉得在线版的译名更合适。</p>
+<p><a target="_blank" rel="noopener" href="https://rustwiki.org/zh-CN/rust-by-example/index.html">通过例子学 Rust 中文版</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -740,7 +902,7 @@ on_success<span class="token punctuation">.</span><span class="token function">f
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>

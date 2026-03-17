@@ -147,7 +147,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -169,6 +169,304 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2026/03/17/openclaw-practice/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/03/17/openclaw-practice/" class="post-title-link" itemprop="url">OpenClaw 实践</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2026-03-17 16:10:51 / 修改时间：16:12:46" itemprop="dateCreated datePublished" datetime="2026-03-17T16:10:51+08:00">2026-03-17</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>大部分问题都可以在<a target="_blank" rel="noopener" href="https://docs.openclaw.ai/">官方文档</a>找到，这里只是记载下没有的部分。</p>
+<h3 id="模型"><a href="#模型" class="headerlink" title="模型"></a>模型</h3><p>模型是必备的，我自己选择的是本地模型，使用<code>llama.cpp</code>来运行各种模型，<code>brew</code>可以安装。目前主要试用了<code>QWen2.5</code>和<code>QWen3.5</code>，2.5的无法调用工具，3.5的才可以，以下是如何运行模型的操作：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">llama-server -m ~&#x2F;models&#x2F;Qwen3.5-9B-Q4_K_M.gguf --host 0.0.0.0 --port 8099<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>配置</strong></p>
+<p>龙虾配置是选择自定义的，URL配置如<code>http://192.168.1.4:8099/v1</code>，一定要加<code>v1</code>，协议的话选择ChatGPT的。</p>
+<h3 id="龙虾配置"><a href="#龙虾配置" class="headerlink" title="龙虾配置"></a>龙虾配置</h3><p><strong>PS:</strong> 龙虾安装完成后，可能会显示该命令不存在，需要在命令行运行:</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">export PATH&#x3D;&quot;$(npm prefix -g)&#x2F;bin:$PATH&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>龙虾的相关文件在<code>.openclaw</code>目录下，属于隐藏文件，配置文件在<code>.openclaw/openclaw.json</code>。</p>
+<h4 id="局域网访问"><a href="#局域网访问" class="headerlink" title="局域网访问"></a>局域网访问</h4><p>修改<code>.openclaw/openclaw.json</code>中的<code>gateway</code>的<code>bind</code>为<code>lan</code>模式，即可局域网内访问，但是存在一些问题。</p>
+<p><strong>HTTPS配置</strong></p>
+<p>不配置也是无法访问，这里使用Nginx反向代理的方式，使用自签名。</p>
+<p>创建证书</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">$ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout &#x2F;etc&#x2F;ssl&#x2F;private&#x2F;openclaw.key -out &#x2F;etc&#x2F;ssl&#x2F;certs&#x2F;openclaw.crt<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>Nginx配置，创建配置文件<code>/etc/nginx/sites-enabled/openclaw</code>，配置如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">server &#123;
+    listen 443 ssl;
+    server_name _;
+
+    ssl_certificate &#x2F;etc&#x2F;ssl&#x2F;certs&#x2F;openclaw.crt;
+    ssl_certificate_key &#x2F;etc&#x2F;ssl&#x2F;private&#x2F;openclaw.key;
+
+    location &#x2F; &#123;
+        proxy_pass http:&#x2F;&#x2F;127.0.0.1:18789;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection &quot;upgrade&quot;;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>另外需要在主配置文件（<code>/etc/nginx/nginx.conf</code>）添加导入设置</p>
+<pre class="line-numbers language-none"><code class="language-none">http &#123;
+    include       mime.types;
+    default_type  application&#x2F;octet-stream;
+
+    include &#x2F;etc&#x2F;nginx&#x2F;sites-enabled&#x2F;*; # 添加这句<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>重启Nginx</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">sudo systemctl start nginx<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>跨域访问</strong></p>
+<p>修改<code>.openclaw/openclaw.json</code>中的<code>gateway</code>，增加如下：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"controlUi"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+       <span class="token property">"allowedOrigins"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+       	<span class="token string">"https://192.168.1.8"</span><span class="token punctuation">,</span>  
+       	<span class="token string">"http://127.0.0.1:18789"</span><span class="token punctuation">,</span>
+  		<span class="token string">"http://localhost:18789"</span>
+  	<span class="token punctuation">]</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>设置完成后重启网管<code>openclaw gateway restart</code></p>
+<h3 id="配对问题"><a href="#配对问题" class="headerlink" title="配对问题"></a>配对问题</h3><p>本来有<code>openclaw devices *</code>下面有一些列的管理配对的操作，但是在局域网访问时，这个命令总是报错，所以这里使用手动魔改的方式解决。</p>
+<p><code>~/.openclaw/devices/pending.json</code>这个配置文件里面是当前没有配对的设备信息。</p>
+<p><code>~/.openclaw/devices/paired.json</code>这个配置文件里面是当前已经配对的设备信息，如果为空的话，在本地网页打开下，可能本地也需要配对，不过本地配对的命令是可用。我因为是在Linux手机上安装的龙虾，是在远程操作打开浏览器的，使用了如下命令：</p>
+<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">DISPLAY&#x3D;:0 firefox http:&#x2F;&#x2F;127.0.0.1:18789&#x2F;#token&#x3D;输入自己的token &amp;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>配对成功后，<code>~/.openclaw/devices/paired.json</code>大概会增加类似的信息。以下为Linux版配置，这个是手机端访问后的配对信息，用于参考。</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"deviceId"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">"deviceId"</span><span class="token operator">:</span> “deviceId"<span class="token punctuation">,</span>
+  <span class="token property">"publicKey"</span><span class="token operator">:</span> <span class="token string">"publicKey"</span><span class="token punctuation">,</span>
+  <span class="token property">"platform"</span><span class="token operator">:</span> <span class="token string">"Linux x86_64"</span><span class="token punctuation">,</span>
+  <span class="token property">"clientId"</span><span class="token operator">:</span> <span class="token string">"openclaw-control-ui"</span><span class="token punctuation">,</span>
+  <span class="token property">"clientMode"</span><span class="token operator">:</span> <span class="token string">"webchat"</span><span class="token punctuation">,</span>
+  <span class="token property">"role"</span><span class="token operator">:</span> <span class="token string">"operator"</span><span class="token punctuation">,</span>
+  <span class="token property">"roles"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"operator"</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"scopes"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"operator.admin"</span><span class="token punctuation">,</span>
+    <span class="token string">"operator.approvals"</span><span class="token punctuation">,</span>
+    <span class="token string">"operator.pairing"</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"approvedScopes"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"operator.admin"</span><span class="token punctuation">,</span>
+    <span class="token string">"operator.approvals"</span><span class="token punctuation">,</span>
+    <span class="token string">"operator.pairing"</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"tokens"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"operator"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"token"</span><span class="token operator">:</span> “token”<span class="token punctuation">,</span>
+      <span class="token property">"role"</span><span class="token operator">:</span> <span class="token string">"operator"</span><span class="token punctuation">,</span>
+      <span class="token property">"scopes"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token string">"operator.admin"</span><span class="token punctuation">,</span>
+        <span class="token string">"operator.approvals"</span><span class="token punctuation">,</span>
+        <span class="token string">"operator.pairing"</span>
+      <span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">"createdAtMs"</span><span class="token operator">:</span> <span class="token number">1773574278595</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"createdAtMs"</span><span class="token operator">:</span> <span class="token number">1773574278594</span><span class="token punctuation">,</span>
+  <span class="token property">"approvedAtMs"</span><span class="token operator">:</span> <span class="token number">1773574278594</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>参照上面那个，新增一个自己局域网访问电脑的配置。这里是我自己的Mac配置：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"deviceId"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+  <span class="token property">"deviceId"</span><span class="token operator">:</span> <span class="token string">"deviceId"</span><span class="token punctuation">,</span>
+  <span class="token property">"publicKey"</span><span class="token operator">:</span> <span class="token string">"publicKey"</span><span class="token punctuation">,</span>
+  <span class="token property">"platform"</span><span class="token operator">:</span> <span class="token string">"MacIntel"</span><span class="token punctuation">,</span>
+  <span class="token property">"clientId"</span><span class="token operator">:</span> <span class="token string">"openclaw-control-ui"</span><span class="token punctuation">,</span>
+  <span class="token property">"clientMode"</span><span class="token operator">:</span> <span class="token string">"webchat"</span><span class="token punctuation">,</span>
+  <span class="token property">"role"</span><span class="token operator">:</span> <span class="token string">"operator"</span><span class="token punctuation">,</span>
+  <span class="token property">"roles"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"operator"</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"scopes"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"operator.admin"</span><span class="token punctuation">,</span>
+    <span class="token string">"operator.approvals"</span><span class="token punctuation">,</span>
+    <span class="token string">"operator.pairing"</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"approvedScopes"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"operator.admin"</span><span class="token punctuation">,</span>
+    <span class="token string">"operator.approvals"</span><span class="token punctuation">,</span>
+    <span class="token string">"operator.pairing"</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"tokens"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token property">"operator"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token property">"token"</span><span class="token operator">:</span> <span class="token string">"token"</span><span class="token punctuation">,</span>
+      <span class="token property">"role"</span><span class="token operator">:</span> <span class="token string">"operator"</span><span class="token punctuation">,</span>
+      <span class="token property">"scopes"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token string">"operator.admin"</span><span class="token punctuation">,</span>
+        <span class="token string">"operator.approvals"</span><span class="token punctuation">,</span>
+        <span class="token string">"operator.pairing"</span>
+      <span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">"createdAtMs"</span><span class="token operator">:</span> <span class="token number">1773574278595</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token property">"createdAtMs"</span><span class="token operator">:</span> <span class="token number">1773574278594</span><span class="token punctuation">,</span>
+  <span class="token property">"approvedAtMs"</span><span class="token operator">:</span> <span class="token number">1773574278594</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这个需要拷贝到<code>~/.openclaw/devices/paired.json</code>，然后重启网管。</p>
+<h3 id="使用感受"><a href="#使用感受" class="headerlink" title="使用感受"></a>使用感受</h3><p>目前使用的本地模型，主要是常识了下简单的查询类的任务，可以完成一些，但是有点慢。比如查询天气，这个是可以的。另外也可以播放音乐，不过存在只能播放一小段的问题，不知道是什么原因，音乐播放程序是个命令行版的，这点我有点兴奋，因为我是在PinePhone Pro手机上部署的，使用的GTK的界面，在上面开发界面并不算简单，用龙虾来操作命令行的程序，这点倒是一种启发。</p>
+<p>另外我手机上的Chromium浏览器因为缺少某个库的链接，所以不能使用。只有Firefox可以用，比如我让龙虾打开的B站，然后播放某首歌曲，龙虾只是打开了Firefox，也打开了网站，但是并没有进行到最后一步，这点可能是受限我本地的模型不支持图片分析吧。总之给我的感觉，你想使用一个强大的龙虾，就需要给他配置各种技能，但是大部分技能都需要付费，如果确实做点什么或许还能接受，但是纯粹的自己体验的话，确实有点烧钱。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2026/02/07/squeekboard-development-notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jasper Ji">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Jasper Ji">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/02/07/squeekboard-development-notes/" class="post-title-link" itemprop="url">Squeekboard增加拼音输入法实践</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-02-07 20:13:17" itemprop="dateCreated datePublished" datetime="2026-02-07T20:13:17+08:00">2026-02-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-02-08 21:16:49" itemprop="dateModified" datetime="2026-02-08T21:16:49+08:00">2026-02-08</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>我手头有一台PinePhone Pro手机，可以涮不少系统，我比较喜欢基于GTK的Phosh的桌面，不过它的虚拟键盘Squeekboard不支持中文拼音输入。好在自己也是开发者一个，Squeekboard是个开源项目，使用C和Rust混编。在买PinePhone Pro之前就已经研究了Rust一段时间，所以一开始我觉得自己应该可以魔改一番增加一个简单的拼音输入法的功能。一开始并不顺利，迟迟没有进展。后来我停滞了一段时间，最近马上要过年了。我又开始折腾这个项目了，或许是停滞了一段时间的缘故，这次的思路比上次的能清晰一些。开源项目最大的问题就是它只有代码，它是怎么运行的需要你自己去研究。最初我之所以没有进展或许还是过于分散了，忽略了第一性原则，就是Squeekboard实际是基于Gtk的项目，那么最基本的东西一定是基于Gtk提供的那些基本的东西。有了这个思路后，我这次的进展就比上次快多了，另外也借助于AI的帮助。</p>
+<h3 id="基本架构"><a href="#基本架构" class="headerlink" title="基本架构"></a>基本架构</h3><p>如果一个应用的输入框被激活，那么就会显示Squeekboard。另外也可以通过桌面下面的常驻按钮点击也可以显示或者隐藏键盘，这个是通过DBus来控制。Squeekboard的显示我一开始以为在覆盖在应用的上层，但现在觉得更像是把一个手机界面分成了上下两部分，底下是键盘，具体如果显示的还需要进一步的研究。</p>
+<p>Squeekboard其实是一个大控件，键盘的按钮主要是自定义的绘制，没有使用标准的按钮控件。通过一个统一的事件处理，判断点击了哪个区域的按钮。键盘的布局会通过配置文件，可以动态的更新。</p>
+<p>程序是由C驱动的，绘制按钮等一些逻辑的部分则是通过Rust来实现的，所以Rust等于一个程序库一样，二者相互调用。</p>
+<h3 id="拼音功能的实现"><a href="#拼音功能的实现" class="headerlink" title="拼音功能的实现"></a>拼音功能的实现</h3><p>Squeekboard支持了大部分的字母类型的输入法，但是汉字的话，目前是不支持的。汉字的难点在于它不是直接由字母组合而成，需要通过某种间接的方式产生汉字，比如拼音、五笔。记得大学时，那会计算机还没有那么普及，一开始老师要求的是五笔输入法，我当时还买了一本五笔的书籍，实际上那会平时在网吧都用的是拼音输入法，五笔完全是一开始为了应付考试，后来真的考试也不要求五笔，拼音也可以，五笔很快就忘了。因为这次开发的缘故，我又一次想到了五笔，因为那其实是一种从汉字结构拆分的输入法，所以你必须能知道自己要输入的那个字的结构。</p>
+<p>回到拼音输入法，拼音输入法其实就是拼音与汉字的键值对，只不过一个拼音可能对应很多的字，有时一个字会有好几个发音。</p>
+<p>不过一开始我并没有考虑太细，开始主要的经历花在界面上了，逻辑上有个大概的想法，关键是如何实现的问题。实现的基本逻辑就是拦截按键，不过一开始我把精力花在了其他的方面，比如一个按键按下后，是如何传个输入框的？Squeekboard使用了Wayland协议，Wayland其实支持两种输入协议，我一开始只关注了<code>zwp_input_method_v2</code>，这个更像组合，但是默认的字母输入并没有走这个协议，走的另外一个协议就是简单字母按键的对应。</p>
+<p>汉字的输入实际上需要使用<code>zwp_input_method_v2</code>这个来提交，一开始我就是想着先在键盘的上方增加一个候选字的栏，我先实现用按钮点击提交看是否可以成功。虽然这个要求很简单，但是在一开始修改的时候话费了我很多的时间，虽然我那段时间也有写关于GTK的应用，但是那个主要是Rust绑定的，很少涉及用C来写GTK。但是Squeekboard最基础的部分就是用C写的，当时我还借助Chatgpt，但是那会的Chatgpt也老出错，很多代码并不能直接用，要不就是没有用对版本。Squeekboard使用的是GTK3，而最新的则是GTK4，其实我也是用的GTK4的Rust绑定。总之那会花了好多时间，一直无法给键盘的上方添加一个控件，这么简单的事，尽然如此的花费时间，现在回想起来，那会太过于依赖Chatgpt了，自己思考的少，所以很被动。当然现在据说有那种可以分析整个工程的AI，或许那个可能要好一些，不过我目前还没有用过，因为那个要花钱。单就把一些工程的局部代码给AI，这种方式觉得还是不够完美。而我自己会写编程，是可以思考的，但是放弃思考这是一种愚蠢的做法，是你的想法在驱动AI，而不是被AI驱动，这是我得到的最大教训。</p>
+<p>于是增加拼音的功能就此搁置了好长一段时间，直到最近才重新开始。这次最大的特点就是主动性，另外就是从最基本的东西开始考虑，毕竟Squeekboard它是基于GTK的，所以很快就完成了给虚拟键盘上方增加一个候选字的栏。之后遇到的最大问题是，点击按钮后提交会报错，应用直接奔溃掉了，遇到这种问题时，当时有点头大。但冷静下来思考发现，肯定是哪里的问题，只要解决问题就行，不要陷入到一种什么也不做的境地。在AI的帮助下发现我因为安装了Fcitx5的缘故，<code>zwp_input_method_v2</code>一直没有被激活，所以才导致了强行提交后的奔溃问题。最后直接用<code>killall -9 fcitx5</code>关闭了Fcitx5后，就好了。</p>
+<p>后面就是如何把虚拟键盘的按键与汉字对应起来，一开始我只是想把这个工作交给一个外部的库，最终选择了一个Rust的库，结果编译报错。后来我依旧从最基本的实现开始，本质上不就是输入拼音的组合与汉字的对照表吗？有了这个基本的思路后，我找到了一个文本的数据，然后读取后，直接在表了查找。就这样一个基本的拼音输入法的功能便实现了。</p>
+<p>不过也有一些问题，比如中英文的切换，另外如果连续的敲击按键时，会出现严重的卡顿，这是因为有些对应的汉字很多，这样的话就会添加很多的按钮，这种效率感觉并不高，所以现在的拼音输入法，只能一个按键一个按键的敲击，得留出缓冲的时间。另外那个文本的数据里面汉字的排列没有按照常用字的顺序来排列，所以有些很常用的字可能在后面。</p>
+<h3 id="后续的改进"><a href="#后续的改进" class="headerlink" title="后续的改进"></a>后续的改进</h3><p>现在算是满足了基本的需求，不过这个输入法现在来看效率不高。一种是重新弄一个只有3500字的小型数据集，这样可能会效率高一些。另外可能需要新开一个线程来专门处理拼音的东西，这样也许可以解决连续敲击的卡顿问题。当然想要到达现在iOS这样流畅的输入法，最后获取需要采用开源的一些输入法引擎来专门处理拼音的问题。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>这个项目对我而言算是一个挑战吧，因为最初我买了PinePhone Pro后，想着用Rust来开发应用，一开始确实也是尝试的开发了一个类似Notes的应用，当时还尝试在交叉编译，不过库稍微变动一下就要改很多的东西。另外Notes的应用运行效率并不高，反而还会有偶发的卡顿，我一度尝试用Python的Gtk绑定开发了一个，感觉差不多，所以最初使用Rust来提高应用的运行速度的想法被否定。主要是Rust开发效率与Python相比太低了，所以一段时间我有点气馁，开发PinePhone Pro的应用的想法一度搁置。</p>
+<p>后来我又尝试的了解关于相机的相关东西的研究，PinePhone Pro的相机不是在所有的系统都可用的，有些直接用不了，后来调试了好长一段时间最后勉强可用，但那个是基于命令行的，其实开发一个专用的应用才是后续可能要做的。另外还尝试了GPS的定位的研究，发现定位从在偏移，这个也是从命令行研究的，缺少一个应用。最后还有蓝牙的研究。</p>
+<p>那些跟硬件有点关系，但是虚拟键盘则是纯软件的，这个项目一开始确实没有进展，让我很沮丧，怀疑我的Rust和C的研究，不过基本的功能完成后，算是对GTK一些东西有所涉猎。而PinePhone Pro 上如果想在Phosh下使用，那么C语言看来是逃不过了，和Rust的混编确实能提高效率。纯Rust应用虽然有可能，但是和C混编或许更自由一些。不过对于我而言能用C语言也是一种期许吧，毕竟我对C的投入其实还是蛮大的，买了好的的书籍。另外也曾尝试写过一些操作系统的雏形，不过那个的话是汇编语言与C的混编，不过整个现在回想起来一个操作系统不就是由一堆在上层的脚本语言之类的混合搭建而成吗？所以混编是常态，而单纯的依赖某个语言是不现实的。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1387,277 +1685,6 @@ end start<span aria-hidden="true" class="line-numbers-rows"><span></span><span><
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/10/30/flex-and-bison/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/10/30/flex-and-bison/" class="post-title-link" itemprop="url">Flex与Bison</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-10-30 17:08:09 / 修改时间：19:04:27" itemprop="dateCreated datePublished" datetime="2022-10-30T17:08:09+08:00">2022-10-30</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>最早是读了《Unix编程环境》，在书中有展示如何用Lex和Yacc制作一门编程语言，后来就买了《Lex与Yacc》，Flex、Bison分别是Lex、Yacc的现代版本，于是又买了《Flex与Bison》，《Flex与Bison》实际上是《Lex与Yacc》的续作，都是同样的作者。书虽然简单读了下，但里面的例子一直没有尝试的运行下。</p>
-<h3 id="运行环境"><a href="#运行环境" class="headerlink" title="运行环境"></a>运行环境</h3><p>电脑：macOS Monterey，12.5</p>
-<p>Flex版本2.6.4，Bison版本3.8.2。Mac下直接使用brew安装，安装完成后记得根据提示把环境配置下。</p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">brew install flex 
-brew install bison<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>GCC版本，我使用<code>gcc -v</code>命令后，实际出现的是clang的版本。</p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">gcc -v
-Apple clang version 14.0.0 (clang-1400.0.29.102)
-Target: x86_64-apple-darwin21.6.0
-Thread model: posix
-InstalledDir: &#x2F;Applications&#x2F;Xcode.app&#x2F;Contents&#x2F;Developer&#x2F;Toolchains&#x2F;XcodeDefault.xctoolchain&#x2F;usr&#x2F;bin<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="WC例子"><a href="#WC例子" class="headerlink" title="WC例子"></a>WC例子</h3><p>书中第一个例子类似unix下wc的例子。</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"> <span class="token operator">%</span><span class="token punctuation">&#123;</span>
- <span class="token keyword">int</span> chars <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
- <span class="token keyword">int</span> words <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
- <span class="token keyword">int</span> lines <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
- <span class="token operator">%</span><span class="token punctuation">&#125;</span>
- 
-<span class="token operator">%</span><span class="token operator">%</span>
- <span class="token punctuation">[</span>a<span class="token operator">-</span>zA<span class="token operator">-</span>Z<span class="token punctuation">]</span><span class="token operator">+</span>   <span class="token punctuation">&#123;</span> words<span class="token operator">++</span><span class="token punctuation">;</span> chars <span class="token operator">+=</span> <span class="token function">strlen</span><span class="token punctuation">(</span>yytext<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span>
- \n          <span class="token punctuation">&#123;</span> chars<span class="token operator">++</span><span class="token punctuation">;</span> lines<span class="token operator">++</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
- <span class="token punctuation">.</span>           <span class="token punctuation">&#123;</span> chars<span class="token operator">++</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-<span class="token operator">%</span><span class="token operator">%</span>
-
-<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token operator">*</span><span class="token operator">*</span> aggv<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-     <span class="token function">yylex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-     <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%8d%8d%8d\n"</span><span class="token punctuation">,</span> lines<span class="token punctuation">,</span> words<span class="token punctuation">,</span> chars<span class="token punctuation">)</span><span class="token punctuation">;</span>
-     <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>书中的例子main函数都没有写返回值，编译的时候回报warn了，我都加了返回参数。</p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">flex fb1-1.l # 上面的例子保存为l后缀的文件
-gcc lex.yy.c -ll # 这一步会升a.out文件
-.&#x2F;a.out # 执行文件，输入一些字符，以control+d结束后，便会输出结果<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>这里需要注意的是原书中<code>gcc lex.yy.cc -lfl</code>，结果一直报错。后来找到Mac应该使用<code>-ll</code>替代<code>-lfl</code>，参考Reddit上的这个问答：<a target="_blank" rel="noopener" href="https://www.reddit.com/r/C_Programming/comments/wk914f/does_anyone_know_how_to_resolve_this_error_when/">Does anyone know how to resolve this error when compiling Flex and Bison?</a></p>
-<h3 id="计算器例子"><a href="#计算器例子" class="headerlink" title="计算器例子"></a>计算器例子</h3><p>第二例子是一个计算器例子，结合了Flex和Bison</p>
-<p><code>fb1-5.l</code>文件代码</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token operator">%</span><span class="token punctuation">&#123;</span>
-<span class="token macro property"><span class="token directive-hash">#</span> <span class="token directive keyword">include</span> <span class="token string">"fb1-5.tab.h"</span></span>
-<span class="token operator">%</span><span class="token punctuation">&#125;</span>
-
-<span class="token operator">%</span><span class="token operator">%</span>
-<span class="token string">"+"</span>	<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> ADD<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-<span class="token string">"-"</span>	<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> SUB<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-<span class="token string">"*"</span>	<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> MUL<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-<span class="token string">"/"</span>	<span class="token punctuation">&#123;</span> <span class="token keyword">return</span> DIV<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-<span class="token string">"|"</span>     <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> ABS<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-<span class="token string">"("</span>     <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> OP<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-<span class="token string">")"</span>     <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> CP<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-<span class="token punctuation">[</span><span class="token number">0</span><span class="token operator">-</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token operator">+</span>	<span class="token punctuation">&#123;</span> yylval <span class="token operator">=</span> <span class="token function">atoll</span><span class="token punctuation">(</span>yytext<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token keyword">return</span> NUMBER<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-
-\n      <span class="token punctuation">&#123;</span> <span class="token keyword">return</span> EOL<span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-<span class="token string">"//"</span><span class="token punctuation">.</span><span class="token operator">*</span>  
-<span class="token punctuation">[</span> \t<span class="token punctuation">]</span>   <span class="token punctuation">&#123;</span> <span class="token comment">/* ignore white space */</span> <span class="token punctuation">&#125;</span>
-<span class="token operator">%</span><span class="token operator">%</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p><code>fb1-5.y</code>文件代码，需要注意的是书中的例子类似<code>factor default $$ = $1</code>，实际运行报错修改为<code>factor &#123; $$ = $1; &#125;</code>格式。</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">/**/</span>
-<span class="token operator">%</span><span class="token punctuation">&#123;</span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h></span></span>
-<span class="token keyword">void</span> <span class="token function">yyerror</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 新加</span>
-<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 新加</span>
-<span class="token keyword">int</span> <span class="token function">yylex</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 新加</span>
-<span class="token operator">%</span><span class="token punctuation">&#125;</span>
-
-<span class="token operator">%</span>token NUMBER
-<span class="token operator">%</span>token ADD SUB MUL DIV ABS
-<span class="token operator">%</span>token OP CP
-<span class="token operator">%</span>token EOL
-
-<span class="token operator">%</span><span class="token operator">%</span>
-
-calclist<span class="token operator">:</span> <span class="token comment">/* 空规则 */</span>
-   <span class="token operator">|</span> calclist exp EOL <span class="token punctuation">&#123;</span> <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"= %d\n"</span><span class="token punctuation">,</span> $<span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-   <span class="token punctuation">;</span>
-
-exp<span class="token operator">:</span> factor <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-   <span class="token operator">|</span> exp ADD factor <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span> <span class="token operator">+</span> $<span class="token number">3</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-   <span class="token operator">|</span> exp SUB factor <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span> <span class="token operator">-</span> $<span class="token number">3</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-   <span class="token punctuation">;</span>
-
-factor<span class="token operator">:</span> term <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-   <span class="token operator">|</span> factor MUL term <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span> <span class="token operator">*</span> $<span class="token number">3</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-   <span class="token operator">|</span> factor DIV term <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span> <span class="token operator">/</span> $<span class="token number">3</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-   <span class="token punctuation">;</span>
-
-term<span class="token operator">:</span> NUMBER <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">1</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-   <span class="token operator">|</span> ABS term <span class="token punctuation">&#123;</span> $$ <span class="token operator">=</span> $<span class="token number">2</span> <span class="token operator">>=</span> <span class="token number">0</span><span class="token operator">?</span> $<span class="token number">2</span> <span class="token operator">:</span> <span class="token operator">-</span>$<span class="token number">2</span><span class="token punctuation">;</span> <span class="token punctuation">&#125;</span>
-   <span class="token punctuation">;</span>
-<span class="token operator">%</span><span class="token operator">%</span>
-
-<span class="token keyword">void</span> <span class="token function">yyerror</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token function">fprintf</span><span class="token punctuation">(</span><span class="token constant">stderr</span><span class="token punctuation">,</span> <span class="token string">"error: %s\n"</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-
-
-<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token operator">*</span>argv<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token function">yyparse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>按一下顺序运行</p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">bison -d fb1-5.y # 一定要加-d，加了以后会生成fb1-5.tab.h文件
-flex fb1-5.l  # 生成lex.yy.c文件
-gcc fb1-5.tab.c lex.yy.c -ll # 这个也跟原书的命令不太一样，生成a.out文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>其实还遇到一些跟c有关系的编译问题，比如<code>atoi</code>在<code>c99</code>下不可用，需要使用<code>atoll</code>。总的来说，问题不大，算是都运行起来了，毕竟原书是2009年出版的。最后难能可贵的是书中例子的ftp下载地址居然还可以用，<a href="ftp://ftp.iecc.com/pub/file/flexbison.zip">代码下载</a>。</p>
-<p>书中也提到使用Flex和Bison，当然也可以手写。其实对于我这样的多年写代码的人，很多时候太关注实现了，往往失去了高层次的思考，使用Flex和Bison这样的工具是让你直接关注问题本身，比如语言的一些问题。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://c2lang.com/2022/10/17/vsftpd-practices/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jasper Ji">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Jasper Ji">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/10/17/vsftpd-practices/" class="post-title-link" itemprop="url">Vsftpd实践</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-10-17 14:37:47 / 修改时间：15:09:54" itemprop="dateCreated datePublished" datetime="2022-10-17T14:37:47+08:00">2022-10-17</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>我用的是docker安装的，创建一个ftp的目录，使用命令。</p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">docker run -d -v 你自己的目录:&#x2F;home&#x2F;vsftpd \
--p 20:20 -p 21:21 -p 21100-21110:21100-21110 \
--e FTP_USER&#x3D;用户名 -e FTP_PASS&#x3D;密码 \
--e PASV_ADDRESS&#x3D;主机IP -e PASV_MIN_PORT&#x3D;21100 -e PASV_MAX_PORT&#x3D;21110 \
---name vsftpd --restart&#x3D;always fauria&#x2F;vsftpd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="连接慢"><a href="#连接慢" class="headerlink" title="连接慢"></a>连接慢</h3><p>感觉登录很慢，需要做下配置。</p>
-<p>进入容器</p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">docker exec -it 你自己的容器的ID bash <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>使用vi编辑配置文件，修改<code>reverse_lookup_enable</code>字段为<code>NO</code></p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">vi &#x2F;etc&#x2F;vsftpd&#x2F;vsftpd.conf <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>保存配置</p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">source &#x2F;etc&#x2F;vsftpd&#x2F;vsftpd.conf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<p>删除里面全部的<code>nameserve</code>，同样保存。</p>
-<pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">vi &#x2F;etc&#x2F;resolv.conf
-source &#x2F;etc&#x2F;resolv.conf<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<h3 id="无法下载"><a href="#无法下载" class="headerlink" title="无法下载"></a>无法下载</h3><p>可以显示目录单是却无法下载文件，测试文件很小，只有一两次偶然的情况下载成功了，搜索了半天发现都没有遇到跟我一样问题的。最后发现原来是没有正确设置防火墙端口的问题，使用的是阿里云，在安全组我只开通了<code>21100</code>这个端口，实际上应该是一个范围<code>21100-21110</code>，安全组的配置应该是<code>21100/21110</code>。</p>
-<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://hub.docker.com/r/fauria/vsftpd">fauria&#x2F;vsftpd</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1670,7 +1697,7 @@ source &#x2F;etc&#x2F;resolv.conf<span aria-hidden="true" class="line-numbers-ro
 
   <div class="copyright">
     &copy; 
-    <span itemprop="copyrightYear">2025</span>
+    <span itemprop="copyrightYear">2026</span>
     <span class="with-love">
       <i class="fa fa-heart"></i>
     </span>
