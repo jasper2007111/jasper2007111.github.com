@@ -1,3 +1,4 @@
+https://c2lang.com/2025/12/05/wechat-writing-practice/
 https://c2lang.com/2026/03/31/zen-master-shanzhao-of-fenyang/
 https://c2lang.com/2026/03/26/bailin-temple-zhaozhou-history/
 https://c2lang.com/2025/08/28/cao-yin-and-chan-master-duanzhi-jue/
@@ -6,7 +7,6 @@ https://c2lang.com/2026/03/26/gaomin-temple-yangzhou-history/
 https://c2lang.com/2026/03/26/guiyuan-temple-wuhan-history/
 https://c2lang.com/2026/03/17/openclaw-practice/
 https://c2lang.com/2026/02/07/squeekboard-development-notes/
-https://c2lang.com/2025/12/05/wechat-writing-practice/
 https://c2lang.com/2022/09/16/study-of-zen-master-tiantong-rujing/
 https://c2lang.com/2023/11/12/pinephone-pro-first-experience/
 https://c2lang.com/2023/11/12/cross-compile-rust-applications-for-the-pinephone-pro/
