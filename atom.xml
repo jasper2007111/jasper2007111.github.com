@@ -6,7 +6,7 @@
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   
   <link href="https://c2lang.com/"/>
-  <updated>2026-04-28T01:56:15.312Z</updated>
+  <updated>2026-06-30T02:27:57.609Z</updated>
   <id>https://c2lang.com/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>易经助手</title>
+    <link href="https://c2lang.com/2026/06/30/i-Ching-Assistant/"/>
+    <id>https://c2lang.com/2026/06/30/i-Ching-Assistant/</id>
+    <published>2026-06-30T02:13:22.000Z</published>
+    <updated>2026-06-30T02:27:57.609Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>易经助手</strong>，是一款专门用来学习易经的软件。《易经》是一本上古奇书，如果只读此书会觉得比较晦涩，我最初也是买过一本《易经》，后来无意中看到六爻卜卦，才发现《易经》其实是一本卦词的书籍。另外《易经》的阴阳组合，对于本身就搞编程的我而言，一下子就想到了二进制，这本古代的奇书值得学习。</p><p>本软件虽然也支持英文，但是卦词部分并没有作英文翻译。说来惭愧即使每天都用中文，但是面对古代文言的《易经》，我自己都要好好学习原文，所以如果翻译成英文可能会损失原意，我想喜欢的《易经》的人，也一定会去读原文的。</p><p>本软件不收集用户信息，单纯的一款只为学习《易经》的本地软件。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;strong&gt;易经助手&lt;/strong&gt;，是一款专门用来学习易经的软件。《易经》是一本上古奇书，如果只读此书会觉得比较晦涩，我最初也是买过一本《易经》，后来无意中看到六爻卜卦，才发现《易经》其实是一本卦词的书籍。另外《易经》的阴阳组合，对于本身就搞编程的我而言，一下子就想</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>漢傳佛教早晚課助手</title>
@@ -397,27 +417,6 @@
       
       
     <summary type="html">&lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;p&gt;目前使用Docker进行安装，&lt;code&gt;15672&lt;/code&gt;是网页端访问口，&lt;code&gt;5672&lt;/code&gt;是程序端访问接口。&lt;/p</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Python简单Http服务器</title>
-    <link href="https://c2lang.com/2022/09/20/python-http-server/"/>
-    <id>https://c2lang.com/2022/09/20/python-http-server/</id>
-    <published>2022-09-20T09:15:24.000Z</published>
-    <updated>2022-09-21T01:38:50.474Z</updated>
-    
-    <content type="html"><![CDATA[<p>Python自带Http服务器，我一般是在共享文件时使用，直接在需要共享的目录下运行命令即可启动服务，不过有时候传输不是很稳定，重启一下就好了。</p><h3 id="Python2-版本"><a href="#Python2-版本" class="headerlink" title="Python2 版本"></a>Python2 版本</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">python <span class="token operator">-</span>m SimpleHTTPServer <span class="token number">8080</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h3 id="Python3-版本"><a href="#Python3-版本" class="headerlink" title="Python3 版本"></a>Python3 版本</h3><p>之前主要用Python 2.7的版本，随着2.7的终结加上macOS 12.3已经彻底移除了python 2.x的版本，只能使用3的版本了，Python 3的这个Http服务器命令似乎更简单一些。</p><pre class="line-numbers language-python" data-language="python"><code class="language-python">python3 <span class="token operator">-</span>m http<span class="token punctuation">.</span>server <span class="token number">8001</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h3 id="跨域配置"><a href="#跨域配置" class="headerlink" title="跨域配置"></a>跨域配置</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span><span class="token keyword">try</span><span class="token punctuation">:</span>    <span class="token comment"># Python 3</span>    <span class="token keyword">from</span> http<span class="token punctuation">.</span>server <span class="token keyword">import</span> HTTPServer<span class="token punctuation">,</span> SimpleHTTPRequestHandler<span class="token punctuation">,</span> test <span class="token keyword">as</span> test_orig    <span class="token keyword">import</span> sys    <span class="token keyword">def</span> <span class="token function">test</span> <span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">)</span><span class="token punctuation">:</span>        test_orig<span class="token punctuation">(</span><span class="token operator">*</span>args<span class="token punctuation">,</span> port<span class="token operator">=</span><span class="token builtin">int</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">1</span> <span class="token keyword">else</span> <span class="token number">8000</span><span class="token punctuation">)</span><span class="token keyword">except</span> ImportError<span class="token punctuation">:</span> <span class="token comment"># Python 2</span>    <span class="token keyword">from</span> BaseHTTPServer <span class="token keyword">import</span> HTTPServer<span class="token punctuation">,</span> test    <span class="token keyword">from</span> SimpleHTTPServer <span class="token keyword">import</span> SimpleHTTPRequestHandler<span class="token keyword">class</span> <span class="token class-name">CORSRequestHandler</span> <span class="token punctuation">(</span>SimpleHTTPRequestHandler<span class="token punctuation">)</span><span class="token punctuation">:</span>    <span class="token keyword">def</span> <span class="token function">end_headers</span> <span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>        self<span class="token punctuation">.</span>send_header<span class="token punctuation">(</span><span class="token string">'Access-Control-Allow-Origin'</span><span class="token punctuation">,</span> <span class="token string">'*'</span><span class="token punctuation">)</span>        SimpleHTTPRequestHandler<span class="token punctuation">.</span>end_headers<span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>    test<span class="token punctuation">(</span>CORSRequestHandler<span class="token punctuation">,</span> HTTPServer<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;Python自带Http服务器，我一般是在共享文件时使用，直接在需要共享的目录下运行命令即可启动服务，不过有时候传输不是很稳定，重启一下就好了。&lt;/p&gt;
-&lt;h3 id=&quot;Python2-版本&quot;&gt;&lt;a href=&quot;#Python2-版本&quot; class=&quot;headerlink&quot;</summary>
       
     
     
