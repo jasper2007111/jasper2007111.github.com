@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://c2lang.com/2025/12/05/wechat-writing-practice/</loc>
+    
+    <lastmod>2026-07-14</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://c2lang.com/2026/04/18/nanjing-qingliang-temple/</loc>
+    
+    <lastmod>2026-07-14</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://c2lang.com/2026/06/30/i-Ching-Assistant/</loc>
     
     <lastmod>2026-06-30</lastmod>
@@ -11,27 +29,9 @@
   </url>
   
   <url>
-    <loc>https://c2lang.com/2025/12/05/wechat-writing-practice/</loc>
-    
-    <lastmod>2026-05-21</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://c2lang.com/2026/04/28/han-chuan-zao-wan-ke/</loc>
     
     <lastmod>2026-04-28</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://c2lang.com/2026/04/18/nanjing-qingliang-temple/</loc>
-    
-    <lastmod>2026-04-17</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -319,7 +319,7 @@
 
   <url>
     <loc>https://c2lang.com/</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -327,21 +327,21 @@
   
   <url>
     <loc>https://c2lang.com/tags/yew/</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://c2lang.com/tags/%E7%A6%85%E5%AE%97/</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://c2lang.com/tags/app/</loc>
-    <lastmod>2026-06-30</lastmod>
+    <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
