@@ -6,7 +6,7 @@
   <link href="https://c2lang.com/atom.xml" rel="self"/>
   
   <link href="https://c2lang.com/"/>
-  <updated>2026-06-30T02:27:57.609Z</updated>
+  <updated>2026-08-03T02:23:01.645Z</updated>
   <id>https://c2lang.com/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>摩登纪谭</title>
+    <link href="https://c2lang.com/2026/08/03/mo-deng-ji-tan/"/>
+    <id>https://c2lang.com/2026/08/03/mo-deng-ji-tan/</id>
+    <published>2026-08-03T02:12:44.000Z</published>
+    <updated>2026-08-03T02:23:01.645Z</updated>
+    
+    <content type="html"><![CDATA[<p>摩登纪谭，禅宗的黄金时代在中国，时间上主要在唐宋，作者曾花了两年时间探访唐宋时期一些著名禅师的道场，上至禅宗初祖达摩大师，下至临济宗杨岐派第四世龙门清远禅师。本应用是文集，主要包含以下内容。</p><p>游记：</p><ul><li>嵩山少林寺记：菩提达摩</li><li>三门峡空相寺记：达摩藏塔地</li><li>成安元符寺记：二祖慧可藏塔地</li><li>黄梅四祖寺记：四祖道信大师</li><li>衡山福严寺记：南岳怀让禅师</li><li>吉安青原山记：青原行思禅师</li><li>靖安宝峰寺记：马祖道一禅师</li><li>衡山南台寺记：石头希迁禅师</li><li>奉新百丈寺记：百丈怀海禅师</li><li>西安大兴善寺记：兴善惟宽禅师</li><li>池州南泉山记：南泉普愿禅师</li><li>津市药山寺记：药山惟俨禅师</li><li>醴陵云岩寺记：云岩昙晟禅师</li><li>赵县柏林禅寺记：赵州从谂禅师</li><li>宁乡沩山记：沩山灵祐禅师</li><li>常德德山寺记：德山宣鉴禅师</li><li>石门夹山寺记：夹山善会禅师</li><li>闽侯雪峰寺记：雪峰义存禅师</li><li>乳源云门寺记：云门文偃禅师</li><li>南京清凉寺记：法眼文益禅师</li><li>正定临济寺记：临济义玄禅师</li><li>汝州风穴寺记：风穴延沼禅师</li><li>襄城首山记：首山省念禅师</li><li>汾阳海虹塔寺记：汾阳善昭禅师</li><li>叶县兴龙寺记：叶县归省禅师</li><li>枞阳浮山记：浮山法远禅师</li><li>桐城投子寺记：投子义青禅师</li><li>长沙云盖寺记：杨岐方会禅师</li><li>太湖海会寺记：白云守端禅师</li><li>黄梅五祖寺记：五祖法演禅师</li><li>太湖龙门寺记：龙门清远禅师</li><li>黄梅五祖寺记：东山古道</li><li>武汉归元寺记：曹洞宗云门系</li><li>扬州高旻寺记：来果禅师</li></ul><p>考证：</p><ul><li>修水洞山寺：元洁净莹禅师</li><li>醴陵宝源禅寺：临济宗法脉考</li><li>石门夹山寺：闯王禅隐之谜</li><li>桐柏山法脉源头考</li><li>法眼文益禅师塔考</li><li>汾阳天宁寺考</li></ul><p>本应用为图书类应用，不收集用户隐私等信息。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;摩登纪谭，禅宗的黄金时代在中国，时间上主要在唐宋，作者曾花了两年时间探访唐宋时期一些著名禅师的道场，上至禅宗初祖达摩大师，下至临济宗杨岐派第四世龙门清远禅师。本应用是文集，主要包含以下内容。&lt;/p&gt;
+&lt;p&gt;游记：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;嵩山少林寺记：菩提达摩&lt;/li&gt;
+</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>易经助手</title>
@@ -397,26 +421,6 @@
       
     <summary type="html">&lt;p&gt;我用的是docker安装的，创建一个ftp的目录，使用命令。&lt;/p&gt;
 &lt;pre class=&quot;line-numbers language-sh&quot; data-language=&quot;sh&quot;&gt;&lt;code class=&quot;language-sh&quot;&gt;docker run -d -v 你自</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title>RabbitMQ实践</title>
-    <link href="https://c2lang.com/2022/10/12/rabbitmq-practices/"/>
-    <id>https://c2lang.com/2022/10/12/rabbitmq-practices/</id>
-    <published>2022-10-12T05:34:53.000Z</published>
-    <updated>2022-10-12T05:58:37.793Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>目前使用Docker进行安装，<code>15672</code>是网页端访问口，<code>5672</code>是程序端访问接口。</p><pre class="line-numbers language-sh" data-language="sh"><code class="language-sh">docker run -d --name my-rabbit -p 15672:15672 -p 5672:5672 -e RABBITMQ_DEFAULT_USER&#x3D;username -e RABBITMQ_DEFAULT_PASS&#x3D;password rabbitmq:3.9-management<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>这个命令是后台运行，<code>username</code>以及<code>password</code>需要替换成你自己的。</p><h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><h4 id="自动连接"><a href="#自动连接" class="headerlink" title="自动连接"></a>自动连接</h4><p>Spring Boot启动后会自动连接RabbitMQ，这个在测试环境下可以设置不自动连接。</p><pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">spring</span><span class="token punctuation">:</span>  <span class="token key atrule">rabbitmq</span><span class="token punctuation">:</span>    <span class="token key atrule">listener</span><span class="token punctuation">:</span>      <span class="token key atrule">direct</span><span class="token punctuation">:</span>        <span class="token key atrule">auto-startup</span><span class="token punctuation">:</span> <span class="token boolean important">false</span> <span class="token comment"># 测试环境下屏蔽掉RabbitMQ的自动重连</span>      <span class="token key atrule">simple</span><span class="token punctuation">:</span>        <span class="token key atrule">auto-startup</span><span class="token punctuation">:</span> <span class="token boolean important">false</span> <span class="token comment"># 测试环境下屏蔽掉RabbitMQ的自动重连</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><h4 id="自动创建队列"><a href="#自动创建队列" class="headerlink" title="自动创建队列"></a>自动创建队列</h4><p>如果监听了没有创建的队列会报异常错误，可以用注解的时候自动创建队列。</p><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@RabbitListener</span><span class="token punctuation">(</span>queuesToDeclare <span class="token operator">=</span> <span class="token annotation punctuation">@Queue</span><span class="token punctuation">(</span><span class="token string">"some-queue"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">someMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>  <span class="token comment">// TODO Some Things</span><span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><h4 id="队列不消费"><a href="#队列不消费" class="headerlink" title="队列不消费"></a>队列不消费</h4><p>这个问题，偶然间我一不小心把RabbitMQ重启，当然没有消息，过了一会发现队列中的新数据并没有消费。最后重启了消费者的服务后，就正常了。所以这个问题，如果不及时发现的话，最终会导致队列出错的，在大项目的时候还是需要注意。</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h3 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h3&gt;&lt;p&gt;目前使用Docker进行安装，&lt;code&gt;15672&lt;/code&gt;是网页端访问口，&lt;code&gt;5672&lt;/code&gt;是程序端访问接口。&lt;/p</summary>
       
     
     
